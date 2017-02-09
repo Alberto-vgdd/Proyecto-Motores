@@ -3,23 +3,66 @@ using System.Collections;
 
 public class FollowTarget : MonoBehaviour {
 
+	// Sigue al objetivo, IMPORTANTE: EL OBJETIVO DEBE TENER DISPLACEWITHDRIFT.
+	// PM (PlayerMovement) buscara automaticamente al objeto marcado como jugador en la escena.
+
 	public GameObject target;
-	private Vector3 offset;
-	private Vector3 camSpeed = Vector3.one * 4;
 	private Vector3 targetPos;
 	private PlayerMovement pm;
-	// Use this for initialization
+
+	[Header("Positioning Parameters")]
+	public float camDegree;
+	[Range(0.1f, 2)]
+	public float driftDegreeMultiplier;
+	[Range(4,12)]
+	public float camDistance;
+	[Range(0,10)]
+	public float camHeight;
+	[Header("FOV Parameters")]
+	[Range(90, 100)]
+	public float minFov;
+	[Range(90, 100)]
+	public float maxFov;
+	[Range(0.1f, 1)]
+	public float speedToFov;
+
+	// Variables auxiliares para calculos.
+
+	private float camDegreeTemp;
+	private float camDegreeRads;
+	private float camCos;
+	private float camSin;
+
 	void Start () {
-		offset = new Vector3 (0, 1, -2);
-		pm = target.GetComponent<PlayerMovement> ();
+		camDegreeTemp = 0;
+		// Eh...solucion spaghetti.
+		pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement> ();
 	}
-	
-	// Update is called once per frame
-	void LateUpdate () {
-		GetComponent<Camera> ().fieldOfView = pm.cameraFov;
-		targetPos = target.transform.TransformPoint (offset);
-		//transform.position = Vector3.MoveTowards (transform.position, targetPos, 30 *Time.deltaTime);
-		transform.position = targetPos;
-		transform.LookAt (target.transform);
+
+	void FixedUpdate () {
+
+
+		lookAtTarget ();
+		sphericalPositionLock ();
+		updateFov ();
+		camDegree = 270 - target.transform.rotation.eulerAngles.y + pm.driftDegree * driftDegreeMultiplier;
+	}
+
+	void lookAtTarget()
+	{
+		transform.LookAt (target.transform.position);
+	}
+	void sphericalPositionLock()
+	{
+		camDegreeTemp = Mathf.MoveTowardsAngle(camDegreeTemp, camDegree, Time.smoothDeltaTime*200);
+		camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;
+		camCos = Mathf.Cos (camDegreeRads);
+		camSin = Mathf.Sin (camDegreeRads);
+
+		transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + target.transform.position;
+	}
+	void updateFov()
+	{
+		GetComponent<Camera> ().fieldOfView = Mathf.Clamp(90 + pm.accumulatedAcceleration * speedToFov, minFov, maxFov);
 	}
 }

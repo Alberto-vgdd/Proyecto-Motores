@@ -9,14 +9,13 @@ public class CarAnimationController : MonoBehaviour
     // 3 -> BL
     public Transform[] m_Wheels;
     public Transform[] m_TireMeshes;
-    public PlayerMovement m_CarMovementScript;
 
     //Input values [-1, 1]
-    public float m_CarSpeed;
-    public float m_CarSpeedMultiplier;
+    public float m_AccelerationInput;
     public float m_SteerInput;
 
     //Car variables.
+    public float m_MaxCarSpeed; 
     public float m_MaxWheelSteerAngle;
     public float m_WheelRadius;
 
@@ -40,12 +39,18 @@ public class CarAnimationController : MonoBehaviour
 
     void initializeVariables()
     {
+        m_AccelerationInput = 0.0f;
+        m_SteerInput = 0.0f;
+
+        m_MaxCarSpeed = 100.0f;
+        m_MaxWheelSteerAngle = 30.0f;
+        m_WheelRadius = 1.0f;
 
     }
 
     void updateCarState()
     {
-        m_CarSpeed = m_CarMovementScript.accumulatedAcceleration;
+        m_AccelerationInput = Input.GetAxis("Accelerate") - Input.GetAxis("Brake");
         m_SteerInput = Input.GetAxis("Steer");
     }
 
@@ -54,7 +59,7 @@ public class CarAnimationController : MonoBehaviour
         //The rotation equals linear velocity / wheel radius
         for (int i = 0; i < 4; i++)
         {
-          m_TireMeshes[i].Rotate(Vector3.right, m_CarSpeed *m_CarSpeedMultiplier/  m_WheelRadius);
+          m_TireMeshes[i].Rotate(Vector3.right, m_AccelerationInput * m_MaxCarSpeed / m_WheelRadius);
         }
     }
 
