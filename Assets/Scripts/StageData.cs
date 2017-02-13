@@ -21,13 +21,13 @@ public class StageData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		timeRemainingInfo.text = ((int)remainingSec / 60).ToString () + ":" + ((int)remainingSec % 60).ToString ();;
-		remainingSec = Mathf.MoveTowards(remainingSec, 0, Time.deltaTime);
+		timeRemainingInfo.text = ((int)remainingSec).ToString();
+		remainingSec = Mathf.MoveTowards (remainingSec, 0, Time.deltaTime);
 
 		
 	}
 	public void CrossCheckPoint()
 	{
-		remainingSec = 15;
+		remainingSec += 5;
 	}
 }

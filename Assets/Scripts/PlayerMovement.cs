@@ -38,13 +38,15 @@ public class PlayerMovement : MonoBehaviour {
 	[Range(0.5f,8)]
 	public float driftStabilization;
 
-	private Vector3 resetPosition = new Vector3(0,3,0);
+	private Vector3 savedResetPosition = new Vector3(0,3,0);
+	private Quaternion savedResetRotation = Quaternion.identity;
 	private float turnMultiplier = 0;
 
-	[Header("Car Height Adjustment(DONT TOUCH)")]
+	[Header("Advanced (DONT TOUCH)")]
 	public float hoverHeight = 0.45f;
 	public float hoverForce = 30;
 	public float groundedThs = 0.2f;
+	public float rotationCorrectionStrenght = 250;
 
 	[Header("Debug info")]
 	public bool grounded;
@@ -65,6 +67,9 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	void Update()
 	{
+		if (Input.GetKeyDown (KeyCode.R)) {
+			ResetCar ();
+		}
 		forwInput = Input.GetAxis ("Vertical");
 		turnInput = Input.GetAxis ("Horizontal");
 		if (Input.GetKeyDown (KeyCode.Space))
@@ -137,12 +142,24 @@ public class PlayerMovement : MonoBehaviour {
 	void MoveTowardsZeroRotation()
 	{
 		Vector3 currentRotation = transform.rotation.eulerAngles;
-		transform.rotation = Quaternion.Euler (Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * 100), currentRotation.y, Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * 100));
+		transform.rotation = Quaternion.Euler (Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * rotationCorrectionStrenght), currentRotation.y, Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * 100));
 	}
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "checkpoint") {
+		if (other.tag == "checkPointPasive") {
+			savedResetPosition = other.transform.position;
+			savedResetRotation = other.transform.rotation;
+			other.GetComponent<Collider> ().enabled = false;
+			MapGeneration.currentData.SpawnNode ();
+			print ("CheckPoint");
+		} else if (other.gameObject.tag == "checkPointActive") {
 			StageData.currentData.CrossCheckPoint ();
+			savedResetPosition = other.transform.position;
+			savedResetRotation = other.transform.rotation;
+			other.GetComponent<Collider> ().enabled = false;
+			MapGeneration.currentData.SpawnNode ();
+		} else if (other.gameObject.tag == "Respawn") {
+			ResetCar ();
 		}
 	}
 	void OnCollisionStay(Collision other)
@@ -150,8 +167,9 @@ public class PlayerMovement : MonoBehaviour {
 		if (other.gameObject.tag == "wall") {
 			print ("Collision: speed reduced from " + accumulatedAcceleration + " -> " + accumulatedAcceleration * frictionFactor);
 			accumulatedAcceleration *= frictionFactor;
-			drifting = false; driftDegree = 0;
-		}
+			drifting = false;
+			driftDegree = 0;
+		} 
 	}
 	void EndDrift()
 	{
@@ -164,8 +182,8 @@ public class PlayerMovement : MonoBehaviour {
 		accumulatedAcceleration = 0;
 		turnInput = 0;
 		forwInput = 0;
-		transform.position = resetPosition;
-		transform.rotation = Quaternion.Euler (Vector3.zero);
+		transform.position = savedResetPosition;
+		transform.rotation = savedResetRotation;
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}
