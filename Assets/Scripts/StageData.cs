@@ -21,7 +21,12 @@ public class StageData : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		timeRemainingInfo.text = ((int)remainingSec).ToString();
+		if (remainingSec > 5) {
+			timeRemainingInfo.text = ((int)remainingSec).ToString();
+		} else {
+			timeRemainingInfo.text = remainingSec.ToString("N2");
+		}
+
 		remainingSec = Mathf.MoveTowards (remainingSec, 0, Time.deltaTime);
 
 		

@@ -9,6 +9,7 @@ public class MapGeneration : MonoBehaviour {
 	[Header("Render parameters")]
 	public int maxLoadedNodes;
 	public int initialLodadedNodes;
+	public int indexOfWrongWayNode;
 	[Header("Stage parameters")]
 	public int stageLenght;
 	public int minStraight;
@@ -20,9 +21,13 @@ public class MapGeneration : MonoBehaviour {
 	[Header("Generation Debug Info")]
 	public string turnState;
 	public int nodeCount;
-	public List<GameObject> nodesInStage;
+	public int straightNodesChained;
+	public int curveNodesChained;
+	public int totalNodesSpawned;
 
 	GameObject insNode;
+	[Header("References")]
+	public List<GameObject> nodesInStage;
 	public GameObject nodeLEFT;
 	public GameObject nodeRIGHT;
 	public GameObject nodeFORWARD;
@@ -50,12 +55,13 @@ public class MapGeneration : MonoBehaviour {
 	}
 	public void SpawnNode()
 	{
+		totalNodesSpawned++;
 		int turn = 2;
 		switch (turnState)
 		{
 		case "left":
 			{
-				if (Random.Range (1, 101) < curveChance) {
+				if (!(straightNodesChained < minStraight) && Random.Range (1, 101) < curveChance || straightNodesChained >= maxStraight) {
 					turn = 3;
 					turnState = "middle";
 				} else {
@@ -66,7 +72,7 @@ public class MapGeneration : MonoBehaviour {
 			}
 		case "right":
 			{
-				if (Random.Range (1, 101) < curveChance) {
+				if (!(straightNodesChained < minStraight) && Random.Range (1, 101) < curveChance || straightNodesChained >= maxStraight) {
 					turn = 1;
 					turnState = "middle";
 				} else {
@@ -77,7 +83,7 @@ public class MapGeneration : MonoBehaviour {
 			}
 		case "middle":
 			{
-				if (Random.Range (1, 101) < curveChance) {
+				if (!(straightNodesChained < minStraight) && Random.Range (1, 101) < curveChance || straightNodesChained >= maxStraight) {
 					if (Random.Range (1, 3) == 1) {
 						turn = 1;
 						turnState = "left";
@@ -99,12 +105,16 @@ public class MapGeneration : MonoBehaviour {
 				insNode = Instantiate (nodeLEFT, transform.position, transform.rotation) as GameObject;
 				transform.Rotate (0, -90, 0);
 				transform.Translate (Vector3.forward * baseNodeSize);
+				curveNodesChained++;
+				straightNodesChained = 0;
 				break;
 			}
 		case 2: // middle
 			{
 				insNode = Instantiate (nodeFORWARD, transform.position, transform.rotation) as GameObject;
 				transform.Translate (Vector3.forward * baseNodeSize);
+				straightNodesChained++;
+				curveNodesChained = 0;
 				break;
 			}
 		case 3: // right
@@ -112,6 +122,8 @@ public class MapGeneration : MonoBehaviour {
 				insNode = Instantiate (nodeRIGHT, transform.position, transform.rotation) as GameObject;
 				transform.Rotate (0, 90, 0);
 				transform.Translate (Vector3.forward * baseNodeSize);
+				curveNodesChained++;
+				straightNodesChained = 0;
 				break;
 			}
 		}
@@ -126,6 +138,8 @@ public class MapGeneration : MonoBehaviour {
 		if (nodesInStage.Count > maxLoadedNodes) {
 			Destroy (nodesInStage [0].gameObject);
 			nodesInStage.RemoveAt (0);
+			nodesInStage [indexOfWrongWayNode].transform.FindChild ("CheckPointTrigger").tag = "Respawn";
+			nodesInStage [indexOfWrongWayNode].transform.FindChild ("CheckPointTrigger").GetComponent<Collider> ().enabled = true;
 		}
 	}
 }

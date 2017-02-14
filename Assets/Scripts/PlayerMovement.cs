@@ -67,6 +67,11 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	void Update()
 	{
+		if (StageData.currentData.playerHealth <= 0 || StageData.currentData.remainingSec <= 0) {
+			forwInput = 0;
+			turnInput = 0;
+			return;
+		}
 		if (Input.GetKeyDown (KeyCode.R)) {
 			ResetCar ();
 		}
@@ -166,6 +171,7 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		if (other.gameObject.tag == "wall") {
 			print ("Collision: speed reduced from " + accumulatedAcceleration + " -> " + accumulatedAcceleration * frictionFactor);
+			StageData.currentData.playerHealth -= Mathf.Clamp((accumulatedAcceleration-0.8f) * 0.1f, 0, 10);
 			accumulatedAcceleration *= frictionFactor;
 			drifting = false;
 			driftDegree = 0;
