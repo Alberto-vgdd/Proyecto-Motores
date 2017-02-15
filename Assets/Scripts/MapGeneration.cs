@@ -119,8 +119,9 @@ public class MapGeneration : MonoBehaviour {
 			}
 		case 3: // right
 			{
-				insNode = Instantiate (nodeRIGHT, transform.position, transform.rotation) as GameObject;
+				insNode = Instantiate (nodeLEFT, transform.position, transform.rotation) as GameObject;
 				transform.Rotate (0, 90, 0);
+				transform.localScale = new Vector3(1, -1, 1);
 				transform.Translate (Vector3.forward * baseNodeSize);
 				curveNodesChained++;
 				straightNodesChained = 0;

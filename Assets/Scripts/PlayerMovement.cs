@@ -14,33 +14,33 @@ public class PlayerMovement : MonoBehaviour {
 
 	[Header("Friction strenght")]
 	[Range(0.5f, 0.98f)]
-	public float frictionFactor;
+	public float frictionFactor;										// Factor de friccion, cuando menor sea, mas velocidad se perdera al colisionar
 
 	[Header("Input Variables")]
-	public float forwInput;
-	public float turnInput;
+	public float forwInput;												// Almacena el input de acelerar/frenar
+	public float turnInput;												// Almacena el input de giro
 
 	[Header("Car properties")]
 	[Range(3,10)]
-	public float turnRate;
+	public float turnRate;												// Fuerza de giro (sin drift) del vehiculo
 	[Range(1,5)]
-	public float acceleration;
+	public float acceleration;											// Aceleracion del vehiculo
 	[Range(5,20)]
-	public float maxFwdSpeed;
+	public float maxFwdSpeed;											// Velocidad maxima
 	[Range(-2,-0.5f)]
-	public float maxBwdSpeed;
+	public float maxBwdSpeed;											// Velocidad maxima marcha atras
 	[Range(3,10)]
-	public float driftStrenght;
+	public float driftStrenght;											// Fuerza de derrape
 	[Range(10,60)]
-	public float maxDrift;
-	[Range(0.5f,2)]
-	public float driftSpeedLoss;
+	public float maxDrift;												// Maximo angulo de derrape
+	[Range(0.5f,2.5f)]
+	public float driftSpeedLoss;										// Perdida de velocidad al derrapar
 	[Range(0.5f,8)]
-	public float driftStabilization;
+	public float driftStabilization;									// Auto-Estabilizacion del derrape
 
-	private Vector3 savedResetPosition = new Vector3(0,3,0);
-	private Quaternion savedResetRotation = Quaternion.identity;
-	private float turnMultiplier = 0;
+	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
+	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
+	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
 
 	[Header("Advanced (DONT TOUCH)")]
 	public float hoverHeight = 0.45f;
@@ -49,15 +49,11 @@ public class PlayerMovement : MonoBehaviour {
 	public float rotationCorrectionStrenght = 250;
 
 	[Header("Debug info")]
-	public bool grounded;
-	public bool drifting;
-	public float accumulatedAcceleration;
-	public float ungroundedTime;
-	public float timeBelowThs;
-	public float driftDegree;
-
-	public Vector3 positionOnLastUpdate;
-	public Vector3 positionOnCurrentUpdate;
+	public bool grounded;												// Esta en el suelo?
+	public bool drifting;												// Esta derrapando?
+	public float accumulatedAcceleration;								// Velocidad
+	public float ungroundedTime;										// Tiempo sin tocar el suelo
+	public float driftDegree;											// Angulo de derrape
 
 	void Start()
 	{
@@ -65,13 +61,27 @@ public class PlayerMovement : MonoBehaviour {
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
 	}
+
+	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta
+	// de los controles y evitar que se pierdan inputs.
+
 	void Update()
 	{
-		if (StageData.currentData.playerHealth <= 0 || StageData.currentData.remainingSec <= 0) {
+		// Si el jugador ha destruido su vehiculo, ignoramos todos los inputs.
+		if (StageData.currentData.playerHealth <= 0) {
 			forwInput = 0;
 			turnInput = 0;
 			return;
 		}
+		// Si el tiempo se ha agotado, solo escuchamos el input de giro.
+		if (StageData.currentData.remainingSec <= 0) {
+			forwInput = 0;
+			turnInput = Input.GetAxis ("Horizontal");
+			if (Input.GetKeyDown (KeyCode.Space))
+				drifting = true;
+			return;
+		}
+		// Leemos todos los inputs.
 		if (Input.GetKeyDown (KeyCode.R)) {
 			ResetCar ();
 		}
@@ -80,10 +90,11 @@ public class PlayerMovement : MonoBehaviour {
 		if (Input.GetKeyDown (KeyCode.Space))
 			drifting = true;
 	}
+
+	// Procesa las fisicas del coche.
+
 	void FixedUpdate()
 	{
-		positionOnLastUpdate = positionOnCurrentUpdate;
-		positionOnCurrentUpdate = transform.position;
 		Hover ();
 		if (!grounded) {
 			MoveTowardsZeroRotation ();
@@ -101,6 +112,9 @@ public class PlayerMovement : MonoBehaviour {
 		MoveTrn ();
 
 	}
+
+	// (Obsoleto/innecesario?) Simula la suspension
+
 	void Hover()
 	{
 		Ray ray = new Ray (transform.position, -transform.up);
@@ -120,6 +134,9 @@ public class PlayerMovement : MonoBehaviour {
 			grounded = true;
 		}
 	}
+
+	// Simula la aceleracion.
+
 	void MoveFwd()
 	{
 		accumulatedAcceleration = Mathf.MoveTowards(accumulatedAcceleration, 0, ((Mathf.Abs(driftDegree)*driftSpeedLoss) / 20) * Time.fixedDeltaTime);
@@ -130,6 +147,9 @@ public class PlayerMovement : MonoBehaviour {
 			EndDrift();
 		}
 	}
+
+	// Simula el giro/derrape
+
 	void MoveTrn()
 	{
 		turnMultiplier = Mathf.Clamp (accumulatedAcceleration, -1,1);
@@ -144,11 +164,17 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		}
 	}
+
+	// Asegura que el coche no pueda volcar.
+
 	void MoveTowardsZeroRotation()
 	{
 		Vector3 currentRotation = transform.rotation.eulerAngles;
 		transform.rotation = Quaternion.Euler (Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * rotationCorrectionStrenght), currentRotation.y, Mathf.MoveTowardsAngle (currentRotation.x, 0, Time.fixedDeltaTime * 100));
 	}
+
+	// Administra la colision con triggers.
+
 	void OnTriggerEnter(Collider other)
 	{
 		if (other.tag == "checkPointPasive") {
@@ -167,6 +193,9 @@ public class PlayerMovement : MonoBehaviour {
 			ResetCar ();
 		}
 	}
+
+	// Administra la colision con muros.
+
 	void OnCollisionStay(Collision other)
 	{
 		if (other.gameObject.tag == "wall") {
@@ -177,11 +206,17 @@ public class PlayerMovement : MonoBehaviour {
 			driftDegree = 0;
 		} 
 	}
+
+	// Termina el drift (llamado al colisionar o al no estar en el suelo)
+
 	void EndDrift()
 	{
 		drifting = false;
 		driftDegree = 0;
 	}
+
+	// Respawn (llamado al caer al vacio, o al ir en direccion contraria.
+
 	void ResetCar()
 	{
 		ungroundedTime = 0;
