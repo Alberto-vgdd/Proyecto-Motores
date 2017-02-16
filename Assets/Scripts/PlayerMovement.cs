@@ -103,8 +103,12 @@ public class PlayerMovement : MonoBehaviour {
 			if (ungroundedTime > 5)
 				ResetCar();
 		}
-
-		accumulatedAcceleration += forwInput * Time.fixedDeltaTime * 3;
+			
+		if (forwInput < 0 && accumulatedAcceleration > 0) {
+			accumulatedAcceleration += forwInput * Time.fixedDeltaTime * 6;
+		} else {
+			accumulatedAcceleration += forwInput * Time.fixedDeltaTime * 3;
+		}
 		accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime);
 		accumulatedAcceleration = Mathf.Clamp (accumulatedAcceleration, maxBwdSpeed, maxFwdSpeed);
 

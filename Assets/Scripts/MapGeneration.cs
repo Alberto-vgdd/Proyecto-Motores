@@ -28,9 +28,9 @@ public class MapGeneration : MonoBehaviour {
 	GameObject insNode;
 	[Header("References")]
 	public List<GameObject> nodesInStage;
-	public GameObject nodeLEFT;
-	public GameObject nodeRIGHT;
-	public GameObject nodeFORWARD;
+	public GameObject[] LeftNodes;
+	public GameObject[] RightNodes;
+	public GameObject[] forwNodes;
 
 	private int nodesWithPassiveCheckpoints = 0;
 
@@ -102,28 +102,17 @@ public class MapGeneration : MonoBehaviour {
 		switch (turn) {
 		case 1: // left
 			{
-				insNode = Instantiate (nodeLEFT, transform.position, transform.rotation) as GameObject;
-				transform.Rotate (0, -90, 0);
-				transform.Translate (Vector3.forward * baseNodeSize);
-				curveNodesChained++;
-				straightNodesChained = 0;
+				SpawnLeftNode ();
 				break;
 			}
 		case 2: // middle
 			{
-				insNode = Instantiate (nodeFORWARD, transform.position, transform.rotation) as GameObject;
-				transform.Translate (Vector3.forward * baseNodeSize);
-				straightNodesChained++;
-				curveNodesChained = 0;
+				SpawnStraightNode ();
 				break;
 			}
 		case 3: // right
 			{
-				insNode = Instantiate (nodeRIGHT, transform.position, transform.rotation) as GameObject;
-				transform.Rotate (0, 90, 0);
-				transform.Translate (Vector3.forward * baseNodeSize);
-				curveNodesChained++;
-				straightNodesChained = 0;
+				SpawnRightNode ();
 				break;
 			}
 		}
@@ -140,6 +129,100 @@ public class MapGeneration : MonoBehaviour {
 			nodesInStage.RemoveAt (0);
 			nodesInStage [indexOfWrongWayNode].transform.FindChild ("CheckPointTrigger").tag = "Respawn";
 			nodesInStage [indexOfWrongWayNode].transform.FindChild ("CheckPointTrigger").GetComponent<Collider> ().enabled = true;
+		}
+	}
+
+	void SpawnStraightNode()
+	{
+		int variation = Random.Range (0, forwNodes.Length);
+		switch (variation) {
+		case 0:
+			{
+				insNode = Instantiate (forwNodes[variation], transform.position, transform.rotation) as GameObject;
+				straightNodesChained++;
+				curveNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Translate (Vector3.forward * baseNodeSize);
+				break;
+			}
+		case 1:
+			{
+				// Pre-Posicionamiento
+				transform.Translate (Vector3.forward * baseNodeSize * 1);
+				insNode = Instantiate (forwNodes[variation], transform.position, transform.rotation) as GameObject;
+				straightNodesChained++;
+				curveNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Translate (Vector3.forward * baseNodeSize * 2);
+				break;
+			}
+		case 2:
+			{
+				break;
+			}
+		}
+	}
+
+	void SpawnLeftNode()
+	{
+		int variation = Random.Range (0, LeftNodes.Length);
+		switch (variation) {
+		case 0:
+			{
+				insNode = Instantiate (LeftNodes[0], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, -90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
+				break;
+			}
+		case 1:
+			{
+				insNode = Instantiate (LeftNodes[1], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, -90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
+				break;
+			}
+		case 2:
+			{
+				break;
+			}
+		}
+
+	}
+
+	void SpawnRightNode()
+	{
+		int variation = Random.Range (0, RightNodes.Length);
+		switch (variation) {
+		case 0:
+			{
+				insNode = Instantiate (RightNodes[0], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, 90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
+				break;
+			}
+		case 1:
+			{
+				insNode = Instantiate (RightNodes[1], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, 90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
+				break;
+			}
+		case 2:
+			{
+				break;
+			}
 		}
 	}
 }
