@@ -187,12 +187,14 @@ public class PlayerMovement : MonoBehaviour {
 			other.GetComponent<Collider> ().enabled = false;
 			MapGeneration.currentData.SpawnNode ();
 			print ("CheckPoint");
+			StageData.currentData.nodesCrossed++;
 		} else if (other.gameObject.tag == "checkPointActive") {
 			StageData.currentData.CrossCheckPoint ();
 			savedResetPosition = other.transform.position;
 			savedResetRotation = other.transform.rotation;
 			other.GetComponent<Collider> ().enabled = false;
 			MapGeneration.currentData.SpawnNode ();
+			StageData.currentData.nodesCrossed++;
 		} else if (other.gameObject.tag == "Respawn") {
 			ResetCar ();
 		}

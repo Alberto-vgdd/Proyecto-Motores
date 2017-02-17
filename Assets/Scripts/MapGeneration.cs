@@ -189,6 +189,12 @@ public class MapGeneration : MonoBehaviour {
 			}
 		case 2:
 			{
+				insNode = Instantiate (LeftNodes[2], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, -90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
 				break;
 			}
 		}
@@ -221,6 +227,12 @@ public class MapGeneration : MonoBehaviour {
 			}
 		case 2:
 			{
+				insNode = Instantiate (RightNodes[2], transform.position, transform.rotation) as GameObject;
+				curveNodesChained++;
+				straightNodesChained = 0;
+				// Traslacion propia del nodo
+				transform.Rotate (0, 90, 0);
+				transform.Translate (Vector3.forward * baseNodeSize);
 				break;
 			}
 		}

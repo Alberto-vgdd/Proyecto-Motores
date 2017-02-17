@@ -10,6 +10,7 @@ public class StageData : MonoBehaviour {
 	public GameObject playerObj;
 	public float playerHealth;
 	public float remainingSec;
+	public int nodesCrossed;
 
 	public Text timeRemainingInfo;
 
