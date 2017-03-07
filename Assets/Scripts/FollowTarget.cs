@@ -14,7 +14,7 @@ public class FollowTarget : MonoBehaviour {
 	public float camDegree;
 	[Range(0.1f, 2)]
 	public float driftDegreeMultiplier;
-	[Range(4,12)]
+	[Range(3,12)]
 	public float camDistance;
 	[Range(0,10)]
 	public float camHeight;

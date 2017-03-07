@@ -6,6 +6,8 @@ public class MapGeneration : MonoBehaviour {
 
 	public static MapGeneration currentData;
 
+	public int nodesAheadMin;
+
 	[Header("Render parameters")]
 	public int maxLoadedNodes;
 	public int initialLodadedNodes;
@@ -52,6 +54,19 @@ public class MapGeneration : MonoBehaviour {
 
 		}
 		
+	}
+	public void AutoSpawnNodes(int pos)
+	{
+		SpawnMultipleNodes (pos - nodesInStage.Count + nodesAheadMin);
+	}
+	public void SpawnMultipleNodes(int amount)
+	{
+		print ("Multiple spawn of " + amount);
+		if (amount <= 0)
+			return;
+		for (int i = 0; i < amount; i++) {
+			SpawnNode ();
+		}
 	}
 	public void SpawnNode()
 	{
@@ -154,10 +169,6 @@ public class MapGeneration : MonoBehaviour {
 				curveNodesChained = 0;
 				// Traslacion propia del nodo
 				transform.Translate (Vector3.forward * baseNodeSize * 2);
-				break;
-			}
-		case 2:
-			{
 				break;
 			}
 		}

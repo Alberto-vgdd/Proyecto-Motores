@@ -8,6 +8,8 @@ public class DisplaceWithDrift : MonoBehaviour {
 	public float displaceSpeed;
 	[Range(0.1f, 1)]
 	public float displaceMultiplier;
+	[Range(0, 1)]
+	public float frontalOffset;
 	private float displacementCurrent;
 	private float displacementTarget;
 
@@ -21,7 +23,7 @@ public class DisplaceWithDrift : MonoBehaviour {
 	void FixedUpdate () {
 		displacementTarget = pm.driftDegree * displaceMultiplier / 10;
 		displacementCurrent = Mathf.MoveTowards (displacementCurrent, displacementTarget, Time.fixedDeltaTime * displaceSpeed);
-		transform.localPosition = displacementCurrent * Vector3.right;
+		transform.localPosition = displacementCurrent * Vector3.right + Vector3.forward * frontalOffset;
 		
 	}
 }

@@ -11,17 +11,42 @@ public class StageData : MonoBehaviour {
 	public float playerHealth;
 	public float remainingSec;
 	public int nodesCrossed;
+	public CanvasGroup DynHealthCG;
+	public CanvasGroup DriftCG;
+	public Text DriftText;
+
+	public Slider hpbar;
+	public Image hpbarfill;
 
 	public Text timeRemainingInfo;
+
+	private bool notification_crit50 = false;
+	private bool notification_crit25 = false;
+	private bool notification_crit10 = false;
+
+	public PlayerMovement pm;
+
+	private bool cleanSection = true;
+	private float tempDriftChain;
 
 	void Awake () { currentData = this; }
 
 	void Start () {
-		
+		tempDriftChain = 0;
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
+		UpdateDynDrift ();
+		if (pm.grounded) {
+			if (playerHealth == 100)
+				DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0, Time.deltaTime/2);
+			else
+				DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0.4f, Time.deltaTime/2);
+		} else {
+			DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0, Time.deltaTime);
+		}
+		hpbar.value = playerHealth / 100;
 		if (remainingSec > 5) {
 			timeRemainingInfo.text = ((int)remainingSec).ToString();
 		} else {
@@ -32,8 +57,67 @@ public class StageData : MonoBehaviour {
 
 		
 	}
+	void UpdateDynDrift()
+	{
+		if (!pm.drifting) {
+			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
+			if (tempDriftChain > 1000) {
+				NotificationManager.currentInstance.AddNotification (new GameNotification (  (int)tempDriftChain + "m. drift!", Color.yellow, 30));
+			}
+			tempDriftChain = 0;
+			return;
+		}
+		DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 1, Time.deltaTime);
+		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 2.5f;
+		float colorT = Mathf.Min (1, tempDriftChain / 3000);
+		DriftText.color = Color.Lerp (Color.white, Color.red, colorT);
+		DriftText.text = (int)tempDriftChain + " m.";
+	}
+	void UpdateDynHealth()
+	{
+		hpbarfill.color = Color.Lerp (Color.red, Color.green, playerHealth / 100);
+		DynHealthCG.alpha = 1;
+	}
+	public void DamagePlayer(float dmg)
+	{
+		playerHealth -= dmg;
+		if (playerHealth < 50 && !notification_crit50) {
+			NotificationManager.currentInstance.AddNotification (new GameNotification ("Below 50% Health", Color.red, 40));
+			notification_crit50 = true;
+		}
+		if (playerHealth < 25 && !notification_crit25) {
+			NotificationManager.currentInstance.AddNotification (new GameNotification ("Below 25% Health", Color.red, 40));
+			notification_crit25 = true;
+		}
+		if (playerHealth < 10 && !notification_crit10) {
+			NotificationManager.currentInstance.AddNotification (new GameNotification ("Critical damage", Color.red, 40));
+			notification_crit10 = true;
+		}
+		UpdateDynHealth();
+		cleanSection = false;
+	}
+	public void HealPlayer(float heal)
+	{
+		playerHealth += heal;
+		playerHealth = Mathf.Min (100, playerHealth);
+		if (playerHealth > 50) {
+			notification_crit50 = false;
+		}
+		if (playerHealth > 25) {
+			notification_crit25 = false;
+		}
+		if (playerHealth > 10) {
+			notification_crit10 = false;
+		}
+		UpdateDynHealth();
+	}
 	public void CrossCheckPoint()
 	{
-		remainingSec += 5;
+		remainingSec += 10;
+		if (cleanSection) {
+			HealPlayer (10);
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored", Color.green, 30));
+		}
+		cleanSection = true;
 	}
 }
