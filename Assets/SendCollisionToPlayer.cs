@@ -9,7 +9,11 @@ public class SendCollisionToPlayer : MonoBehaviour {
 
 	void OnTriggerStay(Collider other)
 	{
-		pm.SendCollisionFrom (CollisionSide);
+		pm.SendCollisionStayFrom (CollisionSide);
+	}
+	void OnTriggerEnter(Collider other)
+	{
+		pm.SendCollisionEnterFrom (CollisionSide);
 	}
 	void OnTriggerExit(Collider other)
 	{

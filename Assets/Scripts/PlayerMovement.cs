@@ -42,9 +42,6 @@ public class PlayerMovement : MonoBehaviour {
 	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
 
 	[Header("Advanced (DONT TOUCH)")]
-	public float rayBottom;												// Longitud del raycast que comprueba si se esta tocando el suelo
-	public float rayFront;												// Longitud del raycast que comprueba la colision frontal
-	public float raySide;												// Longitud del raycast que comprueba la colision lateral
 	public float groundToAirThs;										// Margen de tiempo para dejar de tocar suelo (en seg.)
 	public float airToGroundThs;										// Margen de tiempo para volver a tocar el suelo (en seg.)
 	public float ungroundedRespawnTime;									// Tiempo sin tocar suelo necesario para auto-reaparecer
@@ -247,14 +244,17 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Administra las colisiones.
 
-	public void SendCollisionFrom(string side)
+	public void SendCollisionStayFrom(string side)
 	{
 		switch (side) {
 		case "LATERAL":
 			{
 				cleanAir = false;
 				EndDrift ();
-				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.005f), 0, 0.1f));
+				if (grounded)
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.005f);
+				else
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.001f);
 				accumulatedAcceleration *= frictionFactorSide;
 				break;
 			}
@@ -262,14 +262,55 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				cleanAir = false;
 				EndDrift ();
-				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
+				if (grounded)
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f);
+				else
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.002f);
 				accumulatedAcceleration *= frictionFactorFront;
 				break;
 			}
 		case "TOP":
 			{
 				cleanAir = false;
-				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
+				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.001f);
+				break;
+			}
+		case "GROUND":
+			{
+				groundedHitbox = true;
+				break;
+			}
+		}
+	}
+	public void SendCollisionEnterFrom(string side)
+	{
+		switch (side) {
+		case "LATERAL":
+			{
+				cleanAir = false;
+				EndDrift ();
+				if (grounded)
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f);
+				else
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f);
+				accumulatedAcceleration *= frictionFactorSide;
+				break;
+			}
+		case "FRONTAL":
+			{
+				cleanAir = false;
+				EndDrift ();
+				if (grounded)
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.1f);
+				else
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.02f);
+				accumulatedAcceleration *= frictionFactorFront;
+				break;
+			}
+		case "TOP":
+			{
+				cleanAir = false;
+				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f);
 				break;
 			}
 		case "GROUND":
@@ -292,6 +333,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void ResetCar()
 	{
+		cleanAir = false;
 		groundingTime = 0;
 		ungroundedTime = 0;
 		accumulatedAcceleration = 0;

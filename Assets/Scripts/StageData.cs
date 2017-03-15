@@ -99,6 +99,7 @@ public class StageData : MonoBehaviour {
 			} else if (!pm.cleanAir) {
 				AirText.color = Color.red;
 				AirText.text = " - Crashed - ";
+				tempAirTime = 0;
 			}
 			return;
 		}
