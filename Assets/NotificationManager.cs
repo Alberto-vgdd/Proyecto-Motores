@@ -5,25 +5,27 @@ using UnityEngine.UI;
 
 public class NotificationManager : MonoBehaviour {
 
-	public static NotificationManager currentInstance;
+	// Manager de notificaciones, debe ser colocado en la escena jugable, y se puede llamar atraves de la variable estatica currentInstance,
+	// las notificaciones deben de ser añadidas atraves de la funcion AddNotification(), dando como parametro un GameNotification
 
-	public Text notificationUI;
+	public static NotificationManager currentInstance;					// Referencia estatica
 
-	private List<GameNotification> notifications;
-	private float notificationTimer;
-	public float notificationLifetime;
+	public Text notificationUI;											// Texto del interfaz
+
+	private List<GameNotification> notifications;						// Lista de notificaciones en cola
+	private float notificationTimer;									// Tiempo que la notificacion lleva activa (temp)
+	public float notificationLifetime;									// [AJUSTABLE] Tiempo de vida de cada notificacion
 
 	void Awake ()
 	{
 		currentInstance = this;
 	}
-	// Use this for initialization
+
 	void Start () {
 		notifications = new List<GameNotification> ();
 		notificationTimer = 0;
 	}
-	
-	// Update is called once per frame
+
 	void Update () {
 		if (notifications.Count > 0) {
 			if (notificationTimer == 0)

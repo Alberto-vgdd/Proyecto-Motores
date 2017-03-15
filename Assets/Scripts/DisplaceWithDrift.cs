@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DisplaceWithDrift : MonoBehaviour {
 
+	// Administra el desplazamiento del objetivo de la camara cuando el jugador este derrapando.
+
 	[Range(0.5f, 3f)]
 	public float displaceSpeed;
 	[Range(0.1f, 1)]

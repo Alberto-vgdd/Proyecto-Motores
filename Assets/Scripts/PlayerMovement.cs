@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour {
 	private Rigidbody rb;
 
 	[Header("Friction strenght (LESS IS MORE)")]
-	[Range(0.5f, 0.98f)]
+	[Range(0.1f, 0.98f)]
 	public float frictionFactorFront;									// Factor de friccion frontal(menor = mas velocidad perdida al colisionar)
 	[Range(0.9f, 1f)]
 	public float frictionFactorSide;									// Factor de friccion lateral
@@ -45,19 +45,20 @@ public class PlayerMovement : MonoBehaviour {
 	public float rayBottom;												// Longitud del raycast que comprueba si se esta tocando el suelo
 	public float rayFront;												// Longitud del raycast que comprueba la colision frontal
 	public float raySide;												// Longitud del raycast que comprueba la colision lateral
-	public float groundedThs;											// Margen de tiempo para dejar de tocar suelo (en seg.)
+	public float groundToAirThs;										// Margen de tiempo para dejar de tocar suelo (en seg.)
+	public float airToGroundThs;										// Margen de tiempo para volver a tocar el suelo (en seg.)
 	public float ungroundedRespawnTime;									// Tiempo sin tocar suelo necesario para auto-reaparecer
 	public float Tr2Vel;												// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
 
 	[Header("Debug info")]
 	public bool grounded;												// Esta en el suelo?
+	public bool groundedHitbox;											// Detecta colision con el suelo?
 	public bool drifting;												// Esta derrapando?
 	public float accumulatedAcceleration;								// Velocidad
 	public float ungroundedTime;										// Tiempo sin tocar el suelo
+	public float groundingTime;											// Tiempo de transicion aire-suelo	
+	public bool cleanAir;												// En el aire sin colisionar con nada?
 	public float driftDegree;											// Angulo de derrape
-
-	private Ray ray;
-	private RaycastHit hit;
 
 	private bool firstFrameUngrounded = false;
 
@@ -114,13 +115,18 @@ public class PlayerMovement : MonoBehaviour {
 			}
 			
 		} else {			   // Acciones a realizar sin tocar suelo
-			
+
+			// TEST
+			if (forwInput < 0)
+				rb.velocity = Vector3.MoveTowards (rb.velocity, Vector3.zero, Time.deltaTime*40);
+			// TEST
 			forwInput = turnInput = 0;
 			accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
 
 			if (!firstFrameUngrounded) {
 				rb.velocity = transform.forward * accumulatedAcceleration * Tr2Vel;
 				firstFrameUngrounded = true;
+				cleanAir = true;
 			}
 
 			driftDegree = 0;
@@ -143,10 +149,25 @@ public class PlayerMovement : MonoBehaviour {
 
 	void CheckGrounded()
 	{
-		ray = new Ray (transform.position, -transform.up);
 
-		if (Physics.Raycast (ray, out hit, rayBottom)) { ungroundedTime = 0; } else { ungroundedTime += Time.fixedDeltaTime; }
-		if (ungroundedTime > groundedThs) { grounded = false; } else 
+		if (groundedHitbox) 
+		{ 
+			if (!grounded) {
+				groundingTime += Time.deltaTime;
+				if (groundingTime > airToGroundThs) {
+					ungroundedTime = 0;
+					groundingTime = 0;
+				}
+			} else {
+				ungroundedTime = 0; 
+			}
+		} 
+		else 
+		{ 
+			ungroundedTime += Time.fixedDeltaTime; 
+		}
+
+		if (ungroundedTime > groundToAirThs) { grounded = false; } else
 		{ 
 			grounded = true; 
 			firstFrameUngrounded = false; 
@@ -201,15 +222,16 @@ public class PlayerMovement : MonoBehaviour {
 
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.tag == "checkPointPasive") {
+		if (other.tag == "CP_Passive") {
 			CrossCheckPoint (other);
 
-		} else if (other.gameObject.tag == "checkPointActive") {
+		} else if (other.gameObject.tag == "CP_Active") {
 			CrossCheckPoint (other);
 			StageData.currentData.CrossCheckPoint ();
 			NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended", Color.white, 40));
 
-		} else if (other.gameObject.tag == "Respawn") {
+		} else if (other.gameObject.tag == "CP_WrongWay") {
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Wrong way!", Color.red, 30));
 			ResetCar ();
 		}
 	}
@@ -218,57 +240,44 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		savedResetPosition = other.transform.position;
 		savedResetRotation = other.transform.rotation;
-		other.GetComponent<Collider> ().enabled = false;
-		MapGeneration.currentData.AutoSpawnNodes (MapGeneration.currentData.nodesInStage.IndexOf (other.gameObject.transform.parent.gameObject));
+		other.transform.parent.GetComponent<NodeProperties>().DisableCheckPoint ();
+		MapGeneration.currentData.CrossCheckPoint ();
 		StageData.currentData.nodesCrossed++;
 	}
 
-	// Comprueba de que lado ha sido la colision, llamado solo cuando detecta una colision con el tag "Wall"
+	// Administra las colisiones.
 
-	void CheckCollisionSide()
+	public void SendCollisionFrom(string side)
 	{
-		// Si va a poca velocidad no sumamos daño.
-		if (accumulatedAcceleration < 4)
-			return;
-		// Izquierda
-		ray = new Ray (transform.position, transform.right);
-		if (Physics.Raycast (ray, out hit, raySide)) 
-		{ 
-			StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.005f), 0, 0.1f));
-			accumulatedAcceleration *= frictionFactorSide;
+		switch (side) {
+		case "LATERAL":
+			{
+				cleanAir = false;
+				EndDrift ();
+				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.005f), 0, 0.1f));
+				accumulatedAcceleration *= frictionFactorSide;
+				break;
+			}
+		case "FRONTAL":
+			{
+				cleanAir = false;
+				EndDrift ();
+				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
+				accumulatedAcceleration *= frictionFactorFront;
+				break;
+			}
+		case "TOP":
+			{
+				cleanAir = false;
+				StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
+				break;
+			}
+		case "GROUND":
+			{
+				groundedHitbox = true;
+				break;
+			}
 		}
-		// Derecha
-		ray = new Ray (transform.position, -transform.right);
-		if (Physics.Raycast (ray, out hit, raySide)) 
-		{ 
-			StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.005f), 0, 0.1f));
-			accumulatedAcceleration *= frictionFactorSide;
-		}
-		// Frontal (I)
-		ray = new Ray (transform.position, transform.forward + (Vector3.left*0.35f));
-		if (Physics.Raycast (ray, out hit, rayFront)) 
-		{
-			StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
-			accumulatedAcceleration *= frictionFactorFront;
-		}
-		// Frontal (D)
-		ray = new Ray (transform.position, transform.forward - (Vector3.left*0.35f));
-		if (Physics.Raycast (ray, out hit, rayFront)) 
-		{
-			StageData.currentData.DamagePlayer(Mathf.Clamp((accumulatedAcceleration*0.05f), 0, 5));
-			accumulatedAcceleration *= frictionFactorFront;
-		}
-	}
-
-	// Administra la colision con muros.
-
-	void OnCollisionStay(Collision other)
-	{
-		if (other.gameObject.tag == "wall") {
-			CheckCollisionSide ();
-			drifting = false;
-			driftDegree = 0;
-		} 
 	}
 
 	// Termina el drift (llamado al colisionar o al no estar en el suelo)
@@ -283,6 +292,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void ResetCar()
 	{
+		groundingTime = 0;
 		ungroundedTime = 0;
 		accumulatedAcceleration = 0;
 		turnInput = 0;
