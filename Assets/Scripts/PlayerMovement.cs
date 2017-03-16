@@ -55,6 +55,7 @@ public class PlayerMovement : MonoBehaviour {
 	public float ungroundedTime;										// Tiempo sin tocar el suelo
 	public float groundingTime;											// Tiempo de transicion aire-suelo	
 	public bool cleanAir;												// En el aire sin colisionar con nada?
+	public bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	public float driftDegree;											// Angulo de derrape
 
 	private bool firstFrameUngrounded = false;
@@ -221,17 +222,15 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		if (other.tag == "CP_Passive") {
 			CrossCheckPoint (other);
-
 		} else if (other.gameObject.tag == "CP_Active") {
 			CrossCheckPoint (other);
-			StageData.currentData.CrossCheckPoint ();
-			NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended", Color.white, 40));
-
 		} else if (other.gameObject.tag == "CP_WrongWay") {
 			NotificationManager.currentInstance.AddNotification(new GameNotification("Wrong way!", Color.red, 30));
 			ResetCar ();
 		}
 	}
+
+	// Administra los checkpoints
 
 	void CrossCheckPoint(Collider other)
 	{
@@ -240,26 +239,40 @@ public class PlayerMovement : MonoBehaviour {
 		other.transform.parent.GetComponent<NodeProperties>().DisableCheckPoint ();
 		MapGeneration.currentData.CrossCheckPoint ();
 		StageData.currentData.nodesCrossed++;
+
+		// RETURN si no se trata de un punto de control marcado como activo.
+		if (other.tag != "CP_Active")
+			return;
+		if (cleanSection) {
+			StageData.currentData.HealPlayer (10);
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored", Color.green, 30));
+		}
+		cleanSection = true;
+		StageData.currentData.remainingSec += 10;
+		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended", Color.white, 40));
+
 	}
 
-	// Administra las colisiones.
+	// Administra las colisiones [OnCollisionStay].
 
 	public void SendCollisionStayFrom(string side)
 	{
 		switch (side) {
 		case "LATERAL":
 			{
+				cleanSection = false;
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.005f);
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.002f);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.001f);
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.0005f);
 				accumulatedAcceleration *= frictionFactorSide;
 				break;
 			}
 		case "FRONTAL":
 			{
+				cleanSection = false;
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
@@ -271,8 +284,8 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		case "TOP":
 			{
+				cleanSection = false;
 				cleanAir = false;
-				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.001f);
 				break;
 			}
 		case "GROUND":
@@ -282,11 +295,15 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		}
 	}
+
+	// Administra las colisiones [OnCollisionEnter]
+
 	public void SendCollisionEnterFrom(string side)
 	{
 		switch (side) {
 		case "LATERAL":
 			{
+				cleanSection = false;
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
@@ -298,6 +315,7 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		case "FRONTAL":
 			{
+				cleanSection = false;
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
@@ -309,8 +327,9 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		case "TOP":
 			{
+				cleanSection = false;
 				cleanAir = false;
-				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f);
+				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.04f);
 				break;
 			}
 		case "GROUND":
@@ -333,6 +352,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	void ResetCar()
 	{
+		StageData.currentData.RespawnDamage ();
+		cleanSection = false;
 		cleanAir = false;
 		groundingTime = 0;
 		ungroundedTime = 0;
