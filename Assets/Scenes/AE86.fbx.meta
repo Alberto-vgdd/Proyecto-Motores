@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 848a508c764cd19409a64a6aba7ce252
-timeCreated: 1489704424
+timeCreated: 1489740814
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
@@ -10,38 +10,73 @@ ModelImporter:
     100004: Espejos
     100006: Faros
     100008: LLantas
-    100010: Ruedas
-    100012: TRUENO
+    100010: LLantas.001
+    100012: LLantas.002
+    100014: LLantas.003
+    100016: Ruedas
+    100018: Ruedas.001
+    100020: Ruedas.002
+    100022: Ruedas.003
+    100024: Ruedas.004
+    100026: TRUENO
     400000: //RootNode
     400002: Chasis
     400004: Espejos
     400006: Faros
     400008: LLantas
-    400010: Ruedas
-    400012: TRUENO
+    400010: LLantas.001
+    400012: LLantas.002
+    400014: LLantas.003
+    400016: Ruedas
+    400018: Ruedas.001
+    400020: Ruedas.002
+    400022: Ruedas.003
+    400024: Ruedas.004
+    400026: TRUENO
     2300000: Chasis
     2300002: Espejos
     2300004: Faros
     2300006: LLantas
-    2300008: Ruedas
-    2300010: TRUENO
+    2300008: LLantas.001
+    2300010: LLantas.002
+    2300012: LLantas.003
+    2300014: Ruedas
+    2300016: Ruedas.001
+    2300018: Ruedas.002
+    2300020: Ruedas.003
+    2300022: Ruedas.004
+    2300024: TRUENO
     3300000: Chasis
     3300002: Espejos
     3300004: Faros
     3300006: LLantas
-    3300008: Ruedas
-    3300010: TRUENO
-    4300000: TRUENO
-    4300002: Chasis
-    4300004: LLantas
-    4300006: Espejos
-    4300008: Faros
-    4300010: Ruedas
+    3300008: LLantas.001
+    3300010: LLantas.002
+    3300012: LLantas.003
+    3300014: Ruedas
+    3300016: Ruedas.001
+    3300018: Ruedas.002
+    3300020: Ruedas.003
+    3300022: Ruedas.004
+    3300024: TRUENO
+    4300000: Ruedas.004
+    4300002: Ruedas.003
+    4300004: Ruedas.002
+    4300006: Ruedas.001
+    4300008: LLantas.003
+    4300010: LLantas.002
+    4300012: LLantas.001
+    4300014: TRUENO
+    4300016: Chasis
+    4300018: LLantas
+    4300020: Espejos
+    4300022: Faros
+    4300024: Ruedas
     7400000: Faros
     9500000: //RootNode
   materials:
     importMaterials: 1
-    materialName: 2
+    materialName: 0
     materialSearch: 1
   animations:
     legacyGenerateAnimations: 4
@@ -71,7 +106,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -95,7 +130,21 @@ ModelImporter:
         weight: 1
       - path: LLantas
         weight: 1
+      - path: LLantas.001
+        weight: 1
+      - path: LLantas.002
+        weight: 1
+      - path: LLantas.003
+        weight: 1
       - path: Ruedas
+        weight: 1
+      - path: Ruedas.001
+        weight: 1
+      - path: Ruedas.002
+        weight: 1
+      - path: Ruedas.003
+        weight: 1
+      - path: Ruedas.004
         weight: 1
       - path: TRUENO
         weight: 1
