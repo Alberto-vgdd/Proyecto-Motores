@@ -50,8 +50,8 @@ public class CarAnimationController : MonoBehaviour
 
     void updateCarState()
     {
-        m_AccelerationInput = Input.GetAxis("Accelerate") - Input.GetAxis("Brake");
-        m_SteerInput = Input.GetAxis("Steer");
+        m_AccelerationInput = Input.GetAxis("Vertical");
+        m_SteerInput = Input.GetAxis("Horizontal");
     }
 
     void rotateMeshes( )
