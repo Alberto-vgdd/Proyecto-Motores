@@ -1,24 +1,21 @@
 fileFormatVersion: 2
-guid: 59e25902829a27f4183baf6a34ecd6ee
-timeCreated: 1489158079
+guid: c5de09046d31e9d4b9e9cbe147838c18
+timeCreated: 1489768326
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: Cube
-    100004: Empty
-    400000: //RootNode
-    400002: Cube
-    400004: Empty
-    2300000: //RootNode
-    2300002: Cube
-    3300000: //RootNode
-    3300002: Cube
-    4300000: Cube
-    4300002: road_lft1
-    7400000: Default Take
-    9500000: //RootNode
+    100000: Camera
+    100002: Lamp
+    100004: //RootNode
+    100006: road_rgt1
+    400000: Camera
+    400002: Lamp
+    400004: //RootNode
+    400006: road_rgt1
+    2300000: road_rgt1
+    3300000: road_rgt1
+    4300000: road_rgt1
   materials:
     importMaterials: 1
     materialName: 0
@@ -43,7 +40,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 100
     meshCompression: 0
     addColliders: 0
     importBlendShapes: 1
@@ -81,7 +78,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
