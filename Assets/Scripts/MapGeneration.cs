@@ -14,9 +14,12 @@ public class MapGeneration : MonoBehaviour {
 	public int baseNodeSize;												// Tamaño del mundo (Ajustable)
 
 	[Header("Map Generation Parameters")]
+	public float maxHeight;													// Altura maxima
+	public float minHeight;													// Altura minima (recomendado 0)
 	public int minStraight;													// Minima recta posible
 	public int maxStraight;													// Maxima recta posible
 	public float curveChance;												// Probabilidad de recta
+	public float rampChance;												// Probabilidad de desnivel
 	public int currentDegree;												// Giro despues de la ultima curva
 	public float EnvoirmentalDecorationDensity;								// Densidad de decoraciones
 	public int nodesBetweenActiveCheckpoints;								// Nodos entre puntos de control activos.
@@ -37,16 +40,21 @@ public class MapGeneration : MonoBehaviour {
 
 	private bool nextNodeIsStraight;										// (TEMP) El proximo nodo es una recta?
 	private bool nextNodeL;													// (TEMP) El proximo nodo gira a la izquierda si no es recto?
+	private bool nextNodeIsRamp;											// (TEMP) El proximo nodo sera un cambio de altura?
+	private bool nextNodeIsRampUp;											// (TEMP) El proximo nodo de cambio de altura sera una subida?
 	private int nodesSinceLastCheckpoint;									// (TEMP) Nodos desde el ultimo punto de control.
 	private int forcedStraight;												// (TEMP) Rectas forzadas restantes.
 	private float weightAccumulated;										// (TEMP) "Peso" acumulado de los nodos.
 	private int straightChain;												// (TEMP) Cadena de rectas actual.
+	private float currentHeight;											// (TEMP) Altura actual.
 
 	[Header("References")]
 	public List<GameObject> InstancedNodes;									// Todos los nodos que se han instanciado
 	public List<GameObject> StraightNodes;									// Piezas rectas que puede instanciar.
 	public List<GameObject> LeftNodes_90;									// Curvas izquierda (90º) que puede instanciar.
 	public List<GameObject> RightNodes_90;									// Curvas derecha (90º) que puede instanciar.
+	public List<GameObject> StrUpNodes;										// Rampas hacia arriba.
+	public List<GameObject> StrDownNodes;									// Rampas hacia abajo.
 
 	// TODO: Es necesario realmente diferenciar entre nodos izquierda y derecha? Unity da problemas al cambiar la escala a negativo.
 
@@ -64,7 +72,34 @@ public class MapGeneration : MonoBehaviour {
 
 	private GameObject GetNodeToSpawn()
 	{
-		nextNodeIsStraight = (straightChain < minStraight) || (straightChain < maxStraight) && (forcedStraight > 0 || !(Random.Range (1, 100) < curveChance));
+		nextNodeIsStraight = (straightChain < minStraight) && (straightChain < maxStraight) || !(Random.Range (1, 100) < curveChance);
+		if (forcedStraight > 0)
+			nextNodeIsStraight = true;
+		nextNodeIsRamp = Random.Range(1,100) < rampChance;
+		if (currentHeight > 0) {
+			if (Random.Range (1, 100) < 25) {
+				return StrDownNodes [Random.Range (0, StrDownNodes.Count)];
+			}
+		}
+		if (nextNodeIsRamp) {
+			if (currentHeight > minHeight) {
+				if (currentHeight < maxHeight) {
+					nextNodeIsRampUp = Random.Range (1, 3) == 1;
+				} else {
+					nextNodeIsRampUp = false;
+				}
+			} else {
+				nextNodeIsRampUp = true;
+			}
+			print ("currentheight:" + currentHeight + " up: " + nextNodeIsRampUp);
+
+			if (nextNodeIsRamp && nextNodeIsRampUp) {
+				return StrUpNodes [Random.Range (0, StrUpNodes.Count)];
+			} else if (nextNodeIsRamp) {
+				return StrDownNodes [Random.Range (0, StrDownNodes.Count)];
+			}
+
+		}
 		nextNodeL = Random.Range (1, 3) == 1;
 
 		switch (currentDegree) {
@@ -130,7 +165,8 @@ public class MapGeneration : MonoBehaviour {
 	{
 		lastInstancedNode = Instantiate (nodeToSpawn, transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
 		lastReadedNode = lastInstancedNode.GetComponent<NodeProperties> ();
-		lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity);
+		lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity, currentHeight);
+		currentHeight += lastReadedNode.relativeDispUp;
 		forcedStraight += lastReadedNode.forcedStraightAfter;
 		weightAccumulated += lastReadedNode.nodeWeight;
 		lastInstancedNode.transform.localScale *= baseNodeSize;

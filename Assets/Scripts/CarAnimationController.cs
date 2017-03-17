@@ -68,7 +68,7 @@ public class CarAnimationController : MonoBehaviour
             //Direction wheels (FR, FL)
             for (int i = 0; i < 2; i++)
             {
-              m_Wheels[i].localRotation = Quaternion.Euler(0f, m_SteerInput * m_MaxWheelSteerAngle, 0f);
+			m_Wheels[i].localRotation = Quaternion.RotateTowards(m_Wheels[i].localRotation, Quaternion.Euler(0f, m_SteerInput * m_MaxWheelSteerAngle, 0f), Time.deltaTime*100);
             }
     }
 }

@@ -14,7 +14,9 @@ ModelImporter:
     400004: //RootNode
     400006: road_rgt1
     2300000: road_rgt1
+    2300002: //RootNode
     3300000: road_rgt1
+    3300002: //RootNode
     4300000: road_rgt1
   materials:
     importMaterials: 1

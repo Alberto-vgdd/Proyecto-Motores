@@ -60,11 +60,11 @@ public class NodeProperties : MonoBehaviour {
 
 	// Crea las decoraciones ambientales (Funcion llamada por MapGeneration al instanciar el nodo)
 
-	public void SetEnvoirmentDecoration(float density)
+	public void SetEnvoirmentDecoration(float density, float nodeHeight)
 	{
 		for (int i = 0; i < envorimentPositions.Count; i++) {
 			if (Random.Range (1, 100) < density) {
-				lastInstancedDecoration = Instantiate(posibleEnvDeco[Random.Range(0, posibleEnvDeco.Count)], envorimentPositions[i].transform.position, 
+				lastInstancedDecoration = Instantiate(posibleEnvDeco[Random.Range(0, posibleEnvDeco.Count)], envorimentPositions[i].transform.position - Vector3.up * nodeHeight, 
 					envorimentPositions[i].transform.rotation, transform) as GameObject;
 			}
 		}
