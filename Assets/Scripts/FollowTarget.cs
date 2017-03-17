@@ -6,6 +6,8 @@ public class FollowTarget : MonoBehaviour {
 	// Sigue al objetivo, IMPORTANTE: EL OBJETIVO DEBE TENER DISPLACEWITHDRIFT.
 	// PM (PlayerMovement) buscara automaticamente al objeto marcado como jugador en la escena.
 
+	// TODO: Ajustar el FOV.
+
 	public GameObject target;
 	private Vector3 targetPos;
 	private PlayerMovement pm;
@@ -35,7 +37,7 @@ public class FollowTarget : MonoBehaviour {
 
 	void Start () {
 		camDegreeTemp = 0;
-		// Eh...solucion spaghetti.
+		// TODO: Eh...solucion spaghetti, cambiar esto.
 		pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement> ();
 	}
 

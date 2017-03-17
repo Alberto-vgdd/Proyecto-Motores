@@ -7,6 +7,7 @@ public class MapGeneration : MonoBehaviour {
 	// Administra la generacion de la carretera y el terreno a su alrededor. Para que funcione correctamente necesita:
 	// - Referencias a los prefabs que puede instanciar.
 	// - Ajustar parametros de creacion de nivel.
+	// TODO: Considerar usar un object pool para las piezas en lugar de instanciar y destruir.
 
 	public static MapGeneration currentData;								// Referencia estatica.
 
@@ -21,8 +22,15 @@ public class MapGeneration : MonoBehaviour {
 	public int nodesBetweenActiveCheckpoints;								// Nodos entre puntos de control activos.
 
 	[Header("Render Parameters")]
+
+	// - LoadedNodesInitial debe ser menor que LoadedNodesMax.
+	// - La diferencia entre LoadedNodesInitial y LoadedNodesMax son los nodos que el jugador tendra detras.
+	// - IndexOfWrongWay debe ser un numero menor que esta diferencia - 2;
+	// - TODO: automatizar todo esto(?)
+
 	public int loadedNodesInitial;											// Nodos cargados inicialmente.
 	public int loadedNodesMax;												// Nodos maximos cargados.
+	public int indexOfWrongWay;												// Indice del nodo wrong way.
 
 	private NodeProperties lastReadedNode;									// (TEMP) Ultimo NodeProperties leido.
 	private GameObject lastInstancedNode;									// (TEMP) Ultimo nodo instanciado.
@@ -31,6 +39,8 @@ public class MapGeneration : MonoBehaviour {
 	private bool nextNodeL;													// (TEMP) El proximo nodo gira a la izquierda si no es recto?
 	private int nodesSinceLastCheckpoint;									// (TEMP) Nodos desde el ultimo punto de control.
 	private int forcedStraight;												// (TEMP) Rectas forzadas restantes.
+	private float weightAccumulated;										// (TEMP) "Peso" acumulado de los nodos.
+	private int straightChain;												// (TEMP) Cadena de rectas actual.
 
 	[Header("References")]
 	public List<GameObject> InstancedNodes;									// Todos los nodos que se han instanciado
@@ -38,7 +48,7 @@ public class MapGeneration : MonoBehaviour {
 	public List<GameObject> LeftNodes_90;									// Curvas izquierda (90º) que puede instanciar.
 	public List<GameObject> RightNodes_90;									// Curvas derecha (90º) que puede instanciar.
 
-	// TO DO: Es necesario realmente diferenciar entre nodos izquierda y derecha? Unity da problemas al cambiar la escala a negativo.
+	// TODO: Es necesario realmente diferenciar entre nodos izquierda y derecha? Unity da problemas al cambiar la escala a negativo.
 
 	void Awake() { currentData = this; }
 	void Start()
@@ -54,37 +64,46 @@ public class MapGeneration : MonoBehaviour {
 
 	private GameObject GetNodeToSpawn()
 	{
-		nextNodeIsStraight = forcedStraight > 0 || !(Random.Range (1, 100) < curveChance);
+		nextNodeIsStraight = (straightChain < minStraight) || (straightChain < maxStraight) && (forcedStraight > 0 || !(Random.Range (1, 100) < curveChance));
 		nextNodeL = Random.Range (1, 3) == 1;
 
 		switch (currentDegree) {
 		case 0: // [STRAIGHT]
 			{
 				if (nextNodeIsStraight) {
+					straightChain++;
 					return StraightNodes [Random.Range (0, StraightNodes.Count)];
 				} else if (nextNodeL) {
+					straightChain = 0;
 					return LeftNodes_90 [Random.Range (0, LeftNodes_90.Count)];
 				} else {
+					straightChain = 0;
 					return RightNodes_90 [Random.Range (0, RightNodes_90.Count)];
 				}
 			}
 		case 90: // [RIGHT]
 			{
 				if (nextNodeIsStraight) {
+					straightChain++;
 					return StraightNodes [Random.Range (0, StraightNodes.Count)];
-				} else if (nextNodeL) {
+				} else if (nextNodeL || straightChain > maxStraight) {
+					straightChain = 0;
 					return LeftNodes_90 [Random.Range (0, LeftNodes_90.Count)];
 				} else {
+					straightChain++;
 					return StraightNodes [Random.Range (0, StraightNodes.Count)];
 				}
 			}
 		case -90: // [LEFT]
 			{
 				if (nextNodeIsStraight) {
+					straightChain++;
 					return StraightNodes [Random.Range (0, StraightNodes.Count)];
-				} else if (nextNodeL) {
+				} else if (nextNodeL && straightChain < maxStraight) {
+					straightChain++;
 					return StraightNodes [Random.Range (0, StraightNodes.Count)];
 				} else {
+					straightChain = 0;
 					return RightNodes_90 [Random.Range (0, RightNodes_90.Count)];
 				}
 			}
@@ -98,7 +117,10 @@ public class MapGeneration : MonoBehaviour {
 	{
 		SpawnNode (GetNodeToSpawn ());
 		if (InstancedNodes.Count > loadedNodesMax) {
+			lastInstancedNode = InstancedNodes [0];
 			InstancedNodes.RemoveAt (0);
+			InstancedNodes [indexOfWrongWay].GetComponent<NodeProperties> ().SetAsWrongWay ();
+			Destroy (lastInstancedNode);
 		}
 	}
 
@@ -110,6 +132,7 @@ public class MapGeneration : MonoBehaviour {
 		lastReadedNode = lastInstancedNode.GetComponent<NodeProperties> ();
 		lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity);
 		forcedStraight += lastReadedNode.forcedStraightAfter;
+		weightAccumulated += lastReadedNode.nodeWeight;
 		lastInstancedNode.transform.localScale *= baseNodeSize;
 		transform.Translate (Vector3.forward * lastReadedNode.relativeDispFwd * baseNodeSize);
 		transform.Translate (Vector3.right * lastReadedNode.relativeDispSdw * baseNodeSize);

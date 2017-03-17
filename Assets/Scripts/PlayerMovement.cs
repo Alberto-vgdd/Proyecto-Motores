@@ -58,7 +58,8 @@ public class PlayerMovement : MonoBehaviour {
 	public bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	public float driftDegree;											// Angulo de derrape
 
-	private bool firstFrameUngrounded = false;
+	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
+	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
 
 	void Start()
 	{
@@ -87,9 +88,13 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 		// Leemos todos los inputs.
-		if (Input.GetKeyDown (KeyCode.R)) {
+		if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0) {
 			ResetCar ();
 		}
+
+		if (respawnCooldown > 0)
+			respawnCooldown -= Time.deltaTime;
+
 		forwInput = Input.GetAxis ("Vertical");
 		turnInput = Input.GetAxis ("Horizontal");
 		if (Input.GetKeyDown (KeyCode.Space))
@@ -225,6 +230,8 @@ public class PlayerMovement : MonoBehaviour {
 		} else if (other.gameObject.tag == "CP_Active") {
 			CrossCheckPoint (other);
 		} else if (other.gameObject.tag == "CP_WrongWay") {
+			if (respawnCooldown > 0)
+				return;
 			NotificationManager.currentInstance.AddNotification(new GameNotification("Wrong way!", Color.red, 30));
 			ResetCar ();
 		}
@@ -352,6 +359,9 @@ public class PlayerMovement : MonoBehaviour {
 
 	void ResetCar()
 	{
+		if (respawnCooldown > 0)
+			return;
+		respawnCooldown = 0.5f;
 		StageData.currentData.RespawnDamage ();
 		cleanSection = false;
 		cleanAir = false;

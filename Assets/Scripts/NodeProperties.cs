@@ -54,6 +54,7 @@ public class NodeProperties : MonoBehaviour {
 	{
 		if (checkPointTrigger == null)
 			return;
+		checkPointTrigger.GetComponent<Collider> ().enabled = true;
 		checkPointTrigger.tag = "CP_WrongWay";
 	}
 
