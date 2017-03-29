@@ -24,6 +24,9 @@ public class NodeProperties : MonoBehaviour {
 	public float relativeDispUp;												// Desplazamiento relativo del nodo [ VERTICAL ]
 	public int relativeRotation;												// Rotacion relativa del nodo [ EJE Y ]
 
+	[Header("Data relative to stage")]
+	public int nodeId;															// ID del nodo (orden en el que se añadio, empezando por 0)
+
 	private GameObject lastInstancedDecoration;									// (TEMP) Ultima decoracion colocada.
 
 

@@ -23,6 +23,7 @@ public class MapGeneration : MonoBehaviour {
 	public int currentDegree;												// Giro despues de la ultima curva
 	public float EnvoirmentalDecorationDensity;								// Densidad de decoraciones
 	public int nodesBetweenActiveCheckpoints;								// Nodos entre puntos de control activos.
+	public int nodesSpawned;												// Contador de nodos, se usa para asignar IDs.
 
 	[Header("Render Parameters")]
 
@@ -63,12 +64,23 @@ public class MapGeneration : MonoBehaviour {
 	{
 		forcedStraight = 0;
 		currentDegree = 0;
-		for (int i = 0; i < loadedNodesInitial; i++) {
-			SpawnNode (GetNodeToSpawn ());
-		}
+		SpawnMultipleNodes (loadedNodesInitial);
 	}
 
 	// Decide cual sera el proximo nodo que creara.
+
+	public void SpawnMultipleNodes(int amount)
+	{
+		for (int i = 0; i < amount; i++) {
+			SpawnNode (GetNodeToSpawn ());
+			if (InstancedNodes.Count > loadedNodesMax) {
+				lastInstancedNode = InstancedNodes [0];
+				InstancedNodes.RemoveAt (0);
+				InstancedNodes [indexOfWrongWay].GetComponent<NodeProperties> ().SetAsWrongWay ();
+				Destroy (lastInstancedNode);
+			}
+		}
+	}
 
 	private GameObject GetNodeToSpawn()
 	{
@@ -91,7 +103,6 @@ public class MapGeneration : MonoBehaviour {
 			} else {
 				nextNodeIsRampUp = true;
 			}
-			print ("currentheight:" + currentHeight + " up: " + nextNodeIsRampUp);
 
 			if (nextNodeIsRamp && nextNodeIsRampUp) {
 				return StrUpNodes [Random.Range (0, StrUpNodes.Count)];
@@ -148,15 +159,9 @@ public class MapGeneration : MonoBehaviour {
 
 	// Llamado por el jugador al cruzar un punto de control (activo o pasivo), crea un nodo mas al final del circuito
 
-	public void CrossCheckPoint()
+	public void CrossCheckPoint (int lastPlayerCrossedNode, int currentPlayerCrossedNode)
 	{
-		SpawnNode (GetNodeToSpawn ());
-		if (InstancedNodes.Count > loadedNodesMax) {
-			lastInstancedNode = InstancedNodes [0];
-			InstancedNodes.RemoveAt (0);
-			InstancedNodes [indexOfWrongWay].GetComponent<NodeProperties> ().SetAsWrongWay ();
-			Destroy (lastInstancedNode);
-		}
+		SpawnMultipleNodes (currentPlayerCrossedNode-lastPlayerCrossedNode);
 	}
 
 	// Dado un nodo, lo crea, y prepara.
@@ -165,6 +170,7 @@ public class MapGeneration : MonoBehaviour {
 	{
 		lastInstancedNode = Instantiate (nodeToSpawn, transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
 		lastReadedNode = lastInstancedNode.GetComponent<NodeProperties> ();
+		lastReadedNode.nodeId = nodesSpawned;
 		lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity, currentHeight);
 		currentHeight += lastReadedNode.relativeDispUp;
 		forcedStraight += lastReadedNode.forcedStraightAfter;
@@ -185,7 +191,11 @@ public class MapGeneration : MonoBehaviour {
 		if (forcedStraight > 0)
 			forcedStraight--;
 		nodesSinceLastCheckpoint++;
+		// TEST ==========================
 		curveChance++;
 		EnvoirmentalDecorationDensity++;
+		// ===============================
+		nodesSpawned++;
+
 	}
 }

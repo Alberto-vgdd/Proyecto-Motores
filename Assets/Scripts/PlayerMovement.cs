@@ -28,9 +28,9 @@ public class PlayerMovement : MonoBehaviour {
 	public float maxFwdSpeed;											// Velocidad maxima
 	[Range(-25,-5f)]
 	public float maxBwdSpeed;											// Velocidad maxima marcha atras
-	[Range(3,10)]
+	[Range(3,15)]
 	public float driftStrenght;											// Fuerza de derrape
-	[Range(10,40)]
+	[Range(10,50)]
 	public float maxDrift;												// Maximo angulo de derrape
 	[Range(0.5f,2.5f)]
 	public float driftSpeedLoss;										// Perdida de velocidad al derrapar
@@ -46,6 +46,7 @@ public class PlayerMovement : MonoBehaviour {
 	public float airToGroundThs;										// Margen de tiempo para volver a tocar el suelo (en seg.)
 	public float ungroundedRespawnTime;									// Tiempo sin tocar suelo necesario para auto-reaparecer
 	public float Tr2Vel;												// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
+	public float groundingForce;										// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
 
 	[Header("Debug info")]
 	public bool grounded;												// Esta en el suelo?
@@ -60,9 +61,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
+	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
+	private NodeProperties nodeCrossedParams;							// Ultimo nodo cruzado (NodeProperties)
 
 	void Start()
 	{
+		lastNodeCrossedID = -1;
 		rb = GetComponent<Rigidbody> ();
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
@@ -107,7 +111,9 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		CheckGrounded ();      // Comprobamos si esta tocando suelo
 		if (grounded) {        // Acciones a realizar tocando suelo
-			
+
+			rb.AddForce(-transform.up * accumulatedAcceleration * groundingForce * Time.fixedDeltaTime);
+
 			if (forwInput == 0)
 				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
 			
@@ -243,8 +249,10 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		savedResetPosition = other.transform.position;
 		savedResetRotation = other.transform.rotation;
-		other.transform.parent.GetComponent<NodeProperties>().DisableCheckPoint ();
-		MapGeneration.currentData.CrossCheckPoint ();
+		nodeCrossedParams = other.transform.parent.GetComponent<NodeProperties>();
+		nodeCrossedParams.DisableCheckPoint ();
+		MapGeneration.currentData.CrossCheckPoint (lastNodeCrossedID, nodeCrossedParams.nodeId);
+		lastNodeCrossedID = nodeCrossedParams.nodeId;
 		StageData.currentData.nodesCrossed++;
 
 		// RETURN si no se trata de un punto de control marcado como activo.
