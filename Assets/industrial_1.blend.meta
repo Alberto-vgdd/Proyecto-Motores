@@ -1,30 +1,22 @@
 fileFormatVersion: 2
-guid: 6948313f3090fa14c839d7a71e064b61
-timeCreated: 1489591741
+guid: d8ed3b7415a8f2f4ca2d0f66d55e29ea
+timeCreated: 1490977866
 licenseType: Free
 ModelImporter:
   serializedVersion: 19
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Plane
-    100004: road_str3
-    100006: Cube
+    100002: MetallicPart
+    100004: Supports
     400000: //RootNode
-    400002: Plane
-    400004: road_str3
-    400006: Cube
-    2300000: //RootNode
-    2300002: Plane
-    2300004: road_str3
-    2300006: Cube
-    3300000: //RootNode
-    3300002: Plane
-    3300004: road_str3
-    3300006: Cube
-    4300000: Cube_001
-    4300002: road_str3
-    4300004: Plane
-    4300006: Cube
+    400002: MetallicPart
+    400004: Supports
+    2300000: MetallicPart
+    2300002: Supports
+    3300000: MetallicPart
+    3300002: Supports
+    4300000: MetallicPart
+    4300002: Supports
     7400000: Default Take
     9500000: //RootNode
   materials:

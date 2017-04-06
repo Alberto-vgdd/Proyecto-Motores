@@ -47,6 +47,8 @@ public class PlayerMovement : MonoBehaviour {
 	public float ungroundedRespawnTime;									// Tiempo sin tocar suelo necesario para auto-reaparecer
 	public float Tr2Vel;												// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
 	public float groundingForce;										// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
+	public float inclinationMaxSpeedModifier;							// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno. Recomendado 45.
+	public float inclinationAccelerationModifier;						// Intensidad de la modificacion de la aceleracion por inclinacion de terreno. Recomendado 1.5
 
 	[Header("Debug info")]
 	public bool grounded;												// Esta en el suelo?
@@ -63,6 +65,8 @@ public class PlayerMovement : MonoBehaviour {
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
 	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
 	private NodeProperties nodeCrossedParams;							// Ultimo nodo cruzado (NodeProperties)
+	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
+	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
 
 	void Start()
 	{
@@ -81,8 +85,10 @@ public class PlayerMovement : MonoBehaviour {
 		if (StageData.currentData.playerHealth <= 0) {
 			forwInput = 0;
 			turnInput = 0;
+			extraForwInput = 0;
 			return;
 		}
+			
 		// Si el tiempo se ha agotado, solo escuchamos el input de giro.
 		if (StageData.currentData.remainingSec <= 0) {
 			forwInput = 0;
@@ -112,15 +118,19 @@ public class PlayerMovement : MonoBehaviour {
 		CheckGrounded ();      // Comprobamos si esta tocando suelo
 		if (grounded) {        // Acciones a realizar tocando suelo
 
-			rb.AddForce(-transform.up * accumulatedAcceleration * groundingForce * Time.fixedDeltaTime);
+			// Parametros extra de velocidad y aceleracion asignados dependiendo de la inclinacion del coche si este esta tocando suyelo.
+			extraForwInput = Mathf.DeltaAngle(0,transform.rotation.eulerAngles.x) / inclinationAccelerationModifier;
+			extraFwdSpeed = Mathf.DeltaAngle (0, transform.rotation.eulerAngles.x) / inclinationMaxSpeedModifier;
+
+			rb.AddForce(-transform.up * Mathf.Abs(accumulatedAcceleration) * groundingForce * Time.fixedDeltaTime);
 
 			if (forwInput == 0)
 				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
 			
 			if (forwInput < 0 && accumulatedAcceleration > 0) {
-				accumulatedAcceleration += forwInput * Time.fixedDeltaTime * 6 * acceleration;
+				accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 6 * acceleration * (1-(accumulatedAcceleration/(maxBwdSpeed+extraFwdSpeed)));
 			} else {
-				accumulatedAcceleration += forwInput * Time.fixedDeltaTime * 3 * acceleration * (1-(accumulatedAcceleration/maxFwdSpeed));
+				accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (1-(accumulatedAcceleration/(maxFwdSpeed+extraFwdSpeed)));
 			}
 			
 		} else {			   // Acciones a realizar sin tocar suelo
@@ -147,7 +157,10 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		// Acciones a realizar en ambos casos
 
-		accumulatedAcceleration = Mathf.Clamp (accumulatedAcceleration, maxBwdSpeed, maxFwdSpeed);
+		if (accumulatedAcceleration > maxFwdSpeed + extraFwdSpeed)
+			accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, maxFwdSpeed + extraFwdSpeed, Time.fixedDeltaTime);
+		else if (accumulatedAcceleration < maxBwdSpeed + extraFwdSpeed) 
+			accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, maxBwdSpeed + extraFwdSpeed, Time.fixedDeltaTime * 500);
 
 		MoveFwd ();
 		MoveTrn ();
@@ -195,6 +208,7 @@ public class PlayerMovement : MonoBehaviour {
 		accumulatedAcceleration = Mathf.MoveTowards(accumulatedAcceleration, 0, ((Mathf.Abs(driftDegree)*driftSpeedLoss) / 20) * Time.fixedDeltaTime);
 		if (!grounded)
 			return;
+		// TODO: Ajustar la apertura del derrape? en "-driftDegree", multiplicar por valor.
 		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree,0) * Vector3.forward * accumulatedAcceleration * Time.fixedDeltaTime)));
 		if (Mathf.Abs(accumulatedAcceleration) < 1) {
 			EndDrift();
