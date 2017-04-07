@@ -41,6 +41,7 @@ public class NodeProperties : MonoBehaviour {
 		if (checkPointTrigger == null)
 			return;
 		checkPointTrigger.tag = "CP_Active";
+		checkPointVisualParent.gameObject.SetActive (true);
 		isActiveCheckPoint = true;
 	}
 
