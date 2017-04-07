@@ -24,6 +24,11 @@ public class StageData : MonoBehaviour {
 
 	public PlayerMovement pm;												// Referencia a PlayerMovement.
 
+    [Header("Ambient Light Parameters")]
+    public bool lightsOn;
+    public float lightRange;
+    public float lightAngle;
+
 
 	void Awake () { currentData = this; }
 
@@ -97,4 +102,13 @@ public class StageData : MonoBehaviour {
 		}
 		ContextualHudManager.currentInstance.UpdateDynHealth();
 	}
+
+    public void UpdateAllNodeLights(bool lightsEnabled)
+    {
+        lightsOn = lightsEnabled;
+        for (int i = 0;i < MapGeneration.currentData.InstancedNodes.Count; i++)
+        {
+            MapGeneration.currentData.InstancedNodes[i].GetComponent<NodeProperties>().SetLights();
+        }
+    }
 }

@@ -4,11 +4,12 @@ using UnityEngine;
 
 public class NodeProperties : MonoBehaviour {
 
-	// Administra la informacion almacenada en cada nodo y sus propiedades, para que funcione correctamente necesita:
-	// - Referencias a las partes del nodo: Posiciones de decoracion y su parent, Trigger de checkpoint y su parent.
-	// - Debe estar colocado en el prefab del nodo.
+    // Administra la informacion almacenada en cada nodo y sus propiedades, para que funcione correctamente necesita:
+    // - Referencias a las partes del nodo: Posiciones de decoracion y su parent, Trigger de checkpoint y su parent.
+    // - Debe estar colocado en el prefab del nodo.
 
-	[Header("References")]
+    [Header("References")]
+    public List<GameObject> lights;
 	public List<Transform> envorimentPositions;									// Posiciones de decoracion ambiental posibles.
 	public List<GameObject> posibleEnvDeco;										// (TO DO: Mover a un prefab manager) Instancias de decoracion.
 	public Transform envoirmentParent;											// (UNUSED) Parent de las decoraciones
@@ -23,8 +24,9 @@ public class NodeProperties : MonoBehaviour {
 	public float relativeDispSdw;												// Desplazamiento relativo del nodo [ LATERAL ]
 	public float relativeDispUp;												// Desplazamiento relativo del nodo [ VERTICAL ]
 	public int relativeRotation;												// Rotacion relativa del nodo [ EJE Y ]
+    public float absoluteScale;
 
-	[Header("Data relative to stage")]
+    [Header("Data relative to stage")]
 	public int nodeId;															// ID del nodo (orden en el que se añadio, empezando por 0)
 
 	private GameObject lastInstancedDecoration;									// (TEMP) Ultima decoracion colocada.
@@ -61,10 +63,26 @@ public class NodeProperties : MonoBehaviour {
 		checkPointTrigger.tag = "CP_WrongWay";
 	}
 
-	// Crea las decoraciones ambientales (Funcion llamada por MapGeneration al instanciar el nodo)
-
+    // Crea las decoraciones ambientales (Funcion llamada por MapGeneration al instanciar el nodo)
+    public void SetLights()
+    {
+        for (int i = 0; i < lights.Count; i++)
+        {
+            if (StageData.currentData.lightsOn)
+            {
+                lights[i].SetActive(true);
+                lights[i].GetComponent<Light>().range = StageData.currentData.lightRange * absoluteScale;
+                lights[i].GetComponent<Light>().spotAngle = StageData.currentData.lightAngle;
+            }
+            else
+            {
+                lights[i].SetActive(false);
+            }
+        }
+    }
 	public void SetEnvoirmentDecoration(float density, float nodeHeight)
 	{
+        SetLights();
 		for (int i = 0; i < envorimentPositions.Count; i++) {
 			if (Random.Range (1, 100) < density) {
 				lastInstancedDecoration = Instantiate(posibleEnvDeco[Random.Range(0, posibleEnvDeco.Count)], envorimentPositions[i].transform.position - Vector3.up * nodeHeight, 

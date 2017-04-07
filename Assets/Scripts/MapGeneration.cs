@@ -171,7 +171,8 @@ public class MapGeneration : MonoBehaviour {
 		lastInstancedNode = Instantiate (nodeToSpawn, transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
 		lastReadedNode = lastInstancedNode.GetComponent<NodeProperties> ();
 		lastReadedNode.nodeId = nodesSpawned;
-		lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity, currentHeight);
+        lastReadedNode.absoluteScale = baseNodeSize;
+        lastReadedNode.SetEnvoirmentDecoration (EnvoirmentalDecorationDensity, currentHeight);
 		currentHeight += lastReadedNode.relativeDispUp;
 		forcedStraight += lastReadedNode.forcedStraightAfter;
 		weightAccumulated += lastReadedNode.nodeWeight;

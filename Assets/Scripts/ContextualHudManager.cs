@@ -68,7 +68,7 @@ public class ContextualHudManager : MonoBehaviour {
 		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 2.5f;
 		float colorT = Mathf.Min (1, tempDriftChain / 3000);
 		DriftText.color = Color.Lerp (Color.white, Color.red, colorT);
-		DriftText.text = (int)tempDriftChain + " m.";
+		DriftText.text = (int)tempDriftChain + "" /*+ " m."*/;
 	}
 
 	// Administra el interfaz dinamico de salud.
@@ -86,7 +86,7 @@ public class ContextualHudManager : MonoBehaviour {
 	{
 		if (pm.ungroundedTime < 0.75f || !pm.cleanAir) {
 			AirCG.alpha = Mathf.MoveTowards (AirCG.alpha, 0, Time.deltaTime);
-			AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, Vector2.zero, Time.deltaTime);
+			//AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, Vector2.zero, Time.deltaTime);
 			if (tempAirTime > 1.5f && pm.cleanAir) {
 				NotificationManager.currentInstance.AddNotification (new GameNotification (tempAirTime.ToString ("N2") + " s. air!", Color.yellow, 30));
 				tempAirTime = 0;
@@ -100,7 +100,7 @@ public class ContextualHudManager : MonoBehaviour {
 
 		AirText.color = Color.white;
 		AirCG.alpha = Mathf.MoveTowards (AirCG.alpha, 1, Time.deltaTime);
-		AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, new Vector2(0, 1), Time.deltaTime*4);
+		//AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, new Vector2(0, 1), Time.deltaTime*4);
 		AirText.text = "Air: " + pm.ungroundedTime.ToString("N2");
 		tempAirTime = pm.ungroundedTime;
 
