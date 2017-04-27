@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuScript : MonoBehaviour 
 {
@@ -61,8 +62,7 @@ public class PauseMenuScript : MonoBehaviour
 
 	public void ExitGame()
 	{
-		Application.Quit();
-		print ("The game won't close in the editor");
+		SceneManager.LoadScene("Title Screen");
 	}
 
 
