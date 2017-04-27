@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HudManager : MonoBehaviour {
+public class HudManager : MonoBehaviour 
+{
 	public Text timeRemainingText;
 	public Text timeAddedText;
 
@@ -13,7 +14,8 @@ public class HudManager : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Start () 
+	{
 		animAT = timeAddedText.GetComponent<Animator> ();
 		sd = StageData.currentData;
 		lastRegistredTime = 0;

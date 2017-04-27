@@ -29,7 +29,7 @@ public class NodeProperties : MonoBehaviour {
     [Header("Data relative to stage")]
 	public int nodeId;															// ID del nodo (orden en el que se añadio, empezando por 0)
 
-	private GameObject lastInstancedDecoration;									// (TEMP) Ultima decoracion colocada.
+	//private GameObject lastInstancedDecoration;									// (TEMP) Ultima decoracion colocada.
 
 
 
@@ -86,8 +86,8 @@ public class NodeProperties : MonoBehaviour {
         SetLights();
 		for (int i = 0; i < envorimentPositions.Count; i++) {
 			if (Random.Range (1, 100) < density) {
-				lastInstancedDecoration = Instantiate(posibleEnvDeco[Random.Range(0, posibleEnvDeco.Count)], envorimentPositions[i].transform.position - Vector3.up * nodeHeight, 
-					envorimentPositions[i].transform.rotation, transform) as GameObject;
+				//lastInstancedDecoration = Instantiate(posibleEnvDeco[Random.Range(0, posibleEnvDeco.Count)], envorimentPositions[i].transform.position - Vector3.up * nodeHeight, 
+				//	envorimentPositions[i].transform.rotation, transform) as GameObject;
 			}
 		}
 	}
