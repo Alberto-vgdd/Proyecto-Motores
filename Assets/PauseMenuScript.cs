@@ -9,6 +9,7 @@ public class PauseMenuScript : MonoBehaviour
 	private bool m_HUDEnabled;
 	public GameObject[] m_UIButtons;
 	public GameObject[] m_HUDElements;
+	public Text m_HUDButton;
 
 	void Start () 
 	{
@@ -73,6 +74,7 @@ public class PauseMenuScript : MonoBehaviour
 			{
 				HUDElement.SetActive (false);
 			}
+			m_HUDButton.text = "HUD OFF";
 			m_HUDEnabled = false;
 		} 
 		else 
@@ -81,6 +83,7 @@ public class PauseMenuScript : MonoBehaviour
 			{
 				HUDElement.SetActive (true);
 			}
+			m_HUDButton.text = "HUD ON";
 			m_HUDEnabled = true;
 		}
 	}
