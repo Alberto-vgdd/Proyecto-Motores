@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class SpeedIndicatorBehaviour : MonoBehaviour {
 
@@ -20,9 +21,12 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 	//Esto no cambia la velocidad, solo muestra en el texto la actual.
 	private GameObject speedCounter;
 	void ObtainSpeedCounter()	{	speedCounter = GameObject.Find ("SpeedCounter");	}
-	void UpdateSpeedCounter()   {	speedCounter.GetComponent<TextMesh> ().text = velosidah.ToString();	}
+	void UpdateSpeedCounter()   {	speedCounter.GetComponent<Text> ().text = velosidah.ToString();	}
 
+	[Range(0.0f,10.0f)]
+	public float velosidah;
 
+	private float divisionBars;
 
 	private GameObject dummy;
 	private GameObject[] posiciones = new GameObject[6];
@@ -38,13 +42,6 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 		}
 	}
 
-
-
-	[Range(0.0f,10.0f)]
-	public float velosidah;
-
-	private float divisionBars;
-
 	void ShowSpeedBars()
 	{
 		divisionBars = 10.0f / 6.0f; //Si va a vel máxima, mostrará la última barra.
@@ -55,24 +52,23 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 			if (velosidah - divisionBars > 0.0f) { //Va a esa velocidad 
 				if ((i == 0 || i == 1) && (divisionBars * (i + 1) < velosidah)) //tiene que ser verde
 				{
-					posiciones [i].GetComponent<SpriteRenderer> ().sprite = verde;
+					posiciones [i].GetComponent<Image> ().sprite = verde;
 				}
 				if ((i == 2 || i == 3) && (divisionBars * (i + 1) < velosidah)) //tiene que ser amarillo
 				{
-					posiciones [i].GetComponent<SpriteRenderer> ().sprite = amarillo;
+					posiciones [i].GetComponent<Image> ().sprite = amarillo;
 				}
 				if ((i == 4 || i == 5) && (divisionBars * (i + 1) < velosidah)) //tiene que ser rojo
 				{
-					posiciones [i].GetComponent<SpriteRenderer> ().sprite = rojo;
+					posiciones [i].GetComponent<Image> ().sprite = rojo;
 				}
-				if (divisionBars * (i + 1) > velosidah) //No va a esa velocidad
+				if (divisionBars * (i + 1) > velosidah || velosidah == 0) //No va a esa velocidad
 				{
-					posiciones [i].GetComponent<SpriteRenderer> ().sprite = vacio;
+					posiciones [i].GetComponent<Image> ().sprite = vacio;
 				}
 			}
 		}
 	}
-
 
 	void Awake() //Establecemos posiciones para el placeholder (vacio)
 	{
@@ -85,4 +81,5 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 		ShowSpeedBars ();
 		UpdateSpeedCounter ();
 	}
+		
 }

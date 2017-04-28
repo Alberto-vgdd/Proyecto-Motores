@@ -1,6 +1,6 @@
 fileFormatVersion: 2
-guid: ef851a1d4de33d1428a1880e262c2139
-timeCreated: 1493330291
+guid: f8838d71f1810e440a9a92f5731cbefa
+timeCreated: 1493348170
 licenseType: Free
 TrueTypeFontImporter:
   serializedVersion: 4
@@ -13,8 +13,7 @@ TrueTypeFontImporter:
   fontNames:
   - Hemi Head
   fallbackFontReferences:
-  - {fileID: 12800000, guid: 89d645006c10cca4088853b5734274ea, type: 3}
-  - {fileID: 12800000, guid: 3182a919e6826f640b57abd6667d793a, type: 3}
+  - {fileID: 12800000, guid: ef851a1d4de33d1428a1880e262c2139, type: 3}
   - {fileID: 12800000, guid: bdec4bcea1d647e49b38e104d155e9a8, type: 3}
   customCharacters: 
   fontRenderingMode: 0
