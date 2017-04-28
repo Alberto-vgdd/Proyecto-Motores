@@ -20,8 +20,10 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 
 	//Esto no cambia la velocidad, solo muestra en el texto la actual.
 	private GameObject speedCounter;
-	void ObtainSpeedCounter()	{	speedCounter = GameObject.Find ("SpeedCounter");	}
-	void UpdateSpeedCounter()   {	speedCounter.GetComponent<Text> ().text = velosidah.ToString();	}
+	private GameObject speedCounterOutline;
+
+	private GameObject player;
+	private float maxSpeed;
 
 	[Range(0.0f,10.0f)]
 	public float velosidah;
@@ -31,6 +33,18 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 	private GameObject dummy;
 	private GameObject[] posiciones = new GameObject[6];
 
+	void ObtainSpeedCounters()	
+	{	
+		speedCounter = GameObject.Find ("SpeedCounter");
+		speedCounterOutline = GameObject.Find ("SpeedCounterOutline");
+	}
+	void UpdateSpeedCounter()   
+	{	
+		velosidah = player.GetComponent<Rigidbody> ().velocity.magnitude;
+		speedCounterOutline.GetComponent<Text> ().text = velosidah.ToString();
+		speedCounter.GetComponent<Text> ().text = velosidah.ToString();
+	}
+		
 	void ObtainSpeedBars()
 	{
 		for (int i = 0; i < posiciones.Length; i++) 
@@ -44,12 +58,12 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 
 	void ShowSpeedBars()
 	{
-		divisionBars = 10.0f / 6.0f; //Si va a vel máxima, mostrará la última barra.
+		divisionBars = maxSpeed / 6.0f; //Si va a vel máxima, mostrará la última barra.
 									  //Recorrerá siempre 6 veces, pero si supera lo ocupado,
 									  // devolverá el estado de vacio al sprite.
 		for (int i = 0; i < 6; i++) 
 		{
-			if (velosidah - divisionBars > 0.0f) { //Va a esa velocidad 
+			if (Mathf.Abs(velosidah - divisionBars) >= 0.0f) { //Va a esa velocidad 
 				if ((i == 0 || i == 1) && (divisionBars * (i + 1) < velosidah)) //tiene que ser verde
 				{
 					posiciones [i].GetComponent<Image> ().sprite = verde;
@@ -73,7 +87,19 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 	void Awake() //Establecemos posiciones para el placeholder (vacio)
 	{
 		ObtainSpeedBars ();
-		ObtainSpeedCounter ();
+		ObtainSpeedCounters ();
+		player = GameObject.FindGameObjectWithTag ("Player");
+
+		//Por si la velocidad hacia atrás es mayor que hacia delante.
+		float dummy = player.GetComponent<PlayerMovement> ().maxBwdSpeed;
+		if (player.GetComponent<PlayerMovement> ().maxFwdSpeed > dummy) 
+		{
+			maxSpeed = player.GetComponent<PlayerMovement> ().maxFwdSpeed;
+		} 
+		else
+		{
+			maxSpeed = dummy;
+		}
 	}
 
 	void Update () 
