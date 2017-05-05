@@ -179,11 +179,10 @@ public class SkyboxScript : MonoBehaviour {
 	}
 
 
-	void updateSkybox()
+	void updateEnvironmentEffects()
 	{			
 		RenderSettings.skybox = currentSkybox;
-		DynamicGI.UpdateEnvironment ();
-		RenderSettings.fogColor = colorCalculated;
+		RenderSettings.fogColor =  colorCalculated;
 	}
 
 
@@ -193,7 +192,7 @@ public class SkyboxScript : MonoBehaviour {
 	{	
 		UpdateState (estadoLastFrame, estadoActual);
 
-		updateSkybox ();
+		updateEnvironmentEffects ();
 
 		estadoLastFrame = estadoActual;
 

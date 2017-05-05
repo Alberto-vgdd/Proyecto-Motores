@@ -105,6 +105,7 @@ public class StageData : MonoBehaviour {
 
     public void UpdateAllNodeLights(bool lightsEnabled)
     {
+		if (MapGeneration.currentData == null) {return;	}
         lightsOn = lightsEnabled;
         for (int i = 0;i < MapGeneration.currentData.InstancedNodes.Count; i++)
         {
