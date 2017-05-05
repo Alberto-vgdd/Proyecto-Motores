@@ -113,7 +113,8 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = amanecer;
 			ColorFinalUpdate = dia;
 			tiempoTransicionUpdate = 4.0f * 2;
-			print ("Va a ser mediodía");		
+			StageData.currentData.UpdateAllNodeLights (false);
+			//print ("Va a ser mediodía");		
 		}
 
 		//Si va a atardecer
@@ -123,7 +124,7 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = dia;
 			ColorFinalUpdate = amanecer;
 			tiempoTransicionUpdate = 4.0f;
-			print ("Va a atardecer");		
+			//print ("Va a atardecer");		
 		}
 
 		//De atardecer a noche
@@ -133,7 +134,8 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = amanecer;
 			ColorFinalUpdate = noche;
 			tiempoTransicionUpdate = 1.0f;
-			print ("Va a hacerse de noche");	
+			StageData.currentData.UpdateAllNodeLights (true);
+			//print ("Va a hacerse de noche");	
 		}
 
 		//De noche a amanecer
@@ -143,7 +145,7 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = noche;
 			ColorFinalUpdate = amanecer;
 			tiempoTransicionUpdate = 4.0f;
-			print ("Va a amanecer");		
+			//print ("Va a amanecer");		
 		}
 
 
@@ -181,6 +183,7 @@ public class SkyboxScript : MonoBehaviour {
 	{			
 		RenderSettings.skybox = currentSkybox;
 		DynamicGI.UpdateEnvironment ();
+		RenderSettings.fogColor = colorCalculated;
 	}
 
 

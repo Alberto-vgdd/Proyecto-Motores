@@ -99,6 +99,10 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 		{
 			maxSpeed = dummy;
 		}
+
+	
+
+
 	}
 
 	void Update () 

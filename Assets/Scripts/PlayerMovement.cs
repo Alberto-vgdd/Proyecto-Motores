@@ -34,7 +34,7 @@ public class PlayerMovement : MonoBehaviour {
 	public float maxDrift;												// Maximo angulo de derrape
 	[Range(0.5f,2.5f)]
 	public float driftSpeedLoss;										// Perdida de velocidad al derrapar
-	[Range(0.5f,8)]
+	[Range(0.5f,12)]
 	public float driftStabilization;									// Auto-Estabilizacion del derrape
 
 	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
@@ -60,6 +60,8 @@ public class PlayerMovement : MonoBehaviour {
 	public bool cleanAir;												// En el aire sin colisionar con nada?
 	public bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	public float driftDegree;											// Angulo de derrape
+	public float driftOutsideForce;										// Multiplicador de apertura de drift
+	public float driftCorrectionStr;									// Fuerza de correccion del drift al intentar estabilizar.
 
 	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
@@ -71,6 +73,8 @@ public class PlayerMovement : MonoBehaviour {
 	void Start()
 	{
 		lastNodeCrossedID = -1;
+		if (driftOutsideForce == 0)
+			driftOutsideForce = 1;
 		rb = GetComponent<Rigidbody> ();
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
@@ -125,7 +129,7 @@ public class PlayerMovement : MonoBehaviour {
 			rb.AddForce(-transform.up * Mathf.Abs(accumulatedAcceleration) * groundingForce * Time.fixedDeltaTime);
 
 			if (forwInput == 0)
-				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
+				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0 + extraFwdSpeed * 20, Time.fixedDeltaTime * 5);
 			
 			if (forwInput < 0 && accumulatedAcceleration > 0) {
 				accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 6 * acceleration * (1-(accumulatedAcceleration/(maxBwdSpeed+extraFwdSpeed)));
@@ -209,7 +213,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (!grounded)
 			return;
 		// TODO: Ajustar la apertura del derrape? en "-driftDegree", multiplicar por valor.
-		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree,0) * Vector3.forward * accumulatedAcceleration * Time.fixedDeltaTime)));
+		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedAcceleration * Time.fixedDeltaTime)));
 		if (Mathf.Abs(accumulatedAcceleration) < 1) {
 			EndDrift();
 		}
@@ -228,7 +232,7 @@ public class PlayerMovement : MonoBehaviour {
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
 				driftDegree += turnInput * ( 1- Mathf.Abs(driftDegree)/maxDrift) * Time.fixedDeltaTime * driftStrenght * 10;
 			} else {
-				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10;
+				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10 * driftCorrectionStr; 
 			}
 			// Asegurar que no derrape por encima del limite.
 			driftDegree = Mathf.Clamp (driftDegree, -maxDrift,maxDrift);
