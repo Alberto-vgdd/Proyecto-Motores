@@ -123,7 +123,7 @@ public class PlayerMovement : MonoBehaviour {
 		if (grounded) {        // Acciones a realizar tocando suelo
 
 			// Parametros extra de velocidad y aceleracion asignados dependiendo de la inclinacion del coche si este esta tocando suyelo.
-			extraForwInput = Mathf.DeltaAngle(0,transform.rotation.eulerAngles.x) / inclinationAccelerationModifier;
+			extraForwInput = Mathf.Clamp( Mathf.DeltaAngle(0,transform.rotation.eulerAngles.x) / inclinationAccelerationModifier, -1, 2);
 			extraFwdSpeed = Mathf.DeltaAngle (0, transform.rotation.eulerAngles.x) / inclinationMaxSpeedModifier;
 
 			rb.AddForce(-transform.up * Mathf.Abs(accumulatedAcceleration) * groundingForce * Time.fixedDeltaTime);
