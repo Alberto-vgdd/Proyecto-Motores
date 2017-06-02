@@ -46,7 +46,7 @@ public class RoadGenerator : MonoBehaviour {
 	void Start ()
 	{
 		totalNodesCreated = 0;
-		nodesUnttilDecoChange = Random.Range(3, 8);
+		nodesUnttilDecoChange = -1;
 		tempValidNodes = new List<GameObject>();
 		for (int i = 0; i < maxLoadedNodes - nodesBehindLoaded; i++) {
 			SpawnNextNode ();
@@ -119,7 +119,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	void SetupDecorationsForNextNode()
 	{
-		lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR);
+		
 		nodesUnttilDecoChange--;
 		if (nodesUnttilDecoChange <= 0) {
 			nodesUnttilDecoChange = Random.Range (3, 8);
@@ -137,5 +137,6 @@ public class RoadGenerator : MonoBehaviour {
 				nodeDecoGroundR = Random.Range (0, 3);
 			}
 		}
+        lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR);
 	}
 }
