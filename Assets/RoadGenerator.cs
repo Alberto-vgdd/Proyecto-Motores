@@ -127,12 +127,12 @@ public class RoadGenerator : MonoBehaviour {
 			nodeDecoWallR = Random.Range (0, 5);
 
 			if (nodeDecoWallL == 1) { // Concrete wall FORCES water canal
-				nodeDecoGroundL = 2; // Water canal
+				nodeDecoGroundL = 3; // Water canal
 			} else {
 				nodeDecoGroundL = Random.Range (0, 3);
 			}
 			if (nodeDecoWallR == 1) { // Concrete wall FORCES water canal
-				nodeDecoGroundR = 2; // Water canal
+				nodeDecoGroundR = 3; // Water canal
 			} else {
 				nodeDecoGroundR = Random.Range (0, 3);
 			}
