@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour {
 	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
 	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
-	private NodeProperties nodeCrossedParams;							// Ultimo nodo cruzado (NodeProperties)
+	private RoadNode nodeCrossedParams;									// Ultimo nodo cruzado (NodeProperties)
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
 
@@ -267,11 +267,17 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		savedResetPosition = other.transform.position;
 		savedResetRotation = other.transform.rotation;
-		nodeCrossedParams = other.transform.parent.GetComponent<NodeProperties>();
-		nodeCrossedParams.DisableCheckPoint ();
-		MapGeneration.currentData.CrossCheckPoint (lastNodeCrossedID, nodeCrossedParams.nodeId);
-		lastNodeCrossedID = nodeCrossedParams.nodeId;
-		StageData.currentData.nodesCrossed++;
+		nodeCrossedParams = other.transform.parent.parent.GetComponent<RoadNode>();
+		nodeCrossedParams.CrossCheckPoint();
+
+		// En el caso de que el jugador de alguna forma se salte parte de la carretera, esto comprueba cuantos nodos se ha saltado.
+
+		for (int i = 0; i < nodeCrossedParams.GetID() - lastNodeCrossedID; i++)
+		{
+			RoadGenerator.currentInstance.SpawnNextNode ();
+			StageData.currentData.nodesCrossed++;
+		}
+		lastNodeCrossedID = nodeCrossedParams.GetID();
 
 		// RETURN si no se trata de un punto de control marcado como activo.
 		if (other.tag != "CP_Active")
@@ -281,8 +287,8 @@ public class PlayerMovement : MonoBehaviour {
 			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored", Color.green, 30));
 		}
 		cleanSection = true;
-		StageData.currentData.remainingSec += 10;
-		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended", Color.white, 40));
+		StageData.currentData.remainingSec += nodeCrossedParams.GetTimeAwarded();
+		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended " + "+" + nodeCrossedParams.GetTimeAwarded(), Color.white, 40));
 
 	}
 
@@ -397,7 +403,7 @@ public class PlayerMovement : MonoBehaviour {
 		turnInput = 0;
 		forwInput = 0;
 		transform.position = savedResetPosition;
-		transform.rotation = savedResetRotation;
+		transform.rotation = savedResetRotation * Quaternion.Euler(0,-90,0);
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
 	}

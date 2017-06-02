@@ -105,11 +105,11 @@ public class StageData : MonoBehaviour {
 
     public void UpdateAllNodeLights(bool lightsEnabled)
     {
-		if (MapGeneration.currentData == null) {return;	}
+		if (RoadGenerator.currentInstance == null) {return;	}
         lightsOn = lightsEnabled;
-        for (int i = 0;i < MapGeneration.currentData.InstancedNodes.Count; i++)
+		for (int i = 0;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
         {
-            MapGeneration.currentData.InstancedNodes[i].GetComponent<NodeProperties>().SetLights();
+			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (lightsEnabled);
         }
     }
 }
