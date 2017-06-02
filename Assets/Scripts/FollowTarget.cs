@@ -16,14 +16,14 @@ public class FollowTarget : MonoBehaviour {
 	public float camDegree;
 	[Range(0.1f, 2)]
 	public float driftDegreeMultiplier;
-	[Range(3,12)]
+	[Range(0,12)]
 	public float camDistance;
 	[Range(0,10)]
 	public float camHeight;
 	[Header("FOV Parameters")]
-	[Range(90, 100)]
+	[Range(40, 70)]
 	public float minFov;
-	[Range(90, 100)]
+	[Range(70, 100)]
 	public float maxFov;
 	[Range(0.1f, 1)]
 	public float speedToFov;
@@ -52,7 +52,7 @@ public class FollowTarget : MonoBehaviour {
 
 	void lookAtTarget()
 	{
-		transform.LookAt (target.transform.position);
+        transform.LookAt (target.transform.position+new Vector3(0f,1f,0f));
 	}
 	void sphericalPositionLock()
 	{

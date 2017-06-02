@@ -25,6 +25,10 @@ ModelImporter:
     100034: TreeWallRight
     100036: WaterCanalLeft
     100038: WaterCanalRight
+    100040: MountainLeft
+    100042: MountainRight
+    100044: PianoLeft
+    100046: PianoRight
     400000: AdFenceLeft
     400002: AdFenceRight
     400004: CliffLeft
@@ -45,6 +49,10 @@ ModelImporter:
     400034: TreeWallRight
     400036: WaterCanalLeft
     400038: WaterCanalRight
+    400040: MountainLeft
+    400042: MountainRight
+    400044: PianoLeft
+    400046: PianoRight
     2300000: AdFenceLeft
     2300002: AdFenceRight
     2300004: CliffLeft
@@ -64,6 +72,10 @@ ModelImporter:
     2300032: TreeWallRight
     2300034: WaterCanalLeft
     2300036: WaterCanalRight
+    2300038: MountainLeft
+    2300040: MountainRight
+    2300042: PianoLeft
+    2300044: PianoRight
     3300000: AdFenceLeft
     3300002: AdFenceRight
     3300004: CliffLeft
@@ -83,6 +95,10 @@ ModelImporter:
     3300032: TreeWallRight
     3300034: WaterCanalLeft
     3300036: WaterCanalRight
+    3300038: MountainLeft
+    3300040: MountainRight
+    3300042: PianoLeft
+    3300044: PianoRight
     4300000: AdFenceLeft
     4300002: StreetLampRight
     4300004: TreeWallRight
@@ -102,6 +118,10 @@ ModelImporter:
     4300032: StreetLampLeft
     4300034: ConcreteWallLeft
     4300036: TreeWallLeft
+    4300038: PianoLeft
+    4300040: PianoRight
+    4300042: MountainRight
+    4300044: MountainLeft
   materials:
     importMaterials: 0
     materialName: 0
