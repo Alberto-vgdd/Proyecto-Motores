@@ -113,7 +113,7 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = amanecer;
 			ColorFinalUpdate = dia;
 			tiempoTransicionUpdate = 4.0f * 2;
-			StageData.currentData.UpdateAllNodeLights (false);
+			StageData.currentData.UpdateAllLights (false);
 			//print ("Va a ser mediodía");		
 		}
 
@@ -134,7 +134,7 @@ public class SkyboxScript : MonoBehaviour {
 			ColorInicioUpdate = amanecer;
 			ColorFinalUpdate = noche;
 			tiempoTransicionUpdate = 1.0f;
-			StageData.currentData.UpdateAllNodeLights (true);
+			StageData.currentData.UpdateAllLights (true);
 			//print ("Va a hacerse de noche");	
 		}
 
@@ -196,7 +196,7 @@ public class SkyboxScript : MonoBehaviour {
 
 		estadoLastFrame = estadoActual;
 
-        transform.parent.position = target.position;
+        transform.parent.position = new Vector3(target.position.x, 0f, target.position.z);
 	}
 
 }

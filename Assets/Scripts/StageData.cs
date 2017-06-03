@@ -30,6 +30,11 @@ public class StageData : MonoBehaviour {
     public float lightAngle;
 
 
+    [Header ("Diferent Player Chasis")]
+    public GameObject dayChasis;
+    public GameObject nightChasis;
+
+
 	void Awake () { currentData = this; }
 
 	void Update () {
@@ -103,13 +108,18 @@ public class StageData : MonoBehaviour {
 		ContextualHudManager.currentInstance.UpdateDynHealth();
 	}
 
-    public void UpdateAllNodeLights(bool lightsEnabled)
+    public void UpdateAllLights(bool lightsEnabled)
     {
-		if (RoadGenerator.currentInstance == null) {return;	}
+        lightsOn = lightsEnabled;
+		/*if (RoadGenerator.currentInstance == null) {return;	}
         lightsOn = lightsEnabled;
 		for (int i = 0;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
         {
 			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (lightsEnabled);
-        }
+        }*/
+
+        nightChasis.SetActive( lightsEnabled);
+        dayChasis.SetActive(!lightsEnabled);
+
     }
 }
