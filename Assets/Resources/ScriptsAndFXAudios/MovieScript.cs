@@ -10,7 +10,7 @@ public class MovieScript : MonoBehaviour {
 	//private AudioSource soundMovieQuad;
 	//int vsyncprevious;
 
-	public VideoSource videoTrailer;
+	//public VideoSource videoTrailer;
 	public float timeWaiting = 0.0f;
 
 	private bool videoFadeOutActive = false;
@@ -40,6 +40,7 @@ public class MovieScript : MonoBehaviour {
 		this.GetComponent<VideoPlayer> ().isLooping = false;
 		this.GetComponent<VideoPlayer> ().playOnAwake = false;
 
+
 		this.GetComponent<AudioSource> ().volume = 0.5f;
 		this.GetComponent<AudioSource> ().loop = false;
 
@@ -47,6 +48,8 @@ public class MovieScript : MonoBehaviour {
 		this.GetComponent<RawImage> ().color = new Color (0.0f, 0.0f, 0.0f, 1.0f);
 		videoFadeOutActive = true;
 		GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = false;
+		GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = true;
+		GameObject.Find ("Game Logo").GetComponent<Image> ().raycastTarget = false;
 	}
 
 	void MovieEventSystem()
@@ -60,6 +63,7 @@ public class MovieScript : MonoBehaviour {
 			WaitingForVideo = true;
 			 
 			GameObject.Find ("Menu").GetComponent<Canvas> ().enabled = true;
+			GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = true;
 			GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = false;
 			GameObject.Find ("PressAnyKey").GetComponent<Animation> ().Stop ();
 		}	
@@ -76,6 +80,7 @@ public class MovieScript : MonoBehaviour {
 				WaitingForVideo = false;
 
 				GameObject.Find ("Menu").GetComponent<Canvas> ().enabled = false;
+				GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = false;
 				GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = true;
 				GameObject.Find ("PressAnyKey").GetComponent<Animation> ().Play ();
 
@@ -94,6 +99,7 @@ public class MovieScript : MonoBehaviour {
 			//print ("Llegamos final video");
 
 			GameObject.Find ("Menu").GetComponent<Canvas> ().enabled = true;
+			GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = true;
 			GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = false;
 			GameObject.Find ("PressAnyKey").GetComponent<Animation> ().Stop ();
 
