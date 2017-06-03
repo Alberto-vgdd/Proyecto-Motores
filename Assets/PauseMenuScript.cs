@@ -74,6 +74,8 @@ public class PauseMenuScript : MonoBehaviour
 			{
 				HUDElement.SetActive (false);
 			}
+			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().enabled = false;
+			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().enabled = true;
 			m_HUDButton.text = "HUD OFF";
 			m_HUDEnabled = false;
 		} 
@@ -83,6 +85,8 @@ public class PauseMenuScript : MonoBehaviour
 			{
 				HUDElement.SetActive (true);
 			}
+			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().enabled = true;
+			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().enabled = false;
 			m_HUDButton.text = "HUD ON";
 			m_HUDEnabled = true;
 		}
