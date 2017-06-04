@@ -116,9 +116,9 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 		// Leemos todos los inputs.
-		if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0 && respawnEnabled) {
-			ResetCar ();
-		}
+		//if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0 && respawnEnabled) {
+		//	ResetCar ();
+		//}
 
 		if (respawnCooldown > 0)
 			respawnCooldown -= Time.deltaTime;

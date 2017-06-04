@@ -98,7 +98,7 @@ public class StageData : MonoBehaviour {
 			if (gameOverDelay <= 0.0f) 
 			{
 				if (Input.anyKeyDown)
-					SceneManager.LoadScene ("Title Screen");
+					SceneManager.LoadScene ("game");
 			}
 		} 
 		else

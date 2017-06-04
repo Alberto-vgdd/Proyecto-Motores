@@ -77,7 +77,7 @@ public class PauseMenuScript : MonoBehaviour
 	public void ExitGame()
 	{
 		Time.timeScale = 1;
-		SceneManager.LoadScene("Title Screen");
+		SceneManager.LoadScene("game");
 	}
 
 
