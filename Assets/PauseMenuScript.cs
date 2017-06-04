@@ -3,19 +3,27 @@ using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.PostProcessing;
 
 public class PauseMenuScript : MonoBehaviour 
 {
 	private bool m_GamePaused;
 	private bool m_HUDEnabled;
+    private bool m_Ascended;
 	public GameObject[] m_UIButtons;
 	public GameObject[] m_HUDElements;
 	public Text m_HUDButton;
+
+
+    public PostProcessingBehaviour m_Camera;
+    public PostProcessingProfile m_NormalEffects;
+    public PostProcessingProfile m_VaporwaveEffects;
 
 	void Start () 
 	{
 		m_GamePaused = true;
 		m_HUDEnabled = true;
+        m_Ascended = false;
 		PauseGame ();
 
 	}
@@ -93,4 +101,18 @@ public class PauseMenuScript : MonoBehaviour
 			m_HUDEnabled = true;
 		}
 	}
+
+    public void Ascend()
+    {
+        m_Ascended = !m_Ascended;
+
+        if (m_Ascended)
+        {
+            m_Camera.profile = m_VaporwaveEffects;
+        }
+        else
+        {
+            m_Camera.profile = m_NormalEffects;
+        }
+    }
 }

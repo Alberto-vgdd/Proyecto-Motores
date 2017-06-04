@@ -135,7 +135,7 @@ public class StageData : MonoBehaviour {
         lightsOn = lightsEnabled;
 		if (RoadGenerator.currentInstance == null) {return;	}
         lightsOn = lightsEnabled;
-		for (int i = 7;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
+		for (int i = 12;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
         {
 			
 			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (lightsEnabled);

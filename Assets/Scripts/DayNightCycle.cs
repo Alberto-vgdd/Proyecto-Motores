@@ -31,7 +31,7 @@ public class DayNightCycle : MonoBehaviour
 
         //Set Default Skybox
         m_Timer = 0f;
-        m_SelectedSkybox = 0;
+        m_SelectedSkybox = 1;
         RenderSettings.skybox = m_Skyboxes[m_SelectedSkybox];
         m_TimeBetweenSkyboxes = m_DaySkyboxTime;
 
@@ -71,7 +71,7 @@ public class DayNightCycle : MonoBehaviour
             if (m_SelectedSkybox == 2)
             {
                 StageData.currentData.UpdateAllLights(false);
-                m_DirectionalLight.GetComponent<Light>().color = new Color(0.9f, 1f, 0.7f);
+                m_DirectionalLight.GetComponent<Light>().color = new Color(1f, 0.9411f,0.713f);
             }
 
         }
