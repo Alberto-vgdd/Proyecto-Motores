@@ -111,12 +111,13 @@ public class StageData : MonoBehaviour {
     public void UpdateAllLights(bool lightsEnabled)
     {
         lightsOn = lightsEnabled;
-		/*if (RoadGenerator.currentInstance == null) {return;	}
+		if (RoadGenerator.currentInstance == null) {return;	}
         lightsOn = lightsEnabled;
-		for (int i = 0;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
+		for (int i = 7;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
         {
+			
 			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (lightsEnabled);
-        }*/
+        }
 
         nightChasis.SetActive( lightsEnabled);
         dayChasis.SetActive(!lightsEnabled);

@@ -38,6 +38,7 @@ public class RoadGenerator : MonoBehaviour {
 	private int totalNodesCreated;							// Total de nodos creados
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
+	private float NodeWeight2Time = 1f;
 
 	void Awake () {
 		currentInstance = this;
@@ -57,19 +58,20 @@ public class RoadGenerator : MonoBehaviour {
 
 	public void SpawnNextNode()
 	{
-		nextNodeIsCurve = (nodesSinceLastCurve > minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
+		nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
 		tempValidNodes.Clear ();
 		for (int i = 0; i < availableNodes.Count; i++) {
 			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();
 			if ((lastReadedNode.dispAngular + currentAngle) > 180 || (lastReadedNode.dispAngular + currentAngle) < -180) {
 				continue;
 			}
-			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0) {
+			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0 && currentAngle < 180 && currentAngle > -180) {
 				continue;
 			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
 				continue;
 			}
 			tempValidNodes.Add (availableNodes [i]);
+
 		}
 			
 		lastCreatedNode = Instantiate (tempValidNodes [Random.Range (0, tempValidNodes.Count)], transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
@@ -84,10 +86,13 @@ public class RoadGenerator : MonoBehaviour {
 		SetupDecorationsForNextNode ();
 		lastReadedNode.SetLightState (StageData.currentData.lightsOn);
 		lastReadedNode.SetLighScale (globalRoadScale);
+		//Aqui creamos CheckPoint
 		if (nodesSinceLastActiveCP >= nodesBetweenActiveCP) {
-			lastReadedNode.SetAsActiveCheckpoint ((int) (stackedNodeWeight * 0.65f));
+			lastReadedNode.SetAsActiveCheckpoint ((int) (stackedNodeWeight * NodeWeight2Time));
 			nodesSinceLastActiveCP = 0;
 			stackedNodeWeight = 0;
+			NodeWeight2Time *= 0.98f;
+			curveChance = Mathf.Clamp (curveChance + 3, 0, 100);
 		}
 
 		// Self setup for next node

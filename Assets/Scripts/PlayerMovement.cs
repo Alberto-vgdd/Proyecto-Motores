@@ -36,6 +36,9 @@ public class PlayerMovement : MonoBehaviour {
 	public float driftSpeedLoss;										// Perdida de velocidad al derrapar
 	[Range(0.5f,12)]
 	public float driftStabilization;									// Auto-Estabilizacion del derrape
+	[Range(0.1f, 2f)]
+	public float damageMultiplier;										// Damage multiplier
+
 
 	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
 	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
@@ -78,6 +81,7 @@ public class PlayerMovement : MonoBehaviour {
 		rb = GetComponent<Rigidbody> ();
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
+		damageMultiplier = 0.8f;
 	}
 
 	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta
@@ -303,9 +307,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.002f);
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.002f * damageMultiplier);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.0005f);
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.0005f * damageMultiplier);
 				accumulatedAcceleration *= frictionFactorSide;
 				break;
 			}
@@ -315,9 +319,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f);
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f * damageMultiplier);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.002f);
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.002f * damageMultiplier);
 				accumulatedAcceleration *= frictionFactorFront;
 				break;
 			}
@@ -346,9 +350,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f);
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.05f * damageMultiplier);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f);
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f * damageMultiplier);
 				accumulatedAcceleration *= frictionFactorSide;
 				break;
 			}
@@ -358,9 +362,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.1f);
+					StageData.currentData.DamagePlayer (accumulatedAcceleration * 0.1f * damageMultiplier);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.02f);
+					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.02f * damageMultiplier);
 				accumulatedAcceleration *= frictionFactorFront;
 				break;
 			}

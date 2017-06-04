@@ -57,9 +57,9 @@ public class ContextualHudManager : MonoBehaviour {
 	{
 		if (!pm.drifting) {
 			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
-			if (tempDriftChain > 1000) {
-				NotificationManager.currentInstance.AddNotification (new GameNotification (  (int)tempDriftChain + " m. drift. Bonus: time + " + (int)tempDriftChain/1000 + " s.", Color.yellow, 30));
-				StageData.currentData.remainingSec += (int)tempDriftChain / 1000;
+			if (tempDriftChain > 100) {
+				NotificationManager.currentInstance.AddNotification (new GameNotification (  (int)tempDriftChain + " m. drift. Bonus: time + " + (int)tempDriftChain/50 + " s.", Color.yellow, 30));
+				StageData.currentData.remainingSec += (int)tempDriftChain / 50;
 			}
 			tempDriftChain = 0;
 			return;
