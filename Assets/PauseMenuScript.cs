@@ -17,6 +17,7 @@ public class PauseMenuScript : MonoBehaviour
 		m_GamePaused = true;
 		m_HUDEnabled = true;
 		PauseGame ();
+
 	}
 
 	void Update () 
@@ -24,6 +25,8 @@ public class PauseMenuScript : MonoBehaviour
 		if (Input.GetKeyDown ("escape"))
 		{
 			PauseGame ();
+			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().raycastTarget = false;
+			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().raycastTarget = false;
 		}
 	}
 
@@ -76,7 +79,6 @@ public class PauseMenuScript : MonoBehaviour
 			}
 			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().enabled = false;
 			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().enabled = true;
-			m_HUDButton.text = "HUD OFF";
 			m_HUDEnabled = false;
 		} 
 		else 
@@ -87,7 +89,6 @@ public class PauseMenuScript : MonoBehaviour
 			}
 			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().enabled = true;
 			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().enabled = false;
-			m_HUDButton.text = "HUD ON";
 			m_HUDEnabled = true;
 		}
 	}

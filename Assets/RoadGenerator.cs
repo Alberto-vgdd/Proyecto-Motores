@@ -62,10 +62,10 @@ public class RoadGenerator : MonoBehaviour {
 		tempValidNodes.Clear ();
 		for (int i = 0; i < availableNodes.Count; i++) {
 			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();
-			if ((lastReadedNode.dispAngular + currentAngle) > 180 || (lastReadedNode.dispAngular + currentAngle) < -180) {
+			if ((lastReadedNode.dispAngular + currentAngle) > 90 || (lastReadedNode.dispAngular + currentAngle) < -90) {
 				continue;
 			}
-			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0 && currentAngle < 180 && currentAngle > -180) {
+			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0) {
 				continue;
 			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
 				continue;

@@ -22,7 +22,9 @@ public class MovieScript : MonoBehaviour {
 	{
 		this.GetComponent<VideoPlayer>().targetCameraAlpha = 1f;
 		this.GetComponent<VideoPlayer> ().Stop ();
+		this.GetComponent<RawImage> ().enabled = false;
 
+		SetMovieProperties();
 	}
 
 	// Use this for initialization
@@ -30,6 +32,10 @@ public class MovieScript : MonoBehaviour {
 	{
 		//Esto es para el VideoPlayer
 		//Acuerdate de meter en el GameObject el trailer.
+		this.GetComponent<VideoPlayer>().targetCameraAlpha = 1f;
+		this.GetComponent<VideoPlayer> ().Stop ();
+		this.GetComponent<RawImage> ().enabled = false;
+
 		SetMovieProperties();
 
 	}
@@ -50,6 +56,9 @@ public class MovieScript : MonoBehaviour {
 		GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = false;
 		GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = true;
 		GameObject.Find ("Game Logo").GetComponent<Image> ().raycastTarget = false;
+
+		timeWaiting = 0.0f;
+
 	}
 
 	void MovieEventSystem()
@@ -102,7 +111,6 @@ public class MovieScript : MonoBehaviour {
 			GameObject.Find ("Game Logo").GetComponent<Image> ().enabled = true;
 			GameObject.Find ("PressAnyKey").GetComponent<RawImage> ().enabled = false;
 			GameObject.Find ("PressAnyKey").GetComponent<Animation> ().Stop ();
-
 		}
 	}
 		
@@ -139,6 +147,7 @@ public class MovieScript : MonoBehaviour {
 	void Update () 
 	{
 		timeWaiting += Time.deltaTime;
+		print ("Se esta actualisando");
 
 		MovieEventSystem ();
 
