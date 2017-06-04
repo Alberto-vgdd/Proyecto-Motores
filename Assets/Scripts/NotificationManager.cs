@@ -19,11 +19,11 @@ public class NotificationManager : MonoBehaviour {
 	void Awake ()
 	{
 		currentInstance = this;
+		notifications = new List<GameNotification> ();
+		notificationTimer = 0;
 	}
 
 	void Start () {
-		notifications = new List<GameNotification> ();
-		notificationTimer = 0;
 	}
 
 	void Update () {

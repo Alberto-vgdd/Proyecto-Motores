@@ -38,7 +38,7 @@ public class RoadGenerator : MonoBehaviour {
 	private int totalNodesCreated;							// Total de nodos creados
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
-	private float NodeWeight2Time = 1f;
+	private float NodeWeight2Time = 0.8f;
 
 	void Awake () {
 		currentInstance = this;
@@ -59,6 +59,8 @@ public class RoadGenerator : MonoBehaviour {
 	public void SpawnNextNode()
 	{
 		nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
+		if (totalNodesCreated < 4)
+			nextNodeIsCurve = false;
 		tempValidNodes.Clear ();
 		for (int i = 0; i < availableNodes.Count; i++) {
 			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();

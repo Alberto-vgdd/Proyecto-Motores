@@ -23,14 +23,6 @@ public class HudManager : MonoBehaviour
 	
 	// Update is called once per frame
 	void Update () {
-		if (sd == null) {
-			sd = StageData.currentData;
-		} else {
-			if (lastRegistredTime < sd.remainingSec) {
-				timeAddedText.text = "+ " + (int)(sd.remainingSec - lastRegistredTime +0.1);
-				animAT.SetTrigger ("TriggerIncrease");
-			}
-			lastRegistredTime = sd.remainingSec;
-		}
+		
 	}
 }

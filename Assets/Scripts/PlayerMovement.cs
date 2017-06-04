@@ -39,7 +39,7 @@ public class PlayerMovement : MonoBehaviour {
 	[Range(0.1f, 2f)]
 	public float damageMultiplier;										// Damage multiplier
 
-
+	private bool respawnEnabled = false;								// Permite el uso de R, se activa al cruzar el primer CP pasivo.
 	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
 	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
 	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
@@ -73,6 +73,8 @@ public class PlayerMovement : MonoBehaviour {
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
 
+	private bool gameStarted;
+
 	void Start()
 	{
 		lastNodeCrossedID = -1;
@@ -89,6 +91,14 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Update()
 	{
+		// Si la partida no ha empezado, no leemos controles.
+		if (!gameStarted) {
+			gameStarted = StageData.currentData.gameStarted;
+			forwInput = 0;
+			turnInput = 0;
+			extraForwInput = 0;
+			return;
+		}
 		// Si el jugador ha destruido su vehiculo, ignoramos todos los inputs.
 		if (StageData.currentData.playerHealth <= 0) {
 			forwInput = 0;
@@ -106,7 +116,7 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 		// Leemos todos los inputs.
-		if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0) {
+		if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0 && respawnEnabled) {
 			ResetCar ();
 		}
 
@@ -269,6 +279,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void CrossCheckPoint(Collider other)
 	{
+		respawnEnabled = true;
 		savedResetPosition = other.transform.position;
 		savedResetRotation = other.transform.rotation;
 		nodeCrossedParams = other.transform.parent.parent.GetComponent<RoadNode>();
@@ -288,11 +299,12 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		if (cleanSection) {
 			StageData.currentData.HealPlayer (10);
-			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored", Color.green, 30));
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored!", Color.green, 30));
+			StageData.currentData.cleanSections++;
 		}
 		cleanSection = true;
 		StageData.currentData.remainingSec += nodeCrossedParams.GetTimeAwarded();
-		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended " + "+" + nodeCrossedParams.GetTimeAwarded(), Color.white, 40));
+		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended! " + " + " + nodeCrossedParams.GetTimeAwarded(), Color.white, 40));
 
 	}
 
