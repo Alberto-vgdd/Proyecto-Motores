@@ -21,6 +21,7 @@ public class PauseMenuScript : MonoBehaviour
 
 	void Start () 
 	{
+		GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 1f;
 		m_GamePaused = true;
 		m_HUDEnabled = true;
         m_Ascended = false;
@@ -33,8 +34,10 @@ public class PauseMenuScript : MonoBehaviour
 		if (Input.GetKeyDown ("escape"))
 		{
 			PauseGame ();
-			GameObject.Find ("HUDOnText").GetComponent<RawImage> ().raycastTarget = false;
+			/*GameObject.Find ("HUDOnText").GetComponent<RawImage> ().raycastTarget = false;
 			GameObject.Find ("HUDOffText").GetComponent<RawImage> ().raycastTarget = false;
+			GameObject.Find ("OKButton").GetComponent<RawImage> ().raycastTarget =false;
+			GameObject.Find ("CancelButton").GetComponent<RawImage> ().raycastTarget= false;*/
 		}
 	}
 
@@ -109,10 +112,16 @@ public class PauseMenuScript : MonoBehaviour
         if (m_Ascended)
         {
             m_Camera.profile = m_VaporwaveEffects;
+			GameObject.Find ("OKButton").GetComponent<RawImage> ().enabled = false;
+			GameObject.Find ("CancelButton").GetComponent<RawImage> ().enabled = true;
+			GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 0.75f;
         }
         else
         {
             m_Camera.profile = m_NormalEffects;
+			GameObject.Find ("OKButton").GetComponent<RawImage> ().enabled = true;
+			GameObject.Find ("CancelButton").GetComponent<RawImage> ().enabled = false;
+			GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 1f;
         }
     }
 }
