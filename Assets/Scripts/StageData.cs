@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class StageData : MonoBehaviour {
 
@@ -34,6 +35,8 @@ public class StageData : MonoBehaviour {
     public GameObject dayChasis;
     public GameObject nightChasis;
 
+	private bool gameOver;
+	private float gameOverDelay = 5.0f;
 
 	void Awake () { currentData = this; }
 
@@ -45,6 +48,25 @@ public class StageData : MonoBehaviour {
 		}
 
 		remainingSec = Mathf.MoveTowards (remainingSec, 0, Time.deltaTime);
+
+		if (gameOver)
+		{
+			gameOverDelay -= Time.deltaTime;
+			if (gameOverDelay <= 0.0f) 
+			{
+				SceneManager.LoadScene ("Title Screen");
+			}
+		} 
+		else
+		{
+			if (notification_destroyed || (remainingSec <= 0 && Mathf.Abs (pm.accumulatedAcceleration) <= 1f)) 
+			{
+				NotificationManager.currentInstance.AddNotification (new GameNotification ("GAME OVER", Color.red, 200));
+				gameOver = true;
+			}
+		}
+
+
 
 		
 	}
@@ -123,4 +145,5 @@ public class StageData : MonoBehaviour {
         dayChasis.SetActive(!lightsEnabled);
 
     }
+		
 }

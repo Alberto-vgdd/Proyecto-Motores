@@ -147,8 +147,6 @@ public class MovieScript : MonoBehaviour {
 	void Update () 
 	{
 		timeWaiting += Time.deltaTime;
-		print ("Se esta actualisando");
-
 		MovieEventSystem ();
 
 		if (videoFadeOutActive) 
