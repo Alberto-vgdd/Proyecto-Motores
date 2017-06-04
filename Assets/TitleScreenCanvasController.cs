@@ -8,7 +8,7 @@ public class TitleScreenCanvasController : MonoBehaviour
 
 	public void StartGame()
 	{
-		SceneManager.LoadScene("test");
+		SceneManager.LoadScene("game");
 	}
 
 	public void ExitGame()
