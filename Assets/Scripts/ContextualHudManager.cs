@@ -66,7 +66,7 @@ public class ContextualHudManager : MonoBehaviour {
 			return;
 		}
 		DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 1, Time.deltaTime);
-		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 2.5f;
+		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 3.5f;
 		float colorT = Mathf.Min (1, tempDriftChain / 3000);
 		DriftText.color = Color.Lerp (Color.white, Color.red, colorT);
 		DriftText.text = (int)tempDriftChain + "" /*+ " m."*/;

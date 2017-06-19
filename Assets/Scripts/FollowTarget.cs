@@ -34,6 +34,10 @@ public class FollowTarget : MonoBehaviour {
 	private float camDegreeRads;
 	private float camCos;
 	private float camSin;
+	private float tiltSpeed = 15;
+	private float tiltMultiplier = 0.125f;
+	private float tiltCurrent = 0;
+	private float camTurnSpeed = 100f;
 
 	void Start () {
 		camDegreeTemp = 0;
@@ -53,10 +57,12 @@ public class FollowTarget : MonoBehaviour {
 	void lookAtTarget()
 	{
         transform.LookAt (target.transform.position+new Vector3(0f,1f,0f));
+		tiltCurrent = Mathf.MoveTowards (tiltCurrent, tiltMultiplier * pm.driftDegree, Time.deltaTime * tiltSpeed);
+		transform.Rotate (Vector3.forward * tiltCurrent);
 	}
 	void sphericalPositionLock()
 	{
-		camDegreeTemp = Mathf.MoveTowardsAngle(camDegreeTemp, camDegree, Time.smoothDeltaTime*200);
+		camDegreeTemp = Mathf.MoveTowardsAngle(camDegreeTemp, camDegree, Time.smoothDeltaTime*camTurnSpeed);
 		camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;
 		camCos = Mathf.Cos (camDegreeRads);
 		camSin = Mathf.Sin (camDegreeRads);

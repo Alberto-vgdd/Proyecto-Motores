@@ -7,24 +7,12 @@ public class PlayerMovement : MonoBehaviour {
 	// - RigidBody (No kinematico, sin constantes)
 	// - Collider (Cubo)
 
-	private Rigidbody rb;
-
-	[Header("Friction strenght (LESS IS MORE)")]
-	[Range(0.1f, 0.98f)]
-	public float frictionFactorFront;									// Factor de friccion frontal(menor = mas velocidad perdida al colisionar)
-	[Range(0.9f, 1f)]
-	public float frictionFactorSide;									// Factor de friccion lateral
-
-	[Header("Input Variables")]
-	public float forwInput;												// Almacena el input de acelerar/frenar
-	public float turnInput;												// Almacena el input de giro
-
 	[Header("Car properties")]
-	[Range(3,10)]
+	[Range(5.5f,8f)]
 	public float turnRate;												// Fuerza de giro (sin drift) del vehiculo
 	[Range(0.5f,6)]
 	public float acceleration;											// Aceleracion del vehiculo
-	[Range(25, 100)]
+	[Range(25, 45)]
 	public float maxFwdSpeed;											// Velocidad maxima
 	[Range(-25,-5f)]
 	public float maxBwdSpeed;											// Velocidad maxima marcha atras
@@ -38,33 +26,40 @@ public class PlayerMovement : MonoBehaviour {
 	public float driftStabilization;									// Auto-Estabilizacion del derrape
 	[Range(0.1f, 2f)]
 	public float damageMultiplier;										// Damage multiplier
-
-	private bool respawnEnabled = false;								// Permite el uso de R, se activa al cruzar el primer CP pasivo.
-	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
-	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
-	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
-
-	[Header("Advanced (DONT TOUCH)")]
-	public float groundToAirThs;										// Margen de tiempo para dejar de tocar suelo (en seg.)
-	public float airToGroundThs;										// Margen de tiempo para volver a tocar el suelo (en seg.)
-	public float ungroundedRespawnTime;									// Tiempo sin tocar suelo necesario para auto-reaparecer
-	public float Tr2Vel;												// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
-	public float groundingForce;										// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
-	public float inclinationMaxSpeedModifier;							// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno. Recomendado 45.
-	public float inclinationAccelerationModifier;						// Intensidad de la modificacion de la aceleracion por inclinacion de terreno. Recomendado 1.5
+	[Range(1f, 6f)]
+	public float speedFalloffReductionFwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
+	[Range(1f, 6f)]
+	public float speedFalloffReductionBwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
 
 	[Header("Debug info")]
+	//TODO: convertir en privadas y preasignar los valores.
 	public bool grounded;												// Esta en el suelo?
 	public bool groundedHitbox;											// Detecta colision con el suelo?
 	public bool drifting;												// Esta derrapando?
+	public float forwInput;												// Almacena el input de acelerar/frenar
+	public float turnInput;												// Almacena el input de giro
 	public float accumulatedAcceleration;								// Velocidad
 	public float ungroundedTime;										// Tiempo sin tocar el suelo
 	public float groundingTime;											// Tiempo de transicion aire-suelo	
 	public bool cleanAir;												// En el aire sin colisionar con nada?
 	public bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	public float driftDegree;											// Angulo de derrape
-	public float driftOutsideForce;										// Multiplicador de apertura de drift
-	public float driftCorrectionStr;									// Fuerza de correccion del drift al intentar estabilizar.
+
+	// Constantes
+
+	private float groundToAirThs = 0.05f;								// Margen de tiempo para dejar de tocar suelo (en seg.)
+	private float airToGroundThs = 0.05f;								// Margen de tiempo para volver a tocar el suelo (en seg.)
+	private float ungroundedRespawnTime = 6f;							// Tiempo sin tocar suelo necesario para auto-reaparecer
+	private float Tr2Vel = 6f;											// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
+	private float downforce = 5000f;								    // Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
+	private float inclinationMaxSpeedModifier = 30f;					// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
+	private float inclinationAccelerationModifier = 25f;				// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
+	private float driftOutsideForce = 1.75f;							// Multiplicador de apertura de drift
+	private float driftCorrectionStr = 1.75f;								// Fuerza de correccion del drift al intentar estabilizar.
+	private float frictionFactorFront = 0.85f;							// Factor de friccion frontal (menor = mas velocidad perdida al colisionar)
+	private float frictionFactorSide = 0.99f;							// Factor de friccion lateral (menor = mas velocidad perdida al colisionar)
+
+	// Valores auxiliares privados
 
 	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
@@ -72,6 +67,11 @@ public class PlayerMovement : MonoBehaviour {
 	private RoadNode nodeCrossedParams;									// Ultimo nodo cruzado (NodeProperties)
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
+	private bool respawnEnabled = false;								// Permite el uso de R, se activa al cruzar el primer CP pasivo.
+	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
+	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
+	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
+	private Rigidbody rb;
 
 	private bool gameStarted;
 
@@ -140,23 +140,36 @@ public class PlayerMovement : MonoBehaviour {
 			extraForwInput = Mathf.Clamp( Mathf.DeltaAngle(0,transform.rotation.eulerAngles.x) / inclinationAccelerationModifier, -1, 2);
 			extraFwdSpeed = Mathf.DeltaAngle (0, transform.rotation.eulerAngles.x) / inclinationMaxSpeedModifier;
 
-			rb.AddForce(-transform.up * Mathf.Abs(accumulatedAcceleration) * groundingForce * Time.fixedDeltaTime);
+			// Downforce (Empuje hacia el suelo para "pegar" el coche al suelo)
+			rb.AddForce(-transform.up * Mathf.Abs(accumulatedAcceleration) * downforce * Time.fixedDeltaTime);
+
 
 			if (forwInput == 0)
-				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0 + extraFwdSpeed * 20, Time.fixedDeltaTime * 5);
-			
-			if (forwInput < 0 && accumulatedAcceleration > 0) {
-				accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 6 * acceleration * (1-(accumulatedAcceleration/(maxBwdSpeed+extraFwdSpeed)));
-			} else {
-				accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (1-(accumulatedAcceleration/(maxFwdSpeed+extraFwdSpeed)));
+				// En el caso de que el jugador no de inputs.
+				accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, extraFwdSpeed * 20, Time.fixedDeltaTime * 5);
+			else {
+				// En el caso de que el jugador de algun input de aceleracion.
+				if (forwInput < 0 && accumulatedAcceleration > 0) { 
+					// Frenando
+					accumulatedAcceleration += (forwInput+extraForwInput) * Time.fixedDeltaTime * 20;
+				} else if (accumulatedAcceleration < 0 && forwInput < 0){ 
+					// Marcha atras
+					accumulatedAcceleration += (forwInput + extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (Mathf.Clamp01 ((1-(accumulatedAcceleration / maxBwdSpeed)) * speedFalloffReductionBwd)); 
+				} else { 
+					// Acelerando
+					accumulatedAcceleration += (forwInput + extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (Mathf.Clamp01 ((1-(accumulatedAcceleration / maxFwdSpeed)) * speedFalloffReductionFwd)); 
+				}
 			}
-			
+
 		} else {			   // Acciones a realizar sin tocar suelo
 
-			// TEST
+			// ===========================
+			// TODO: Eliminar?
 			if (forwInput < 0)
-				rb.velocity = Vector3.MoveTowards (rb.velocity, Vector3.zero, Time.deltaTime*40);
-			// TEST
+				rb.velocity = Vector3.MoveTowards (rb.velocity, Vector3.zero, Time.fixedDeltaTime*40);
+			// TODO: hasta aqui?
+			// ===========================
+
 			forwInput = turnInput = 0;
 			accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
 
@@ -223,12 +236,12 @@ public class PlayerMovement : MonoBehaviour {
 
 	void MoveFwd()
 	{
-		accumulatedAcceleration = Mathf.MoveTowards(accumulatedAcceleration, 0, ((Mathf.Abs(driftDegree)*driftSpeedLoss) / 20) * Time.fixedDeltaTime);
+		accumulatedAcceleration = Mathf.MoveTowards(accumulatedAcceleration, 0, ((Mathf.Abs(driftDegree)*driftSpeedLoss) / 10) * Time.fixedDeltaTime);
 		if (!grounded)
 			return;
 		// TODO: Ajustar la apertura del derrape? en "-driftDegree", multiplicar por valor.
 		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedAcceleration * Time.fixedDeltaTime)));
-		if (Mathf.Abs(accumulatedAcceleration) < 1) {
+		if (accumulatedAcceleration < 3) {
 			EndDrift();
 		}
 	}
@@ -237,14 +250,14 @@ public class PlayerMovement : MonoBehaviour {
 
 	void MoveTrn()
 	{
-		// Para evitar que se pueda girar a 0km/h.
+		// Para evitar que se pueda girar a 0km/h como un tanque.
 		turnMultiplier = Mathf.Clamp (accumulatedAcceleration/10, -1,1);
 		// Giro normal (Sin derrape)
 		transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * turnRate * 10 * Time.fixedDeltaTime * turnMultiplier,0));
 
 		if (drifting) {
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
-				driftDegree += turnInput * ( 1- Mathf.Abs(driftDegree)/maxDrift) * Time.fixedDeltaTime * driftStrenght * 10;
+				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10 * (Mathf.Clamp01 ((1-(Mathf.Abs(driftDegree) / maxDrift)) * 1f)); // *1 es para recordar donde poner el ajuste
 			} else {
 				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10 * driftCorrectionStr; 
 			}

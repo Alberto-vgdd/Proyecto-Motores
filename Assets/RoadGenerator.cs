@@ -10,6 +10,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	public static RoadGenerator currentInstance;
 
+	public int levelSeed;
 	public int maxLoadedNodes;								// Maximo de nodos cargados
 	private int nodesBehindLoaded = 6;						// Nodos cargados DETRAS del jugador
 	public float globalRoadScale;							// Escala global del mundo
@@ -46,6 +47,8 @@ public class RoadGenerator : MonoBehaviour {
 
 	void Start ()
 	{
+		print ("[MAP] Generating seed " + levelSeed);
+		Random.InitState(levelSeed);
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
 		tempValidNodes = new List<GameObject>();

@@ -10,7 +10,7 @@ public class DisplaceWithDrift : MonoBehaviour {
 	public float displaceSpeed;
 	[Range(0.1f, 1)]
 	public float displaceMultiplier;
-	[Range(0, 1)]
+	[Range(-1, 1)]
 	public float frontalOffset;
 	private float displacementCurrent;
 	private float displacementTarget;
