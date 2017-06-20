@@ -73,6 +73,7 @@ public class RoadNode : MonoBehaviour {
 		checkPointVisualParent.SetActive (true);
 		checkPointTrigger.tag = "CP_Active";
 		checkPointTrigger.SetActive (true);
+		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap ();
 	}
 
 	// Prepara este punto de control para que cuente como direccion contraria.

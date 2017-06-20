@@ -61,25 +61,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	public void SpawnNextNode()
 	{
-		nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
-		if (totalNodesCreated < 4)
-			nextNodeIsCurve = false;
-		tempValidNodes.Clear ();
-		for (int i = 0; i < availableNodes.Count; i++) {
-			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();
-			if ((lastReadedNode.dispAngular + currentAngle) > 90 || (lastReadedNode.dispAngular + currentAngle) < -90) {
-				continue;
-			}
-			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0) {
-				continue;
-			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
-				continue;
-			}
-			tempValidNodes.Add (availableNodes [i]);
-
-		}
-			
-		lastCreatedNode = Instantiate (tempValidNodes [Random.Range (0, tempValidNodes.Count)], transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
+		lastCreatedNode = Instantiate (GetNextNodeToSpawn(), transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
 		lastReadedNode = lastCreatedNode.GetComponent<RoadNode> ();
 		nodesSinceLastActiveCP++;
 		stackedNodeWeight += lastReadedNode.nodeWeight;
@@ -125,6 +107,28 @@ public class RoadGenerator : MonoBehaviour {
 
 	}
 
+	public GameObject GetNextNodeToSpawn()
+	{
+		nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
+		if (totalNodesCreated < 4)
+			nextNodeIsCurve = false;
+		tempValidNodes.Clear ();
+		for (int i = 0; i < availableNodes.Count; i++) {
+			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();
+			if ((lastReadedNode.dispAngular + currentAngle) > 90 || (lastReadedNode.dispAngular + currentAngle) < -90) {
+				continue;
+			}
+			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0) {
+				continue;
+			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
+				continue;
+			}
+			tempValidNodes.Add (availableNodes [i]);
+
+		}
+		return tempValidNodes [Random.Range (0, tempValidNodes.Count)];
+	}
+
 	// Prepara la decoracion para el ultimo nodo que se ha creado (utiliza lastReadedNode)
 
 	void SetupDecorationsForNextNode()
@@ -132,7 +136,7 @@ public class RoadGenerator : MonoBehaviour {
 		
 		nodesUnttilDecoChange--;
 		if (nodesUnttilDecoChange <= 0) {
-			nodesUnttilDecoChange = Random.Range (3, 8);
+			nodesUnttilDecoChange = Random.Range (3, 10);
 			nodeDecoWallL = Random.Range (0, 5);
 			nodeDecoWallR = Random.Range (0, 5);
 

@@ -15,70 +15,89 @@ public class ContextualHudManager : MonoBehaviour {
 	private float tempDriftChain = 0;
 	private float tempAirTime = 0;
 
-	[Header("References")]
-
-	public CanvasGroup DynHealthCG;
+	[Header("CG Ref.")]
+	public CanvasGroup HealthCG;
 	public CanvasGroup DriftCG;
 	public CanvasGroup AirCG;
+	public CanvasGroup TimeCG;
+	[Header("Text Ref.")]
 	public Text DriftText;
 	public Text AirText;
-	public Slider hpbar;
-	public Image hpbarfill;
+	public Text HpText;
+	public Text TimeText;
+	public Text IncrTimeText;
 	public PlayerMovement pm;
+
+	private Vector3 driftTextBasePos;
+	private float readedTime;
 
 	[Header("Hud Parameters")]
 	public Color hpMaxColor;
 	public Color hpMinColor;
 
 	void Awake () { currentInstance = this; }
-	void Start () { UpdateDynHealth (); }
+	void Start () { 
+		UpdateDynHealth ();
+		driftTextBasePos = DriftText.transform.localPosition;
+	}
 
 	void Update () {
 		UpdateDynDrift ();
 		UpdateDynAir ();
+		//UpdateDynTime ();
 		if (pm.grounded) {
 			if (StageData.currentData.playerHealth == 100)
-				DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0, Time.deltaTime / 2);
+				HealthCG.alpha = Mathf.MoveTowards (HealthCG.alpha, 0, Time.deltaTime / 2);
 			else if (StageData.currentData.playerHealth < 50) {
-				DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0, Time.deltaTime*1.5f);
-				if (DynHealthCG.alpha <= 0)
-					DynHealthCG.alpha = 1;
+				HealthCG.alpha = Mathf.MoveTowards (HealthCG.alpha, 0, Time.deltaTime*1.5f);
+				if (HealthCG.alpha <= 0)
+					HealthCG.alpha = 1;
 			}
 			else
-				DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0.4f, Time.deltaTime/2);
+				HealthCG.alpha = Mathf.MoveTowards (HealthCG.alpha, 0.75f, Time.deltaTime/2);
 		} else {
-			DynHealthCG.alpha = Mathf.MoveTowards (DynHealthCG.alpha, 0, Time.deltaTime);
+			HealthCG.alpha = Mathf.MoveTowards (HealthCG.alpha, 0, Time.deltaTime);
 		}
 	}
 
 	// Administra el interfaz dinamico de drift.
-
+	void UpdateDynTime()
+	{
+		readedTime = StageData.currentData.remainingSec;
+		if (readedTime > 5) {
+			TimeText.text = ((int)readedTime).ToString();
+		} else {
+			TimeText.text = readedTime.ToString("N2");
+		}
+	}
 	void UpdateDynDrift()
 	{
 		if (!pm.drifting) {
+			DriftText.transform.localPosition = driftTextBasePos;
 			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
 			if (tempDriftChain > 100) {
-				NotificationManager.currentInstance.AddNotification (new GameNotification (  (int)tempDriftChain + " m. drift! Bonus time + " + (int)tempDriftChain/100 + " s.", Color.yellow, 30));
+				NotificationManager.currentInstance.AddNotification (new GameNotification ((int)tempDriftChain + " m. drift! Bonus time + " + (int)tempDriftChain / 100 + " s.", Color.yellow, 30));
 				StageData.currentData.remainingSec += (int)tempDriftChain / 100;
 			}
 			StageData.currentData.totalDrift += tempDriftChain;
 			tempDriftChain = 0;
 			return;
 		}
+		//DriftText.transform.localPosition = driftTextBasePos + Vector3.up * (Mathf.Cos (tempDriftChain*0.3f) * 0.01f);
 		DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 1, Time.deltaTime);
 		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 3.5f;
 		float colorT = Mathf.Min (1, tempDriftChain / 3000);
 		DriftText.color = Color.Lerp (Color.white, Color.red, colorT);
-		DriftText.text = (int)tempDriftChain + "" /*+ " m."*/;
+		DriftText.text = (int)tempDriftChain + " m.";
 	}
 
 	// Administra el interfaz dinamico de salud.
 
 	public void UpdateDynHealth()
 	{
-		hpbarfill.color = Color.Lerp (hpMinColor, hpMaxColor, StageData.currentData.playerHealth / 100);
-		DynHealthCG.alpha = 1;
-		hpbar.value = StageData.currentData.playerHealth / 100;
+		HpText.color = Color.Lerp (hpMinColor, hpMaxColor, StageData.currentData.playerHealth / 100);
+		HealthCG.alpha = 1;
+		HpText.text = ((int) StageData.currentData.playerHealth).ToString();
 	}
 
 	// Administra el interfaz dinamico de salto.
