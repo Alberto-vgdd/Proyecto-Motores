@@ -52,14 +52,14 @@ public class DayNightCycle : MonoBehaviour
 			if (currentHour > lightsOnEnd && currentHour < lightsOnStart) {
 				lightsOn = false;
 				StageData.currentData.UpdateAllLights ();
-				print ("turning off lights");
+				//print ("turning off lights");
 
 			}
 		} else {
 			if (!(currentHour > lightsOnEnd && currentHour < lightsOnStart)) {
 				lightsOn = true;
 				StageData.currentData.UpdateAllLights ();
-				print ("turning on lights");
+				//print ("turning on lights");
 			}
 		}
 

@@ -52,13 +52,12 @@ public class RoadGenerator : MonoBehaviour {
 	{
 		if (levelSeed == 0)
 			levelSeed = Random.Range (1, 9999999);
-		print ("[MAP] Generating seed " + levelSeed);
 		Random.InitState(levelSeed);
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
 		// Testing
 		dayTime = Random.Range(0f, 24f);
-		print ("[MAP] DayTime set to " + dayTime);
+		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + dayTime);
 		dayTimescale = 0.1f;
 		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
 		// ==========
