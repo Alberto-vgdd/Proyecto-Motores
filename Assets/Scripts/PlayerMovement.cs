@@ -78,12 +78,9 @@ public class PlayerMovement : MonoBehaviour {
 	void Start()
 	{
 		lastNodeCrossedID = -1;
-		if (driftOutsideForce == 0)
-			driftOutsideForce = 1;
 		rb = GetComponent<Rigidbody> ();
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
-		damageMultiplier = 0.8f;
 	}
 
 	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta
@@ -115,6 +112,7 @@ public class PlayerMovement : MonoBehaviour {
 				drifting = true;
 			return;
 		}
+
 		// Leemos todos los inputs.
 		//if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0 && respawnEnabled) {
 		//	ResetCar ();
@@ -162,14 +160,6 @@ public class PlayerMovement : MonoBehaviour {
 			}
 
 		} else {			   // Acciones a realizar sin tocar suelo
-
-			// ===========================
-			// TODO: Eliminar?
-			if (forwInput < 0)
-				rb.velocity = Vector3.MoveTowards (rb.velocity, Vector3.zero, Time.fixedDeltaTime*40);
-			// TODO: hasta aqui?
-			// ===========================
-
 			forwInput = turnInput = 0;
 			accumulatedAcceleration = Mathf.MoveTowards (accumulatedAcceleration, 0, Time.fixedDeltaTime * 5);
 
@@ -181,10 +171,10 @@ public class PlayerMovement : MonoBehaviour {
 
 			driftDegree = 0;
 			drifting = false;
+			accumulatedAcceleration = transform.InverseTransformDirection(rb.velocity).z / Tr2Vel;
 
 			if (ungroundedTime > ungroundedRespawnTime)
 				ResetCar ();
-			accumulatedAcceleration = transform.InverseTransformDirection(rb.velocity).z / Tr2Vel;
 		}
 		// Acciones a realizar en ambos casos
 
@@ -296,6 +286,10 @@ public class PlayerMovement : MonoBehaviour {
 		savedResetPosition = other.transform.position;
 		savedResetRotation = other.transform.rotation;
 		nodeCrossedParams = other.transform.parent.parent.GetComponent<RoadNode>();
+		if (nodeCrossedParams == null) {
+			return;
+			print ("[ERROR] RoadNode not found on road parent.");
+		}
 		nodeCrossedParams.CrossCheckPoint();
 
 		// En el caso de que el jugador de alguna forma se salte parte de la carretera, esto comprueba cuantos nodos se ha saltado.
@@ -316,9 +310,8 @@ public class PlayerMovement : MonoBehaviour {
 			StageData.currentData.cleanSections++;
 		}
 		cleanSection = true;
-		StageData.currentData.remainingSec += nodeCrossedParams.GetTimeAwarded();
-		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended! " + " + " + nodeCrossedParams.GetTimeAwarded(), Color.white, 40));
 
+		StageData.currentData.ExtendTime (nodeCrossedParams.GetTimeAwarded ());
 	}
 
 	// Administra las colisiones [OnCollisionStay].

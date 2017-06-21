@@ -54,47 +54,24 @@ public class StageData : MonoBehaviour {
 	private float DISTANCE_SCORE_MULTIPLIER = 10;
 	private float DRIFT_SCORE_MULTIPLIER = 0.5f;
 	private float CLEAN_SECTION_SCORE_MULTIPLIER = 50;
-	private float DAMAGE_TAKEN_SCORE_MULTIPLIER = 0.8f;
+	private float DAMAGE_TAKEN_SCORE_MULTIPLIER = 10f;
 
 	void Awake () { currentData = this; }
 	void Start () {
 	}
 
 	void Update () {
-		if (remainingSec > 5) {
-			timeRemainingInfo.text = ((int)remainingSec).ToString();
-		} else {
-			timeRemainingInfo.text = remainingSec.ToString("N2");
-		}
-
-		if (startGameDelay > 0) {
-			if (startGameDelay < 3) {
-				countDownText.text = ((int)(startGameDelay+1)).ToString();
-			}
-			startGameDelay -= Time.deltaTime;
-			if (startGameDelay <= 0)
-				gameStarted = true;
-		} else {
-			if (countdownOverDelay > 0) {
-				countdownOverDelay -= Time.deltaTime;
-				countDownText.text = " GO! ";
-				if (countdownOverDelay <= 0)
-					countDownText.text = "";
-			}
+		
+		UpdateTimeInfo ();
+		UpdateCountdown ();
+		if (gameStarted) {
 			remainingSec = Mathf.MoveTowards (remainingSec, 0, Time.deltaTime);
 		}
-
-
 		if (gameOver)
 		{
 			fadeoutCG.alpha = Mathf.MoveTowards (fadeoutCG.alpha, 1, Time.deltaTime * 0.2f);
 			endGameStatsCG.alpha = fadeoutCG.alpha;
 			gameOverDelay -= Time.deltaTime;
-			endGameStatsText.text = " GAME OVER " + "\n\nTOTAL DISTANCE:    " + nodesCrossed + " [ +" + nodesCrossed*DISTANCE_SCORE_MULTIPLIER + " ] "
-				+ "\nCLEAN SECTIONS:    " + cleanSections + " [ +" + cleanSections * CLEAN_SECTION_SCORE_MULTIPLIER + " ] "
-				+ "\nTOTAL DRIFT:    " + (int)totalDrift + " [ +" + (int)(totalDrift*DRIFT_SCORE_MULTIPLIER) + " ] "
-				+ "\nDAMAGE TAKEN:    " + (int)damageTaken + " [ -" + (int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER) + " ] "
-				+ "\n\nFINAL SCORE:    " + finalscore +"\n\nPRESS ANY KEY TO CONTINUE";
 			if (gameOverDelay <= 0.0f) 
 			{
 				if (Input.anyKeyDown)
@@ -108,14 +85,9 @@ public class StageData : MonoBehaviour {
 			{
 				NotificationManager.currentInstance.AddNotification (new GameNotification ("GAME OVER", Color.red, 200));
 				gameOver = true;
-				finalscore = ( ((int)(totalDrift * DRIFT_SCORE_MULTIPLIER)) + ((int)(nodesCrossed * DISTANCE_SCORE_MULTIPLIER)) 
-					+ ((int)(cleanSections * CLEAN_SECTION_SCORE_MULTIPLIER)) - ((int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER)) );
+				SetEndGameScreen ();
 			}
 		}
-
-
-
-		
 	}
 
 	// Hace 10 de daño al jugador y actualiza el interfaz, este daño NO PUEDE ser letal.
@@ -125,7 +97,6 @@ public class StageData : MonoBehaviour {
 		if (playerHealth > 0.1f) {
 			DamagePlayer (Mathf.Clamp(0.1f - playerHealth ,-10,0));
 		}
-
 		UpdateHealthNotifications ();
 	}
 
@@ -133,11 +104,22 @@ public class StageData : MonoBehaviour {
 
 	public void DamagePlayer(float dmg)
 	{
+		if (dmg > playerHealth) {
+			dmg = playerHealth;
+		}
 		dmg = Mathf.Abs (dmg);
 		damageTaken += dmg;
 		playerHealth -= dmg;
 		ContextualHudManager.currentInstance.UpdateDynHealth ();
 		UpdateHealthNotifications ();
+	}
+
+	// Extiende el tiempo restante la cantidad indicada.
+
+	public void ExtendTime(float timeExtension)
+	{
+		NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended! " + " + " + timeExtension, Color.white, 40));
+		remainingSec += timeExtension;
 	}
 
 	// Revisa si es necesario mostrar las alertas de daño.
@@ -180,6 +162,8 @@ public class StageData : MonoBehaviour {
 		ContextualHudManager.currentInstance.UpdateDynHealth();
 	}
 
+	// Actualiza la iluminacion de todas las piezas activas.
+
     public void UpdateAllLights(bool lightsEnabled)
     {
         lightsOn = lightsEnabled;
@@ -195,5 +179,48 @@ public class StageData : MonoBehaviour {
         dayChasis.SetActive(!lightsEnabled);
 
     }
+
+	// Actualiza la infomracion del interfaz del tiempo.
+
+	void UpdateTimeInfo()
+	{
+		if (remainingSec > 5) {
+			timeRemainingInfo.text = ((int)remainingSec).ToString();
+		} else {
+			timeRemainingInfo.text = remainingSec.ToString("N2");
+		}
+	}
+
+	void UpdateCountdown()
+	{
+		if (startGameDelay > 0) {
+			if (startGameDelay < 3) {
+				countDownText.text = ((int)(startGameDelay+1)).ToString();
+			}
+			startGameDelay -= Time.deltaTime;
+			if (startGameDelay <= 0)
+				gameStarted = true;
+		} else {
+			if (countdownOverDelay > 0) {
+				countdownOverDelay -= Time.deltaTime;
+				countDownText.text = " GO! ";
+				if (countdownOverDelay <= 0)
+					countDownText.text = "";
+			}
+		}
+	}
+
+	// Prepara la pantalla de puntuacion.
+
+	void SetEndGameScreen()
+	{
+		finalscore = ( ((int)(totalDrift * DRIFT_SCORE_MULTIPLIER)) + ((int)(nodesCrossed * DISTANCE_SCORE_MULTIPLIER)) 
+			+ ((int)(cleanSections * CLEAN_SECTION_SCORE_MULTIPLIER)) - ((int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER)) );
+		endGameStatsText.text = " GAME OVER " + "\n\nTOTAL DISTANCE:    " + nodesCrossed + " [ +" + nodesCrossed*DISTANCE_SCORE_MULTIPLIER + " ] "
+			+ "\nCLEAN SECTIONS:    " + cleanSections + " [ +" + cleanSections * CLEAN_SECTION_SCORE_MULTIPLIER + " ] "
+			+ "\nTOTAL DRIFT:    " + (int)totalDrift + " [ +" + (int)(totalDrift*DRIFT_SCORE_MULTIPLIER) + " ] "
+			+ "\nDAMAGE TAKEN:    " + (int)damageTaken + " [ -" + (int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER) + " ] "
+			+ "\n\nFINAL SCORE:    " + finalscore +"\n\nPRESS ANY KEY TO CONTINUE";
+	}
 		
 }

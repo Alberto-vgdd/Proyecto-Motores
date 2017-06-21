@@ -39,7 +39,7 @@ public class RoadGenerator : MonoBehaviour {
 	private int totalNodesCreated;							// Total de nodos creados
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
-	private float NodeWeight2Time = 0.8f;
+	private float NodeWeight2Time = 0.4f;
 
 	void Awake () {
 		currentInstance = this;
