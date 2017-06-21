@@ -69,7 +69,7 @@ public class NodeProperties : MonoBehaviour {
     {
         for (int i = 0; i < lights.Count; i++)
         {
-            if (StageData.currentData.lightsOn)
+			if (DayNightCycle.currentInstance.getLightsOn())
             {
                 lights[i].SetActive(true);
                 lights[i].GetComponent<Light>().range = StageData.currentData.lightRange * absoluteScale;

@@ -14,14 +14,13 @@ public class PauseMenuScript : MonoBehaviour
 	public GameObject[] m_HUDElements;
 	public Text m_HUDButton;
 
-
     public PostProcessingBehaviour m_Camera;
     public PostProcessingProfile m_NormalEffects;
     public PostProcessingProfile m_VaporwaveEffects;
 
 	void Start () 
 	{
-		GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 1f;
+		GameObject.Find ("[S] SoundManager").GetComponent<AudioSource> ().pitch = 1f;
 		m_GamePaused = true;
 		m_HUDEnabled = true;
         m_Ascended = false;

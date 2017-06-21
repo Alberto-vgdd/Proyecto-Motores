@@ -287,8 +287,8 @@ public class PlayerMovement : MonoBehaviour {
 		savedResetRotation = other.transform.rotation;
 		nodeCrossedParams = other.transform.parent.parent.GetComponent<RoadNode>();
 		if (nodeCrossedParams == null) {
-			return;
 			print ("[ERROR] RoadNode not found on road parent.");
+			return;
 		}
 		nodeCrossedParams.CrossCheckPoint();
 

@@ -39,6 +39,9 @@ public class RoadGenerator : MonoBehaviour {
 	private int totalNodesCreated;							// Total de nodos creados
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
+	private float dayTime;
+	private float dayTimescale;
+
 	private float NodeWeight2Time = 0.4f;
 
 	void Awake () {
@@ -47,10 +50,18 @@ public class RoadGenerator : MonoBehaviour {
 
 	void Start ()
 	{
+		if (levelSeed == 0)
+			levelSeed = Random.Range (1, 9999999);
 		print ("[MAP] Generating seed " + levelSeed);
 		Random.InitState(levelSeed);
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
+		// Testing
+		dayTime = Random.Range(0f, 24f);
+		print ("[MAP] DayTime set to " + dayTime);
+		dayTimescale = 0.1f;
+		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
+		// ==========
 		tempValidNodes = new List<GameObject>();
 		for (int i = 0; i < maxLoadedNodes - nodesBehindLoaded; i++) {
 			SpawnNextNode ();
@@ -71,7 +82,7 @@ public class RoadGenerator : MonoBehaviour {
 		lastReadedNode.SetID (totalNodesCreated);
 		lastCreatedNode.transform.localScale = Vector3.one * globalRoadScale;
 		SetupDecorationsForNextNode ();
-		lastReadedNode.SetLightState (StageData.currentData.lightsOn);
+		lastReadedNode.SetLightState (DayNightCycle.currentInstance.getLightsOn());
 		lastReadedNode.SetLighScale (globalRoadScale);
 		//Aqui creamos CheckPoint
 		if (nodesSinceLastActiveCP >= nodesBetweenActiveCP) {

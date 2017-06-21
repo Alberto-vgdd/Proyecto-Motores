@@ -30,7 +30,6 @@ public class StageData : MonoBehaviour {
 	public PlayerMovement pm;												// Referencia a PlayerMovement.
 
     [Header("Ambient Light Parameters")]
-    public bool lightsOn;
     public float lightRange;
     public float lightAngle;
 
@@ -164,19 +163,16 @@ public class StageData : MonoBehaviour {
 
 	// Actualiza la iluminacion de todas las piezas activas.
 
-    public void UpdateAllLights(bool lightsEnabled)
+    public void UpdateAllLights()
     {
-        lightsOn = lightsEnabled;
-		if (RoadGenerator.currentInstance == null) {return;	}
-        lightsOn = lightsEnabled;
-		for (int i = 12;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
+		// TODO: esto no deberia estar aqui...
+		for (int i = 0;i < RoadGenerator.currentInstance.spawnedNodes.Count; i++)
         {
-			
-			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (lightsEnabled);
+			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (DayNightCycle.currentInstance.getLightsOn());
         }
 
-        nightChasis.SetActive( lightsEnabled);
-        dayChasis.SetActive(!lightsEnabled);
+		nightChasis.SetActive(DayNightCycle.currentInstance.getLightsOn());
+		dayChasis.SetActive(!DayNightCycle.currentInstance.getLightsOn());
 
     }
 
