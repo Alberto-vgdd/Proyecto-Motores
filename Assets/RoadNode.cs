@@ -8,6 +8,8 @@ public class RoadNode : MonoBehaviour {
 	// Importante: Mantener coherencia con los indices de las decoraciones, todos deben usar el mismo indice para cada tipo de decoracion, 
 	// por ejemplo: 0 para la valla publicitaria, 1 para el muro de cemento, 2 para el quitamiedos, 3 para el muro de plantas.
 
+	[Header("Unique ID")]
+	public int roadPieceID;
 	[Header("Displacement Parameters")]
 	public float dispLateral;									// Desplazamiento lateral relativo
 	public float dispFrontal;									// Desplazamiento frontal relativo
@@ -24,6 +26,7 @@ public class RoadNode : MonoBehaviour {
 	public GameObject checkPointVisualParent;					// Parte visual del checkpoint
 
 	[Header("Other Params")]
+	public float lightRange;
 	public float nodeWeight;									// Peso o dificultad del nodo, determina la contribucion a tiempo extendido del nodo.
 	private int timeAwarded = 0;								// Tiempo extra que dara este nodo si es un punto de control activo.
 	private int nodeID;											// ID del nodo (orden en el que se ha creado)
@@ -43,7 +46,7 @@ public class RoadNode : MonoBehaviour {
 	public void SetLighScale(float scale)
 	{
 		for (int i = 0; i < envLights.Count; i++) {
-			envLights [i].range *= scale;
+			envLights [i].range = lightRange * scale;
 		}
 	}
 
@@ -51,17 +54,33 @@ public class RoadNode : MonoBehaviour {
 
 	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround)
 	{
-		if (LWall < envLeftWall.Count) {
-			envLeftWall [LWall].SetActive (true);
+		for (int i = 0; i < envLeftWall.Count; i++) {
+			if (i == LWall) {
+				envLeftWall [i].SetActive (true);
+			} else {
+				envLeftWall [i].SetActive (false);
+			}
 		}
-		if (RWall < envRightWall.Count) {
-			envRightWall [RWall].SetActive (true);
+		for (int i = 0; i < envRightWall.Count; i++) {
+			if (i == RWall) {
+				envRightWall [i].SetActive (true);
+			} else {
+				envRightWall [i].SetActive (false);
+			}
 		}
-		if (LGround < envLeftGround.Count) {
-			envLeftGround [LGround].SetActive (true);
+		for (int i = 0; i < envLeftGround.Count; i++) {
+			if (i == LGround) {
+				envLeftGround [i].SetActive (true);
+			} else {
+				envLeftGround [i].SetActive (false);
+			}
 		}
-		if (RGround < envRightGround.Count) {
-			envRightGround [RGround].SetActive (true);
+		for (int i = 0; i < envRightGround.Count; i++) {
+			if (i == RGround) {
+				envRightGround [i].SetActive (true);
+			} else {
+				envRightGround [i].SetActive (false);
+			}
 		}
 	}
 
@@ -73,7 +92,15 @@ public class RoadNode : MonoBehaviour {
 		checkPointVisualParent.SetActive (true);
 		checkPointTrigger.tag = "CP_Active";
 		checkPointTrigger.SetActive (true);
-		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap ();
+		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap (true);
+	}
+	public void SetAsPassiveCheckpoint()
+	{
+		timeAwarded = 0;
+		checkPointVisualParent.SetActive (false);
+		checkPointTrigger.tag = "CP_Passive";
+		checkPointTrigger.SetActive (true);
+		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap (false);
 	}
 
 	// Prepara este punto de control para que cuente como direccion contraria.

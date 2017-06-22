@@ -71,7 +71,10 @@ public class RoadGenerator : MonoBehaviour {
 
 	public void SpawnNextNode()
 	{
-		lastCreatedNode = Instantiate (GetNextNodeToSpawn(), transform.position, transform.rotation * Quaternion.Euler(0,90,0)) as GameObject;
+		lastCreatedNode = RoadPool.currentInstance.GetRoadPiece(GetNextNodeToSpawn ().GetComponent<RoadNode>().roadPieceID);
+		lastCreatedNode.transform.position = transform.position;
+		lastCreatedNode.transform.rotation = transform.rotation * Quaternion.Euler(0,90,0);
+		lastCreatedNode.SetActive(true);
 		lastReadedNode = lastCreatedNode.GetComponent<RoadNode> ();
 		nodesSinceLastActiveCP++;
 		stackedNodeWeight += lastReadedNode.nodeWeight;
@@ -85,11 +88,13 @@ public class RoadGenerator : MonoBehaviour {
 		lastReadedNode.SetLighScale (globalRoadScale);
 		//Aqui creamos CheckPoint
 		if (nodesSinceLastActiveCP >= nodesBetweenActiveCP) {
-			lastReadedNode.SetAsActiveCheckpoint ((int) (stackedNodeWeight * NodeWeight2Time));
+			lastReadedNode.SetAsActiveCheckpoint ((int)(stackedNodeWeight * NodeWeight2Time));
 			nodesSinceLastActiveCP = 0;
 			stackedNodeWeight = 0;
 			NodeWeight2Time *= 0.98f;
 			curveChance = Mathf.Clamp (curveChance + 3, 0, 100);
+		} else {
+			lastReadedNode.SetAsPassiveCheckpoint ();
 		}
 
 		// Self setup for next node
@@ -112,7 +117,7 @@ public class RoadGenerator : MonoBehaviour {
 			spawnedNodes [nodesBehindLoaded - 2].GetComponent<RoadNode> ().SetAsWrongWay ();
 			GameObject nodeToRemove = spawnedNodes [0];
 			spawnedNodes.Remove (nodeToRemove);
-			Destroy (nodeToRemove);
+			nodeToRemove.SetActive(false);
 		}
 
 	}
