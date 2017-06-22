@@ -14,15 +14,23 @@ public class AddToMinimap : MonoBehaviour {
 	// Update is called once per frame
 	public void SetAsActiveOnMinimap(bool arg)
 	{
+		if (referencedImage == null) {
+			referencedImage = Instantiate (iconToInstantiate, MinimapManager.currentInstance.gameObject.transform) as Image;
+		}
+		referencedImage.gameObject.SetActive (true);
+		referencedImage.transform.SetAsLastSibling ();
 		isActiveCP = arg;
-		referencedImage = Instantiate (iconToInstantiate, MinimapManager.currentInstance.gameObject.transform) as Image;
 		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor;
 		referencedImage.transform.localRotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.y);
-		if (isActiveCP)
+
+		if (isActiveCP) {
 			referencedImage.color = Color.yellow;
+		} else {
+			referencedImage.color = Color.white;
+		}
 	}
 	void OnDisable()
 	{
-		Destroy (referencedImage);
+		referencedImage.gameObject.SetActive (false);
 	}
 }
