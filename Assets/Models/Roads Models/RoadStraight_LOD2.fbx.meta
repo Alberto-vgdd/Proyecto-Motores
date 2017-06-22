@@ -1,0 +1,194 @@
+fileFormatVersion: 2
+guid: 67cd2df4017e593419ea2927cee21137
+timeCreated: 1498133251
+licenseType: Free
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: AdFenceLeft
+    100002: AdFenceRight
+    100004: CliffLeft
+    100006: CliffRight
+    100008: ConcreteWallLeft
+    100010: ConcreteWallRight
+    100012: MountainLeft
+    100014: MountainRight
+    100016: PianoLeft
+    100018: PianoRight
+    100020: RailGuardLeft
+    100022: RailGuardRight
+    100024: Road
+    100026: Road Collider
+    100028: Road Mask
+    100030: //RootNode
+    100032: StreetLampLeft
+    100034: StreetLampRight
+    100036: TerrainLeft
+    100038: TerrainRight
+    100040: TreeWallLeft
+    100042: TreeWallRight
+    100044: WaterCanalLeft
+    100046: WaterCanalRight
+    400000: AdFenceLeft
+    400002: AdFenceRight
+    400004: CliffLeft
+    400006: CliffRight
+    400008: ConcreteWallLeft
+    400010: ConcreteWallRight
+    400012: MountainLeft
+    400014: MountainRight
+    400016: PianoLeft
+    400018: PianoRight
+    400020: RailGuardLeft
+    400022: RailGuardRight
+    400024: Road
+    400026: Road Collider
+    400028: Road Mask
+    400030: //RootNode
+    400032: StreetLampLeft
+    400034: StreetLampRight
+    400036: TerrainLeft
+    400038: TerrainRight
+    400040: TreeWallLeft
+    400042: TreeWallRight
+    400044: WaterCanalLeft
+    400046: WaterCanalRight
+    2300000: AdFenceLeft
+    2300002: AdFenceRight
+    2300004: CliffLeft
+    2300006: CliffRight
+    2300008: ConcreteWallLeft
+    2300010: ConcreteWallRight
+    2300012: MountainLeft
+    2300014: MountainRight
+    2300016: PianoLeft
+    2300018: PianoRight
+    2300020: RailGuardLeft
+    2300022: RailGuardRight
+    2300024: Road
+    2300026: Road Collider
+    2300028: Road Mask
+    2300030: StreetLampLeft
+    2300032: StreetLampRight
+    2300034: TerrainLeft
+    2300036: TerrainRight
+    2300038: TreeWallLeft
+    2300040: TreeWallRight
+    2300042: WaterCanalLeft
+    2300044: WaterCanalRight
+    3300000: AdFenceLeft
+    3300002: AdFenceRight
+    3300004: CliffLeft
+    3300006: CliffRight
+    3300008: ConcreteWallLeft
+    3300010: ConcreteWallRight
+    3300012: MountainLeft
+    3300014: MountainRight
+    3300016: PianoLeft
+    3300018: PianoRight
+    3300020: RailGuardLeft
+    3300022: RailGuardRight
+    3300024: Road
+    3300026: Road Collider
+    3300028: Road Mask
+    3300030: StreetLampLeft
+    3300032: StreetLampRight
+    3300034: TerrainLeft
+    3300036: TerrainRight
+    3300038: TreeWallLeft
+    3300040: TreeWallRight
+    3300042: WaterCanalLeft
+    3300044: WaterCanalRight
+    4300000: PianoRight
+    4300002: AdFenceLeft
+    4300004: StreetLampRight
+    4300006: TreeWallRight
+    4300008: WaterCanalRight
+    4300010: RailGuardLeft
+    4300012: Road Mask
+    4300014: ConcreteWallRight
+    4300016: Road
+    4300018: TerrainLeft
+    4300020: TerrainRight
+    4300022: Road Collider
+    4300024: CliffLeft
+    4300026: AdFenceRight
+    4300028: RailGuardRight
+    4300030: StreetLampLeft
+    4300032: ConcreteWallLeft
+    4300034: MountainLeft
+    4300036: TreeWallLeft
+    4300038: MountainRight
+    4300040: PianoLeft
+    4300042: CliffRight
+    4300044: WaterCanalLeft
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
