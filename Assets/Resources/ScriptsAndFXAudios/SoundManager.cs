@@ -16,6 +16,9 @@ public class SoundManager : MonoBehaviour {
 	private float fadeOutValue = 0.1f / 5.0f;
 	private bool isFadeOutActive;
 
+	public AudioClip[] gameplayList;
+
+
 	public static string[] playListName = 
 	{
 		"ACE - Adrenaline",
@@ -60,8 +63,11 @@ public class SoundManager : MonoBehaviour {
 
 	private AudioClip GetSongFromPlayList()
 	{
-		return Resources.Load ("EurobeatInstrumentalLowQuality/" + 
-			playListName [Random.Range(0, playListName.Length)], typeof(AudioClip)) as AudioClip;
+		//return Resources.Load ("EurobeatInstrumentalLowQuality/" + 
+		//	playListName [Random.Range(0, playListName.Length - 1)], typeof(AudioClip)) as AudioClip;
+
+		return gameplayList [Random.Range (0, gameplayList.Length - 1)];
+
 	}
 
 
@@ -88,7 +94,8 @@ public class SoundManager : MonoBehaviour {
 	{
 		//Controlamos el ciclo de canciones.
 		currentSongTime += Time.deltaTime;
-		if (currentSongTime >= actualSong.length) 
+		//if (currentSongTime >= actualSong.length) 
+		if (!this.GetComponent<AudioSource>().isPlaying)
 		{
 			songSpaceTime += Time.deltaTime;
 

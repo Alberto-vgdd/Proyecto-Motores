@@ -113,14 +113,14 @@ public class PauseMenuScript : MonoBehaviour
             m_Camera.profile = m_VaporwaveEffects;
 			GameObject.Find ("OKButton").GetComponent<RawImage> ().enabled = false;
 			GameObject.Find ("CancelButton").GetComponent<RawImage> ().enabled = true;
-			GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 0.75f;
+			GameObject.Find ("[S] SoundManager").GetComponent<AudioSource> ().pitch = 0.75f;
         }
         else
         {
             m_Camera.profile = m_NormalEffects;
 			GameObject.Find ("OKButton").GetComponent<RawImage> ().enabled = true;
 			GameObject.Find ("CancelButton").GetComponent<RawImage> ().enabled = false;
-			GameObject.Find ("SoundManager").GetComponent<AudioSource> ().pitch = 1f;
+			GameObject.Find ("[S] SoundManager").GetComponent<AudioSource> ().pitch = 1f;
         }
     }
 }
