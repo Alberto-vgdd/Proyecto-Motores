@@ -168,4 +168,12 @@ public class RoadGenerator : MonoBehaviour {
 		}
         lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR);
 	}
+
+	//TODO: Esto no deberia estar aqui...
+	public void UpdateMinimapForAllActivePieces()
+	{
+		for (int i = 0; i < spawnedNodes.Count; i++) {
+			spawnedNodes [i].GetComponent<AddToMinimap> ().UpdateMinimapPosition ();
+		}
+	}
 }

@@ -20,17 +20,21 @@ public class AddToMinimap : MonoBehaviour {
 		referencedImage.gameObject.SetActive (true);
 		referencedImage.transform.SetAsLastSibling ();
 		isActiveCP = arg;
-		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor;
-		referencedImage.transform.localRotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.y);
-
 		if (isActiveCP) {
 			referencedImage.color = Color.yellow;
 		} else {
 			referencedImage.color = Color.white;
 		}
+		UpdateMinimapPosition ();
+	}
+	public void UpdateMinimapPosition()
+	{
+		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor;
+		referencedImage.transform.localRotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.y);
 	}
 	void OnDisable()
 	{
-		referencedImage.gameObject.SetActive (false);
+		if (referencedImage != null)
+			referencedImage.gameObject.SetActive (false);
 	}
 }

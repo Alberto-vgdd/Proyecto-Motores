@@ -25,13 +25,9 @@ public class MinimapManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (playerReference != null) {
-			// Z -> Y
-			// X -> X
-			// IGNORED: Y -> Z
-			// rotation y -> z
+			// Z -> Y | X -> X | IGNORED: Y -> Z | rotation y -> z
 			transform.localPosition = initialPosition + new Vector3(-playerReference.transform.position.x, -playerReference.transform.position.z, 0) * scaleConversionFactor;
 			parentCG.transform.rotation = Quaternion.Euler(0, 0, playerReference.transform.rotation.eulerAngles.y);
-			//print(playerReference.transform.rotation.eulerAngles.z);
 		}
 	}
 }
