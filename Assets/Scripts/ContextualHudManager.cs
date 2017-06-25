@@ -13,6 +13,8 @@ public class ContextualHudManager : MonoBehaviour {
 	public static ContextualHudManager currentInstance;
 
 	private float tempDriftChain = 0;
+	private float tempDriftMulti = 1;
+	private float tempDriftMultiIncrease = 0;
 	private float tempAirTime = 0;
 
 	[Header("CG Ref.")]
@@ -22,13 +24,13 @@ public class ContextualHudManager : MonoBehaviour {
 	public CanvasGroup TimeCG;
 	[Header("Text Ref.")]
 	public Text DriftText;
+	public Text DriftMultiplier;
 	public Text AirText;
 	public Text HpText;
 	public Text TimeText;
 	public Text IncrTimeText;
 	public PlayerMovement pm;
 
-	private Vector3 driftTextBasePos;
 	private float readedTime;
 
 	[Header("Hud Parameters")]
@@ -38,7 +40,6 @@ public class ContextualHudManager : MonoBehaviour {
 	void Awake () { currentInstance = this; }
 	void Start () { 
 		UpdateDynHealth ();
-		driftTextBasePos = DriftText.transform.localPosition;
 	}
 
 	void Update () {
@@ -73,21 +74,28 @@ public class ContextualHudManager : MonoBehaviour {
 	void UpdateDynDrift()
 	{
 		if (!pm.drifting) {
-			DriftText.transform.localPosition = driftTextBasePos;
 			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
-			if (tempDriftChain > 100) {
-				NotificationManager.currentInstance.AddNotification (new GameNotification ((int)tempDriftChain + " m. drift! Bonus time + " + (int)tempDriftChain / 100 + " s.", Color.yellow, 30));
-				StageData.currentData.remainingSec += (int)tempDriftChain / 100;
-			}
-			StageData.currentData.totalDrift += tempDriftChain;
+			StageData.currentData.SendFinishedDrift (tempDriftChain, tempDriftMulti);
 			tempDriftChain = 0;
+			tempDriftMultiIncrease = 0;
+			tempDriftMulti = 1;
 			return;
 		}
 		//DriftText.transform.localPosition = driftTextBasePos + Vector3.up * (Mathf.Cos (tempDriftChain*0.3f) * 0.01f);
 		DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 1, Time.deltaTime);
 		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 3.5f;
+
+		tempDriftMultiIncrease += Time.deltaTime * pm.accumulatedAcceleration * 0.2f;
+		if (tempDriftMultiIncrease > 10) {
+			tempDriftMulti += 0.1f;
+			tempDriftMultiIncrease = 0;
+		}
+
 		float colorT = Mathf.Min (1, tempDriftChain / 3000);
 		DriftText.color = Color.Lerp (Color.white, Color.red, colorT);
+		if (true) { // TODO: Condicion real...
+			DriftMultiplier.text = "X " + tempDriftMulti.ToString("F1");
+		}
 		DriftText.text = (int)tempDriftChain + " m.";
 	}
 

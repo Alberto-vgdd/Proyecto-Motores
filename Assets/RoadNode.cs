@@ -28,7 +28,7 @@ public class RoadNode : MonoBehaviour {
 	[Header("Other Params")]
 	public float lightRange;
 	public float nodeWeight;									// Peso o dificultad del nodo, determina la contribucion a tiempo extendido del nodo.
-	private int timeAwarded = 0;								// Tiempo extra que dara este nodo si es un punto de control activo.
+	private float timeAwarded = 0;								// Tiempo extra que dara este nodo si es un punto de control activo.
 	private int nodeID;											// ID del nodo (orden en el que se ha creado)
 
 	// Enciende o apaga las luces de este nodo, funcion llamada por defecto desde StageData o RoadGenerator al crear la pieza.
@@ -86,7 +86,7 @@ public class RoadNode : MonoBehaviour {
 
 	// Prepara este nodo para que sea un punto de control activo.
 
-	public void SetAsActiveCheckpoint(int _timeAwarded)
+	public void SetAsActiveCheckpoint(float _timeAwarded)
 	{
 		timeAwarded = _timeAwarded;
 		checkPointVisualParent.SetActive (true);
@@ -128,7 +128,7 @@ public class RoadNode : MonoBehaviour {
 	{
 		nodeID = arg;
 	}
-	public int GetTimeAwarded()
+	public float GetTimeAwarded()
 	{
 		return timeAwarded;
 	}

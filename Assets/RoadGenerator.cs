@@ -88,7 +88,7 @@ public class RoadGenerator : MonoBehaviour {
 		lastReadedNode.SetLighScale (globalRoadScale);
 		//Aqui creamos CheckPoint
 		if (nodesSinceLastActiveCP >= nodesBetweenActiveCP) {
-			lastReadedNode.SetAsActiveCheckpoint ((int)(stackedNodeWeight * NodeWeight2Time));
+			lastReadedNode.SetAsActiveCheckpoint ((stackedNodeWeight * NodeWeight2Time));
 			nodesSinceLastActiveCP = 0;
 			stackedNodeWeight = 0;
 			NodeWeight2Time *= 0.98f;

@@ -8,29 +8,28 @@ public class SceneCentering : MonoBehaviour {
 	public Transform worldTransform;
 
 	private float distanceLimit = 1000;
+	private float checkInterval = 1f;
 
 	// Use this for initialization
 	void Start () {
-		
+		StartCoroutine("CheckOffset");
 	}
-	
-	// Update is called once per frame
-	void Update () {
-		if (playerTransform.position.z > distanceLimit) {
-			worldTransform.Translate (-distanceLimit * Vector3.forward);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
-			print("Centering on Z axis");
+
+	IEnumerator CheckOffset () {
+		while (true) {
+			if (playerTransform.position.z > distanceLimit) {
+				worldTransform.Translate (-distanceLimit * Vector3.forward);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			if (playerTransform.position.x > distanceLimit) {
+				worldTransform.transform.Translate (-distanceLimit * Vector3.right);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			if (playerTransform.position.x < -distanceLimit) {
+				worldTransform.transform.Translate (distanceLimit * Vector3.right);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			yield return new WaitForSeconds (checkInterval);
 		}
-		if (playerTransform.position.x > distanceLimit) {
-			worldTransform.transform.Translate (-distanceLimit * Vector3.right);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
-			print("Centering on X axis");
-		}
-		if (playerTransform.position.x < -distanceLimit) {
-			worldTransform.transform.Translate (distanceLimit * Vector3.right);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
-			print("Centering on -X axis");
-		}
-		
 	}
 }

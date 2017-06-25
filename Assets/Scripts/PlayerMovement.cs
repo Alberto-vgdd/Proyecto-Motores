@@ -311,7 +311,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 		cleanSection = true;
 
-		StageData.currentData.ExtendTime (nodeCrossedParams.GetTimeAwarded ());
+		StageData.currentData.ExtendTime ("checkpoint", nodeCrossedParams.GetTimeAwarded ());
 	}
 
 	// Administra las colisiones [OnCollisionStay].
