@@ -80,7 +80,7 @@ public class StageData : MonoBehaviour {
 	void Awake () { currentData = this; }
 	void Start () {
 		EventSetup ();
-		StartCoroutine ("Countdown");
+		PreRacePanelBehaviour.currentInstance.SetPanelInfo (gamemode);
 	}
 
 	void Update () {
@@ -108,6 +108,11 @@ public class StageData : MonoBehaviour {
 				SetEndGameScreen ();
 			}
 		}
+	}
+
+	public void StartEvent()
+	{
+		StartCoroutine ("Countdown");
 	}
 
 	// Hace 10 de daño al jugador y actualiza el interfaz, este daño NO PUEDE ser letal.
@@ -364,7 +369,8 @@ public class StageData : MonoBehaviour {
 		switch (gamemode) {
 		case 1: // Standard Endurance
 			{
-				endGameStatsText.text = "[ENDURANCE] EVENT COMPLETED" +
+				endGameStatsText.text = "[ENDURANCE]" +
+				"\nEVENT COMPLETED" +
 				"\n";
 				break;
 			}
@@ -413,5 +419,4 @@ public class StageData : MonoBehaviour {
 //			+ "\nDAMAGE TAKEN:    " + (int)damageTaken + " [ -" + (int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER) + " ] "
 //			+ "\n\nFINAL SCORE:    " + finalscore +"\n\nPRESS ANY KEY TO CONTINUE";
 	}
-		
 }
