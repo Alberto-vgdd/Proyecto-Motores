@@ -47,8 +47,6 @@ public class DayNightCycle : MonoBehaviour
 	// Update is called once per frame
 	void Update () 
     {
-        //Increase timer value
-		currentHour += Time.deltaTime * dayCycleTimescale;
 		if (currentHour > 24)
 			currentHour = 0;
 		transform.rotation = Quaternion.Euler (((currentHour/24) * 360) + rotationOffset,0,0);
@@ -73,6 +71,17 @@ public class DayNightCycle : MonoBehaviour
 			}
 		}
 
+	}
+	public void StartDayNightCycle()
+	{
+		StartCoroutine ("AdvanceTime");
+	}
+	IEnumerator AdvanceTime()
+	{
+		while (true) {
+			currentHour += Time.deltaTime * dayCycleTimescale;
+			yield return null;
+		}
 	}
 	void UpdateIllumColor()
 	{

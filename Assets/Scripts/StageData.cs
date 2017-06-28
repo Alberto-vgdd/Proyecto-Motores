@@ -26,17 +26,15 @@ public class StageData : MonoBehaviour {
 	public GameObject playerObj;											// GameObject del jugador (?)
 	public float playerHealth;												// Salud del jugador
 	public float remainingSec;												// Segundos restantes
-
-	public Text timeRemainingInfo;											// Referencia al texto (UI) de tiempo restante
-	public Text eventScoreInfo;
+	public FollowTarget playerCamera;	
 
 	private bool notification_crit50 = false;								// (TEMP) Notificacion de 50% de salud mostrada
 	private bool notification_crit25 = false;								// (TEMP) Notificacion de 25% de salud mostrada	
 	private bool notification_crit10 = false;								// (TEMP) Notificacion de 10% de salud mostrada
 	private bool notification_destroyed = false;							// (TEMP) Notificacion de 0% de salud mostrada
 
+	public CanvasGroup fadeCG;
 	public Text countDownText;
-	public CanvasGroup fadeoutCG;
 	public CanvasGroup endGameStatsCG;
 	public Text endGameStatsText;
 
@@ -52,6 +50,7 @@ public class StageData : MonoBehaviour {
     public GameObject nightChasis;
 	[Header ("Score data")]
 	public int nodesCrossed;
+	public int checkPointsCrossed;
 	public float damageTaken;
 	public int cleanSections;
 	public float totalDrift;
@@ -63,14 +62,19 @@ public class StageData : MonoBehaviour {
 	private float eventScore;
 	private int finalscore;
 
+	private bool countdownRunning = false;
+
 	private bool eventHasTimeLimit = false;
 	private bool eventHasScore = false;
 	private bool eventHasBonusTimeOnDrift = false;
 	private bool eventHasBonusTimeOnCP = false;
+	private bool eventHasLimitCP = false;
 
+	private int eventLimitCP = 0;
 	private float eventBonusTimeOnCPMultiplier = 1;
 	private float eventBonusTimeOnDriftMultiplier = 1;
 	private float eventBonusScoreOnDriftMultiplier = 1;
+	private float eventDamageTakenMultiplier;
 
 	private float DISTANCE_SCORE_MULTIPLIER = 10;
 	private float DRIFT_SCORE_MULTIPLIER = 0.5f;
@@ -80,6 +84,9 @@ public class StageData : MonoBehaviour {
 	void Awake () { currentData = this; }
 	void Start () {
 		EventSetup ();
+		if (eventHasLimitCP) {
+			IngameHudManager.currentInstance.UpdateSectorInfo ();
+		}
 		PreRacePanelBehaviour.currentInstance.SetPanelInfo (gamemode);
 	}
 
@@ -89,8 +96,6 @@ public class StageData : MonoBehaviour {
 
 		if (gameOver)
 		{
-			fadeoutCG.alpha = Mathf.MoveTowards (fadeoutCG.alpha, 1, Time.deltaTime * 0.2f);
-			endGameStatsCG.alpha = fadeoutCG.alpha;
 			gameOverDelay -= Time.deltaTime;
 			if (gameOverDelay <= 0.0f) 
 			{
@@ -100,11 +105,10 @@ public class StageData : MonoBehaviour {
 		} 
 		else
 		{
-			fadeoutCG.alpha = Mathf.MoveTowards (fadeoutCG.alpha, 0, Time.deltaTime * 0.3f);
 			if (notification_destroyed || (remainingSec <= 0 && Mathf.Abs (pm.accumulatedAcceleration) <= 1f)) 
 			{
 				NotificationManager.currentInstance.AddNotification (new GameNotification ("GAME OVER", Color.red, 200));
-				gameOver = true;
+				EndEvent ();
 				SetEndGameScreen ();
 			}
 		}
@@ -112,10 +116,39 @@ public class StageData : MonoBehaviour {
 
 	public void StartEvent()
 	{
-		StartCoroutine ("Countdown");
+		if (!countdownRunning)
+		{
+			playerCamera.SetRaceMode ();
+			DayNightCycle.currentInstance.StartDayNightCycle ();
+			countdownRunning = true;
+			StartCoroutine ("Countdown");
+			StartCoroutine ("FadeIn");
+		}
+
+	}
+	public void EndEvent()
+	{
+		gameOver = true;
+		IngameHudManager.currentInstance.SetHudVisibility (false);
 	}
 
 	// Hace 10 de daño al jugador y actualiza el interfaz, este daño NO PUEDE ser letal.
+
+	public void PlayerCrossedCheckPoint(bool clean)
+	{
+		if (clean) {
+			HealPlayer (10);
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored!", Color.green, 30));
+			cleanSections++;
+		}
+		checkPointsCrossed++;
+		if (eventHasLimitCP) {
+			IngameHudManager.currentInstance.UpdateSectorInfo ();
+			if (checkPointsCrossed >= eventLimitCP) {
+				EndEvent ();
+			}
+		}
+	}
 
 	public void RespawnDamage()
 	{
@@ -129,12 +162,10 @@ public class StageData : MonoBehaviour {
 
 	public void DamagePlayer(float dmg)
 	{
-		if (dmg > playerHealth) {
-			dmg = playerHealth;
-		}
+		dmg *= eventDamageTakenMultiplier;
 		dmg = Mathf.Abs (dmg);
 		damageTaken += dmg;
-		playerHealth -= dmg;
+		playerHealth = Mathf.Clamp (playerHealth - dmg, 0, 100);
 		ContextualHudManager.currentInstance.UpdateDynHealth ();
 		UpdateHealthNotifications ();
 	}
@@ -163,15 +194,12 @@ public class StageData : MonoBehaviour {
 				break;
 			}
 		}
-
-		UpdateTimeString ();
 	}
 	public void AddScore(float arg)
 	{
 		if (!eventHasScore)
 			return;
 		eventScore += arg;
-		eventScoreInfo.text = ((int)eventScore).ToString();
 	}
 	public void SendFinishedDrift(float lenght, float multi = 1)
 	{
@@ -245,27 +273,18 @@ public class StageData : MonoBehaviour {
 			return;
 
 		if (gameStarted) {
-			if (gamemode == 4 && pm.accumulatedAcceleration / pm.maxFwdSpeed > 0.9f)
+			if (gamemode == 4 && pm.accumulatedAcceleration / pm.maxFwdSpeed > 0.7f)
 				return;
 			if (gamemode == 5 && pm.drifting)
 				return;
 			remainingSec = Mathf.MoveTowards (remainingSec, 0, Time.deltaTime);
 		}
-
-		UpdateTimeString ();
-	}
-
-	void UpdateTimeString()
-	{
-		if (remainingSec > 5) {
-			timeRemainingInfo.text = ((int)remainingSec).ToString();
-		} else {
-			timeRemainingInfo.text = remainingSec.ToString("N2");
-		}
 	}
 
 	IEnumerator Countdown()
 	{
+		print ("Countdown Called");
+		IngameHudManager.currentInstance.SetHudVisibility (true);
 		while (!(gameStarted && startGameDelay <= -3))
 		{
 			if (startGameDelay > 0 && startGameDelay <= 3) {
@@ -273,12 +292,20 @@ public class StageData : MonoBehaviour {
 			} else if (startGameDelay > -2 && startGameDelay <= 0) {
 				countDownText.text = "GO!";
 				gameStarted = true;
+				remainingSec += 0.5f;
 			} else {
 				countDownText.text = "";
 			}
 
 			startGameDelay--;
 			yield return new WaitForSeconds (1f);
+		}
+	}
+	IEnumerator FadeIn()
+	{
+		while (fadeCG.alpha > 0) {
+			fadeCG.alpha = Mathf.MoveTowards (fadeCG.alpha, 0, Time.deltaTime);
+			yield return null;
 		}
 	}
 
@@ -291,9 +318,11 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = true;
 				eventHasScore = false;
 				eventHasTimeLimit = true;
+				eventHasLimitCP = false;
 				eventBonusTimeOnCPMultiplier = 1;
 				eventBonusTimeOnDriftMultiplier = 0.2f;
 				eventBonusScoreOnDriftMultiplier = 0.5f;
+				eventDamageTakenMultiplier = 1.25f;
 				break;
 			}
 		case 2: // Drift Endurance
@@ -302,9 +331,11 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = true;
 				eventHasScore = false;
 				eventHasTimeLimit = true;
+				eventHasLimitCP = false;
 				eventBonusTimeOnCPMultiplier = 0.1f;
 				eventBonusTimeOnDriftMultiplier = 1f;
 				eventBonusScoreOnDriftMultiplier = 0f;
+				eventDamageTakenMultiplier = 1f;
 				break;
 			}
 		case 3: // Drift Exhibition
@@ -313,9 +344,12 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = false;
 				eventHasScore = true;
 				eventHasTimeLimit = true;
-				eventBonusTimeOnCPMultiplier = 1.2f;
+				eventHasLimitCP = true;
+				eventLimitCP = 8;
+				eventBonusTimeOnCPMultiplier = 1.5f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventBonusScoreOnDriftMultiplier = 1f;
+				eventDamageTakenMultiplier = 1f;
 				break;
 			}
 		case 4: // High Speed Challenge
@@ -324,6 +358,12 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = false;
 				eventHasScore = false;
 				eventHasTimeLimit = true;
+				eventHasLimitCP = true;
+				eventLimitCP = 10;
+				eventBonusTimeOnCPMultiplier = 0.1f;
+				eventBonusTimeOnDriftMultiplier = 0f;
+				eventBonusScoreOnDriftMultiplier = 0f;
+				eventDamageTakenMultiplier = 3f;
 				break;
 			}
 		case 5: // Chain Drift Challenge
@@ -332,9 +372,12 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = false;
 				eventHasScore = false;
 				eventHasTimeLimit = true;
+				eventHasLimitCP = true;
+				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0.05f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventBonusScoreOnDriftMultiplier = 0f;
+				eventDamageTakenMultiplier = 1f;
 				break;
 			}
 		case 6: // Time Attack
@@ -343,9 +386,12 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = false;
 				eventHasScore = false;
 				eventHasTimeLimit = false;
+				eventHasLimitCP = true;
+				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventBonusScoreOnDriftMultiplier = 0f;
+				eventDamageTakenMultiplier = 1f;
 				break;
 			}
 		default: // Free Roam
@@ -354,9 +400,11 @@ public class StageData : MonoBehaviour {
 				eventHasBonusTimeOnDrift = false;
 				eventHasScore = false;
 				eventHasTimeLimit = false;
+				eventHasLimitCP = false;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventBonusScoreOnDriftMultiplier = 0f;
+				eventDamageTakenMultiplier = 1f;
 				break;
 			}
 		}
@@ -418,5 +466,11 @@ public class StageData : MonoBehaviour {
 //			+ "\nTOTAL DRIFT:    " + (int)totalDrift + " [ +" + (int)(totalDrift*DRIFT_SCORE_MULTIPLIER) + " ] "
 //			+ "\nDAMAGE TAKEN:    " + (int)damageTaken + " [ -" + (int)(damageTaken*DAMAGE_TAKEN_SCORE_MULTIPLIER) + " ] "
 //			+ "\n\nFINAL SCORE:    " + finalscore +"\n\nPRESS ANY KEY TO CONTINUE";
+	}
+
+	// getters/setters
+	public int GetEventLimitCP()
+	{
+		return eventLimitCP;
 	}
 }

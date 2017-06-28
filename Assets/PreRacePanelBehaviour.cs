@@ -7,20 +7,30 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	public static PreRacePanelBehaviour currentInstance;
 
+	private bool fadeCalled = false;
+
 	public Text event_title;
 	public Text event_description;
 	public Text event_objectives;
-	public CanvasGroup CG;
+	public CanvasGroup panelCG;
+	public CanvasGroup fadeCG;
+
+	private float fadeSpeed = 0.5f;
+	private bool fadeFinished = false;
 
 	void Awake ()
 	{
 		currentInstance = this;
 	}
+	void Start ()
+	{
+		StartCoroutine ("FadeInScreen");
+	}
 	// Update is called once per frame
 	void Update () {
-		if (Input.anyKeyDown) {
-			StartCoroutine ("FadeOut");
-			StageData.currentData.StartEvent ();
+		if (Input.anyKeyDown && !fadeCalled && fadeFinished) {
+			fadeCalled = true;
+			StartCoroutine ("FadeOutPanel");
 		}
 	}
 
@@ -36,7 +46,9 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 				"\n- Bonus time awarded on checkpoints." +
 				"\n- Health restored on clean sections." +
 				"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: 250 | SILVER: 200 | BRONZE: 150";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		case 2: // Drift Endurance
@@ -46,7 +58,9 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 					"\n- Score is awarded based on the distance traversed." +
 					"\n- Bonus time awarded ONLY on chain drifts." +
 					"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: 200 | SILVER: 150 | BRONZE: 100";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		case 3: // Drift Exhibition
@@ -58,7 +72,9 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 					"\n- Bonus time awarded on checkpoints." +
 					"\n- Health restored on clean sections." +
 					"\n- After 10 checkpoints the event will finish.";
-				event_objectives.text = "GOLD: 8000 | SILVER: 6000 | BRONZE: 4000";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		case 4: // High Speed Challenge
@@ -67,9 +83,12 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 				event_description.text = "Drive as far as you can within the time limit." +
 					"\n- Score is awarded based on the distance traversed." +
 					"\n- A small bonus time is awarded on checkpoints." +
-					"\n- While driving faster than 90% of the max speed, time wont countdown." +
-					"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: 150 | SILVER: 125 | BRONZE: 100";
+					"\n- While close to the top speed, time wont countdown." +
+					"\n- All the time awarded will be reduced over time." +
+					"\n- Collision damage increased by 300%.";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		case 5: // Chain Drift Challenge
@@ -80,7 +99,9 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 					"\n- A tiny amount of bonus time is awarded on checkpoints." +
 					"\n- While drifting, time wont countdown." +
 					"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: 150 | SILVER: 125 | BRONZE: 100";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		case 6: // Time Attack
@@ -88,25 +109,38 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 				event_title.text = "TIME ATTACK";
 				event_description.text = "Reach the last checkpoint as fast as you can." +
 					"\n- Health restored on clean sections.";
-				event_objectives.text = "GOLD: 1:30 | SILVER: 1:45 | BRONZE: 2:00";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		default: // Free Roam
 			{
 				event_title.text = "FREE ROAM";
 				event_description.text = "Practice while enjoying the landscape!.";
-				event_objectives.text = "- NO OBJECTIVES -";
+				event_objectives.text = "GOLD: ?????" +
+					"\nSILVER: ?????" +
+					"\nBRONZE: ?????";
 				break;
 			}
 		}
 	}
-	IEnumerator FadeOut()
+	IEnumerator FadeInScreen()
 	{
-		while (CG.alpha > 0) {
-			CG.alpha -= Time.deltaTime * 4f;
-			CG.transform.localScale *= 0.9f;
+		while (fadeCG.alpha > 0) {
+			fadeCG.alpha -= Time.deltaTime * fadeSpeed;
 			yield return null;
 		}
-		CG.gameObject.SetActive (false);
+		fadeFinished = true;
+	}
+	IEnumerator FadeOutPanel()
+	{
+		while (panelCG.alpha > 0) {
+			panelCG.alpha -= Time.deltaTime * fadeSpeed;
+			fadeCG.alpha = 1 - panelCG.alpha;
+			yield return null;
+		}
+		StageData.currentData.StartEvent ();
+		panelCG.gameObject.SetActive (false);
 	}
 }

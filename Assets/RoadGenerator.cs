@@ -58,7 +58,7 @@ public class RoadGenerator : MonoBehaviour {
 		// Testing
 		dayTime = Random.Range(0f, 24f);
 		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + dayTime);
-		dayTimescale = 0.1f;
+		dayTimescale = 0.025f;
 		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
 		// ==========
 		tempValidNodes = new List<GameObject>();
