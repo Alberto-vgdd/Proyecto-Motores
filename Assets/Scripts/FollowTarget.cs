@@ -33,6 +33,7 @@ public class FollowTarget : MonoBehaviour {
 	private bool camRaceMode = false;
 	private float camDegreeTemp;
 	private float camDegreeRads;
+	private float camT;
 	private float camCos;
 	private float camSin;
 	private float tiltSpeed = 15;
@@ -81,7 +82,10 @@ public class FollowTarget : MonoBehaviour {
 
 			transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + target.transform.position;
 		} else {
-			camDegreeTemp = camDegree;
+			// TODO: No spaghetti?
+			camT = (1 - (Mathf.Abs (camDegreeTemp) / Mathf.Abs (camDegree))) - 0.5f;
+			camDegreeTemp = Mathf.MoveTowardsAngle (camDegreeTemp, camDegree, Time.smoothDeltaTime * camT * 300f);
+			//camDegreeTemp = camDegree;
 			camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;
 			camCos = Mathf.Cos (camDegreeRads);
 			camSin = Mathf.Sin (camDegreeRads);

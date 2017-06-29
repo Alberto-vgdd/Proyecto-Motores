@@ -113,4 +113,15 @@ public class DayNightCycle : MonoBehaviour
 	{
 		return lightsOn;
 	}
+	public string getTimeString()
+	{
+		int hourvalue = (int)currentHour;
+		int mntevalue = (int)((currentHour - (int)currentHour) / 1 * 60);
+		if (mntevalue < 10) {
+			return hourvalue + ":0" + mntevalue;
+		} else {
+			return hourvalue + ":" + mntevalue;
+		}
+
+	}
 }

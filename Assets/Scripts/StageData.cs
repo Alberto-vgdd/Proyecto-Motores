@@ -122,7 +122,6 @@ public class StageData : MonoBehaviour {
 			DayNightCycle.currentInstance.StartDayNightCycle ();
 			countdownRunning = true;
 			StartCoroutine ("Countdown");
-			StartCoroutine ("FadeIn");
 		}
 
 	}
@@ -287,6 +286,9 @@ public class StageData : MonoBehaviour {
 		IngameHudManager.currentInstance.SetHudVisibility (true);
 		while (!(gameStarted && startGameDelay <= -3))
 		{
+			if (startGameDelay == 5) {
+				StartCoroutine ("FadeIn");
+			}
 			if (startGameDelay > 0 && startGameDelay <= 3) {
 				countDownText.text = startGameDelay.ToString();
 			} else if (startGameDelay > -2 && startGameDelay <= 0) {

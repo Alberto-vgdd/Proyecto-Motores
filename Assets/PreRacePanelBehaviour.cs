@@ -10,7 +10,9 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	private bool fadeCalled = false;
 
 	public Text event_title;
+	public Text event_subName;
 	public Text event_description;
+	public Text event_limits;
 	public Text event_objectives;
 	public CanvasGroup panelCG;
 	public CanvasGroup fadeCG;
@@ -36,91 +38,59 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	public void SetPanelInfo(int gamemode)
 	{
+		event_subName.text = "Seaside highway - " + DayNightCycle.currentInstance.getTimeString() + " [ Road ID: " + RoadGenerator.currentInstance.levelSeed.ToString() + " ]";
+		event_objectives.text = "GOLD: ?????" +
+			"\nSILVER: ?????" +
+			"\nBRONZE: ?????";
 		switch (gamemode) {
 		case 1: // Standard Endurance
 			{
 				event_title.text = "ENDURANCE";
-				event_description.text = "Drive as far as you can within the time limit." +
-				"\n- Score is awarded based on the distance traversed." +
-				"\n- Bonus time awarded with long chain drifts." +
-				"\n- Bonus time awarded on checkpoints." +
-				"\n- Health restored on clean sections." +
-				"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: -- | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints.";
 				break;
 			}
 		case 2: // Drift Endurance
 			{
 				event_title.text = "DRIFT ENDURANCE";
-				event_description.text = "Drive as far as you can within the time limit." +
-					"\n- Score is awarded based on the distance traversed." +
-					"\n- Bonus time awarded ONLY on chain drifts." +
-					"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: -- | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting.";
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
 				event_title.text = "DRIFT EXHIBITION";
-				event_description.text = "Score as much drift points as you can within the time limit." +
-					"\n- Score is awarded based on the drift lenght." +
-					"\n- Long drifts have a score bonus multiplier." +
-					"\n- Bonus time awarded on checkpoints." +
-					"\n- Health restored on clean sections." +
-					"\n- After 10 checkpoints the event will finish.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Drift to earn points before reaching the last checkpoint, longer drifts have a bonus score multiplier.";
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
 				event_title.text = "HIGH SPEED CHALLENGE";
-				event_description.text = "Drive as far as you can within the time limit." +
-					"\n- Score is awarded based on the distance traversed." +
-					"\n- A small bonus time is awarded on checkpoints." +
-					"\n- While close to the top speed, time wont countdown." +
-					"\n- All the time awarded will be reduced over time." +
-					"\n- Collision damage increased by 300%.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Reach the last checkpoint within the time limit, time is short, reach high speeds to freeze the timer.";
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
 				event_title.text = "CHAIN DRIFT CHALLENGE";
-				event_description.text = "Drive as far as you can within the time limit." +
-					"\n- Score is awarded based on the distance traversed." +
-					"\n- A tiny amount of bonus time is awarded on checkpoints." +
-					"\n- While drifting, time wont countdown." +
-					"\n- All the time awarded will be reduced over time.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Reach the last checkpoint within the time limit, time is short, drift to freeze the timer.";
 				break;
 			}
 		case 6: // Time Attack
 			{
 				event_title.text = "TIME ATTACK";
-				event_description.text = "Reach the last checkpoint as fast as you can." +
-					"\n- Health restored on clean sections.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.remainingSec).ToString();
+				event_description.text = "Reach the last checkpoint as fast as you can.";
 				break;
 			}
 		default: // Free Roam
 			{
 				event_title.text = "FREE ROAM";
+				event_limits.text = " Checkpoints: -- | Time limit: --";
 				event_description.text = "Practice while enjoying the landscape!.";
-				event_objectives.text = "GOLD: ?????" +
-					"\nSILVER: ?????" +
-					"\nBRONZE: ?????";
+				event_objectives.text = "- No objectives -";
 				break;
 			}
 		}
