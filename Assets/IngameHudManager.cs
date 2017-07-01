@@ -10,11 +10,21 @@ public class IngameHudManager : MonoBehaviour {
 	public CanvasGroup timeRemainingCG;
 	public Image timeRemainingBackground;
 	public Text timeRemainingText;
+
+	public Text eventScoreTitle;
 	public Text eventScoreText;
+
+	public Text eventSectorTitle;
 	public Text eventSectorText;
 
 	public Color baseInterfaceColor;
 
+	public Image sidePanelLarge;
+	public Image sidePanelSmall;
+
+	private bool scoreUpdating = false;
+	private float scoreUpdateSpeed = 400f;
+	private float tempScore = 0;
 	private float timeRemaining;
 	private Color currentTimeColor;
 
@@ -24,9 +34,8 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		currentTimeColor = baseInterfaceColor;
-		eventScoreText.color = baseInterfaceColor;
-		eventSectorText.color = baseInterfaceColor;
+		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = currentTimeColor = baseInterfaceColor;
+		eventScoreText.text = tempScore.ToString();
 
 	}
 	
@@ -51,6 +60,7 @@ public class IngameHudManager : MonoBehaviour {
 	{
 		if (arg) {
 			StartCoroutine ("FadeInHud");
+			SetElementsVisibility ();
 		} else {
 			StartCoroutine ("FadeOutHud");
 		}
@@ -58,6 +68,37 @@ public class IngameHudManager : MonoBehaviour {
 	public void UpdateSectorInfo()
 	{
 		eventSectorText.text = StageData.currentData.checkPointsCrossed.ToString() + "/" + StageData.currentData.GetEventLimitCP ().ToString();
+	}
+	public void UpdateScoreInfo()
+	{
+		if (!scoreUpdating)
+			StartCoroutine ("UpdateScore");
+	}
+	void SetElementsVisibility()
+	{
+		if (StageData.currentData.GetEventHasScore() && !StageData.currentData.GetEventHasLimitCP ()) {
+			eventScoreTitle.transform.position = eventSectorTitle.transform.position;
+			eventScoreText.transform.position = eventSectorText.transform.position;
+			sidePanelLarge.gameObject.SetActive(false);
+			sidePanelSmall.gameObject.SetActive(true);
+			eventSectorTitle.gameObject.SetActive(false);
+			eventSectorText.gameObject.SetActive(false);
+		} else {
+			sidePanelLarge.gameObject.SetActive (StageData.currentData.GetEventHasScore());
+			sidePanelSmall.gameObject.SetActive (!sidePanelLarge.gameObject.activeInHierarchy);
+			eventScoreTitle.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);
+			eventScoreText.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);
+		}
+	}
+	IEnumerator UpdateScore()
+	{
+		scoreUpdating = true;
+		while (tempScore != StageData.currentData.GetEventScore ()) {
+			tempScore = Mathf.MoveTowards (tempScore, StageData.currentData.GetEventScore (), Time.deltaTime * scoreUpdateSpeed);
+			eventScoreText.text = ((int)tempScore).ToString();
+			yield return null;
+		}
+		scoreUpdating = false;
 	}
 	IEnumerator FadeOutHud()
 	{

@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Valores auxiliares privados
 
+	private bool currentEventFinished = false;
 	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
 	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
 	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
@@ -95,7 +96,7 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 		// Si el jugador ha destruido su vehiculo, ignoramos todos los inputs.
-		if (StageData.currentData.playerHealth <= 0) {
+		if (currentEventFinished) {
 			forwInput = 0;
 			turnInput = 0;
 			extraForwInput = 0;
@@ -300,12 +301,14 @@ public class PlayerMovement : MonoBehaviour {
 		lastNodeCrossedID = nodeCrossedParams.GetID();
 
 		// RETURN si no se trata de un punto de control marcado como activo.
-		if (other.tag != "CP_Active")
-			return;
-		StageData.currentData.PlayerCrossedCheckPoint (cleanSection);
-		cleanSection = true;
-
-		StageData.currentData.ExtendTime ("checkpoint", nodeCrossedParams.GetTimeAwarded ());
+		if (other.tag == "CP_Active") {
+			StageData.currentData.PlayerCrossedCheckPoint (cleanSection);
+			cleanSection = true;
+			StageData.currentData.ExtendTime ("checkpoint", nodeCrossedParams.GetTimeAwarded ());
+			StageData.currentData.PlayerCrossedNode ();
+		} else {
+			StageData.currentData.PlayerCrossedNode ();
+		}
 	}
 
 	// Administra las colisiones [OnCollisionStay].
@@ -396,7 +399,10 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	// Termina el drift (llamado al colisionar o al no estar en el suelo)
-
+	public void SetAsEventFinished()
+	{
+		currentEventFinished = true;	
+	}
 	void EndDrift()
 	{
 		drifting = false;
