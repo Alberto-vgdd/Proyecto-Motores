@@ -104,7 +104,7 @@ public class PlayerMovement : MonoBehaviour {
 		}
 			
 		// Si el tiempo se ha agotado, solo escuchamos el input de giro.
-		if (StageData.currentData.remainingSec <= 0) {
+		if (StageData.currentData.timeSec <= 0) {
 			forwInput = 0;
 			turnInput = Input.GetAxis ("Horizontal");
 			if (Input.GetKeyDown (KeyCode.Space))

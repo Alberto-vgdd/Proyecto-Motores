@@ -64,7 +64,7 @@ public class ContextualHudManager : MonoBehaviour {
 	// Administra el interfaz dinamico de drift.
 	void UpdateDynTime()
 	{
-		readedTime = StageData.currentData.remainingSec;
+		readedTime = StageData.currentData.timeSec;
 		if (readedTime > 5) {
 			TimeText.text = ((int)readedTime).ToString();
 		} else {

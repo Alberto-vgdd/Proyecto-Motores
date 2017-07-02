@@ -43,6 +43,10 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		} else {
 			endGameResultTitle.text = "Event completed";
 		}
+		endGameObjectives = StageData.currentData.GetObjectiveString ();
+		if (StageData.currentData.GetObjectiveIsTypeScore ()) {
+		} else {
+		}
 		switch (type) {
 		case 1: // Destroyed
 			{
@@ -109,7 +113,8 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			}
 		case 6: // Time Attack
 			{
-				endGameScoreBreakdown.text = "Final time: ???????????????";
+				endGameScoreBreakdown.text = "Final time: " + StageData.currentData.timeMin.ToString("D2") + ":" + ((int)StageData.currentData.timeSec).ToString ("D2")
+					+ ":" + ((int)((StageData.currentData.timeSec%1) * 100)).ToString ("D2");
 				break;
 			}
 		default: // Free Roam

@@ -22,10 +22,20 @@ public class IngameHudManager : MonoBehaviour {
 	public Image sidePanelLarge;
 	public Image sidePanelSmall;
 
+	public CanvasGroup objectiveCG;
+	public Image objectivePanel;
+	public Text objectiveText;
+
 	private bool scoreUpdating = false;
 	private float tempScore = 0;
-	private float timeRemaining;
+
+	private float timeDec;
+	private float timeSec;
+	private int timeMin;
+
 	private Color currentTimeColor;
+
+	private bool timeCountHasMinutes;
 
 	void Awake ()
 	{
@@ -33,8 +43,14 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = currentTimeColor = baseInterfaceColor;
+		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
+		SetObjectivePanel ();
 		eventScoreText.text = tempScore.ToString();
+		timeCountHasMinutes = !StageData.currentData.GetObjectiveIsTypeScore ();
+		//TODO: Es la mejor forma?
+		if (timeCountHasMinutes) {
+			timeRemainingText.fontSize = 60;
+		}
 
 	}
 	
@@ -44,16 +60,23 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void UpdateRemainingTime()
 	{
-		timeRemaining = StageData.currentData.remainingSec;
-		//timeRemainingText.color = timeRemainingBackground.color = Color.Lerp(Color.red, Color.blue, Mathf.Clamp(timeRemaining/6f, 0, 1));
-		if (StageData.currentData.remainingSec > 5) {
-			timeRemainingText.text = ((int)timeRemaining).ToString();
-			currentTimeColor = Color.Lerp (currentTimeColor, baseInterfaceColor, Time.deltaTime * 2f);
+		timeSec = StageData.currentData.timeSec;
+		timeDec = (timeSec - (int)timeSec) * 100; // TODO: Temporal...
+		timeMin = StageData.currentData.timeMin;
+
+		if (timeCountHasMinutes) {
+			timeRemainingText.text = timeMin.ToString ("D2") + ":" + ((int)timeSec).ToString ("D2") + ":" + ((int)timeDec).ToString("D2");
 		} else {
-			timeRemainingText.text = timeRemaining.ToString("N2");
-			currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime * 2f);
+			if (StageData.currentData.timeSec > 5) {
+				timeRemainingText.text = ((int)timeSec).ToString();
+				currentTimeColor = Color.Lerp (currentTimeColor, baseInterfaceColor, Time.deltaTime * 2f);
+			} else {
+				timeRemainingText.text = timeSec.ToString("N2");
+				currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime * 2f);
+			}
+			timeRemainingText.color = timeRemainingBackground.color = currentTimeColor;
 		}
-		timeRemainingText.color = timeRemainingBackground.color = currentTimeColor;
+
 	}
 	public void SetHudVisibility(bool arg)
 	{
@@ -63,6 +86,11 @@ public class IngameHudManager : MonoBehaviour {
 		} else {
 			StartCoroutine ("FadeOutHud");
 		}
+	}
+	public void SetObjectivePanel()
+	{
+		objectiveCG.gameObject.SetActive(StageData.currentData.GetEventHasObjectives ());
+		objectiveText.text = StageData.currentData.GetObjectiveString ();
 	}
 	public void UpdateSectorInfo()
 	{
