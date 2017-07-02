@@ -75,10 +75,12 @@ public class ContextualHudManager : MonoBehaviour {
 	{
 		if (!pm.drifting) {
 			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
-			StageData.currentData.SendFinishedDrift (tempDriftChain, tempDriftMulti);
-			tempDriftChain = 0;
-			tempDriftMultiIncrease = 0;
-			tempDriftMulti = 1;
+			if (tempDriftChain > 0) {
+				StageData.currentData.SendFinishedDrift (tempDriftChain, tempDriftMulti);
+				tempDriftChain = 0;
+				tempDriftMultiIncrease = 0;
+				tempDriftMulti = 1;
+			}
 			return;
 		}
 		//DriftText.transform.localPosition = driftTextBasePos + Vector3.up * (Mathf.Cos (tempDriftChain*0.3f) * 0.01f);

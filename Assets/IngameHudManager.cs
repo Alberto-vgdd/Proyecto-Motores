@@ -7,7 +7,7 @@ public class IngameHudManager : MonoBehaviour {
 
 	public static IngameHudManager currentInstance;
 
-	public CanvasGroup timeRemainingCG;
+	public CanvasGroup ingameHudCg;
 	public Image timeRemainingBackground;
 	public Text timeRemainingText;
 
@@ -23,7 +23,6 @@ public class IngameHudManager : MonoBehaviour {
 	public Image sidePanelSmall;
 
 	private bool scoreUpdating = false;
-	private float scoreUpdateSpeed = 400f;
 	private float tempScore = 0;
 	private float timeRemaining;
 	private Color currentTimeColor;
@@ -76,13 +75,22 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void SetElementsVisibility()
 	{
-		if (StageData.currentData.GetEventHasScore() && !StageData.currentData.GetEventHasLimitCP ()) {
+		if (StageData.currentData.GetEventHasScore () && !(StageData.currentData.GetEventLimitCP () > 0)) {
 			eventScoreTitle.transform.position = eventSectorTitle.transform.position;
 			eventScoreText.transform.position = eventSectorText.transform.position;
-			sidePanelLarge.gameObject.SetActive(false);
-			sidePanelSmall.gameObject.SetActive(true);
-			eventSectorTitle.gameObject.SetActive(false);
-			eventSectorText.gameObject.SetActive(false);
+			sidePanelLarge.gameObject.SetActive (false);
+			sidePanelSmall.gameObject.SetActive (true);
+			eventSectorTitle.gameObject.SetActive (false);
+			eventSectorText.gameObject.SetActive (false);
+		} else if (StageData.currentData.gamemode == 0) {
+			sidePanelLarge.gameObject.SetActive (false);
+			sidePanelSmall.gameObject.SetActive (false);
+			eventScoreTitle.gameObject.SetActive (false);
+			eventScoreText.gameObject.SetActive (false);
+			eventSectorText.gameObject.SetActive (false);
+			eventSectorTitle.gameObject.SetActive (false);
+			timeRemainingBackground.gameObject.SetActive (false);
+			timeRemainingText.gameObject.SetActive(false);
 		} else {
 			sidePanelLarge.gameObject.SetActive (StageData.currentData.GetEventHasScore());
 			sidePanelSmall.gameObject.SetActive (!sidePanelLarge.gameObject.activeInHierarchy);
@@ -92,9 +100,11 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	IEnumerator UpdateScore()
 	{
+		float animSpeed = 1;
 		scoreUpdating = true;
 		while (tempScore != StageData.currentData.GetEventScore ()) {
-			tempScore = Mathf.MoveTowards (tempScore, StageData.currentData.GetEventScore (), Time.deltaTime * scoreUpdateSpeed);
+			animSpeed = Mathf.Abs (tempScore - StageData.currentData.GetEventScore ()) + 20f;
+			tempScore = Mathf.MoveTowards (tempScore, StageData.currentData.GetEventScore (), Time.deltaTime * animSpeed);
 			eventScoreText.text = ((int)tempScore).ToString();
 			yield return null;
 		}
@@ -102,15 +112,15 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	IEnumerator FadeOutHud()
 	{
-		while (timeRemainingCG.alpha > 0) {
-			timeRemainingCG.alpha = Mathf.MoveTowards (timeRemainingCG.alpha, 0, Time.deltaTime*2f);
+		while (ingameHudCg.alpha > 0) {
+			ingameHudCg.alpha = Mathf.MoveTowards (ingameHudCg.alpha, 0, Time.deltaTime*2f);
 			yield return null;
 		}
 	}
 	IEnumerator FadeInHud()
 	{
-		while (timeRemainingCG.alpha < 1) {
-			timeRemainingCG.alpha = Mathf.MoveTowards (timeRemainingCG.alpha, 1, Time.deltaTime*0.25f);
+		while (ingameHudCg.alpha < 1) {
+			ingameHudCg.alpha = Mathf.MoveTowards (ingameHudCg.alpha, 1, Time.deltaTime*0.25f);
 			yield return null;
 		}
 	}

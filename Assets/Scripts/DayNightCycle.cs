@@ -117,10 +117,17 @@ public class DayNightCycle : MonoBehaviour
 	{
 		int hourvalue = (int)currentHour;
 		int mntevalue = (int)((currentHour - (int)currentHour) / 1 * 60);
-		if (mntevalue < 10) {
-			return hourvalue + ":0" + mntevalue;
+		string m;
+		if (hourvalue > 13) {
+			hourvalue -= 12;
+			m = " PM";
 		} else {
-			return hourvalue + ":" + mntevalue;
+			m = " AM";
+		}
+		if (mntevalue < 10) {
+			return hourvalue + ":0" + mntevalue + m;
+		} else {
+			return hourvalue + ":" + mntevalue + m;
 		}
 
 	}

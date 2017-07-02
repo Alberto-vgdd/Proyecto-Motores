@@ -64,31 +64,31 @@ public class StageData : MonoBehaviour {
 
 	private bool countdownRunning = false;
 
+
+
+
 	private bool eventHasTimeLimit = false;
 	private bool eventHasScore = false;
-	private bool eventHasBonusTimeOnDrift = false;
-	private bool eventHasBonusTimeOnCP = false;
-	private bool eventHasLimitCP = false;
 	private bool eventCanBeFailed = false;
-	private bool eventHasScoreOnNode = false;
-	private bool eventHasScoreOnDrift = false;
 
 	private int eventLimitCP = 0;
-	private float eventBonusTimeOnCPMultiplier = 1;
-	private float eventBonusTimeOnDriftMultiplier = 1;
-	private float eventBonusScoreOnDriftMultiplier = 1;
-	private float eventDamageTakenMultiplier;
 
-	private float scoringDistance = 10;
-	private float scoringCheckPoint = 50;
-	private float scoringCleanSection = 100;
-	private float scoringDrift = 0.5f;
-	private float scoringDamagePenalty = 1f;
+	private float eventBonusTimeOnCPMultiplier = 0;
+	private float eventBonusTimeOnDriftMultiplier = 0;
+
+	private float eventDamageTakenMultiplier = 1;
+
+	private float eventScoreOnDriftMultiplier = 0;
+	private float eventScoreOnDistance = 0;
+	private float eventScoreOnCheckpoint = 0;
+	private float eventScoreOnCleanSection = 0;
+	private float eventScoreDamagePenaltyMultiplier = 1f;
+
 
 	void Awake () { currentData = this; }
 	void Start () {
 		EventSetup ();
-		if (eventHasLimitCP) {
+		if (eventLimitCP > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
 		}
 		PreRacePanelBehaviour.currentInstance.SetPanelInfo (gamemode);
@@ -136,25 +136,32 @@ public class StageData : MonoBehaviour {
 
 	public void PlayerCrossedNode()
 	{
-		AddScore (scoringDistance);
+		AddScore (eventScoreOnDistance);
 	}
 
 	// Hace 10 de daño al jugador y actualiza el interfaz, este daño NO PUEDE ser letal.
 
-	public void PlayerCrossedCheckPoint(bool clean)
+	public void PlayerCrossedCheckPoint(bool clean, float awardedTime)
 	{
 		if (clean) {
 			HealPlayer (10);
-			NotificationManager.currentInstance.AddNotification(new GameNotification("Clean section, health restored!", Color.green, 30));
+			NotificationManager.currentInstance.AddNotification (new GameNotification ("Clean section, health restored!", Color.green, 30));
+			eventScore += eventScoreOnCleanSection;
 			cleanSections++;
+		} else {
+			eventScore += eventScoreOnCheckpoint;
 		}
-		checkPointsCrossed++;
-		if (eventHasLimitCP) {
+		if (eventBonusTimeOnCPMultiplier > 0) {
+			remainingSec += awardedTime * eventBonusTimeOnCPMultiplier; 
+			NotificationManager.currentInstance.AddNotification(new GameNotification("Time extended! +" + awardedTime.ToString("F1") , Color.green, 30));
+		}
+		if (eventLimitCP > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
 			if (checkPointsCrossed >= eventLimitCP) {
 				EndEvent (3);
 			}
 		}
+		checkPointsCrossed++;
 	}
 
 	public void RespawnDamage()
@@ -184,29 +191,6 @@ public class StageData : MonoBehaviour {
 
 	// Extiende el tiempo restante la cantidad indicada.
 
-	public void ExtendTime(string type, float timeExtension, int aditionalParam = 0)
-	{
-		switch (type) {
-		case "drift":
-			{
-				if (!eventHasBonusTimeOnDrift)
-					return;
-				timeExtension *= eventBonusTimeOnDriftMultiplier;
-				NotificationManager.currentInstance.AddNotification (new GameNotification (aditionalParam + " m. drift! Bonus time + " + (aditionalParam / 100).ToString("F1") + " s.", Color.yellow, 30));
-				StageData.currentData.remainingSec += timeExtension;
-				break;
-			}
-		case "checkpoint":
-			{
-				if (!eventHasBonusTimeOnCP)
-					return;
-				timeExtension *= eventBonusTimeOnCPMultiplier;
-				NotificationManager.currentInstance.AddNotification (new GameNotification ("Time extended! " + " + " + timeExtension.ToString("F1"), Color.white, 40));
-				remainingSec += timeExtension;
-				break;
-			}
-		}
-	}
 	public void AddScore(float arg)
 	{
 		if (!eventHasScore)
@@ -216,11 +200,13 @@ public class StageData : MonoBehaviour {
 	}
 	public void SendFinishedDrift(float lenght, float multi = 1)
 	{
-		if (lenght > 100 && eventHasBonusTimeOnDrift) {
-			ExtendTime ("drift", (int)(lenght * eventBonusTimeOnDriftMultiplier));
+		if (lenght > 100 && eventBonusTimeOnDriftMultiplier > 0) {
+			remainingSec += lenght * eventBonusTimeOnDriftMultiplier;
+			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift! " + (lenght * eventBonusTimeOnDriftMultiplier).ToString("F1") + " bonus time.", Color.blue, 30));
 		}
-		if (eventHasScoreOnDrift) {
-			AddScore (lenght * multi * eventBonusScoreOnDriftMultiplier);
+		if (eventScoreOnDriftMultiplier > 0) {
+			AddScore (lenght * multi * eventScoreOnDriftMultiplier);
+			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift! +" + ((int)(lenght * multi * eventScoreOnDriftMultiplier)).ToString() + " score.", Color.yellow, 30));
 		}
 		totalDrift += lenght;
 	}
@@ -331,123 +317,135 @@ public class StageData : MonoBehaviour {
 		switch (gamemode) {
 		case 1: // Standard Endurance
 			{
-				remainingSec = 25;
-				eventHasBonusTimeOnCP = true;
-				eventHasBonusTimeOnDrift = true;
-				eventHasScore = true;
+				remainingSec = 25f;
+				eventDamageTakenMultiplier = 1f;
+
 				eventHasTimeLimit = true;
-				eventHasLimitCP = false;
+				eventHasScore = true;
 				eventCanBeFailed = false;
-				eventHasScoreOnDrift = false;
-				eventHasScoreOnNode = true;
-				eventBonusTimeOnCPMultiplier = 1;
-				eventBonusTimeOnDriftMultiplier = 0.05f;
-				eventBonusScoreOnDriftMultiplier = 0.5f;
-				eventDamageTakenMultiplier = 1.25f;
+
+				eventLimitCP = 0;
+				eventBonusTimeOnCPMultiplier = 1f;
+				eventBonusTimeOnDriftMultiplier = 0.005f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 20f;
+				eventScoreOnCheckpoint = 100f;
+				eventScoreOnCleanSection = 500f;
+				eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				remainingSec = 25;
-				eventHasBonusTimeOnCP = true;
-				eventHasBonusTimeOnDrift = true;
-				eventHasScore = true;
-				eventHasTimeLimit = true;
-				eventHasLimitCP = false;
-				eventCanBeFailed = false;
-				eventHasScoreOnDrift = false;
-				eventHasScoreOnNode = true;
-				eventBonusTimeOnCPMultiplier = 0.1f;
-				eventBonusTimeOnDriftMultiplier = 0.1f;
-				eventBonusScoreOnDriftMultiplier = 0f;
+				remainingSec = 25f;
 				eventDamageTakenMultiplier = 1f;
+
+				eventHasTimeLimit = true;
+				eventHasScore = true;
+				eventCanBeFailed = false;
+
+				eventLimitCP = 0;
+				eventBonusTimeOnCPMultiplier = 0f;
+				eventBonusTimeOnDriftMultiplier = 0.05f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 20f;
+				eventScoreOnCheckpoint = 100f;
+				eventScoreOnCleanSection = 500f;
+				eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				remainingSec = 30;
-				eventHasBonusTimeOnCP = true;
-				eventHasBonusTimeOnDrift = false;
-				eventHasScore = true;
+				remainingSec = 35f;
+				eventDamageTakenMultiplier = 1f;
+
 				eventHasTimeLimit = true;
-				eventHasLimitCP = true;
-				eventCanBeFailed = true;
-				eventHasScoreOnDrift = true;
-				eventHasScoreOnNode = false;
-				eventLimitCP = 8;
+				eventHasScore = true;
+				eventCanBeFailed = false;
+
+				eventLimitCP = 6;
 				eventBonusTimeOnCPMultiplier = 1.5f;
 				eventBonusTimeOnDriftMultiplier = 0f;
-				eventBonusScoreOnDriftMultiplier = 1f;
-				eventDamageTakenMultiplier = 1f;
+				eventScoreOnDriftMultiplier = 0.5f;
+				eventScoreOnDistance = 0f;
+				eventScoreOnCheckpoint = 0f;
+				eventScoreOnCleanSection = 200f;
+				eventScoreDamagePenaltyMultiplier = 100f;
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
-				remainingSec = 10;
-				eventHasBonusTimeOnCP = true;
-				eventHasBonusTimeOnDrift = false;
-				eventHasScore = false;
+				remainingSec = 10f;
+				eventDamageTakenMultiplier = 3f;
+
 				eventHasTimeLimit = true;
-				eventHasLimitCP = true;
+				eventHasScore = false;
 				eventCanBeFailed = false;
+
 				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0.1f;
 				eventBonusTimeOnDriftMultiplier = 0f;
-				eventBonusScoreOnDriftMultiplier = 0f;
-				eventDamageTakenMultiplier = 3f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 0f;
+				eventScoreOnCheckpoint = 0f;
+				eventScoreOnCleanSection = 0f;
+				eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
-				remainingSec = 6;
-				eventHasBonusTimeOnCP = true;
-				eventHasBonusTimeOnDrift = false;
-				eventHasScore = false;
+				remainingSec = 6f;
+				eventDamageTakenMultiplier = 1f;
+
 				eventHasTimeLimit = true;
-				eventHasLimitCP = true;
+				eventHasScore = false;
 				eventCanBeFailed = false;
-				eventHasScoreOnDrift = false;
-				eventHasScoreOnNode = true;
+
 				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0.05f;
 				eventBonusTimeOnDriftMultiplier = 0f;
-				eventBonusScoreOnDriftMultiplier = 0f;
-				eventDamageTakenMultiplier = 1f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 0f;
+				eventScoreOnCheckpoint = 0f;
+				eventScoreOnCleanSection = 0f;
+				eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 6: // Time Attack
 			{
-				remainingSec = 99;
-				eventHasBonusTimeOnCP = false;
-				eventHasBonusTimeOnDrift = false;
-				eventHasScore = false;
+				remainingSec = 99f;
+				eventDamageTakenMultiplier = 1f;
+
 				eventHasTimeLimit = false;
-				eventHasLimitCP = true;
+				eventHasScore = false;
 				eventCanBeFailed = true;
-				eventHasScoreOnDrift = false;
-				eventHasScoreOnNode = false;
+
 				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
-				eventBonusScoreOnDriftMultiplier = 0f;
-				eventDamageTakenMultiplier = 1f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 0f;
+				eventScoreOnCheckpoint = 0f;
+				eventScoreOnCleanSection = 0f;
+				eventScoreDamagePenaltyMultiplier = 0f;
 				break;
 			}
 		default: // Free Roam
 			{
-				remainingSec = 99;
-				eventHasBonusTimeOnCP = false;
-				eventHasBonusTimeOnDrift = false;
-				eventHasScore = false;
+				remainingSec = 10f;
+				eventDamageTakenMultiplier = 1f;
+
 				eventHasTimeLimit = false;
-				eventHasLimitCP = false;
+				eventHasScore = false;
 				eventCanBeFailed = false;
-				eventHasScoreOnDrift = false;
-				eventHasScoreOnNode = false;
+
+				eventLimitCP = 0;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
-				eventBonusScoreOnDriftMultiplier = 0f;
-				eventDamageTakenMultiplier = 1f;
+				eventScoreOnDriftMultiplier = 0f;
+				eventScoreOnDistance = 0f;
+				eventScoreOnCheckpoint = 0f;
+				eventScoreOnCleanSection = 0f;
+				eventScoreDamagePenaltyMultiplier = 0f;
 				break;
 			}
 		}
@@ -467,10 +465,6 @@ public class StageData : MonoBehaviour {
 
 	// getters/setters
 
-	public bool GetEventHasLimitCP()
-	{
-		return eventHasLimitCP;
-	}
 	public bool GetEventHasScore()
 	{
 		return eventHasScore;
@@ -479,29 +473,16 @@ public class StageData : MonoBehaviour {
 	{
 		return eventScore;
 	}
+	public float GetEventDamagePenaltyMultiplier()
+	{
+		return eventScoreDamagePenaltyMultiplier;
+	}
+	public float GetEventScoreMinusPenalty()
+	{
+		return Mathf.Clamp(eventScore - (damageTaken * eventScoreDamagePenaltyMultiplier), 0, 9999999);
+	}
 	public int GetEventLimitCP()
 	{
 		return eventLimitCP;
 	}
-	public float GetScoringDistance()
-	{
-		return scoringDistance;
-	}
-	public float GetScoringCheckPoint()
-	{
-		return scoringCheckPoint;
-	}
-	public float GetScoringCleanSection()
-	{
-		return scoringCleanSection;
-	}
-	public float GetScoringDrift()
-	{
-		return scoringDrift;
-	}
-	public float GetScoringDamagePenalty()
-	{
-		return scoringDamagePenalty;
-	}
-
 }

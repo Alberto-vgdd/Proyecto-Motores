@@ -302,10 +302,9 @@ public class PlayerMovement : MonoBehaviour {
 
 		// RETURN si no se trata de un punto de control marcado como activo.
 		if (other.tag == "CP_Active") {
-			StageData.currentData.PlayerCrossedCheckPoint (cleanSection);
-			cleanSection = true;
-			StageData.currentData.ExtendTime ("checkpoint", nodeCrossedParams.GetTimeAwarded ());
+			StageData.currentData.PlayerCrossedCheckPoint (cleanSection, nodeCrossedParams.GetTimeAwarded());
 			StageData.currentData.PlayerCrossedNode ();
+			cleanSection = true;
 		} else {
 			StageData.currentData.PlayerCrossedNode ();
 		}

@@ -69,41 +69,52 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		switch (StageData.currentData.gamemode) {
 		case 1: // Standard Endurance
 			{
-				endGameScoreBreakdown.text =
-				"- Distance traversed: " + StageData.currentData.checkPointsCrossed + " [x" + StageData.currentData.GetScoringDistance() + "] = " + StageData.currentData.checkPointsCrossed * StageData.currentData.GetScoringDistance() +
-				"\n- Checkpoints reached: " + StageData.currentData.checkPointsCrossed + " [x" + StageData.currentData.GetScoringCheckPoint() + "] = " + StageData.currentData.checkPointsCrossed * StageData.currentData.GetScoringCheckPoint() +
-				"\n- Clean sections: " + StageData.currentData.cleanSections + " [x " + StageData.currentData.GetScoringCleanSection() + "] = " + StageData.currentData.cleanSections * StageData.currentData.GetScoringCleanSection() +
-				"\n- Damage penalty: " + StageData.currentData.damageTaken + " [x " + StageData.currentData.GetScoringDamagePenalty() + "] = -" + StageData.currentData.damageTaken * StageData.currentData.GetScoringDamagePenalty();
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
+					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
+					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
+					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
+					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
+					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
+					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
+					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
+					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
+					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
-				
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
+					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
+					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
+					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
-				
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
+					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
+					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
+					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
 				break;
 			}
 		case 6: // Time Attack
 			{
-				
+				endGameScoreBreakdown.text = "Final time: ???????????????";
 				break;
 			}
 		default: // Free Roam
 			{
-				
+				endGameScoreBreakdown.text = "- No score awarded on this event -";
 				break;
 			}
 		}
