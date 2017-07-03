@@ -29,13 +29,9 @@ public class IngameHudManager : MonoBehaviour {
 	private bool scoreUpdating = false;
 	private float tempScore = 0;
 
-	private float timeDec;
-	private float timeSec;
-	private int timeMin;
-
 	private Color currentTimeColor;
 
-	private bool timeCountHasMinutes;
+	private bool timerIsCountdown;
 
 	void Awake ()
 	{
@@ -46,9 +42,9 @@ public class IngameHudManager : MonoBehaviour {
 		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
 		SetObjectivePanel ();
 		eventScoreText.text = tempScore.ToString();
-		timeCountHasMinutes = !StageData.currentData.GetObjectiveIsTypeScore ();
+		timerIsCountdown = StageData.currentData.GetEventHasTimelimit();
 		//TODO: Es la mejor forma?
-		if (timeCountHasMinutes) {
+		if (!timerIsCountdown) {
 			timeRemainingText.fontSize = 60;
 		}
 
@@ -60,23 +56,19 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void UpdateRemainingTime()
 	{
-		timeSec = StageData.currentData.timeSec;
-		timeDec = (timeSec - (int)timeSec) * 100; // TODO: Temporal...
-		timeMin = StageData.currentData.timeMin;
-
-		if (timeCountHasMinutes) {
-			timeRemainingText.text = timeMin.ToString ("D2") + ":" + ((int)timeSec).ToString ("D2") + ":" + ((int)timeDec).ToString("D2");
-		} else {
-			if (StageData.currentData.timeSec > 5) {
-				timeRemainingText.text = ((int)timeSec).ToString();
+		if (timerIsCountdown) {
+			if (StageData.currentData.time_remainingSec > 5) {
+				timeRemainingText.text = ((int)StageData.currentData.time_remainingSec).ToString();
 				currentTimeColor = Color.Lerp (currentTimeColor, baseInterfaceColor, Time.deltaTime * 2f);
 			} else {
-				timeRemainingText.text = timeSec.ToString("N2");
+				timeRemainingText.text = StageData.currentData.time_remainingSec.ToString("N2");
 				currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime * 2f);
 			}
-			timeRemainingText.color = timeRemainingBackground.color = currentTimeColor;
-		}
+		} else {
+			timeRemainingText.text = StageData.currentData.GetTimePassedString ();
 
+		}
+		timeRemainingBackground.color = timeRemainingText.color = currentTimeColor;
 	}
 	public void SetHudVisibility(bool arg)
 	{

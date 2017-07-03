@@ -25,8 +25,12 @@ public class StageData : MonoBehaviour {
 
 	public GameObject playerObj;											// GameObject del jugador (?)
 	public float playerHealth;												// Salud del jugador
-	public float timeSec;													// Segundos restantes
-	public int timeMin;
+
+	public float time_remainingSec;
+	public float time_passedDec;
+	public int time_passedSec;
+	public int time_passedMin;
+
 	public FollowTarget playerCamera;	
 
 	private bool notification_crit50 = false;								// (TEMP) Notificacion de 50% de salud mostrada
@@ -110,7 +114,7 @@ public class StageData : MonoBehaviour {
 		} 
 		else 
 		{
-			UpdateTimeInfo ();
+			UpdateTime ();
 		}
 	}
 
@@ -153,9 +157,9 @@ public class StageData : MonoBehaviour {
 			}
 		case 3: // Drift Exhibition
 			{
-				objectiveGold = 11500;
-				objectiveSilver = 10000;
-				objectiveBronze = 9000;
+				objectiveGold = 2500 * eventLimitCP;
+				objectiveSilver = 2300 * eventLimitCP;
+				objectiveBronze = 2100 * eventLimitCP;
 				break;
 			}
 		case 4: // High speed challenge
@@ -174,9 +178,9 @@ public class StageData : MonoBehaviour {
 			}
 		case 6: // Time attack
 			{
-				objectiveGold = 180;
-				objectiveSilver = 190;
-				objectiveBronze = 200;
+				objectiveGold = 16f * eventLimitCP;
+				objectiveSilver = 17.5f * eventLimitCP;
+				objectiveBronze = 18f * eventLimitCP;
 				break;
 			}
 		}
@@ -200,7 +204,7 @@ public class StageData : MonoBehaviour {
 			eventScore += eventScoreOnCheckpoint;
 		}
 		if (eventBonusTimeOnCPMultiplier > 0) {
-			timeSec += awardedTime * eventBonusTimeOnCPMultiplier; 
+			time_remainingSec += awardedTime * eventBonusTimeOnCPMultiplier; 
 			NotificationManager.currentInstance.AddNotification(new GameNotification("Time extended! +" + awardedTime.ToString("F1") , Color.green, 30));
 		}
 		if (eventLimitCP > 0) {
@@ -249,7 +253,7 @@ public class StageData : MonoBehaviour {
 	public void SendFinishedDrift(float lenght, float multi = 1)
 	{
 		if (lenght > 100 && eventBonusTimeOnDriftMultiplier > 0) {
-			timeSec += lenght * eventBonusTimeOnDriftMultiplier;
+			time_remainingSec += lenght * eventBonusTimeOnDriftMultiplier;
 			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift! " + (lenght * eventBonusTimeOnDriftMultiplier).ToString("F1") + " bonus time.", Color.blue, 30));
 		}
 		if (eventScoreOnDriftMultiplier > 0) {
@@ -316,7 +320,7 @@ public class StageData : MonoBehaviour {
 
 	// Actualiza la infomracion del interfaz del tiempo.
 
-	void UpdateTimeInfo()
+	void UpdateTime()
 	{
 		if (!gameStarted)
 			return;
@@ -325,16 +329,20 @@ public class StageData : MonoBehaviour {
 				return;
 			if (gamemode == 5 && pm.drifting)
 				return;
-			timeSec = Mathf.MoveTowards (timeSec, 0, Time.deltaTime);
-			if (timeSec <= 0 && Mathf.Abs (pm.accumulatedAcceleration) <= 1f) 
+			time_remainingSec = Mathf.MoveTowards (time_remainingSec, 0, Time.deltaTime);
+			if (time_remainingSec <= 0 && Mathf.Abs (pm.accumulatedAcceleration) <= 1f) 
 			{
 				EndEvent (2);
 			}
 		} else {
-			timeSec += Time.deltaTime;
-			if (timeSec > 60) {
-				timeSec -= 60;
-				timeMin++;
+			time_passedDec += Time.deltaTime;
+			if (time_passedDec >= 1) {
+				time_passedDec -= 1;
+				time_passedSec++;
+				if (time_passedSec >= 60) {
+					time_passedMin++;
+					time_passedSec -= 60;
+				}
 			}
 		}
 
@@ -355,7 +363,7 @@ public class StageData : MonoBehaviour {
 			} else if (startGameDelay > -2 && startGameDelay <= 0) {
 				countDownText.text = "GO!";
 				gameStarted = true;
-				timeSec += 0.5f;
+				time_remainingSec += 0.3f;
 			} else {
 				countDownText.text = "";
 			}
@@ -376,8 +384,8 @@ public class StageData : MonoBehaviour {
 		switch (gamemode) {
 		case 1: // Standard Endurance
 			{
-				timeSec = 25f;
-				eventDamageTakenMultiplier = 1f;
+				time_remainingSec = 25f;
+				eventDamageTakenMultiplier = 1.5f;
 
 				eventHasTimeLimit = true;
 				eventHasScore = true;
@@ -396,8 +404,8 @@ public class StageData : MonoBehaviour {
 			}
 		case 2: // Drift Endurance
 			{
-				timeSec = 25f;
-				eventDamageTakenMultiplier = 1f;
+				time_remainingSec = 25f;
+				eventDamageTakenMultiplier = 1.5f;
 
 				eventHasTimeLimit = true;
 				eventHasScore = true;
@@ -416,7 +424,7 @@ public class StageData : MonoBehaviour {
 			}
 		case 3: // Drift Exhibition
 			{
-				timeSec = 35f;
+				time_remainingSec = 35f;
 				eventDamageTakenMultiplier = 1f;
 
 				eventHasTimeLimit = true;
@@ -436,7 +444,7 @@ public class StageData : MonoBehaviour {
 			}
 		case 4: // High Speed Challenge
 			{
-				timeSec = 10f;
+				time_remainingSec = 10f;
 				eventDamageTakenMultiplier = 3f;
 
 				eventHasTimeLimit = true;
@@ -456,7 +464,7 @@ public class StageData : MonoBehaviour {
 			}
 		case 5: // Chain Drift Challenge
 			{
-				timeSec = 6f;
+				time_remainingSec = 6f;
 				eventDamageTakenMultiplier = 1f;
 
 				eventHasTimeLimit = true;
@@ -476,7 +484,7 @@ public class StageData : MonoBehaviour {
 			}
 		case 6: // Time Attack
 			{
-				timeSec = 0f;
+				time_remainingSec = 0f;
 				eventDamageTakenMultiplier = 1f;
 
 				eventHasTimeLimit = false;
@@ -484,7 +492,7 @@ public class StageData : MonoBehaviour {
 				eventCanBeFailed = true;
 				objectiveTypeScore = false;
 
-				eventLimitCP = 2;
+				eventLimitCP = 6;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventScoreOnDriftMultiplier = 0f;
@@ -496,7 +504,7 @@ public class StageData : MonoBehaviour {
 			}
 		default: // Free Roam
 			{
-				timeSec = 10f;
+				time_remainingSec = 10f;
 				eventDamageTakenMultiplier = 1f;
 
 				eventHasTimeLimit = false;
@@ -530,6 +538,15 @@ public class StageData : MonoBehaviour {
 	}
 
 	// getters/setters
+
+	public string GetTimePassedString()
+	{
+		return time_passedMin.ToString ("D2") + ":" + time_passedSec.ToString ("D2") + ":" + ((int)(time_passedDec * 100)).ToString ("D2");
+	}
+	public float GetTimePassedValue()
+	{
+		return time_passedMin * 60 + time_passedSec + time_passedDec;
+	}
 	public string GetObjectiveString()
 	{
 		string txt = "";
@@ -570,6 +587,14 @@ public class StageData : MonoBehaviour {
 	{
 		return Mathf.Clamp(eventScore - (damageTaken * eventScoreDamagePenaltyMultiplier), 0, 9999999);
 	}
+	public void SetEventScoreMinusPenalty()
+	{
+		eventScore = Mathf.Clamp(eventScore - (damageTaken * eventScoreDamagePenaltyMultiplier), 0, 9999999);
+	}
+	public bool GetEventHasTimelimit()
+	{
+		return eventHasTimeLimit;
+	}
 	public int GetEventLimitCP()
 	{
 		return eventLimitCP;
@@ -577,6 +602,28 @@ public class StageData : MonoBehaviour {
 	public bool GetObjectiveIsTypeScore()
 	{
 		return objectiveTypeScore;
+	}
+	public int GetPlayerResult()
+	{
+		if (eventHasTimeLimit) {
+			if (eventScore > objectiveGold) {
+				return 1;
+			} else if (eventScore > objectiveSilver) {
+				return 2;
+			} else if (eventScore > objectiveBronze) {
+				return 3;
+			} else
+				return 0;
+		} else {
+			if (GetTimePassedValue() < objectiveGold) {
+				return 1;
+			} else if (GetTimePassedValue() < objectiveSilver) {
+				return 2;
+			} else if (GetTimePassedValue() < objectiveBronze) {
+				return 3;
+			} else
+				return 0;
+		}
 	}
 	public float GetObjective(int id)
 	{

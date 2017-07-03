@@ -16,6 +16,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	public Text endGameResultTitle;
 	public Text endGameResultSubtitle;
 
+	public Text endGameScoreBreakdownTitle;
 	public Text endGameScoreBreakdown;
 	public Text endGameObjectives;
 	public Text endGameObjectivesAchieved;
@@ -35,18 +36,10 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	}
 	public void SetAndEnable(int type, bool failed)
 	{
+		endGameScoreBreakdownTitle.text = " Seaside highway - [ ID: " + RoadGenerator.currentInstance.levelSeed + " ]";
 		StartCoroutine ("FadeIn");
-		// Switch by result.
-		if (failed) {
-			endGameResultTitle.text = "Event failed";
-			endGameObjectivesAchieved.text = "- No medals awarded -";
-		} else {
-			endGameResultTitle.text = "Event completed";
-		}
-		endGameObjectives = StageData.currentData.GetObjectiveString ();
-		if (StageData.currentData.GetObjectiveIsTypeScore ()) {
-		} else {
-		}
+			// Switch by event end reason
+		// ==============================================================================
 		switch (type) {
 		case 1: // Destroyed
 			{
@@ -70,13 +63,11 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			}
 		}
 		// Switch by gamemode.
+		// ==============================================================================
 		switch (StageData.currentData.gamemode) {
 		case 1: // Standard Endurance
 			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore()).ToString() +
-					"\nDamage taken penalty: " + ((int)StageData.currentData.damageTaken).ToString() + " [ x" + StageData.currentData.GetEventDamagePenaltyMultiplier() + " ] = " 
-					+ ((int)(StageData.currentData.damageTaken * StageData.currentData.GetEventDamagePenaltyMultiplier())).ToString() +
-					"\n\nFinal score: " + ((int)StageData.currentData.GetEventScoreMinusPenalty()).ToString();
+				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
 				break;
 			}
 		case 2: // Drift Endurance
@@ -113,8 +104,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			}
 		case 6: // Time Attack
 			{
-				endGameScoreBreakdown.text = "Final time: " + StageData.currentData.timeMin.ToString("D2") + ":" + ((int)StageData.currentData.timeSec).ToString ("D2")
-					+ ":" + ((int)((StageData.currentData.timeSec%1) * 100)).ToString ("D2");
+				endGameScoreBreakdown.text = "Final time: " + StageData.currentData.GetTimePassedString();
 				break;
 			}
 		default: // Free Roam
@@ -123,6 +113,44 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 				break;
 			}
 		}
+		StageData.currentData.SetEventScoreMinusPenalty();
+
+		// Switch by result.
+		// ==============================================================================
+		if (failed) {
+			endGameResultTitle.text = "Event failed";
+			endGameObjectivesAchieved.text = "- No medals awarded -";
+			endGameScoreBreakdown.text = " -- ";
+		} else {
+			// Switch by medal awarded
+			// ==============================================================================
+			endGameResultTitle.text = "Event completed";
+			switch (StageData.currentData.GetPlayerResult ()) {
+			case 1:
+				{
+					endGameObjectivesAchieved.text = "- GOLD medal awarded -";
+					break;
+				}
+			case 2:
+				{
+					endGameObjectivesAchieved.text = "- SILVER medal awarded -";
+					break;
+				}
+			case 3:
+				{
+					endGameObjectivesAchieved.text = "- BRONZE medal awarded -";
+					break;
+				}
+			default:
+				{
+					endGameObjectivesAchieved.text = "- No medals awarded -";
+					break;
+				}
+			}
+		}
+		endGameObjectives.text = StageData.currentData.GetObjectiveString ();
+
+
 	}
 	IEnumerator FadeIn()
 	{
