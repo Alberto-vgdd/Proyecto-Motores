@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float groundToAirThs = 0.05f;								// Margen de tiempo para dejar de tocar suelo (en seg.)
 	private float airToGroundThs = 0.05f;								// Margen de tiempo para volver a tocar el suelo (en seg.)
 	private float ungroundedRespawnTime = 6f;							// Tiempo sin tocar suelo necesario para auto-reaparecer
-	private float Tr2Vel = 6f;											// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
+	private float Tr2Vel = 3f;											// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
 	private float downforce = 5000f;								    // Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
 	private float inclinationMaxSpeedModifier = 30f;					// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
 	private float inclinationAccelerationModifier = 25f;				// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.

@@ -50,8 +50,13 @@ public class RoadGenerator : MonoBehaviour {
 
 	void Start ()
 	{
-		if (levelSeed == 0)
-			levelSeed = Random.Range (1, 9999999);
+		if (GlobalGameData.currentInstance == null) {
+			levelSeed = GlobalGameData.currentInstance.selectedEvent.GetSeed();
+
+		} else {
+			if (levelSeed == 0)
+				levelSeed = Random.Range (1, 9999999);
+		}
 		Random.InitState(levelSeed);
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
@@ -65,6 +70,7 @@ public class RoadGenerator : MonoBehaviour {
 		for (int i = 0; i < maxLoadedNodes - nodesBehindLoaded; i++) {
 			SpawnNextNode ();
 		}
+
 	}
 
 	// Crea el proximo nodo, mueve el generador de carreteras, y elimina los nodos que sobren.

@@ -95,6 +95,8 @@ public class StageData : MonoBehaviour {
 
 	void Awake () { currentData = this; }
 	void Start () {
+		if (GlobalGameData.currentInstance != null)
+			gamemode = GlobalGameData.currentInstance.selectedEvent.GetEventType ();
 		EventSetup ();
 		SetObjectives ();
 		if (eventLimitCP > 0) {
