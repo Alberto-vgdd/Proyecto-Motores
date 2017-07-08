@@ -20,6 +20,7 @@ public class GlobalGameData : MonoBehaviour {
 		if (currentInstance == null) {
 			DontDestroyOnLoad (transform.gameObject);
 			currentInstance = this;
+			InitializeData ();
 		}
 		else {
 			Destroy (this.gameObject);
@@ -28,14 +29,16 @@ public class GlobalGameData : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		// TODO: Load data instead of reseting.
+		
+	}
+	void InitializeData()
+	{
 		m_playerCurrency = 0;
 		m_playerCurrencyAlternative = 0;
 		m_playerRank = 1;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
 	}
-
 	void GenerateEventsAvailable()
 	{
 		Random.InitState(System.Environment.TickCount);
@@ -48,4 +51,18 @@ public class GlobalGameData : MonoBehaviour {
 			//TODO: Cambiar solo 3-4 de ellos.
 		}
 	}
+
+	public int GetPlayerRank()
+	{
+		return m_playerRank;
+	}
+	public int GetPlayerCurrency()
+	{
+		return m_playerCurrency;
+	}
+	public int GetPlayerAlternativeCurrency()
+	{
+		return m_playerCurrencyAlternative;
+	}
+
 }

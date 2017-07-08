@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class MainMenuManager : MonoBehaviour {
@@ -9,6 +10,11 @@ public class MainMenuManager : MonoBehaviour {
 
 	public CanvasGroup EventPanelCG;
 	public Transform EventPanelListParent;
+
+	public Text normalCurrencyText;
+	public Text alternativeCurrencyText;
+	public Text playerNameText;
+	public Text playerRankText;
 
 	public GameObject EventButtonPrefab;
 
@@ -23,11 +29,12 @@ public class MainMenuManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		CreateSelectableEvents ();
+		UpdateCurrencyValues ();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		// Question mark?
 	}
 	public void SelectEventAsActive(int index)
 	{
@@ -43,7 +50,15 @@ public class MainMenuManager : MonoBehaviour {
 			lastCreatedPanel.GetComponent<EventSubPanelBehaviour> ().SetPanelForEvent (GlobalGameData.currentInstance.eventsAvailable [i], i);
 		}
 	}
-
+	public void UpdateCurrencyValues()
+	{
+		if (GlobalGameData.currentInstance == null)
+			return;
+		playerNameText.text = "Player";
+		playerRankText.text = GlobalGameData.currentInstance.GetPlayerRank ().ToString ();
+		normalCurrencyText.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
+		alternativeCurrencyText.text = "Driver rank: " + GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
+	}
 	// CO-Routines
 	IEnumerator FadeInEventPanel()
 	{

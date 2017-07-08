@@ -401,7 +401,7 @@ public class StageData : MonoBehaviour {
 				eventScoreOnDistance = 20f;
 				eventScoreOnCheckpoint = 100f;
 				eventScoreOnCleanSection = 500f;
-				eventScoreDamagePenaltyMultiplier = 20f;
+				eventScoreDamagePenaltyMultiplier = 0f;
 				break;
 			}
 		case 2: // Drift Endurance

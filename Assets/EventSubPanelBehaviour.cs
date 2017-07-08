@@ -28,8 +28,8 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	public void SetPanelForEvent(EventData data, int index)
 	{
 		m_index = index;
-		text_difficulty.text = data.GetRoadDifficulty ().ToString ("F2");
 		text_reward.text = data.GetRewardCurrency () + " cr.";
+		text_difficulty.text = data.GetRoadDifficulty().ToString ("F1");
 		switch (data.GetEventType()) {
 		case 1: // Endurance
 			{
