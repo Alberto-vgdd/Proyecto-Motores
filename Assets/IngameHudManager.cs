@@ -42,7 +42,7 @@ public class IngameHudManager : MonoBehaviour {
 		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
 		SetObjectivePanel ();
 		eventScoreText.text = tempScore.ToString();
-		timerIsCountdown = StageData.currentData.GetEventHasTimelimit();
+		timerIsCountdown = GlobalGameData.currentInstance.selectedEvent.HasTimelimit();
 		//TODO: Es la mejor forma?
 		if (!timerIsCountdown) {
 			timeRemainingText.fontSize = 60;
@@ -81,12 +81,12 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	public void SetObjectivePanel()
 	{
-		objectiveCG.gameObject.SetActive(StageData.currentData.GetEventHasObjectives ());
+		objectiveCG.gameObject.SetActive(GlobalGameData.currentInstance.selectedEvent.HasObjectives());
 		objectiveText.text = StageData.currentData.GetObjectiveString ();
 	}
 	public void UpdateSectorInfo()
 	{
-		eventSectorText.text = StageData.currentData.checkPointsCrossed.ToString() + "/" + StageData.currentData.GetEventLimitCP ().ToString();
+		eventSectorText.text = StageData.currentData.checkPointsCrossed.ToString() + "/" + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints().ToString();
 	}
 	public void UpdateScoreInfo()
 	{
@@ -95,14 +95,14 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void SetElementsVisibility()
 	{
-		if (StageData.currentData.GetEventHasScore () && !(StageData.currentData.GetEventLimitCP () > 0)) {
+		if (GlobalGameData.currentInstance.selectedEvent.HasScore() && !(GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints() > 0)) {
 			eventScoreTitle.transform.position = eventSectorTitle.transform.position;
 			eventScoreText.transform.position = eventSectorText.transform.position;
 			sidePanelLarge.gameObject.SetActive (false);
 			sidePanelSmall.gameObject.SetActive (true);
 			eventSectorTitle.gameObject.SetActive (false);
 			eventSectorText.gameObject.SetActive (false);
-		} else if (StageData.currentData.gamemode == 0) {
+		} else if (GlobalGameData.currentInstance.selectedEvent.GetGamemode() == 0) {
 			sidePanelLarge.gameObject.SetActive (false);
 			sidePanelSmall.gameObject.SetActive (false);
 			eventScoreTitle.gameObject.SetActive (false);
@@ -112,7 +112,7 @@ public class IngameHudManager : MonoBehaviour {
 			timeRemainingBackground.gameObject.SetActive (false);
 			timeRemainingText.gameObject.SetActive(false);
 		} else {
-			sidePanelLarge.gameObject.SetActive (StageData.currentData.GetEventHasScore());
+			sidePanelLarge.gameObject.SetActive (GlobalGameData.currentInstance.selectedEvent.HasScore());
 			sidePanelSmall.gameObject.SetActive (!sidePanelLarge.gameObject.activeInHierarchy);
 			eventScoreTitle.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);
 			eventScoreText.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);

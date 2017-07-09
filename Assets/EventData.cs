@@ -2,23 +2,44 @@
 
 [System.Serializable]
 public class EventData {
+	
 	private int m_eventSeed;
 
+	// Objectives
+	private float m_objectiveGold = 0;
+	private float m_objectiveSilver = 0;
+	private float m_objectiveBronze = 0;
+	// Event Rules
+	private bool m_objectiveTypeScore = false;
+	private bool m_hasObjectives = false;
+	private bool m_eventHasTimeLimit = false;
+	private bool m_eventHasScore = false;
+	private bool m_eventCanBeFailed = false;
+	private bool m_seasonalEvent;
+	private bool m_canBeRestarted;
+	// Event parameters
+	private int m_checkPoints;
+	private float m_initialTimeRemaining = 0;
+	private float m_eventBonusTimeOnCPMultiplier = 0;
+	private float m_eventBonusTimeOnDriftMultiplier = 0;
+	private float m_eventDamageTakenMultiplier = 1;
+	private float m_eventScoreOnDriftMultiplier = 0;
+	private float m_eventScoreOnDistance = 0;
+	private float m_eventScoreOnCheckpoint = 0;
+	private float m_eventScoreOnCleanSection = 0;
+	private float m_eventScoreDamagePenaltyMultiplier = 0f;
+	// Other parameters
 	private int m_rewardValue;
 	private int m_rewardType;
 	private int m_eventLeague;
-	private int m_eventType;
-	private int m_checkPoints;
+	private int m_gameMode;
 	private float m_roadDifficulty;
 	private float m_leagueExtraDifficulty;
 	private float m_combinedDifficultyFactor;
 
-	private bool m_seasonalEvent;
-	private bool m_canBeRestarted;
-
 	public EventData (int league, bool seasonal, bool canBeRestarted)
 	{
-		m_eventType = Random.Range (1, 7);
+		m_gameMode = Random.Range (1, 7);
 		m_eventSeed = Random.Range (1, 99999999);
 		m_checkPoints = Random.Range (4, 10) + (int)(league/2);
 		m_eventLeague = league;
@@ -39,14 +60,332 @@ public class EventData {
 		m_leagueExtraDifficulty = 1 + (league-1) * 0.1f;
 		m_combinedDifficultyFactor = m_leagueExtraDifficulty + m_roadDifficulty *0.2f + m_checkPoints *0.1f;
 		m_rewardValue = (int)(m_combinedDifficultyFactor*500);
+
+		SetEventObjectives ();
+		SetEventRules ();
 	}
-	public string GetEventArea()
+	void SetEventObjectives()
 	{
-		return "Seaside Highway";
+		switch (m_gameMode) {
+		case 1: // Standard endurance
+			{
+				m_objectiveGold = 10000;
+				m_objectiveSilver = 9000;
+				m_objectiveBronze = 8000;
+				break;
+			}
+		case 2: // Drift Endurance
+			{
+				m_objectiveGold = 7000;
+				m_objectiveSilver = 6500;
+				m_objectiveBronze = 6000;
+				break;
+			}
+		case 3: // Drift Exhibition
+			{
+				m_objectiveGold = 1750 * m_checkPoints;
+				m_objectiveSilver = 1500 * m_checkPoints;
+				m_objectiveBronze = 1300 * m_checkPoints;
+				break;
+			}
+		case 4: // High speed challenge
+			{
+				m_objectiveGold = 3000;
+				m_objectiveSilver = 2500;
+				m_objectiveBronze = 2000;
+				break;
+			}
+		case 5: // Drift challenge
+			{
+				m_objectiveGold = 5000;
+				m_objectiveSilver = 4500;
+				m_objectiveBronze = 4000;
+				break;
+			}
+		case 6: // Time attack
+			{
+				m_objectiveGold = 15f * m_checkPoints;
+				m_objectiveSilver = 16.5f * m_checkPoints;
+				m_objectiveBronze = 17f * m_checkPoints;
+				break;
+			}
+		default: // FreeRoam
+			{
+				m_objectiveGold = m_objectiveSilver = m_objectiveBronze = 0f;
+				break;
+			}
+		}
 	}
+	void SetEventRules()
+	{
+		switch (m_gameMode) {
+		case 1: // Standard Endurance
+			{
+				m_initialTimeRemaining = 25f;
+				m_eventDamageTakenMultiplier = 1.5f;
+
+				m_eventHasTimeLimit = true;
+				m_eventHasScore = true;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = true;
+
+				m_checkPoints = 0;
+				m_eventBonusTimeOnCPMultiplier = 1f;
+				m_eventBonusTimeOnDriftMultiplier = 0.005f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 20f;
+				m_eventScoreOnCheckpoint = 100f;
+				m_eventScoreOnCleanSection = 500f;
+				m_eventScoreDamagePenaltyMultiplier = 0f;
+				break;
+			}
+		case 2: // Drift Endurance
+			{
+				m_initialTimeRemaining = 25f;
+				m_eventDamageTakenMultiplier = 1.5f;
+
+				m_eventHasTimeLimit = true;
+				m_eventHasScore = true;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = true;
+
+				m_checkPoints = 0;
+				m_eventBonusTimeOnCPMultiplier = 0f;
+				m_eventBonusTimeOnDriftMultiplier = 0.01f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 20f;
+				m_eventScoreOnCheckpoint = 100f;
+				m_eventScoreOnCleanSection = 500f;
+				m_eventScoreDamagePenaltyMultiplier = 20f;
+				break;
+			}
+		case 3: // Drift Exhibition
+			{
+				m_initialTimeRemaining = 35f;
+				m_eventDamageTakenMultiplier = 1f;
+
+				m_eventHasTimeLimit = true;
+				m_eventHasScore = true;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = true;
+
+				m_eventBonusTimeOnCPMultiplier = 1.5f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
+				m_eventScoreOnDriftMultiplier = 0.5f;
+				m_eventScoreOnDistance = 0f;
+				m_eventScoreOnCheckpoint = 0f;
+				m_eventScoreOnCleanSection = 500f;
+				m_eventScoreDamagePenaltyMultiplier = 100f;
+				break;
+			}
+		case 4: // High Speed Challenge
+			{
+				m_initialTimeRemaining = 10f;
+				m_eventDamageTakenMultiplier = 3f;
+
+				m_eventHasTimeLimit = true;
+				m_eventHasScore = false;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = true;
+
+				m_eventBonusTimeOnCPMultiplier = 0.1f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 0f;
+				m_eventScoreOnCheckpoint = 0f;
+				m_eventScoreOnCleanSection = 0f;
+				m_eventScoreDamagePenaltyMultiplier = 20f;
+				break;
+			}
+		case 5: // Chain Drift Challenge
+			{
+				m_initialTimeRemaining = 6f;
+				m_eventDamageTakenMultiplier = 1f;
+
+				m_eventHasTimeLimit = true;
+				m_eventHasScore = false;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = true;
+
+				m_eventBonusTimeOnCPMultiplier = 0.05f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 0f;
+				m_eventScoreOnCheckpoint = 0f;
+				m_eventScoreOnCleanSection = 0f;
+				m_eventScoreDamagePenaltyMultiplier = 20f;
+				break;
+			}
+		case 6: // Time Attack
+			{
+				m_initialTimeRemaining = 0f;
+				m_eventDamageTakenMultiplier = 1f;
+
+				m_eventHasTimeLimit = false;
+				m_eventHasScore = false;
+				m_eventCanBeFailed = true;
+				m_hasObjectives = true;
+				m_objectiveTypeScore = false;
+
+				m_eventBonusTimeOnCPMultiplier = 0f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 0f;
+				m_eventScoreOnCheckpoint = 0f;
+				m_eventScoreOnCleanSection = 0f;
+				m_eventScoreDamagePenaltyMultiplier = 0f;
+				break;
+			}
+		default: // Free Roam
+			{
+				m_initialTimeRemaining = 0f;
+				m_eventDamageTakenMultiplier = 1f;
+
+				m_eventHasTimeLimit = false;
+				m_eventHasScore = false;
+				m_eventCanBeFailed = false;
+				m_hasObjectives = false;
+				m_objectiveTypeScore = false;
+
+				m_checkPoints = 0;
+				m_eventBonusTimeOnCPMultiplier = 0f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
+				m_eventScoreOnDriftMultiplier = 0f;
+				m_eventScoreOnDistance = 0f;
+				m_eventScoreOnCheckpoint = 0f;
+				m_eventScoreOnCleanSection = 0f;
+				m_eventScoreDamagePenaltyMultiplier = 0f;
+				break;
+			}
+		}
+	}
+
+
+	// Getters
+	// =======================================================================================================
+
+	public float GetObjectiveForPosition(int position)
+	{
+		if (position == 1)
+			return m_objectiveGold;
+		else if (position == 2)
+			return m_objectiveSilver;
+		else
+			return m_objectiveBronze;
+	}
+	public bool IsObjectiveTypeScore()
+	{
+		return m_objectiveTypeScore;
+	}
+	public bool HasObjectives()
+	{
+		return m_hasObjectives;
+	}
+	public bool HasTimelimit()
+	{
+		return m_eventHasTimeLimit;
+	}
+	public bool HasScore()
+	{
+		return m_eventHasScore;
+	}
+	public bool CanBeFailed()
+	{
+		return m_eventCanBeFailed;
+	}
+	public bool IsSeasonalEvent()
+	{
+		return m_seasonalEvent;
+	}
+	public bool CanBeRestarted()
+	{
+		return m_canBeRestarted;
+	}
+	public int GetSeed() 
+	{
+		return m_eventSeed;
+	}
+	public int GetGamemode() 
+	{ 
+		return m_gameMode; 
+	}
+	public int GetEventCheckpoints() 
+	{ 
+		return m_checkPoints;
+	}
+	public float GetBonusTimeOnCheckpointMultiplier()
+	{
+		return m_eventBonusTimeOnCPMultiplier;
+	}
+	public float GetBonusTimeOnDriftMultiplier()
+	{
+		return m_eventBonusTimeOnDriftMultiplier;
+	}
+	public float GetDamageTakenMultiplier()
+	{
+		return m_eventDamageTakenMultiplier;
+	}
+	public float GetScoreOnDriftMultiplier()
+	{
+		return m_eventScoreOnDriftMultiplier;
+	}
+	public float GetScoreOnDistance()
+	{
+		return m_eventScoreOnDistance;
+	}
+	public float GetScoreOnCheckpoint()
+	{
+		return m_eventScoreOnCheckpoint;
+	}
+	public float GetScoreOnCleanSection()
+	{
+		return m_eventScoreOnCleanSection;
+	}
+	public float GetScoreDamagePenaltyMultiplier()
+	{
+		return m_eventScoreDamagePenaltyMultiplier;
+	}
+	public float GetInitialTimeRemaining()
+	{
+		return m_initialTimeRemaining;
+	}
+	public int GetRewardValue() 
+	{ 
+		return m_rewardValue; 
+	}
+	public int GetRewardType()
+	{
+		return m_rewardType;
+	}
+	public float GetRoadDifficulty() 
+	{ 
+		return m_roadDifficulty; 
+	}
+	public float GetLeagueDifficulty()
+	{
+		return m_leagueExtraDifficulty;
+	}
+	public float GetCombinedDifficulty()
+	{
+		return m_combinedDifficultyFactor;
+	}
+	public int GetEventLeague()
+	{
+		return m_eventLeague;
+	}
+
+	// String getters
+	// ==================================================================================================================
+
+	public string GetEventArea() { return "Seaside Highway"; }
 	public string GetEventTypeShortDesc()
 	{
-		switch (m_eventType) {
+		switch (m_gameMode) {
 		case 1: // Standard Endurance
 			{
 				return "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints.";
@@ -86,7 +425,7 @@ public class EventData {
 	}
 	public string GetEventTypeName()
 	{
-		switch (m_eventType) {
+		switch (m_gameMode) {
 		case 1: // Endurance
 			{
 				return "Endurance";
@@ -131,25 +470,5 @@ public class EventData {
 		} else {
 			return "Special car part.";
 		}
-	}
-	public int GetSeed()
-	{
-		return m_eventSeed;
-	}
-	public int GetEventType()
-	{
-		return m_eventType;
-	}
-	public int GetEventCheckpoints()
-	{
-		return m_checkPoints;
-	}
-	public int GetRewardCurrency()
-	{
-		return m_rewardValue;
-	}
-	public float GetRoadDifficulty()
-	{
-		return m_roadDifficulty;
 	}
 }

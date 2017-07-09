@@ -26,6 +26,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	}
 	void Start ()
 	{
+		SetPanelInfo ();
 		StartCoroutine ("FadeInScreen");
 	}
 	// Update is called once per frame
@@ -36,13 +37,14 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 		}
 	}
 
-	public void SetPanelInfo(int gamemode)
+	public void SetPanelInfo()
 	{
-		event_subName.text = "Seaside highway - " + DayNightCycle.currentInstance.getTimeString() + " [ Road ID: " + RoadGenerator.currentInstance.levelSeed.ToString() + " ]";
+		event_subName.text = GlobalGameData.currentInstance.selectedEvent.GetEventArea() + " - " + DayNightCycle.currentInstance.getTimeString() 
+			+ " [ Road ID: " + GlobalGameData.currentInstance.selectedEvent.GetSeed().ToString() + " ]";
 		SetObjectivePanel ();
 		event_title.text = GlobalGameData.currentInstance.selectedEvent.GetEventTypeName ();
 		event_description.text = GlobalGameData.currentInstance.selectedEvent.GetEventTypeShortDesc ();
-		switch (gamemode) {
+		switch (GlobalGameData.currentInstance.selectedEvent.GetGamemode()) {
 		case 1: // Standard Endurance
 			{
 				event_title.text = "ENDURANCE";
@@ -58,25 +60,25 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 		case 3: // Drift Exhibition
 			{
 				event_title.text = "DRIFT EXHIBITION";
-				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.time_remainingSec).ToString();
+				event_limits.text = " Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints() + " | Time limit: " + ((int)GlobalGameData.currentInstance.selectedEvent.GetInitialTimeRemaining()).ToString();
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
 				event_title.text = "HIGH SPEED CHALLENGE";
-				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.time_remainingSec).ToString();
+				event_limits.text = " Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints() + " | Time limit: " + ((int)GlobalGameData.currentInstance.selectedEvent.GetInitialTimeRemaining()).ToString();
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
 				event_title.text = "CHAIN DRIFT CHALLENGE";
-				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: " + ((int)StageData.currentData.time_remainingSec).ToString();
+				event_limits.text = " Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints() + " | Time limit: " + ((int)GlobalGameData.currentInstance.selectedEvent.GetInitialTimeRemaining()).ToString();
 				break;
 			}
 		case 6: // Time Attack
 			{
 				event_title.text = "TIME ATTACK";
-				event_limits.text = " Checkpoints: " + StageData.currentData.GetEventLimitCP() + " | Time limit: --";
+				event_limits.text = " Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints() + " | Time limit: --";
 				break;
 			}
 		default: // Free Roam
