@@ -51,7 +51,6 @@ public class GlobalGameData : MonoBehaviour {
 			//TODO: Cambiar solo 3-4 de ellos.
 		}
 	}
-
 	public int GetPlayerRank()
 	{
 		return m_playerRank;

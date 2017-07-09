@@ -8,16 +8,24 @@ public class MainMenuManager : MonoBehaviour {
 
 	public static MainMenuManager currentInstance;
 
+	[Header("Event List Panel")]
 	public CanvasGroup EventPanelCG;
 	public Transform EventPanelListParent;
 
+	[Header("Top Panel")]
 	public Text normalCurrencyText;
 	public Text alternativeCurrencyText;
 	public Text playerNameText;
 	public Text playerRankText;
-
+	[Header("Event Details Panel")]
+	public Text eventDetailsHeader;
+	public Text eventDetailsDescription;
+	public Text eventDetailsAditionalDesc;
+	public Text eventDetailsRewards;
+	public Text eventDetailsSubPanel;
+	public CanvasGroup eventDetailsCG;
+	[Header("Other references")]
 	public GameObject EventButtonPrefab;
-
 	public List<GameObject> eventsOnDisplay;
 
 	private bool CoRoutineActive = false;
@@ -38,10 +46,12 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void SelectEventAsActive(int index)
 	{
+		if (CoRoutineActive)
+			return;
 		GlobalGameData.currentInstance.selectedEvent = GlobalGameData.currentInstance.eventsAvailable [index];
-		SceneManager.LoadScene ("test");
+		StartCoroutine ("FadeInEventDetailsPanel");
+		SetupEventDetailsPanel ();
 	}
-
 	void CreateSelectableEvents()
 	{
 		GameObject lastCreatedPanel;
@@ -55,11 +65,23 @@ public class MainMenuManager : MonoBehaviour {
 		if (GlobalGameData.currentInstance == null)
 			return;
 		playerNameText.text = "Player";
-		playerRankText.text = GlobalGameData.currentInstance.GetPlayerRank ().ToString ();
+		playerRankText.text = "Driver rank: " + GlobalGameData.currentInstance.GetPlayerRank ().ToString ();
 		normalCurrencyText.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
-		alternativeCurrencyText.text = "Driver rank: " + GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
+		alternativeCurrencyText.text = GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
+	}
+	void SetupEventDetailsPanel()
+	{
+		if (GlobalGameData.currentInstance.selectedEvent == null)
+			return;
+		eventDetailsHeader.text = GlobalGameData.currentInstance.selectedEvent.GetEventArea () + " - " + GlobalGameData.currentInstance.selectedEvent.GetEventTypeName ();
+		eventDetailsDescription.text = GlobalGameData.currentInstance.selectedEvent.GetEventTypeShortDesc ();
+		eventDetailsAditionalDesc.text = "";
+		eventDetailsRewards.text = GlobalGameData.currentInstance.selectedEvent.GetRewardString ();
+		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints().ToString() + "  [ID: " + 
+			GlobalGameData.currentInstance.selectedEvent.GetSeed().ToString() + "]";
 	}
 	// CO-Routines
+	// ======================================================================
 	IEnumerator FadeInEventPanel()
 	{
 		CoRoutineActive = true;
@@ -82,7 +104,30 @@ public class MainMenuManager : MonoBehaviour {
 		EventPanelCG.gameObject.SetActive (false);
 		CoRoutineActive = false;
 	}
-	// Button Press Recievers
+	IEnumerator FadeInEventDetailsPanel()
+	{
+		eventDetailsCG.gameObject.SetActive (true);
+		CoRoutineActive = true;
+		while (eventDetailsCG.alpha < 1) {
+			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 1, Time.deltaTime*5f);
+			eventDetailsCG.transform.localScale = Vector3.one * eventDetailsCG.alpha;
+			yield return null;
+		}
+		CoRoutineActive = false;
+	}
+	IEnumerator FadeOutEventDetailsPanel()
+	{
+		CoRoutineActive = true;
+		while (eventDetailsCG.alpha > 0) {
+			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 0, Time.deltaTime*5f);
+			eventDetailsCG.transform.localScale = Vector3.one * eventDetailsCG.alpha;
+			yield return null;
+		}
+		CoRoutineActive = false;
+		eventDetailsCG.gameObject.SetActive (false);
+	}
+	// Button Click Recievers
+	// =======================================================================
 	public void OnEventPanelClicked()
 	{
 		if (CoRoutineActive)
@@ -138,5 +183,20 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		print ("CloseEventPanel clicked");
 		StartCoroutine ("FadeOutEventPanel");
+	}
+	public void OnConfirmEventClicked()
+	{
+		if (CoRoutineActive)
+			return;
+		//TODO: Pantalla de carga quizas?
+		SceneManager.LoadScene ("test");
+
+	}
+	public void OnCancelEventClicked()
+	{
+		if (CoRoutineActive)
+			return;
+		StartCoroutine ("FadeOutEventDetailsPanel");
+
 	}
 }

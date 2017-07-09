@@ -383,6 +383,7 @@ public class StageData : MonoBehaviour {
 	}
 	void EventSetup()
 	{
+		eventLimitCP = GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints ();
 		switch (gamemode) {
 		case 1: // Standard Endurance
 			{
@@ -434,7 +435,6 @@ public class StageData : MonoBehaviour {
 				eventCanBeFailed = false;
 				objectiveTypeScore = true;
 
-				eventLimitCP = 6;
 				eventBonusTimeOnCPMultiplier = 1.5f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventScoreOnDriftMultiplier = 0.5f;
@@ -454,7 +454,6 @@ public class StageData : MonoBehaviour {
 				eventCanBeFailed = false;
 				objectiveTypeScore = true;
 
-				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0.1f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventScoreOnDriftMultiplier = 0f;
@@ -474,7 +473,6 @@ public class StageData : MonoBehaviour {
 				eventCanBeFailed = false;
 				objectiveTypeScore = true;
 
-				eventLimitCP = 10;
 				eventBonusTimeOnCPMultiplier = 0.05f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventScoreOnDriftMultiplier = 0f;
@@ -494,7 +492,6 @@ public class StageData : MonoBehaviour {
 				eventCanBeFailed = true;
 				objectiveTypeScore = false;
 
-				eventLimitCP = 6;
 				eventBonusTimeOnCPMultiplier = 0f;
 				eventBonusTimeOnDriftMultiplier = 0f;
 				eventScoreOnDriftMultiplier = 0f;

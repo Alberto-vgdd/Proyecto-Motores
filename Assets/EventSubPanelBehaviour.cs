@@ -30,37 +30,6 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 		m_index = index;
 		text_reward.text = data.GetRewardCurrency () + " cr.";
 		text_difficulty.text = data.GetRoadDifficulty().ToString ("F1");
-		switch (data.GetEventType()) {
-		case 1: // Endurance
-			{
-				text_header.text = "Seaside highway - Endurance";
-				break;
-			}
-		case 2: // Drift Endurance
-			{
-				text_header.text = "Seaside highway - Drift Endurance";
-				break;
-			}
-		case 3: // Drift Exhibition
-			{
-				text_header.text = "Seaside highway - Drift Exhibition";
-				break;
-			}
-		case 4: // High Speed Challenge
-			{
-				text_header.text = "Seaside highway - High Speed Challenge";
-				break;
-			}
-		case 5: // Chain Drift Challenge
-			{
-				text_header.text = "Seaside highway - Chain Drift Challenge";
-				break;
-			}
-		case 6: // Time Attack
-			{
-				text_header.text = "Seaside highway - Time attack";
-				break;
-			}
-		}
+		text_header.text = data.GetEventArea () + " - " + data.GetEventTypeName ();
 	}
 }

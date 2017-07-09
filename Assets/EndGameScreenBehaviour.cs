@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class EndGameScreenBehaviour : MonoBehaviour {
 
@@ -27,12 +28,13 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (Input.GetKeyDown (KeyCode.KeypadEnter)) {
+			SceneManager.LoadScene ("MainMenu");
+		}
 	}
 	public void SetAndEnable(int type, bool failed)
 	{
