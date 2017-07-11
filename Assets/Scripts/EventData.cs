@@ -57,12 +57,12 @@ public class EventData {
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f;
 		m_roadDifficulty += 1 - (minStraight / 3f);
 		m_roadDifficulty += 1 - (maxStraight / 8f);
-		m_leagueExtraDifficulty = 1 + (league-1) * 0.1f;
+		m_leagueExtraDifficulty = 1 + (league-1) * 0.05f;
 		m_combinedDifficultyFactor = m_leagueExtraDifficulty + m_roadDifficulty *0.2f + m_checkPoints *0.1f;
 		m_rewardValue = (int)(m_combinedDifficultyFactor*500);
 
-		SetEventObjectives ();
 		SetEventRules ();
+		SetEventObjectives ();
 	}
 	void SetEventObjectives()
 	{
@@ -70,43 +70,31 @@ public class EventData {
 		case 1: // Standard endurance
 			{
 				m_objectiveGold = 10000;
-				m_objectiveSilver = 9000;
-				m_objectiveBronze = 8000;
 				break;
 			}
 		case 2: // Drift Endurance
 			{
 				m_objectiveGold = 7000;
-				m_objectiveSilver = 6500;
-				m_objectiveBronze = 6000;
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
 				m_objectiveGold = 1750 * m_checkPoints;
-				m_objectiveSilver = 1500 * m_checkPoints;
-				m_objectiveBronze = 1300 * m_checkPoints;
 				break;
 			}
 		case 4: // High speed challenge
 			{
 				m_objectiveGold = 3000;
-				m_objectiveSilver = 2500;
-				m_objectiveBronze = 2000;
 				break;
 			}
 		case 5: // Drift challenge
 			{
 				m_objectiveGold = 5000;
-				m_objectiveSilver = 4500;
-				m_objectiveBronze = 4000;
 				break;
 			}
 		case 6: // Time attack
 			{
 				m_objectiveGold = 15f * m_checkPoints;
-				m_objectiveSilver = 16.5f * m_checkPoints;
-				m_objectiveBronze = 17f * m_checkPoints;
 				break;
 			}
 		default: // FreeRoam
@@ -114,6 +102,17 @@ public class EventData {
 				m_objectiveGold = m_objectiveSilver = m_objectiveBronze = 0f;
 				break;
 			}
+		}
+			
+		// Scaling
+		if (m_objectiveTypeScore) {
+			m_objectiveGold = (int)(m_objectiveGold * m_leagueExtraDifficulty);
+			m_objectiveSilver = (int)(m_objectiveGold * 0.9f);
+			m_objectiveBronze = (int)(m_objectiveGold * 0.8f);
+		} else {
+			m_objectiveGold = (int)(m_objectiveGold / m_leagueExtraDifficulty);
+			m_objectiveSilver = (int)(m_objectiveGold / 0.9f);
+			m_objectiveBronze = (int)(m_objectiveGold / 0.8f);
 		}
 	}
 	void SetEventRules()

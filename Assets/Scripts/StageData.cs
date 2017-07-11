@@ -64,10 +64,13 @@ public class StageData : MonoBehaviour {
 	void Awake () { currentData = this; }
 	void Start () {
 		eventActive = GlobalGameData.currentInstance.selectedEvent;
+		time_remainingSec = eventActive.GetInitialTimeRemaining ();
+		time_remainingSec += 0.3f; // Pequeño margen.
+		UpdateTime ();
 		if (eventActive.GetEventCheckpoints() > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
+			//TODO: Mover a PreRacePanelBehaviour
 		}
-		//TODO: Mover a PreRacePanelBehaviour
 	}
 
 	void Update () {
@@ -281,7 +284,6 @@ public class StageData : MonoBehaviour {
 			} else if (startGameDelay > -2 && startGameDelay <= 0) {
 				countDownText.text = "GO!";
 				gameStarted = true;
-				time_remainingSec += 0.3f;
 			} else {
 				countDownText.text = "";
 			}

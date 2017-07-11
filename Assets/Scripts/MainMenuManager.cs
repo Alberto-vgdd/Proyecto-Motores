@@ -24,6 +24,9 @@ public class MainMenuManager : MonoBehaviour {
 	public Text eventDetailsRewards;
 	public Text eventDetailsSubPanel;
 	public CanvasGroup eventDetailsCG;
+	[Header("Loading Panel")]
+	public Text loadingInfo;
+	public CanvasGroup loadingCG;
 	[Header("Other references")]
 	public GameObject EventButtonPrefab;
 	public List<GameObject> eventsOnDisplay;
@@ -126,6 +129,22 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = false;
 		eventDetailsCG.gameObject.SetActive (false);
 	}
+	IEnumerator LoadScene()
+	{
+		CoRoutineActive = true;
+		loadingCG.gameObject.SetActive (true);
+		loadingInfo.text = "LOADING";
+		while (loadingCG.alpha < 1) {
+			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);
+			yield return null;
+		}
+		AsyncOperation AO = SceneManager.LoadSceneAsync ("test");
+		while (!AO.isDone) {
+			loadingInfo.text = "LOADING (" + ((int)(AO.progress * 100)) + "%)";
+			yield return null;
+		}
+		CoRoutineActive = false;
+	}
 	// Button Click Recievers
 	// =======================================================================
 	public void OnEventPanelClicked()
@@ -189,7 +208,7 @@ public class MainMenuManager : MonoBehaviour {
 		if (CoRoutineActive)
 			return;
 		//TODO: Pantalla de carga quizas?
-		SceneManager.LoadScene ("test");
+		StartCoroutine ("LoadScene");
 
 	}
 	public void OnCancelEventClicked()

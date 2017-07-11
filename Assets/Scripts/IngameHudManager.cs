@@ -39,7 +39,7 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		sidePanelLarge.color = sidePanelSmall.color = baseInterfaceColor = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
+		sidePanelLarge.color = sidePanelSmall.color = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
 		SetObjectivePanel ();
 		eventScoreText.text = tempScore.ToString();
 		timerIsCountdown = GlobalGameData.currentInstance.selectedEvent.HasTimelimit();
