@@ -48,6 +48,7 @@ public class StageData : MonoBehaviour {
 	public int cleanSections;
 	public float totalDrift;
 
+	private float timeCountMultiplier = 1f;
 	public bool gameStarted;
 	private bool eventFinished;
 	private float gameOverDelay = 5.0f;
@@ -63,14 +64,10 @@ public class StageData : MonoBehaviour {
 
 	void Awake () { currentData = this; }
 	void Start () {
-		eventActive = GlobalGameData.currentInstance.selectedEvent;
+		eventActive = GlobalGameData.currentInstance.eventActive;
 		time_remainingSec = eventActive.GetInitialTimeRemaining ();
 		time_remainingSec += 0.3f; // Pequeño margen.
 		UpdateTime ();
-		if (eventActive.GetEventCheckpoints() > 0) {
-			IngameHudManager.currentInstance.UpdateSectorInfo ();
-			//TODO: Mover a PreRacePanelBehaviour
-		}
 	}
 
 	void Update () {
@@ -116,6 +113,7 @@ public class StageData : MonoBehaviour {
 
 	public void PlayerCrossedCheckPoint(bool clean, float awardedTime)
 	{
+		awardedTime *= eventActive.GetBonusTimeOnCheckpointMultiplier ();
 		if (clean) {
 			HealPlayer (10);
 			NotificationManager.currentInstance.AddNotification (new GameNotification ("Clean section, health restored!", Color.green, 30));
@@ -124,8 +122,11 @@ public class StageData : MonoBehaviour {
 		} else {
 			eventScore += eventActive.GetScoreOnCheckpoint();
 		}
+		if (eventActive.GetScorePerRemainingTimeOnCheckpointMultiplier () > 0) {
+			eventScore += (int)(time_remainingSec * eventActive.GetScorePerRemainingTimeOnCheckpointMultiplier ());
+		}
 		if (eventActive.GetBonusTimeOnCheckpointMultiplier() > 0) {
-			time_remainingSec += awardedTime * eventActive.GetBonusTimeOnCheckpointMultiplier(); 
+			time_remainingSec += awardedTime; 
 			NotificationManager.currentInstance.AddNotification(new GameNotification("Time extended! +" + awardedTime.ToString("F1") , Color.green, 30));
 		}
 		if (eventActive.GetEventCheckpoints() > 0) {
@@ -243,14 +244,15 @@ public class StageData : MonoBehaviour {
 
 	void UpdateTime()
 	{
+		timeCountMultiplier = 1f;
 		if (!gameStarted)
 			return;
 		if (eventActive.HasTimelimit()) {
-			if (eventActive.GetGamemode() == 4 && pm.accumulatedAcceleration / pm.maxFwdSpeed > 0.7f)
-				return;
+			if (eventActive.GetGamemode () == 4 && pm.accumulatedAcceleration / pm.maxFwdSpeed > 0.7f)
+				timeCountMultiplier = 0.05f;
 			if (eventActive.GetGamemode() == 5 && pm.drifting)
-				return;
-			time_remainingSec = Mathf.MoveTowards (time_remainingSec, 0, Time.deltaTime);
+				timeCountMultiplier = 0.05f;
+			time_remainingSec = Mathf.MoveTowards (time_remainingSec, 0, Time.deltaTime * timeCountMultiplier);
 			if (time_remainingSec <= 0 && Mathf.Abs (pm.accumulatedAcceleration) <= 1f) 
 			{
 				EndEvent (2);
@@ -328,19 +330,19 @@ public class StageData : MonoBehaviour {
 		if (eventActive.GetGamemode() == 0) {
 			txt = "- No objectives -";
 		}
-		else if (GlobalGameData.currentInstance.selectedEvent.IsObjectiveTypeScore()) {
+		else if (GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore()) {
 			txt = 
-				"1ST: " + GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(1) +
-				"\n2ND: " + GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(2) +
-				"\n3RD: " + GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(3);
+				"1ST: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) +
+				"\n2ND: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) +
+				"\n3RD: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3);
 		} else {
 			txt = 
-				"1ST: " + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(1) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(1) % 60)).ToString("D2") + ":00" +
-				"\n2ND: " + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(2) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(2) % 60)).ToString("D2") + ":00" +
-				"\n3RD: " + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(3) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.selectedEvent.GetObjectiveForPosition(3) % 60)).ToString("D2") + ":00";
+				"1ST: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) / 60)).ToString () 
+				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) % 60)).ToString("D2") + ":00" +
+				"\n2ND: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) / 60)).ToString () 
+				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) % 60)).ToString("D2") + ":00" +
+				"\n3RD: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3) / 60)).ToString () 
+				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3) % 60)).ToString("D2") + ":00";
 		}
 		return txt;
 	}

@@ -6,9 +6,9 @@ public class EventData {
 	private int m_eventSeed;
 
 	// Objectives
-	private float m_objectiveGold = 0;
-	private float m_objectiveSilver = 0;
-	private float m_objectiveBronze = 0;
+	private int m_objectiveGold = 0;
+	private int m_objectiveSilver = 0;
+	private int m_objectiveBronze = 0;
 	// Event Rules
 	private bool m_objectiveTypeScore = false;
 	private bool m_hasObjectives = false;
@@ -27,6 +27,7 @@ public class EventData {
 	private float m_eventScoreOnDistance = 0;
 	private float m_eventScoreOnCheckpoint = 0;
 	private float m_eventScoreOnCleanSection = 0;
+	private float m_eventScorePerTimeRemainingOnCpMultiplier = 0;
 	private float m_eventScoreDamagePenaltyMultiplier = 0f;
 	// Other parameters
 	private int m_rewardValue;
@@ -84,22 +85,22 @@ public class EventData {
 			}
 		case 4: // High speed challenge
 			{
-				m_objectiveGold = 3000;
+				m_objectiveGold = 450 * m_checkPoints;
 				break;
 			}
 		case 5: // Drift challenge
 			{
-				m_objectiveGold = 5000;
+				m_objectiveGold = 400 * m_checkPoints;
 				break;
 			}
 		case 6: // Time attack
 			{
-				m_objectiveGold = 15f * m_checkPoints;
+				m_objectiveGold = (int)(16.5f * m_checkPoints);
 				break;
 			}
 		default: // FreeRoam
 			{
-				m_objectiveGold = m_objectiveSilver = m_objectiveBronze = 0f;
+				m_objectiveGold = m_objectiveSilver = m_objectiveBronze = 0;
 				break;
 			}
 		}
@@ -136,6 +137,7 @@ public class EventData {
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
 				m_eventScoreOnCleanSection = 500f;
+				m_eventScorePerTimeRemainingOnCpMultiplier = 0f;
 				m_eventScoreDamagePenaltyMultiplier = 0f;
 				break;
 			}
@@ -157,12 +159,13 @@ public class EventData {
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
 				m_eventScoreOnCleanSection = 500f;
+				m_eventScorePerTimeRemainingOnCpMultiplier = 0f;
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				m_initialTimeRemaining = 35f;
+				m_initialTimeRemaining = 45f;
 				m_eventDamageTakenMultiplier = 1f;
 
 				m_eventHasTimeLimit = true;
@@ -171,12 +174,13 @@ public class EventData {
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
 
-				m_eventBonusTimeOnCPMultiplier = 1.5f;
+				m_eventBonusTimeOnCPMultiplier = 1.8f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
 				m_eventScoreOnDriftMultiplier = 0.5f;
 				m_eventScoreOnDistance = 0f;
 				m_eventScoreOnCheckpoint = 0f;
 				m_eventScoreOnCleanSection = 500f;
+				m_eventScorePerTimeRemainingOnCpMultiplier = 0f;
 				m_eventScoreDamagePenaltyMultiplier = 100f;
 				break;
 			}
@@ -186,37 +190,39 @@ public class EventData {
 				m_eventDamageTakenMultiplier = 3f;
 
 				m_eventHasTimeLimit = true;
-				m_eventHasScore = false;
+				m_eventHasScore = true;
 				m_eventCanBeFailed = false;
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
 
-				m_eventBonusTimeOnCPMultiplier = 0.1f;
+				m_eventBonusTimeOnCPMultiplier = 0.75f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 0f;
 				m_eventScoreOnCheckpoint = 0f;
 				m_eventScoreOnCleanSection = 0f;
+				m_eventScorePerTimeRemainingOnCpMultiplier = 65f;
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
-				m_initialTimeRemaining = 6f;
+				m_initialTimeRemaining = 8f;
 				m_eventDamageTakenMultiplier = 1f;
 
 				m_eventHasTimeLimit = true;
-				m_eventHasScore = false;
+				m_eventHasScore = true;
 				m_eventCanBeFailed = false;
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
 
-				m_eventBonusTimeOnCPMultiplier = 0.05f;
+				m_eventBonusTimeOnCPMultiplier = 0.2f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 0f;
 				m_eventScoreOnCheckpoint = 0f;
 				m_eventScoreOnCleanSection = 0f;
+				m_eventScorePerTimeRemainingOnCpMultiplier = 65f;
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
@@ -345,6 +351,10 @@ public class EventData {
 	{
 		return m_eventScoreOnCleanSection;
 	}
+	public float GetScorePerRemainingTimeOnCheckpointMultiplier()
+	{
+		return m_eventScorePerTimeRemainingOnCpMultiplier;
+	}
 	public float GetScoreDamagePenaltyMultiplier()
 	{
 		return m_eventScoreDamagePenaltyMultiplier;
@@ -384,83 +394,87 @@ public class EventData {
 	public string GetEventArea() { return "Seaside Highway"; }
 	public string GetEventTypeShortDesc()
 	{
+		string str = "";  // Innecesario, pero evita los warnings del compilador.
 		switch (m_gameMode) {
 		case 1: // Standard Endurance
 			{
-				return "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints.";
+				str = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints.";
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				return "Drive as far as you can within the time limit, gain bonus time ONLY by drifting.";
+				str = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting.";
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				return "Drift to earn points before reaching the last checkpoint, longer drifts have a bonus score multiplier.";
+				str = "Drift to earn points before reaching the last checkpoint, longer drifts have a bonus score multiplier.";
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
-				return "Reach the last checkpoint within the time limit, time is short, reach high speeds to freeze the timer.";
+				str = "Reach the last checkpoint within the time limit, while driving at high speed, timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
-				return "Reach the last checkpoint within the time limit, time is short, drift to freeze the timer.";
+				str = "Reach the last checkpoint within the time limit, while drifting the timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
 		case 6: // Time Attack
 			{
-				return "Reach the last checkpoint as fast as you can.";
+				str = "Reach the last checkpoint as fast as you can.";
 				break;
 			}
 		default: // Free Roam
 			{
-				return "Practice while enjoying the landscape!.";
+				str = "Practice while enjoying the landscape!";
 				break;
 			}
 		}
+		return str;
 	}
 	public string GetEventTypeName()
 	{
+		string str = ""; // Innecesario pero evita warnings del compilador
 		switch (m_gameMode) {
 		case 1: // Endurance
 			{
-				return "Endurance";
+				str = "Endurance";
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				return "Drift Endurance";
+				str = "Drift Endurance";
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				return "Drift Exhibition";
+				str = "Drift Exhibition";
 				break;
 			}
 		case 4: // High Speed Challenge
 			{
-				return "High Speed Challenge";
+				str = "High Speed Challenge";
 				break;
 			}
 		case 5: // Chain Drift Challenge
 			{
-				return "Chain Drift Challenge";
+				str = "Chain Drift Challenge";
 				break;
 			}
 		case 6: // Time Attack
 			{
-				return "Time attack";
+				str = "Time attack";
 				break;
 			}
 		default:
 			{
-				return "Free Roam";
+				str = "Free Roam";
 				break;
 			}
 		}
+		return str;
 	}
 	public string GetRewardString()
 	{

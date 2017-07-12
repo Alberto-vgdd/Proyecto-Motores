@@ -11,19 +11,26 @@ public class SceneCentering : MonoBehaviour {
 	private float checkInterval = 1f;
 
 	// Use this for initialization
-	void FixedUpdate()
+	void Start ()
 	{
-		if (playerTransform.position.z > distanceLimit) {
-			worldTransform.Translate (-distanceLimit * Vector3.forward);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
-		}
-		if (playerTransform.position.x > distanceLimit) {
-			worldTransform.transform.Translate (-distanceLimit * Vector3.right);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
-		}
-		if (playerTransform.position.x < -distanceLimit) {
-			worldTransform.transform.Translate (distanceLimit * Vector3.right);
-			RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+		StartCoroutine ("CheckPosition");
+	}
+	IEnumerator CheckPosition()
+	{
+		while (true) {
+			if (playerTransform.position.z > distanceLimit) {
+				worldTransform.Translate (-distanceLimit * Vector3.forward);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			if (playerTransform.position.x > distanceLimit) {
+				worldTransform.transform.Translate (-distanceLimit * Vector3.right);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			if (playerTransform.position.x < -distanceLimit) {
+				worldTransform.transform.Translate (distanceLimit * Vector3.right);
+				RoadGenerator.currentInstance.UpdateMinimapForAllActivePieces ();
+			}
+			yield return new WaitForSeconds (checkInterval);
 		}
 	}
 }

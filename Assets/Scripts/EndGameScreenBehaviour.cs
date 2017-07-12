@@ -66,7 +66,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		}
 		// Switch by gamemode.
 		// ==============================================================================
-		switch (GlobalGameData.currentInstance.selectedEvent.GetGamemode()) {
+		switch (GlobalGameData.currentInstance.eventActive.GetGamemode()) {
 		case 1: // Standard Endurance
 			{
 				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
@@ -117,21 +117,25 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			switch (StageData.currentData.GetPlayerResult ()) {
 			case 1:
 				{
+					GlobalGameData.currentInstance.m_lastEventPlayedResult = 1;
 					endGameObjectivesAchieved.text = "- GOLD medal awarded -";
 					break;
 				}
 			case 2:
 				{
+					GlobalGameData.currentInstance.m_lastEventPlayedResult = 2;
 					endGameObjectivesAchieved.text = "- SILVER medal awarded -";
 					break;
 				}
 			case 3:
 				{
+					GlobalGameData.currentInstance.m_lastEventPlayedResult = 3;
 					endGameObjectivesAchieved.text = "- BRONZE medal awarded -";
 					break;
 				}
 			default:
 				{
+					GlobalGameData.currentInstance.m_lastEventPlayedResult = 0;
 					endGameObjectivesAchieved.text = "- No medals awarded -";
 					break;
 				}

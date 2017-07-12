@@ -24,6 +24,11 @@ public class MainMenuManager : MonoBehaviour {
 	public Text eventDetailsRewards;
 	public Text eventDetailsSubPanel;
 	public CanvasGroup eventDetailsCG;
+	[Header("RankPromotionPanel")]
+	public Slider rankStatusSlider;
+	public Text rankName;
+	public Text promotionInfo;
+	public CanvasGroup rankPromotionCG;
 	[Header("Loading Panel")]
 	public Text loadingInfo;
 	public CanvasGroup loadingCG;
@@ -37,21 +42,18 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		currentInstance = this;
 	}
-	// Use this for initialization
+
 	void Start () {
 		CreateSelectableEvents ();
-		UpdateCurrencyValues ();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		// Question mark?
+		GlobalGameData.currentInstance.UpdateRankStatus ();
+		StartCoroutine ("RankPromotionPanel");
+		UpdateCurrencyAndRankValues ();
 	}
 	public void SelectEventAsActive(int index)
 	{
 		if (CoRoutineActive)
 			return;
-		GlobalGameData.currentInstance.selectedEvent = GlobalGameData.currentInstance.eventsAvailable [index];
+		GlobalGameData.currentInstance.eventActive = GlobalGameData.currentInstance.eventsAvailable [index];
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
 	}
@@ -63,7 +65,7 @@ public class MainMenuManager : MonoBehaviour {
 			lastCreatedPanel.GetComponent<EventSubPanelBehaviour> ().SetPanelForEvent (GlobalGameData.currentInstance.eventsAvailable [i], i);
 		}
 	}
-	public void UpdateCurrencyValues()
+	public void UpdateCurrencyAndRankValues()
 	{
 		if (GlobalGameData.currentInstance == null)
 			return;
@@ -74,17 +76,60 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	void SetupEventDetailsPanel()
 	{
-		if (GlobalGameData.currentInstance.selectedEvent == null)
+		if (GlobalGameData.currentInstance.eventActive == null)
 			return;
-		eventDetailsHeader.text = GlobalGameData.currentInstance.selectedEvent.GetEventArea () + " - " + GlobalGameData.currentInstance.selectedEvent.GetEventTypeName ();
-		eventDetailsDescription.text = GlobalGameData.currentInstance.selectedEvent.GetEventTypeShortDesc ();
+		eventDetailsHeader.text = GlobalGameData.currentInstance.eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.eventActive.GetEventTypeName ();
+		eventDetailsDescription.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
 		eventDetailsAditionalDesc.text = "";
-		eventDetailsRewards.text = GlobalGameData.currentInstance.selectedEvent.GetRewardString ();
-		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.selectedEvent.GetEventCheckpoints().ToString() + "  [ID: " + 
-			GlobalGameData.currentInstance.selectedEvent.GetSeed().ToString() + "]";
+		eventDetailsRewards.text = GlobalGameData.currentInstance.eventActive.GetRewardString ();
+		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString() + "  [ID: " + 
+			GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + "]";
 	}
 	// CO-Routines
 	// ======================================================================
+	IEnumerator RankPromotionPanel()
+	{
+		if (GlobalGameData.currentInstance.m_lastEventPlayedResult < 0)
+			yield break;
+
+		CoRoutineActive = true;
+		rankPromotionCG.alpha = 1;
+		rankPromotionCG.gameObject.SetActive (true);
+
+		float t_current = (GlobalGameData.currentInstance.GetPlayerRankStatusOld() +1f) / 2f;
+		float t_target;
+		rankStatusSlider.value = t_current;
+
+		if (GlobalGameData.currentInstance.GetPlayerRankOld () < GlobalGameData.currentInstance.GetPlayerRank ()) {
+			t_target = 1;
+		} else if (GlobalGameData.currentInstance.GetPlayerRankOld () > GlobalGameData.currentInstance.GetPlayerRank ()) {
+			t_target = 0;
+		} else {
+			t_target = (GlobalGameData.currentInstance.GetPlayerRankStatus() + 1f) / 2f;
+		}
+		rankName.text = "Rank: " + GlobalGameData.currentInstance.GetPlayerRankOld ().ToString ();
+
+		yield return new WaitForSeconds (1.5f);
+
+		while (t_current != t_target) {
+			t_current = Mathf.MoveTowards (t_current, t_target, Time.deltaTime * 0.15f);
+			rankStatusSlider.value = t_current;
+			yield return null;
+		}
+		if (GlobalGameData.currentInstance.GetPlayerRankOld () != GlobalGameData.currentInstance.GetPlayerRank ()) {
+			rankStatusSlider.value = 0.5f;
+			if (GlobalGameData.currentInstance.GetPlayerRankOld () < GlobalGameData.currentInstance.GetPlayerRank ()) {
+				promotionInfo.text = "Rank increased!";
+			} else {
+				promotionInfo.text = "Rank decreased...";
+			}
+		}
+		GlobalGameData.currentInstance.UpdateOldRankData ();
+		rankName.text = "Rank: " + GlobalGameData.currentInstance.GetPlayerRankOld ().ToString ();
+		yield return new WaitForSeconds (2.5f);
+		rankPromotionCG.gameObject.SetActive (false);
+		CoRoutineActive = false;
+	}
 	IEnumerator FadeInEventPanel()
 	{
 		CoRoutineActive = true;
