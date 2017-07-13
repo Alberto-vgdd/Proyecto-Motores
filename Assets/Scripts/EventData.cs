@@ -195,7 +195,7 @@ public class EventData {
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
 
-				m_eventBonusTimeOnCPMultiplier = 0.75f;
+				m_eventBonusTimeOnCPMultiplier = 0.25f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 0f;
@@ -476,6 +476,22 @@ public class EventData {
 		}
 		return str;
 	}
+	public string GetCheckpointsString()
+	{
+		if (m_checkPoints > 0) {
+			return m_checkPoints.ToString ();
+		} else {
+			return "--";
+		}
+	}
+	public string GetTimeLimitString()
+	{
+		if (m_eventHasTimeLimit) {
+			return ((int)m_initialTimeRemaining).ToString ();
+		} else {
+			return "--";
+		}
+	}
 	public string GetRewardString()
 	{
 		if (m_rewardType == 1) {
@@ -483,5 +499,27 @@ public class EventData {
 		} else {
 			return "Special car part.";
 		}
+	}
+	public string GetObjectiveString()
+	{
+		string txt = "";
+		if (m_gameMode == 0) {
+			txt = "- No objectives -";
+		}
+		else if (m_objectiveTypeScore) {
+			txt = 
+				"1ST: " + GetObjectiveForPosition(1) +
+				"\n2ND: " + GetObjectiveForPosition(2) +
+				"\n3RD: " + GetObjectiveForPosition(3);
+		} else {
+			txt = 
+				"1ST: " + ((int)(GetObjectiveForPosition(1) / 60)).ToString () 
+				+ ":" + ((int)(GetObjectiveForPosition(1) % 60)).ToString("D2") + ":00" +
+				"\n2ND: " + ((int)(GetObjectiveForPosition(2) / 60)).ToString () 
+				+ ":" + ((int)(GetObjectiveForPosition(2) % 60)).ToString("D2") + ":00" +
+				"\n3RD: " + ((int)(GetObjectiveForPosition(3) / 60)).ToString () 
+				+ ":" + ((int)(GetObjectiveForPosition(3) % 60)).ToString("D2") + ":00";
+		}
+		return txt;
 	}
 }

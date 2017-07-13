@@ -43,7 +43,7 @@ public class StageData : MonoBehaviour {
     public GameObject nightChasis;
 	[Header ("Score data")]
 	public int nodesCrossed;
-	public int checkPointsCrossed;
+	private int checkPointsCrossed = 0;
 	public float damageTaken;
 	public int cleanSections;
 	public float totalDrift;
@@ -113,6 +113,7 @@ public class StageData : MonoBehaviour {
 
 	public void PlayerCrossedCheckPoint(bool clean, float awardedTime)
 	{
+		checkPointsCrossed++;
 		awardedTime *= eventActive.GetBonusTimeOnCheckpointMultiplier ();
 		if (clean) {
 			HealPlayer (10);
@@ -132,10 +133,13 @@ public class StageData : MonoBehaviour {
 		if (eventActive.GetEventCheckpoints() > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
 			if (checkPointsCrossed >= eventActive.GetEventCheckpoints()) {
+				ContextualHudManager.currentInstance.ForceDriftEnd ();
 				EndEvent (3);
 			}
 		}
-		checkPointsCrossed++;
+		if (!eventActive.IsObjectiveTypeScore ()) {
+			NotificationManager.currentInstance.AddNotification (new GameNotification ("Sector " + checkPointsCrossed + " - " + GetTimePassedString(), Color.cyan, 30));
+		}
 	}
 
 	public void RespawnDamage()
@@ -324,33 +328,13 @@ public class StageData : MonoBehaviour {
 	{
 		return time_passedMin * 60 + time_passedSec + time_passedDec;
 	}
-	public string GetObjectiveString()
-	{
-		string txt = "";
-		if (eventActive.GetGamemode() == 0) {
-			txt = "- No objectives -";
-		}
-		else if (GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore()) {
-			txt = 
-				"1ST: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) +
-				"\n2ND: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) +
-				"\n3RD: " + GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3);
-		} else {
-			txt = 
-				"1ST: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(1) % 60)).ToString("D2") + ":00" +
-				"\n2ND: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(2) % 60)).ToString("D2") + ":00" +
-				"\n3RD: " + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3) / 60)).ToString () 
-				+ ":" + ((int)(GlobalGameData.currentInstance.eventActive.GetObjectiveForPosition(3) % 60)).ToString("D2") + ":00";
-		}
-		return txt;
-	}
-
-
 	public float GetEventScore()
 	{
 		return eventScore;
+	}
+	public int GetCheckpointsCrossed()
+	{
+		return checkPointsCrossed;
 	}
 
 	public int GetPlayerResult()

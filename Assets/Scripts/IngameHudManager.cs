@@ -85,11 +85,11 @@ public class IngameHudManager : MonoBehaviour {
 	public void SetObjectivePanel()
 	{
 		objectiveCG.gameObject.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
-		objectiveText.text = StageData.currentData.GetObjectiveString ();
+		objectiveText.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString ();
 	}
 	public void UpdateSectorInfo()
 	{
-		eventSectorText.text = StageData.currentData.checkPointsCrossed.ToString() + "/" + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString();
+		eventSectorText.text = StageData.currentData.GetCheckpointsCrossed().ToString() + "/" + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString();
 	}
 	public void UpdateScoreInfo()
 	{

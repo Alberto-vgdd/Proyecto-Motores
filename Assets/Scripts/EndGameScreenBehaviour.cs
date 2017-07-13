@@ -141,7 +141,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 				}
 			}
 		}
-		endGameObjectives.text = StageData.currentData.GetObjectiveString ();
+		endGameObjectives.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString ();
 
 
 	}

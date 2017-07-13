@@ -15,9 +15,9 @@ public class RoadGenerator : MonoBehaviour {
 	private int nodesBehindLoaded = 6;						// Nodos cargados DETRAS del jugador
 	public float globalRoadScale;							// Escala global del mundo
 	public int nodesBetweenActiveCP;						// Nodos entre puntos de control
-	private int curveChance;									// Probabilidad de curva
-	private int minStraight;									// Minima recta
-	private int maxStraight;									// Maxima recta
+	private int curveChance;								// Probabilidad de curva
+	private int minStraight;								// Minima recta
+	private int maxStraight;								// Maxima recta
 
 	private int nodesSinceLastActiveCP;						// (TEMP) Nodos desde el ultimo punto de control.
 	private int nodesSinceLastCurve;						// (TEMP) Nodos desde la ultima curva.
@@ -40,7 +40,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
 	private float dayTime;
-	private float dayTimescale;
+	private float dayTimescale = 0.025f;
 
 	private float NodeWeight2Time = 0.4f;
 
@@ -60,7 +60,7 @@ public class RoadGenerator : MonoBehaviour {
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
 		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + dayTime);
-		dayTimescale = 0.025f;
+
 		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
 		// ==========
 		tempValidNodes = new List<GameObject>();

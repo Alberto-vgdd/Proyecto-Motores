@@ -402,7 +402,7 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		currentEventFinished = true;	
 	}
-	void EndDrift()
+	public void EndDrift()
 	{
 		drifting = false;
 		driftDegree = 0;

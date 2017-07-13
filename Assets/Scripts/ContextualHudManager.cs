@@ -127,4 +127,10 @@ public class ContextualHudManager : MonoBehaviour {
 		tempAirTime = pm.ungroundedTime;
 
 	}
+
+	public void ForceDriftEnd()
+	{
+		pm.EndDrift ();
+		StageData.currentData.SendFinishedDrift (tempDriftChain, tempDriftMulti);
+	}
 }
