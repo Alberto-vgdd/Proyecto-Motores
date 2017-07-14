@@ -89,25 +89,31 @@ public class MainMenuManager : MonoBehaviour {
 	// ======================================================================
 	IEnumerator RankPromotionPanel()
 	{
-		if (GlobalGameData.currentInstance.m_lastEventPlayedResult < 0)
+		if (GlobalGameData.currentInstance.GetLastEventPlayedResult() < 0)
 			yield break;
+
+		int rankOld = GlobalGameData.currentInstance.GetPlayerRank();
+		float rankStatusOld = GlobalGameData.currentInstance.GetPlayerRankStatus();
+		GlobalGameData.currentInstance.UpdateRankStatus ();
+		int rankNew = GlobalGameData.currentInstance.GetPlayerRank ();
+		float rankStatusNew = GlobalGameData.currentInstance.GetPlayerRankStatus ();
 
 		CoRoutineActive = true;
 		rankPromotionCG.alpha = 1;
 		rankPromotionCG.gameObject.SetActive (true);
 
-		float t_current = (GlobalGameData.currentInstance.GetPlayerRankStatusOld() +1f) / 2f;
+		float t_current = (rankStatusOld +1f) / 2f;
 		float t_target;
 		rankStatusSlider.value = t_current;
 
-		if (GlobalGameData.currentInstance.GetPlayerRankOld () < GlobalGameData.currentInstance.GetPlayerRank ()) {
+		if (rankOld < rankNew) {
 			t_target = 1;
-		} else if (GlobalGameData.currentInstance.GetPlayerRankOld () > GlobalGameData.currentInstance.GetPlayerRank ()) {
+		} else if (rankOld > rankNew) {
 			t_target = 0;
 		} else {
-			t_target = (GlobalGameData.currentInstance.GetPlayerRankStatus() + 1f) / 2f;
+			t_target = (rankStatusNew + 1f) / 2f;
 		}
-		rankName.text = "Rank: " + GlobalGameData.currentInstance.GetPlayerRankOld ().ToString ();
+		rankName.text = "Rank: " + rankOld.ToString ();
 
 		yield return new WaitForSeconds (1.5f);
 
@@ -116,16 +122,15 @@ public class MainMenuManager : MonoBehaviour {
 			rankStatusSlider.value = t_current;
 			yield return null;
 		}
-		if (GlobalGameData.currentInstance.GetPlayerRankOld () != GlobalGameData.currentInstance.GetPlayerRank ()) {
+		if (rankOld != rankNew) {
 			rankStatusSlider.value = 0.5f;
-			if (GlobalGameData.currentInstance.GetPlayerRankOld () < GlobalGameData.currentInstance.GetPlayerRank ()) {
+			if (rankOld < rankNew) {
 				promotionInfo.text = "Rank increased!";
 			} else {
 				promotionInfo.text = "Rank decreased...";
 			}
 		}
-		GlobalGameData.currentInstance.UpdateOldRankData ();
-		rankName.text = "Rank: " + GlobalGameData.currentInstance.GetPlayerRankOld ().ToString ();
+		rankName.text = "Rank: " + rankNew.ToString ();
 		yield return new WaitForSeconds (2.5f);
 		rankPromotionCG.gameObject.SetActive (false);
 		CoRoutineActive = false;
@@ -136,7 +141,7 @@ public class MainMenuManager : MonoBehaviour {
 		EventPanelCG.gameObject.SetActive (true);
 		while (EventPanelCG.alpha < 1) {
 			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 1, Time.deltaTime*5f);
-			EventPanelCG.transform.localScale = Vector3.one * EventPanelCG.alpha;
+			EventPanelCG.transform.localScale =  Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;
@@ -146,7 +151,7 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (EventPanelCG.alpha > 0) {
 			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 0, Time.deltaTime*5f);
-			EventPanelCG.transform.localScale = Vector3.one * EventPanelCG.alpha;
+			EventPanelCG.transform.localScale = Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
 			yield return null;
 		}
 		EventPanelCG.gameObject.SetActive (false);
@@ -158,7 +163,7 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (eventDetailsCG.alpha < 1) {
 			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 1, Time.deltaTime*5f);
-			eventDetailsCG.transform.localScale = Vector3.one * eventDetailsCG.alpha;
+			eventDetailsCG.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;
@@ -168,7 +173,7 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (eventDetailsCG.alpha > 0) {
 			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 0, Time.deltaTime*5f);
-			eventDetailsCG.transform.localScale = Vector3.one * eventDetailsCG.alpha;
+			eventDetailsCG.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;

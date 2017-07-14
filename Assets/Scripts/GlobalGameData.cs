@@ -6,14 +6,12 @@ public class GlobalGameData : MonoBehaviour {
 
 	public static GlobalGameData currentInstance;
 
-	public int m_lastEventPlayedResult = -1;
+	private int m_lastEventPlayedResult = -1;
 
 	private int m_playerCurrency;
 	private int m_playerCurrencyAlternative;
 	private int m_playerRank;
-	private int m_playerRank_old;
 	private float m_playerRankStatus;
-	private float m_playerRankStatus_old;
 
 	public List<EventData> eventsAvailable;
 
@@ -39,8 +37,8 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		m_playerCurrency = 0;
 		m_playerCurrencyAlternative = 0;
-		m_playerRank = m_playerRank_old = 1;
-		m_playerRankStatus = m_playerRankStatus_old = 0;
+		m_playerRank = 1;
+		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
 	}
 	void GenerateEventsAvailable()
@@ -79,26 +77,21 @@ public class GlobalGameData : MonoBehaviour {
 			GenerateEventsAvailable();
 		}
 	}
-	public void UpdateOldRankData()
+	public void SetLastEventPlayedResult(int result)
 	{
-		m_playerRank_old = m_playerRank;
-		m_playerRankStatus_old = m_playerRankStatus;
+		m_lastEventPlayedResult = result;
+	}
+	public int GetLastEventPlayedResult()
+	{
+		return m_lastEventPlayedResult;
 	}
 	public int GetPlayerRank()
 	{
 		return m_playerRank;
 	}
-	public int GetPlayerRankOld()
-	{
-		return m_playerRank_old;
-	}
 	public float GetPlayerRankStatus()
 	{
 		return m_playerRankStatus;
-	}
-	public float GetPlayerRankStatusOld()
-	{
-		return m_playerRankStatus_old;
 	}
 	public int GetPlayerCurrency()
 	{

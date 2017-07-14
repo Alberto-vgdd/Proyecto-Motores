@@ -117,25 +117,25 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			switch (StageData.currentData.GetPlayerResult ()) {
 			case 1:
 				{
-					GlobalGameData.currentInstance.m_lastEventPlayedResult = 1;
+					GlobalGameData.currentInstance.SetLastEventPlayedResult(1);
 					endGameObjectivesAchieved.text = "- GOLD medal awarded -";
 					break;
 				}
 			case 2:
 				{
-					GlobalGameData.currentInstance.m_lastEventPlayedResult = 2;
+					GlobalGameData.currentInstance.SetLastEventPlayedResult(2);
 					endGameObjectivesAchieved.text = "- SILVER medal awarded -";
 					break;
 				}
 			case 3:
 				{
-					GlobalGameData.currentInstance.m_lastEventPlayedResult = 3;
+					GlobalGameData.currentInstance.SetLastEventPlayedResult(3);
 					endGameObjectivesAchieved.text = "- BRONZE medal awarded -";
 					break;
 				}
 			default:
 				{
-					GlobalGameData.currentInstance.m_lastEventPlayedResult = 0;
+					GlobalGameData.currentInstance.SetLastEventPlayedResult(0);
 					endGameObjectivesAchieved.text = "- No medals awarded -";
 					break;
 				}

@@ -32,7 +32,6 @@ public class RoadGenerator : MonoBehaviour {
 	private int nodesUnttilDecoChange;						// Nodos hasta el proximo cambio en los indices de la decoracion.
 
 	public List<GameObject> spawnedNodes;					// Nodos creados
-	public List<GameObject> availableNodes;					// Nodos disponibles para crear (Ya no es necesario clasificarlos por angulo)
 	private List<GameObject> tempValidNodes;				// (TEMP) Lista temporal para determinar cuales seran los posibles proximos nodos.
 	private RoadNode lastReadedNode;						// (AUX) Ultimo nodo leido
 	private GameObject lastCreatedNode;						// (AUX) Ultimo nodo creado
@@ -130,8 +129,8 @@ public class RoadGenerator : MonoBehaviour {
 		if (totalNodesCreated < 4)
 			nextNodeIsCurve = false;
 		tempValidNodes.Clear ();
-		for (int i = 0; i < availableNodes.Count; i++) {
-			lastReadedNode = availableNodes [i].GetComponent<RoadNode>();
+		for (int i = 0; i < RoadPool.currentInstance.instantiableRoads.Count; i++) {
+			lastReadedNode = RoadPool.currentInstance.instantiableRoads [i].GetComponent<RoadNode>();
 			if ((lastReadedNode.dispAngular + currentAngle) > 90 || (lastReadedNode.dispAngular + currentAngle) < -90) {
 				continue;
 			}
@@ -140,7 +139,7 @@ public class RoadGenerator : MonoBehaviour {
 			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
 				continue;
 			}
-			tempValidNodes.Add (availableNodes [i]);
+			tempValidNodes.Add (RoadPool.currentInstance.instantiableRoads[i]);
 
 		}
 		return tempValidNodes [Random.Range (0, tempValidNodes.Count)];
