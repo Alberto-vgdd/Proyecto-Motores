@@ -24,6 +24,6 @@ public class SendCollisionToPlayer : MonoBehaviour {
 		if (other.tag != "Untagged")
 			return;
 		if (CollisionSide == "GROUND")
-			pm.groundedHitbox = false;
+			pm.SetGroundedHitboxDetection(false);
 	}
 }

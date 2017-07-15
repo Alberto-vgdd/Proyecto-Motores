@@ -54,7 +54,7 @@ public class FollowTarget : MonoBehaviour {
 
 		if (camRaceMode) {
 			lookAtTarget ();
-			camDegree = 270 - target.transform.rotation.eulerAngles.y + pm.driftDegree * driftDegreeMultiplier;
+			camDegree = 270 - target.transform.rotation.eulerAngles.y + pm.GetDriftDegree() * driftDegreeMultiplier;
 			sphericalPositionLock ();
 			updateFov ();
 		} else {
@@ -69,7 +69,7 @@ public class FollowTarget : MonoBehaviour {
 	void lookAtTarget()
 	{
         transform.LookAt (target.transform.position+new Vector3(0f,1f,0f));
-		tiltCurrent = Mathf.MoveTowards (tiltCurrent, tiltMultiplier * pm.driftDegree, Time.deltaTime * tiltSpeed);
+		tiltCurrent = Mathf.MoveTowards (tiltCurrent, tiltMultiplier * pm.GetDriftDegree(), Time.deltaTime * tiltSpeed);
 		transform.Rotate (Vector3.forward * tiltCurrent);
 	}
 	void sphericalPositionLock()
@@ -96,7 +96,7 @@ public class FollowTarget : MonoBehaviour {
 	}
 	void updateFov()
 	{
-		GetComponent<Camera> ().fieldOfView = Mathf.Clamp(90 + pm.accumulatedAcceleration * speedToFov, minFov, maxFov);
+		GetComponent<Camera> ().fieldOfView = Mathf.Clamp(90 + pm.GetCurrentSpeed() * speedToFov, minFov, maxFov);
 	}
 	public void SetRaceMode()
 	{

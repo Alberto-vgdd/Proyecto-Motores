@@ -22,6 +22,8 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	public Text endGameObjectives;
 	public Text endGameObjectivesAchieved;
 
+	private bool panelEnabled;
+
 	void Awake ()
 	{
 		currentInstance = this;
@@ -32,12 +34,13 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.KeypadEnter)) {
+		if (Input.GetKeyDown (KeyCode.KeypadEnter) && panelEnabled) {
 			SceneManager.LoadScene ("MainMenu");
 		}
 	}
 	public void SetAndEnable(int type, bool failed)
 	{
+		panelEnabled = true;
 		endGameScoreBreakdownTitle.text = " Seaside highway - [ ID: " + RoadGenerator.currentInstance.levelSeed + " ]";
 		StartCoroutine ("FadeIn");
 			// Switch by event end reason

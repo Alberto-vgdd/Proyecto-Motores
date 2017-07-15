@@ -35,8 +35,10 @@ public class EventData {
 	private int m_eventLeague;
 	private int m_gameMode;
 	private float m_roadDifficulty;
-	private float m_leagueExtraDifficulty;
-	private float m_combinedDifficultyFactor;
+	// AuxParameters
+	private const int BASE_REWARD_VALUE = 500;
+	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
+	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.05f;
 
 	public EventData (int league, bool seasonal, bool canBeRestarted)
 	{
@@ -55,12 +57,9 @@ public class EventData {
 		int maxStraight = Random.Range (minStraight, 8);
 
 		// Difficulty bonus setting.
-		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f;
-		m_roadDifficulty += 1 - (minStraight / 3f);
-		m_roadDifficulty += 1 - (maxStraight / 8f);
-		m_leagueExtraDifficulty = 1 + (league-1) * 0.05f;
-		m_combinedDifficultyFactor = m_leagueExtraDifficulty + m_roadDifficulty *0.2f + m_checkPoints *0.1f;
-		m_rewardValue = (int)(m_combinedDifficultyFactor*500);
+		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
+
+		m_rewardValue = (int)((BASE_REWARD_VALUE * m_checkPoints) * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (league * LEAGUE_DIFFICULTY_MULTIPLIER)));
 
 		SetEventRules ();
 		SetEventObjectives ();
@@ -70,32 +69,32 @@ public class EventData {
 		switch (m_gameMode) {
 		case 1: // Standard endurance
 			{
-				m_objectiveGold = 10000;
+				m_objectiveGold = (int)(10000 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				m_objectiveGold = 7000;
+				m_objectiveGold = (int)(6750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case 3: // Drift Exhibition
 			{
-				m_objectiveGold = 1750 * m_checkPoints;
+				m_objectiveGold = (int)(m_checkPoints * 1250 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case 4: // High speed challenge
 			{
-				m_objectiveGold = 450 * m_checkPoints;
+				m_objectiveGold = (int)(m_checkPoints * 250 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case 5: // Drift challenge
 			{
-				m_objectiveGold = 400 * m_checkPoints;
+				m_objectiveGold = (int)(m_checkPoints * 215 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case 6: // Time attack
 			{
-				m_objectiveGold = (int)(16.5f * m_checkPoints);
+				m_objectiveGold = (int)(m_checkPoints * 15.5f * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) - (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		default: // FreeRoam
@@ -107,11 +106,9 @@ public class EventData {
 			
 		// Scaling
 		if (m_objectiveTypeScore) {
-			m_objectiveGold = (int)(m_objectiveGold * m_leagueExtraDifficulty);
 			m_objectiveSilver = (int)(m_objectiveGold * 0.9f);
 			m_objectiveBronze = (int)(m_objectiveGold * 0.8f);
 		} else {
-			m_objectiveGold = (int)(m_objectiveGold / m_leagueExtraDifficulty);
 			m_objectiveSilver = (int)(m_objectiveGold / 0.9f);
 			m_objectiveBronze = (int)(m_objectiveGold / 0.8f);
 		}
@@ -374,14 +371,6 @@ public class EventData {
 	public float GetRoadDifficulty() 
 	{ 
 		return m_roadDifficulty; 
-	}
-	public float GetLeagueDifficulty()
-	{
-		return m_leagueExtraDifficulty;
-	}
-	public float GetCombinedDifficulty()
-	{
-		return m_combinedDifficultyFactor;
 	}
 	public int GetEventLeague()
 	{

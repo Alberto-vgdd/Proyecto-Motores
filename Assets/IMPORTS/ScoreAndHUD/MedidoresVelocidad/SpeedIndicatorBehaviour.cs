@@ -39,7 +39,7 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 	}
 	void UpdateSpeedCounter()   
 	{	
-        velosidah = (int) (player.GetComponent<PlayerMovement> ().accumulatedAcceleration * 8.5f);
+		velosidah = (int) (player.GetComponent<PlayerMovement> ().GetCurrentSpeed() * 8.5f);
 		speedCounterOutline.GetComponent<Text> ().text = velosidah.ToString();
 		speedCounter.GetComponent<Text> ().text = velosidah.ToString();
 	}

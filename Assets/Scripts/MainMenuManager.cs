@@ -45,7 +45,6 @@ public class MainMenuManager : MonoBehaviour {
 
 	void Start () {
 		CreateSelectableEvents ();
-		GlobalGameData.currentInstance.UpdateRankStatus ();
 		StartCoroutine ("RankPromotionPanel");
 		UpdateCurrencyAndRankValues ();
 	}
@@ -82,7 +81,7 @@ public class MainMenuManager : MonoBehaviour {
 		eventDetailsDescription.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
 		eventDetailsAditionalDesc.text = "";
 		eventDetailsRewards.text = GlobalGameData.currentInstance.eventActive.GetRewardString ();
-		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString() + "  [ID: " + 
+		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetCheckpointsString() + "  [ID: " + 
 			GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + "]";
 	}
 	// CO-Routines

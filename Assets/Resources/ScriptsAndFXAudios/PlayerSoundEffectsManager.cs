@@ -42,17 +42,17 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	private void EngineAudio()
 	{
 		//Primero, aumentaremos el pitch del audio del engine en funcion de la velocidad del jugador.
-		this.GetComponents<AudioSource> () [0].pitch = playerReference.GetComponent<PlayerMovement>().accumulatedAcceleration / 45f;
+		this.GetComponents<AudioSource> () [0].pitch = playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed() / 45f;
 
 
 		//Despues, veremos que si está drifteando, sonará el ruido de drifteo.
 
-		if (playerReference.GetComponent<PlayerMovement> ().drifting && !driftEnableSound) 
+		if (playerReference.GetComponent<PlayerMovement> ().IsDrifting() && !driftEnableSound) 
 		{
 			driftEnableSound = true;
 			this.GetComponents<AudioSource> () [1].Play ();
 		}
-		if (playerReference.GetComponent<PlayerMovement> ().drifting == false && driftEnableSound) 
+		if (!playerReference.GetComponent<PlayerMovement> ().IsDrifting() && driftEnableSound) 
 		{
 			driftEnableSound = false;
 			this.GetComponents<AudioSource> () [1].Stop ();

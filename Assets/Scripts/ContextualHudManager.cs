@@ -46,7 +46,7 @@ public class ContextualHudManager : MonoBehaviour {
 		UpdateDynDrift ();
 		UpdateDynAir ();
 		//UpdateDynTime ();
-		if (pm.grounded) {
+		if (pm.IsGrounded()) {
 			if (StageData.currentData.playerHealth == 100)
 				HealthCG.alpha = Mathf.MoveTowards (HealthCG.alpha, 0, Time.deltaTime / 2);
 			else if (StageData.currentData.playerHealth < 50) {
@@ -65,7 +65,7 @@ public class ContextualHudManager : MonoBehaviour {
 
 	void UpdateDynDrift()
 	{
-		if (!pm.drifting) {
+		if (!pm.IsDrifting()) {
 			DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 0, Time.deltaTime);
 			if (tempDriftChain > 0) {
 				StageData.currentData.SendFinishedDrift (tempDriftChain, tempDriftMulti);
@@ -77,9 +77,9 @@ public class ContextualHudManager : MonoBehaviour {
 		}
 		//DriftText.transform.localPosition = driftTextBasePos + Vector3.up * (Mathf.Cos (tempDriftChain*0.3f) * 0.01f);
 		DriftCG.alpha = Mathf.MoveTowards (DriftCG.alpha, 1, Time.deltaTime);
-		tempDriftChain += Time.deltaTime * pm.accumulatedAcceleration * 3.5f;
+		tempDriftChain += Time.deltaTime * pm.GetCurrentSpeed() * 3.5f;
 
-		tempDriftMultiIncrease += Time.deltaTime * pm.accumulatedAcceleration * 0.2f;
+		tempDriftMultiIncrease += Time.deltaTime * pm.GetCurrentSpeed() * 0.1f;
 		if (tempDriftMultiIncrease > 10) {
 			tempDriftMulti += 0.1f;
 			tempDriftMultiIncrease = 0;
@@ -106,13 +106,13 @@ public class ContextualHudManager : MonoBehaviour {
 
 	void UpdateDynAir()
 	{
-		if (pm.ungroundedTime < 0.75f || !pm.cleanAir) {
+		if (pm.GetUngroundedTime() < 0.75f || !pm.IsPerformingCleanAir()) {
 			AirCG.alpha = Mathf.MoveTowards (AirCG.alpha, 0, Time.deltaTime);
 			//AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, Vector2.zero, Time.deltaTime);
-			if (tempAirTime > 1.5f && pm.cleanAir) {
+			if (tempAirTime > 1.5f && pm.IsPerformingCleanAir()) {
 				NotificationManager.currentInstance.AddNotification (new GameNotification (tempAirTime.ToString ("N2") + " s. air!", Color.yellow, 30));
 				tempAirTime = 0;
-			} else if (!pm.cleanAir) {
+			} else if (!pm.IsPerformingCleanAir()) {
 				AirText.color = Color.red;
 				AirText.text = " - Crashed - ";
 				tempAirTime = 0;
@@ -123,8 +123,8 @@ public class ContextualHudManager : MonoBehaviour {
 		AirText.color = Color.white;
 		AirCG.alpha = Mathf.MoveTowards (AirCG.alpha, 1, Time.deltaTime);
 		//AirText.rectTransform.localPosition = Vector2.MoveTowards (AirText.rectTransform.localPosition, new Vector2(0, 1), Time.deltaTime*4);
-		AirText.text = "Air: " + pm.ungroundedTime.ToString("N2");
-		tempAirTime = pm.ungroundedTime;
+		AirText.text = "Air: " + pm.GetUngroundedTime().ToString("N2");
+		tempAirTime = pm.GetUngroundedTime();
 
 	}
 
