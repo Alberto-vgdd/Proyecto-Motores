@@ -112,6 +112,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		if (failed) {
 			endGameResultTitle.text = "Event failed";
 			endGameObjectivesAchieved.text = "- No medals awarded -";
+			GlobalGameData.currentInstance.SetLastEventPlayedResult(0);
 			endGameScoreBreakdown.text = " -- ";
 		} else {
 			// Switch by medal awarded

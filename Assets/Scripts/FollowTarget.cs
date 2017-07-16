@@ -84,6 +84,8 @@ public class FollowTarget : MonoBehaviour {
 		} else {
 			// TODO: No spaghetti?
 			camT = (1 - (Mathf.Abs (camDegreeTemp) / Mathf.Abs (camDegree))) - 0.5f;
+			if (Mathf.Abs (camT) < 0.005f)
+				camT = 0;
 			camDegreeTemp = Mathf.MoveTowardsAngle (camDegreeTemp, camDegree, Time.smoothDeltaTime * camT * 300f);
 			//camDegreeTemp = camDegree;
 			camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;

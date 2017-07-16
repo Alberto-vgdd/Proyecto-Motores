@@ -151,7 +151,10 @@ public class StageData : MonoBehaviour {
 	}
 
 	// Daña al jugador y actualiza el interfaz.
-
+	public void SendPlayerCollision(float strenght)
+	{
+		DamagePlayer (strenght);
+	}
 	public void DamagePlayer(float dmg)
 	{
 		if (eventFinished)

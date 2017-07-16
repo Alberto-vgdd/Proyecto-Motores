@@ -7,28 +7,20 @@ public class PlayerMovement : MonoBehaviour {
 	// - RigidBody (No kinematico, sin constantes)
 	// - Collider (Cubo)
 
-	[Header("Car properties")]
-	[Range(5.5f,8f)]
-	public float turnRate;												// Fuerza de giro (sin drift) del vehiculo
-	[Range(0.5f,6)]
-	public float acceleration;											// Aceleracion del vehiculo
-	[Range(25, 45)]
-	public float maxFwdSpeed;											// Velocidad maxima
-	[Range(-25,-5f)]
-	public float maxBwdSpeed;											// Velocidad maxima marcha atras
-	[Range(3,15)]
-	public float driftStrenght;											// Fuerza de derrape
-	[Range(10,50)]
-	public float maxDrift;												// Maximo angulo de derrape
-	[Range(0.5f,10f)]
-	public float driftSpeedLoss;										// Perdida de velocidad al derrapar
-	[Range(0.5f,12)]
-	public float driftStabilization;									// Auto-Estabilizacion del derrape
-	[Range(1f, 6f)]
-	public float speedFalloffReductionFwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
-	[Range(1f, 6f)]
-	public float speedFalloffReductionBwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
+	// Estadisticas del coche
 
+	private float turnRate;												// Fuerza de giro (sin drift) del vehiculo
+	private float acceleration;											// Aceleracion del vehiculo
+	private float maxFwdSpeed;											// Velocidad maxima
+	private float maxBwdSpeed;											// Velocidad maxima marcha atras
+	private float driftStrenght;										// Fuerza de derrape
+	private float maxDrift;												// Maximo angulo de derrape
+	private float driftSpeedLoss;										// Perdida de velocidad al derrapar
+	private float driftStabilization;									// Auto-Estabilizacion del derrape
+	private float speedFalloffReductionFwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
+	private float speedFalloffReductionBwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
+
+	// Parametros de estado
 
 	private bool grounded;												// Esta en el suelo?
 	private bool groundedHitbox;										// Detecta colision con el suelo?
@@ -66,10 +58,13 @@ public class PlayerMovement : MonoBehaviour {
 	private RoadNode nodeCrossedParams;									// Ultimo nodo cruzado (NodeProperties)
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
-	private Vector3 savedResetPosition = new Vector3(0,3,0);			// Posicion de reset (respawn)
-	private Quaternion savedResetRotation = Quaternion.identity;		// Rotacion de reset (respawn)
 	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
+
+	// Otras referencias
+
 	private Rigidbody rb;												// Referencia al rigidbody
+	private CarData carReferenced;
+	public Transform resetTransform;
 
 	private bool gameStarted;											// Se ha iniciado la partida? (TODO: innecesario, leer de stagedata.currentdata.gameStarted)
 
@@ -77,8 +72,11 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		lastNodeCrossedID = -1;
 		rb = GetComponent<Rigidbody> ();
+		SetCarStats ();
 		rb.velocity = new Vector3 (0, 0, 0);
 		driftDegree = 0;
+		resetTransform.transform.position = transform.position;
+		resetTransform.transform.rotation = transform.rotation;
 	}
 
 	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta
@@ -110,11 +108,10 @@ public class PlayerMovement : MonoBehaviour {
 				drifting = true;
 			return;
 		}
-
-		// Leemos todos los inputs.
-		//if (Input.GetKeyDown (KeyCode.R) && respawnCooldown <= 0 && respawnEnabled) {
-		//	ResetCar ();
-		//}
+			
+//		if (Input.GetKeyDown (KeyCode.R)) {
+//			ResetCar ();
+//		}
 
 		if (respawnCooldown > 0)
 			respawnCooldown -= Time.deltaTime;
@@ -282,8 +279,8 @@ public class PlayerMovement : MonoBehaviour {
 
 	void CrossCheckPoint(Collider other)
 	{
-		savedResetPosition = other.transform.position;
-		savedResetRotation = other.transform.rotation;
+		resetTransform.position = other.transform.position;
+		resetTransform.rotation = other.transform.rotation;
 		nodeCrossedParams = other.transform.parent.parent.GetComponent<RoadNode>();
 		if (nodeCrossedParams == null) {
 			print ("[ERROR] RoadNode not found on road parent.");
@@ -321,9 +318,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedSpeed * 0.002f);
+					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.003f);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.0005f);
+					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.0005f);
 				accumulatedSpeed *= FRICTION_SPD_CONSVERATION_SIDE;
 				break;
 			}
@@ -333,9 +330,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedSpeed * 0.05f);
+					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.06f);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.002f);
+					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.002f);
 				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT;
 				break;
 			}
@@ -364,9 +361,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedSpeed * 0.05f);
+					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.075f);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.01f);
+					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.01f);
 				accumulatedSpeed *= FRICTION_SPD_CONSVERATION_SIDE;
 				break;
 			}
@@ -376,9 +373,9 @@ public class PlayerMovement : MonoBehaviour {
 				cleanAir = false;
 				EndDrift ();
 				if (grounded)
-					StageData.currentData.DamagePlayer (accumulatedSpeed * 0.1f);
+					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.135f);
 				else
-					StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.02f);
+					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.02f);
 				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT;
 				break;
 			}
@@ -386,7 +383,7 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				cleanSection = false;
 				cleanAir = false;
-				StageData.currentData.DamagePlayer (rb.velocity.magnitude * 0.04f);
+				StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.04f);
 				break;
 			}
 		case "GROUND":
@@ -423,10 +420,25 @@ public class PlayerMovement : MonoBehaviour {
 		accumulatedSpeed = 0;
 		turnInput = 0;
 		forwInput = 0;
-		transform.position = savedResetPosition;
-		transform.rotation = savedResetRotation * Quaternion.Euler(0,-90,0);
+		transform.position = resetTransform.position;
+		transform.rotation = resetTransform.rotation * Quaternion.Euler(0,-90,0);
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
+	}
+
+	void SetCarStats()
+	{
+		carReferenced = GlobalGameData.currentInstance.carInUse;
+		turnRate = carReferenced.GetTurnRate ();
+		acceleration = carReferenced.GetAcceleration ();
+		maxFwdSpeed = carReferenced.GetMaxSpeed ();
+		maxBwdSpeed = -(maxFwdSpeed * 0.35f);
+		driftStrenght = carReferenced.GetDriftStrenght ();
+		maxDrift = carReferenced.GetMaxDriftDegree ();
+		driftSpeedLoss = carReferenced.GetSpeedLossOnDrift ();
+		driftStabilization = carReferenced.GetDriftStabilization ();
+		speedFalloffReductionFwd = carReferenced.GetSpeedFalloffStartingPoint ();
+		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
 	}
 
 	public bool IsDrifting()

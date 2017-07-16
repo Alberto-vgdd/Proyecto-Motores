@@ -44,8 +44,8 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Start () {
-		CreateSelectableEvents ();
 		StartCoroutine ("RankPromotionPanel");
+		CreateSelectableEvents ();
 		UpdateCurrencyAndRankValues ();
 	}
 	public void SelectEventAsActive(int index)

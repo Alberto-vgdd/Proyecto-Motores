@@ -59,10 +59,15 @@ public class EventData {
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
 
-		m_rewardValue = (int)((BASE_REWARD_VALUE * m_checkPoints) * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (league * LEAGUE_DIFFICULTY_MULTIPLIER)));
 
 		SetEventRules ();
 		SetEventObjectives ();
+
+		if (m_checkPoints <= 0) {
+			m_rewardValue = (int)((BASE_REWARD_VALUE * 5) * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (league * LEAGUE_DIFFICULTY_MULTIPLIER)));
+		} else {
+			m_rewardValue = (int)((BASE_REWARD_VALUE * (m_checkPoints*0.35f)) * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (league * LEAGUE_DIFFICULTY_MULTIPLIER)));
+		}
 	}
 	void SetEventObjectives()
 	{

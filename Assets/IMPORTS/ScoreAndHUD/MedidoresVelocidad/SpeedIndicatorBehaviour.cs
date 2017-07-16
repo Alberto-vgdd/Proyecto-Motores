@@ -89,20 +89,7 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 		ObtainSpeedCounters ();
 		player = GameObject.FindGameObjectWithTag ("Player");
 
-		//Por si la velocidad hacia atrás es mayor que hacia delante.
-		float dummy = player.GetComponent<PlayerMovement> ().maxBwdSpeed * 5f; 
-		if (player.GetComponent<PlayerMovement> ().maxFwdSpeed > dummy) 
-		{
-			maxSpeed = player.GetComponent<PlayerMovement> ().maxFwdSpeed * 5f;
-		} 
-		else
-		{
-			maxSpeed = dummy;
-		}
-
-	
-
-
+		maxSpeed = GlobalGameData.currentInstance.carInUse.GetMaxSpeed() * 5f;
 	}
 
 	void Update () 

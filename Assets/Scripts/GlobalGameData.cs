@@ -16,6 +16,7 @@ public class GlobalGameData : MonoBehaviour {
 	public List<EventData> eventsAvailable;
 
 	public EventData eventActive;
+	public CarData carInUse;
 
 	void Awake ()
 	{
@@ -40,6 +41,7 @@ public class GlobalGameData : MonoBehaviour {
 		m_playerRank = 1;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
+		carInUse = new CarData (0); // TODO: provisional.
 	}
 	void GenerateEventsAvailable()
 	{
@@ -74,7 +76,7 @@ public class GlobalGameData : MonoBehaviour {
 		} else if (m_playerRankStatus > 1) {
 			m_playerRankStatus = 0;
 			m_playerRank++;
-			GenerateEventsAvailable();
+			GenerateEventsAvailable ();
 		}
 	}
 	public void SetLastEventPlayedResult(int result)
