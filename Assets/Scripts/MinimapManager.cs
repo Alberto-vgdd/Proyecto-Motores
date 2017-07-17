@@ -23,7 +23,7 @@ public class MinimapManager : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	void LateUpdate () {
 		if (playerReference != null) {
 			// Z -> Y | X -> X | IGNORED: Y -> Z | rotation y -> z
 			transform.localPosition = initialPosition + new Vector3(-playerReference.transform.position.x, -playerReference.transform.position.z, 0) * scaleConversionFactor;

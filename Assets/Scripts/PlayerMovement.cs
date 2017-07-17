@@ -428,7 +428,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	void SetCarStats()
 	{
-		carReferenced = GlobalGameData.currentInstance.carInUse;
+		carReferenced = GlobalGameData.currentInstance.GetCarInUse();
 		turnRate = carReferenced.GetTurnRate ();
 		acceleration = carReferenced.GetAcceleration ();
 		maxFwdSpeed = carReferenced.GetMaxSpeed ();

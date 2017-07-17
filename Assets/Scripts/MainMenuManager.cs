@@ -10,6 +10,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	[Header("Event List Panel")]
 	public CanvasGroup EventPanelCG;
+	public Transform EventPanelWindowParent;
 	public Transform EventPanelListParent;
 
 	[Header("Top Panel")]
@@ -24,17 +25,34 @@ public class MainMenuManager : MonoBehaviour {
 	public Text eventDetailsRewards;
 	public Text eventDetailsSubPanel;
 	public CanvasGroup eventDetailsCG;
+	public Transform eventDetailsWindow;
 	[Header("RankPromotionPanel")]
 	public Slider rankStatusSlider;
 	public Text rankName;
 	public Text promotionInfo;
 	public CanvasGroup rankPromotionCG;
+	[Header("Garage Panel")]
+	public Text carNameText;
+	public Text noCarsAvailableText;
+	public Transform carListParent;
+	public Transform carPanelParent;
+	public CanvasGroup carPanelCG;
+	public Slider sliderMaxSpeed;
+	public Slider sliderAcceleration;
+	public Slider sliderTurnRate;
+	public Slider sliderDriftStrenght;
+	public Slider sliderDriftControl;
 	[Header("Loading Panel")]
 	public Text loadingInfo;
 	public CanvasGroup loadingCG;
 	[Header("Other references")]
 	public GameObject EventButtonPrefab;
+	public GameObject CarButtonPrefab;
 	public List<GameObject> eventsOnDisplay;
+	public List<GameObject> carsOnDisplay;
+
+	private int carInDisplayIndex = -1;
+
 
 	private bool CoRoutineActive = false;
 
@@ -55,6 +73,45 @@ public class MainMenuManager : MonoBehaviour {
 		GlobalGameData.currentInstance.eventActive = GlobalGameData.currentInstance.eventsAvailable [index];
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
+	}
+	public void SetCarSelected(int index)
+	{
+		carNameText.text = GlobalGameData.currentInstance.carsOwned [index].GetCarName ();
+		sliderMaxSpeed.value = GlobalGameData.currentInstance.carsOwned [index].GetMaxSpeed () / GlobalGameData.currentInstance.carsOwned[index].GetMaxPossibleSpeed();
+		sliderAcceleration.value = GlobalGameData.currentInstance.carsOwned [index].GetAcceleration () / GlobalGameData.currentInstance.carsOwned[index].GetMaxPossibleAcceleration();
+		sliderTurnRate.value = GlobalGameData.currentInstance.carsOwned [index].GetTurnRate () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleTurnRate();
+		sliderDriftStrenght.value = GlobalGameData.currentInstance.carsOwned [index].GetDriftStrenght () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleDriftStrenght ();
+		sliderDriftControl.value = 1 - GlobalGameData.currentInstance.carsOwned [index].GetMaxDriftDegree () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleDriftDegree ();
+
+		carInDisplayIndex = index;
+	}
+	void CreateSelectableGarageCars()
+	{
+		//TODO: se puede optimizar un poco.
+		if (GlobalGameData.currentInstance.carsOwned.Count == 0) {
+			noCarsAvailableText.gameObject.SetActive (true);
+		} else {
+			noCarsAvailableText.gameObject.SetActive (false);
+			SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+		}
+		GameObject lastReadedElem;
+		while (carsOnDisplay.Count > 0) {
+			lastReadedElem = carsOnDisplay [0];
+			carsOnDisplay.RemoveAt (0);
+			Destroy (lastReadedElem.gameObject);
+		}
+		for (int i = 0; i < GlobalGameData.currentInstance.carsOwned.Count; i++) {
+			lastReadedElem = Instantiate (CarButtonPrefab, carListParent) as GameObject;
+			lastReadedElem.GetComponent<GarageSubPanelBehaviour> ().SetPanelForCar (GlobalGameData.currentInstance.carsOwned [i], i);
+			carsOnDisplay.Add (lastReadedElem);
+		}
+		SetSelectedTagForGaragePanel ();
+	}
+	void SetSelectedTagForGaragePanel()
+	{
+		for (int i = 0; i < carsOnDisplay.Count; i++) {
+			carsOnDisplay [i].GetComponent<GarageSubPanelBehaviour> ().SetSelected (i == GlobalGameData.currentInstance.GetCarInUseIndex());
+		}
 	}
 	void CreateSelectableEvents()
 	{
@@ -140,7 +197,7 @@ public class MainMenuManager : MonoBehaviour {
 		EventPanelCG.gameObject.SetActive (true);
 		while (EventPanelCG.alpha < 1) {
 			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 1, Time.deltaTime*5f);
-			EventPanelCG.transform.localScale =  Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
+			EventPanelWindowParent.transform.localScale =  Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;
@@ -150,7 +207,7 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (EventPanelCG.alpha > 0) {
 			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 0, Time.deltaTime*5f);
-			EventPanelCG.transform.localScale = Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
+			EventPanelWindowParent.transform.localScale = Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
 			yield return null;
 		}
 		EventPanelCG.gameObject.SetActive (false);
@@ -162,7 +219,7 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (eventDetailsCG.alpha < 1) {
 			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 1, Time.deltaTime*5f);
-			eventDetailsCG.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
+			eventDetailsWindow.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;
@@ -172,11 +229,33 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = true;
 		while (eventDetailsCG.alpha > 0) {
 			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 0, Time.deltaTime*5f);
-			eventDetailsCG.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
+			eventDetailsWindow.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
 			yield return null;
 		}
 		CoRoutineActive = false;
 		eventDetailsCG.gameObject.SetActive (false);
+	}
+	IEnumerator FadeInGaragePanel()
+	{
+		CoRoutineActive = true;
+		carPanelCG.gameObject.SetActive (true);
+		while (carPanelCG.alpha < 1) {
+			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 1, Time.deltaTime*5f);
+			carPanelParent.transform.localScale =  Vector3.one * (0.5f + carPanelCG.alpha*0.5f);
+			yield return null;
+		}
+		CoRoutineActive = false;
+	}
+	IEnumerator FadeOutGaragePanel()
+	{
+		CoRoutineActive = true;
+		while (carPanelCG.alpha > 0) {
+			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 0, Time.deltaTime*5f);
+			carPanelParent.transform.localScale = Vector3.one * (0.5f + carPanelCG.alpha*0.5f);
+			yield return null;
+		}
+		carPanelCG.gameObject.SetActive (false);
+		CoRoutineActive = false;
 	}
 	IEnumerator LoadScene()
 	{
@@ -231,7 +310,15 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
+		StartCoroutine ("FadeInGaragePanel");
+		CreateSelectableGarageCars ();
 		print ("Garage clicked");
+	}
+	public void OnSelectCarClicked()
+	{
+		print ("SelectCar clicked");
+		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
+		SetSelectedTagForGaragePanel ();
 	}
 	public void OnProfileClicked()
 	{
@@ -252,19 +339,23 @@ public class MainMenuManager : MonoBehaviour {
 		print ("CloseEventPanel clicked");
 		StartCoroutine ("FadeOutEventPanel");
 	}
+	public void OnCloseGaragePanelClicked()
+	{
+		if (CoRoutineActive)
+			return;
+		print ("CloseGaragePanel clicked");
+		StartCoroutine ("FadeOutGaragePanel");
+	}
 	public void OnConfirmEventClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		//TODO: Pantalla de carga quizas?
 		StartCoroutine ("LoadScene");
-
 	}
 	public void OnCancelEventClicked()
 	{
 		if (CoRoutineActive)
 			return;
 		StartCoroutine ("FadeOutEventDetailsPanel");
-
 	}
 }

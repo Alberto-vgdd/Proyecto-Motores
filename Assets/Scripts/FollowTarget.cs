@@ -8,6 +8,8 @@ public class FollowTarget : MonoBehaviour {
 
 	// TODO: Ajustar el FOV.
 
+	public static FollowTarget currentInstance;
+
 	public GameObject target;
 	private Vector3 targetPos;
 	private PlayerMovement pm;
@@ -42,6 +44,14 @@ public class FollowTarget : MonoBehaviour {
 	private float camTurnSpeed = 200f;
 	private float camRaceModeHeight = 2.2f;
 	private float camRaceModeDistance = 3.5f;
+
+	private float camShake = 0;
+	private float currentShake = 0;
+
+	void Awake()
+	{
+		currentInstance = this;
+	}
 
 	void Start () {
 		camDegreeTemp = 0;

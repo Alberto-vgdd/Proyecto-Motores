@@ -14,9 +14,10 @@ public class GlobalGameData : MonoBehaviour {
 	private float m_playerRankStatus;
 
 	public List<EventData> eventsAvailable;
+	public List<CarData> carsOwned;
+	private int carSelectedIndex = 0;
 
 	public EventData eventActive;
-	public CarData carInUse;
 
 	void Awake ()
 	{
@@ -41,7 +42,17 @@ public class GlobalGameData : MonoBehaviour {
 		m_playerRank = 1;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
-		carInUse = new CarData (0); // TODO: provisional.
+		carsOwned = new List<CarData> ();
+		carsOwned.Add (new CarData (0));
+		carsOwned.Add (new CarData (1));
+		carsOwned.Add (new CarData (2));
+		carsOwned.Add (new CarData (3));
+		carsOwned.Add (new CarData (4));
+		carsOwned.Add (new CarData (5));
+		carsOwned.Add (new CarData (6));
+		carsOwned.Add (new CarData (7));
+		carSelectedIndex = 0;
+
 	}
 	void GenerateEventsAvailable()
 	{
@@ -102,6 +113,18 @@ public class GlobalGameData : MonoBehaviour {
 	public int GetPlayerAlternativeCurrency()
 	{
 		return m_playerCurrencyAlternative;
+	}
+	public CarData GetCarInUse()
+	{
+		return carsOwned [carSelectedIndex];
+	}
+	public int GetCarInUseIndex()
+	{
+		return carSelectedIndex;
+	}
+	public void SetCarInUseIndex(int index)
+	{
+		carSelectedIndex = index;
 	}
 
 }

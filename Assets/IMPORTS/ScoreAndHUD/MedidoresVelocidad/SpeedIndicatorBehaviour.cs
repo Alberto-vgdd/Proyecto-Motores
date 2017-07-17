@@ -89,7 +89,7 @@ public class SpeedIndicatorBehaviour : MonoBehaviour {
 		ObtainSpeedCounters ();
 		player = GameObject.FindGameObjectWithTag ("Player");
 
-		maxSpeed = GlobalGameData.currentInstance.carInUse.GetMaxSpeed() * 5f;
+		maxSpeed = GlobalGameData.currentInstance.GetCarInUse().GetMaxSpeed() * 5f;
 	}
 
 	void Update () 
