@@ -38,7 +38,7 @@ public class CarData {
 	private const float m_maxPossibleAcceleration = 6f;
 	private const float m_maxPossibleTurnrate = 10f;
 	private const float m_maxPossibleDriftDegree = 100f;
-	private const float m_maxPossibleDriftStrenght = 15f;
+	private const float m_maxPossibleDriftStrenght = 10f;
 
 	// Constructor sin parametros, coche de prueba.
 	public CarData(int preset = 0)
@@ -100,7 +100,7 @@ public class CarData {
 				m_acceleration = 2.5f;
 				m_maxSpeed = 35f;
 				m_maxDriftDegree = 100f;
-				m_driftStrenght = 8f;
+				m_driftStrenght = 5f;
 				m_driftSpeedLoss = 3f;
 				m_driftStabilization = 1f;
 				m_speedFalloffReduction = 1.5f;
@@ -149,7 +149,7 @@ public class CarData {
 				m_turnRate = 3.5f;
 				m_acceleration = 3.2f;
 				m_maxSpeed = 30f;
-				m_maxDriftDegree = 35f;
+				m_maxDriftDegree = 45f;
 				m_driftStrenght = 7f;
 				m_driftSpeedLoss = 1.5f;
 				m_driftStabilization = 1f;
@@ -197,10 +197,10 @@ public class CarData {
 		case 7:
 			{
 				m_turnRate = 7.5f;
-				m_acceleration = 6f;
-				m_maxSpeed = 38.5f;
-				m_maxDriftDegree = 100f;
-				m_driftStrenght = 15f;
+				m_acceleration = 5f;
+				m_maxSpeed = 35.5f;
+				m_maxDriftDegree = 90f;
+				m_driftStrenght = 8f;
 				m_driftSpeedLoss = 10f;
 				m_driftStabilization = 1f;
 				m_speedFalloffReduction = 4.5f;
