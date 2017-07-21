@@ -13,6 +13,8 @@ public class MainMenuManager : MonoBehaviour {
 	public Transform EventPanelWindowParent;
 	public Transform EventPanelListParent;
 
+	[Header("MainSlider")]
+	public CanvasGroup mainSlider;
 	[Header("Top Panel")]
 	public Text normalCurrencyText;
 	public Text alternativeCurrencyText;
@@ -239,19 +241,23 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 		carPanelCG.gameObject.SetActive (true);
+		MainMenuCamMovement.currentInstance.SwitchToCarView (true);
 		while (carPanelCG.alpha < 1) {
 			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 1, Time.deltaTime*5f);
-			carPanelParent.transform.localScale =  Vector3.one * (0.5f + carPanelCG.alpha*0.5f);
+			mainSlider.alpha = 1 - carPanelCG.alpha;
 			yield return null;
 		}
 		CoRoutineActive = false;
+		mainSlider.gameObject.SetActive (false);
 	}
 	IEnumerator FadeOutGaragePanel()
 	{
+		mainSlider.gameObject.SetActive (true);
+		MainMenuCamMovement.currentInstance.SwitchToCarView (false);
 		CoRoutineActive = true;
 		while (carPanelCG.alpha > 0) {
 			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 0, Time.deltaTime*5f);
-			carPanelParent.transform.localScale = Vector3.one * (0.5f + carPanelCG.alpha*0.5f);
+			mainSlider.alpha = 1 - carPanelCG.alpha;
 			yield return null;
 		}
 		carPanelCG.gameObject.SetActive (false);

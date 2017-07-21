@@ -37,8 +37,7 @@ public class PlayerMovement : MonoBehaviour {
 	// Constantes
 
 	private const float DRIFT_TURN_RATE = 6f;							// Turnrate utilizado en el drift, igual para todos los coches.
-	private const float GROUND_TO_AIR_THS = 0.05f;						// Margen de tiempo para dejar de tocar suelo (en seg.)
-	private const float AIR_TO_GROUND_THS = 0.05f;						// Margen de tiempo para volver a tocar el suelo (en seg.)
+	private const float GROUND_TRANSITION_THS = 0.05f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
 	private const float UNGROUNDED_RESPAWN_DELAY = 6f;					// Tiempo sin tocar suelo necesario para auto-reaparecer
 	private const float TRANSLATE_TO_VELOCITY = 3f;						// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
 	private const float DOWNFORCE = 1000f;								// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
@@ -58,7 +57,10 @@ public class PlayerMovement : MonoBehaviour {
 	private RoadNode nodeCrossedParams;									// Ultimo nodo cruzado (NodeProperties)
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
-	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h
+	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h.
+	private float turnUnstable = 0;
+	private float unstableMax = 0.5f;
+	private float driftMultiplier = 0.2f;
 
 	// Otras referencias
 
@@ -79,8 +81,7 @@ public class PlayerMovement : MonoBehaviour {
 		resetTransform.transform.rotation = transform.rotation;
 	}
 
-	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta
-	// de los controles y evitar que se pierdan inputs.
+	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta.
 
 	void Update()
 	{
@@ -100,7 +101,7 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 			
-		// Si el tiempo se ha agotado, solo escuchamos el input de giro.
+		// Si el tiempo se ha agotado, solo leemos el input de giro.
 		if (StageData.currentData.time_remainingSec <= 0) {
 			forwInput = 0;
 			turnInput = Input.GetAxis ("Horizontal");
@@ -192,7 +193,7 @@ public class PlayerMovement : MonoBehaviour {
 		{ 
 			if (!grounded) {
 				groundingTime += Time.deltaTime;
-				if (groundingTime > AIR_TO_GROUND_THS) {
+				if (groundingTime > GROUND_TRANSITION_THS) {
 					ungroundedTime = 0;
 					groundingTime = 0;
 				}
@@ -205,7 +206,7 @@ public class PlayerMovement : MonoBehaviour {
 			ungroundedTime += Time.fixedDeltaTime; 
 		}
 
-		if (ungroundedTime > GROUND_TO_AIR_THS) { grounded = false; } else
+		if (ungroundedTime > GROUND_TRANSITION_THS) { grounded = false; } else
 		{ 
 			grounded = true; 
 			firstFrameUngrounded = false; 
@@ -239,12 +240,12 @@ public class PlayerMovement : MonoBehaviour {
 		turnMultiplier = Mathf.Clamp (accumulatedSpeed/10, -1,1);
 
 		if (drifting) {
-			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime * turnMultiplier,0));
-
+			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 3f);
+			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
-				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10 * (Mathf.Clamp01 ((1 - (Mathf.Abs (driftDegree) / maxDrift)) * 1f)); // *1 es para recordar donde poner el ajuste
+				driftDegree += turnInput * Time.fixedDeltaTime * driftMultiplier *  driftStrenght * 10 * (Mathf.Clamp01 ((1 - (Mathf.Abs (driftDegree) / maxDrift)) * 1f)); // *1 es para recordar donde poner el ajuste
 			} else {
-				driftDegree += turnInput * Time.fixedDeltaTime * driftStrenght * 10 * DRIFT_CORRECTION_STRENGHT; 
+				driftDegree += turnInput * Time.fixedDeltaTime * driftMultiplier * driftStrenght * 10 * DRIFT_CORRECTION_STRENGHT; 
 			}
 			// Asegurar que no derrape por encima del limite.
 			driftDegree = Mathf.Clamp (driftDegree, -maxDrift, maxDrift);
@@ -255,6 +256,15 @@ public class PlayerMovement : MonoBehaviour {
 					EndDrift ();
 			}
 		} else {
+			if (turnInput != 0) {
+				turnUnstable += turnInput * Time.fixedDeltaTime;
+			} else {
+				turnUnstable = 0;
+			}
+			if (Mathf.Abs (turnUnstable) > unstableMax) {
+				drifting = true;
+				driftMultiplier = 0;
+			}
 			transform.Rotate (new Vector3(0,((turnInput*0.7f)) * turnRate * 10 * Time.fixedDeltaTime * turnMultiplier,0));
 		}
 	}
@@ -393,16 +403,18 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		}
 	}
-
-	// Termina el drift (llamado al colisionar o al no estar en el suelo)
+		
 	public void SetAsEventFinished()
 	{
 		currentEventFinished = true;	
 	}
+
 	public void EndDrift()
 	{
 		drifting = false;
 		driftDegree = 0;
+		turnUnstable = 0;
+		driftMultiplier = 0.2f;
 	}
 
 	// Respawn (llamado al caer al vacio, o al ir en direccion contraria.

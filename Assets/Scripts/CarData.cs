@@ -121,12 +121,12 @@ public class CarData {
 			}
 		case 4:
 			{
-				m_turnRate = 7f;
+				m_turnRate = 5.5f;
 				m_acceleration = 2f;
 				m_maxSpeed = 50f;
-				m_maxDriftDegree = 15f;
+				m_maxDriftDegree = 25f;
 				m_driftStrenght = 5f;
-				m_driftSpeedLoss = 10f;
+				m_driftSpeedLoss = 4f;
 				m_driftStabilization = 3f;
 				m_speedFalloffReduction = 1.5f;
 
