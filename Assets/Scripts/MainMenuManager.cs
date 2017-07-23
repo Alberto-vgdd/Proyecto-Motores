@@ -79,11 +79,11 @@ public class MainMenuManager : MonoBehaviour {
 	public void SetCarSelected(int index)
 	{
 		carNameText.text = GlobalGameData.currentInstance.carsOwned [index].GetCarName ();
-		sliderMaxSpeed.value = GlobalGameData.currentInstance.carsOwned [index].GetMaxSpeed () / GlobalGameData.currentInstance.carsOwned[index].GetMaxPossibleSpeed();
-		sliderAcceleration.value = GlobalGameData.currentInstance.carsOwned [index].GetAcceleration () / GlobalGameData.currentInstance.carsOwned[index].GetMaxPossibleAcceleration();
-		sliderTurnRate.value = GlobalGameData.currentInstance.carsOwned [index].GetTurnRate () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleTurnRate();
-		sliderDriftStrenght.value = GlobalGameData.currentInstance.carsOwned [index].GetDriftStrenght () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleDriftStrenght ();
-		sliderDriftControl.value = 1 - GlobalGameData.currentInstance.carsOwned [index].GetMaxDriftDegree () / GlobalGameData.currentInstance.carsOwned [index].GetMaxPossibleDriftDegree ();
+		sliderMaxSpeed.value = GlobalGameData.currentInstance.carsOwned [index].GetMaxSpeed () / 10;
+		sliderAcceleration.value = GlobalGameData.currentInstance.carsOwned [index].GetAcceleration () / 10;
+		sliderTurnRate.value = GlobalGameData.currentInstance.carsOwned [index].GetTurnRate () / 10;
+		sliderDriftStrenght.value = GlobalGameData.currentInstance.carsOwned [index].GetDriftStrenght () / 10;
+		sliderDriftControl.value = 1 - GlobalGameData.currentInstance.carsOwned [index].GetMaxDriftDegree () / 10;
 
 		carInDisplayIndex = index;
 	}

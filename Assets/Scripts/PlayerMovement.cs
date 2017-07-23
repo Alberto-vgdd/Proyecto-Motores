@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float maxBwdSpeed;											// Velocidad maxima marcha atras
 	private float driftStrenght;										// Fuerza de derrape
 	private float maxDrift;												// Maximo angulo de derrape
-	private float driftSpeedLoss;										// Perdida de velocidad al derrapar
+	private float driftSpeedConservation;								// Conservacion de la velocidad derrapando
 	private float driftStabilization;									// Auto-Estabilizacion del derrape
 	private float speedFalloffReductionFwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
 	private float speedFalloffReductionBwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
@@ -23,52 +23,64 @@ public class PlayerMovement : MonoBehaviour {
 	// Parametros de estado
 
 	private bool grounded;												// Esta en el suelo?
-	private bool groundedHitbox;										// Detecta colision con el suelo?
+	private bool detectingGrounded;										// Detecta colision con el suelo?
 	private bool drifting;												// Esta derrapando?
 	private float forwInput;											// Almacena el input de acelerar/frenar
 	private float turnInput;											// Almacena el input de giro
 	private float accumulatedSpeed;										// Velocidad
 	private float ungroundedTime;										// Tiempo sin tocar el suelo
-	private float groundingTime;										// Tiempo de transicion aire-suelo	
+	private float groundedTime;											// Tiempo tocando el suelo	
 	private bool cleanAir;												// En el aire sin colisionar con nada?
 	private bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	private float driftDegree;											// Angulo de derrape
 
 	// Constantes
 
+	private const float STAT_TURNRATE_BASE = 2f;
+	private const float STAT_TURNRATE_SCAL = 0.4f;
+	private const float STAT_ACCELERATION_BASE = 0.5f;
+	private const float STAT_ACCELERATION_SCAL = 0.325f;
+	private const float STAT_MAXSPEED_BASE = 20f;
+	private const float STAT_MAXSPEED_SCAL = 2.15f;
+	private const float STAT_DRIFTSTR_BASE = 2.5f;
+	private const float STAT_DRIFTSTR_SCAL = 0.375f;
+	private const float STAT_MAXDRIFT_BASE = 15f;
+	private const float STAT_MAXDRIFT_SCAL = 3.5f;
+	private const float STAT_DRIFTSPDCONS_BASE = 0.5f;
+	private const float STAT_DRIFTSPDCONS_SCAL = 0.05f;
+	private const float STAT_SPDFALLOFF_BASE = 1f;
+	private const float STAT_SPDFALLOFF_SCAL = 0.5f;
+
 	private const float DRIFT_TURN_RATE = 6f;							// Turnrate utilizado en el drift, igual para todos los coches.
 	private const float GROUND_TRANSITION_THS = 0.05f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
-	private const float UNGROUNDED_RESPAWN_DELAY = 6f;					// Tiempo sin tocar suelo necesario para auto-reaparecer
+	private const float UNGROUNDED_RESPAWN_DELAY = 5f;					// Tiempo sin tocar suelo necesario para auto-reaparecer
 	private const float TRANSLATE_TO_VELOCITY = 3f;						// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
-	private const float DOWNFORCE = 1000f;								// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
-	private const float INCLINATION_MAX_SPEED_MODIFIER = 30f;			// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
-	private const float INCLINATION_ACCELERATION_MODIFIER = 25f;		// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
-	private const float DRIFT_OUTSIDE_FORCE = 1.75f;					// Multiplicador de apertura de drift
+	private const float DOWNFORCE = 10f;								// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
+	private const float INCLINATION_MAX_SPEED_MULTIPLIER = 0.1f;		// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
+	private const float INCLINATION_ACCELERATION_MULTIPLIER = 0.02f;	// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
 	private const float DRIFT_CORRECTION_STRENGHT = 1.75f;				// Fuerza de correccion del drift al intentar estabilizar.
 	private const float FRICTION_SPD_CONSERVATION_FRONT = 0.85f;		// Factor de friccion frontal (menor = mas velocidad perdida al colisionar)
 	private const float FRICTION_SPD_CONSVERATION_SIDE = 0.99f;			// Factor de friccion lateral (menor = mas velocidad perdida al colisionar)
 
 	// Valores auxiliares privados
 
-	private bool currentEventFinished = false;
-	private bool firstFrameUngrounded = false;							// Auxiliar para aplicar la fuerza al saltar SOLO una vez.
-	private float respawnCooldown;										// (Temp) Reutilizacion del respawn.
 	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
 	private RoadNode nodeCrossedParams;									// Ultimo nodo cruzado (NodeProperties)
 	private float extraForwInput;										// Aceleracion extra por inclinacion de terreno.
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
-	private float turnMultiplier = 0;									// Auxiliar para evitar que se pueda girar a 0 km/h.
-	private float turnUnstable = 0;
-	private float unstableMax = 0.5f;
+	private float turnMultiplier = 0f;									// Auxiliar para evitar que se pueda girar a 0 km/h.
 	private float driftMultiplier = 0.2f;
+	private float driftOutsideForce = 0f;
+	private float deltaEulerX;
 
 	// Otras referencias
 
 	private Rigidbody rb;												// Referencia al rigidbody
 	private CarData carReferenced;
 	public Transform resetTransform;
+	private float respawnCooldown = 0;
 
-	private bool gameStarted;											// Se ha iniciado la partida? (TODO: innecesario, leer de stagedata.currentdata.gameStarted)
+	private bool allowPlayerControl;
 
 	void Start()
 	{
@@ -85,85 +97,62 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Update()
 	{
-		// Si la partida no ha empezado, no leemos controles.
-		if (!gameStarted) {
-			gameStarted = StageData.currentData.gameStarted;
+		if (!allowPlayerControl) {
 			forwInput = 0;
 			turnInput = 0;
 			extraForwInput = 0;
 			return;
 		}
-		// Si el jugador ha destruido su vehiculo, ignoramos todos los inputs.
-		if (currentEventFinished) {
-			forwInput = 0;
-			turnInput = 0;
-			extraForwInput = 0;
-			return;
-		}
-			
-		// Si el tiempo se ha agotado, solo leemos el input de giro.
-		if (StageData.currentData.time_remainingSec <= 0) {
-			forwInput = 0;
-			turnInput = Input.GetAxis ("Horizontal");
-			if (Input.GetKeyDown (KeyCode.Space))
-				drifting = true;
-			return;
-		}
-			
-//		if (Input.GetKeyDown (KeyCode.R)) {
-//			ResetCar ();
-//		}
-
 		if (respawnCooldown > 0)
 			respawnCooldown -= Time.deltaTime;
 
-		forwInput = Input.GetAxis ("Vertical");
+		if (StageData.currentData.time_remainingSec > 0) {
+			forwInput = Input.GetAxis ("Vertical");
+		} else {
+			forwInput = 0f;
+		}
 		turnInput = Input.GetAxis ("Horizontal");
 		if (Input.GetKeyDown (KeyCode.Space))
 			drifting = true;
+
+		// Test only: 
+//		if (Input.GetKeyDown (KeyCode.R)) {
+//			ResetCar ();
+//		}
 	}
 
 	// Procesa las fisicas del coche.
 
 	void FixedUpdate()
 	{
-		CheckGrounded ();      // Comprobamos si esta tocando suelo
-		if (grounded) {        // Acciones a realizar tocando suelo
+		CheckGrounded ();
 
-			// Parametros extra de velocidad y aceleracion asignados dependiendo de la inclinacion del coche si este esta tocando suyelo.
-			extraForwInput = Mathf.Clamp( Mathf.DeltaAngle(0,transform.rotation.eulerAngles.x) / INCLINATION_ACCELERATION_MODIFIER, -1, 2);
-			extraFwdSpeed = Mathf.DeltaAngle (0, transform.rotation.eulerAngles.x) / INCLINATION_MAX_SPEED_MODIFIER;
+		if (grounded) {	// Acciones a realizar tocando suelo
 
-			// Downforce (Empuje hacia el suelo para "pegar" el coche al suelo)
+			// Parametros extra de velocidad y aceleracion asignados dependiendo de la inclinacion del coche si este esta tocando suelo.
+			deltaEulerX = Mathf.DeltaAngle (0, transform.rotation.eulerAngles.x);
+			extraForwInput = deltaEulerX * INCLINATION_ACCELERATION_MULTIPLIER;
+			extraFwdSpeed = deltaEulerX * INCLINATION_MAX_SPEED_MULTIPLIER;
+
+			// Downforce (Empuje hacia el suelo para "pegar" el coche al suelo) TODO: es necesario ahora?
 			rb.AddForce(-transform.up * Mathf.Abs(accumulatedSpeed) * DOWNFORCE * Time.fixedDeltaTime);
 
 
-			if (forwInput == 0)
-				// En el caso de que el jugador no de inputs.
+			if (forwInput == 0) // Sin input de aceleracion.
 				accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, extraFwdSpeed * 20, Time.fixedDeltaTime * 5);
-			else {
-				// En el caso de que el jugador de algun input de aceleracion.
-				if (forwInput < 0 && accumulatedSpeed > 0) { 
-					// Frenando
+			else { // En el caso de que el jugador de algun input de aceleracion.
+				if (forwInput < 0 && accumulatedSpeed > 0) { // Frenando
 					accumulatedSpeed += (forwInput+extraForwInput) * Time.fixedDeltaTime * 20;
-				} else if (accumulatedSpeed < 0 && forwInput < 0){ 
-					// Marcha atras
+				} else if (accumulatedSpeed < 0 && forwInput < 0){ 	// Marcha atras
 					accumulatedSpeed += (forwInput + extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (Mathf.Clamp01 ((1-(accumulatedSpeed / maxBwdSpeed)) * speedFalloffReductionBwd)); 
-				} else { 
-					// Acelerando
+				} else { // Acelerando
 					accumulatedSpeed += (forwInput + extraForwInput) * Time.fixedDeltaTime * 3 * acceleration * (Mathf.Clamp01 ((1-(accumulatedSpeed / maxFwdSpeed)) * speedFalloffReductionFwd)); 
 				}
 			}
 
-		} else {			   // Acciones a realizar sin tocar suelo
+		} else {	// Acciones a realizar sin tocar suelo
 			forwInput = turnInput = 0;
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, 0, Time.fixedDeltaTime * 5);
-
-			if (!firstFrameUngrounded) {
-				rb.velocity = transform.forward * accumulatedSpeed * TRANSLATE_TO_VELOCITY;
-				firstFrameUngrounded = true;
-				cleanAir = true;
-			}
 
 			driftDegree = 0;
 			drifting = false;
@@ -188,33 +177,24 @@ public class PlayerMovement : MonoBehaviour {
 
 	void CheckGrounded()
 	{
-
-		if (groundedHitbox) 
-		{ 
-			if (!grounded) {
-				groundingTime += Time.deltaTime;
-				if (groundingTime > GROUND_TRANSITION_THS) {
-					ungroundedTime = 0;
-					groundingTime = 0;
-				}
-			} else {
-				ungroundedTime = 0; 
+		if (detectingGrounded) {
+			groundedTime += Time.fixedDeltaTime;
+			if (!grounded && groundedTime > GROUND_TRANSITION_THS) {
+				accumulatedSpeed = transform.InverseTransformDirection(rb.velocity).z / TRANSLATE_TO_VELOCITY;
+				rb.velocity = Vector3.zero;
+				grounded = true;
+				ungroundedTime = 0;
+				groundedTime = 0;
 			}
-		} 
-		else 
-		{ 
-			ungroundedTime += Time.fixedDeltaTime; 
-		}
-
-		if (ungroundedTime > GROUND_TRANSITION_THS) { grounded = false; } else
-		{ 
-			grounded = true; 
-			firstFrameUngrounded = false; 
-			if (firstFrameUngrounded) {
-				firstFrameUngrounded = false;
-				accumulatedSpeed = rb.velocity.x * TRANSLATE_TO_VELOCITY;
+		} else {
+			ungroundedTime += Time.fixedDeltaTime;
+			if (grounded && ungroundedTime > GROUND_TRANSITION_THS) {
+				rb.velocity = transform.forward * accumulatedSpeed * TRANSLATE_TO_VELOCITY;
+				cleanAir = true;
+				grounded = false;
+				groundedTime = 0;
+				ungroundedTime = 0;
 			}
-			rb.velocity = Vector3.zero; 
 		}
 	}
 
@@ -222,11 +202,13 @@ public class PlayerMovement : MonoBehaviour {
 
 	void MoveFwd()
 	{
-		accumulatedSpeed = Mathf.MoveTowards(accumulatedSpeed, 0, ((Mathf.Abs(driftDegree)*driftSpeedLoss) / 10) * Time.fixedDeltaTime);
-		if (!grounded)
+		if (!grounded) {
+			accumulatedSpeed = transform.InverseTransformDirection(rb.velocity).z / TRANSLATE_TO_VELOCITY;
 			return;
-		// TODO: Ajustar la apertura del derrape? en "-driftDegree", multiplicar por valor.
-		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * DRIFT_OUTSIDE_FORCE,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
+		}
+
+		driftOutsideForce = 1 + accumulatedSpeed/50f;
+		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
 		if (accumulatedSpeed < 3) {
 			EndDrift();
 		}
@@ -240,15 +222,17 @@ public class PlayerMovement : MonoBehaviour {
 		turnMultiplier = Mathf.Clamp (accumulatedSpeed/10, -1,1);
 
 		if (drifting) {
-			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 3f);
+			accumulatedSpeed -= Mathf.Abs(driftDegree) * (1-driftSpeedConservation) * Time.fixedDeltaTime;
+			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 2.5f);
 			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
 				driftDegree += turnInput * Time.fixedDeltaTime * driftMultiplier *  driftStrenght * 10 * (Mathf.Clamp01 ((1 - (Mathf.Abs (driftDegree) / maxDrift)) * 1f)); // *1 es para recordar donde poner el ajuste
 			} else {
 				driftDegree += turnInput * Time.fixedDeltaTime * driftMultiplier * driftStrenght * 10 * DRIFT_CORRECTION_STRENGHT; 
 			}
-			// Asegurar que no derrape por encima del limite.
+			// Asegurar que no derrape por encima del limite. Innecesario?
 			driftDegree = Mathf.Clamp (driftDegree, -maxDrift, maxDrift);
+
 			// Estabilizacion si se deja el input de giro en 0.
 			if (turnInput == 0) {
 				driftDegree = Mathf.MoveTowards (driftDegree, 0, Time.fixedDeltaTime * driftStabilization * 10);
@@ -256,15 +240,6 @@ public class PlayerMovement : MonoBehaviour {
 					EndDrift ();
 			}
 		} else {
-			if (turnInput != 0) {
-				turnUnstable += turnInput * Time.fixedDeltaTime;
-			} else {
-				turnUnstable = 0;
-			}
-			if (Mathf.Abs (turnUnstable) > unstableMax) {
-				drifting = true;
-				driftMultiplier = 0;
-			}
 			transform.Rotate (new Vector3(0,((turnInput*0.7f)) * turnRate * 10 * Time.fixedDeltaTime * turnMultiplier,0));
 		}
 	}
@@ -354,7 +329,7 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		case "GROUND":
 			{
-				groundedHitbox = true;
+				detectingGrounded = true;
 				break;
 			}
 		}
@@ -398,22 +373,16 @@ public class PlayerMovement : MonoBehaviour {
 			}
 		case "GROUND":
 			{
-				groundedHitbox = true;
+				detectingGrounded = true;
 				break;
 			}
 		}
-	}
-		
-	public void SetAsEventFinished()
-	{
-		currentEventFinished = true;	
 	}
 
 	public void EndDrift()
 	{
 		drifting = false;
 		driftDegree = 0;
-		turnUnstable = 0;
 		driftMultiplier = 0.2f;
 	}
 
@@ -427,7 +396,7 @@ public class PlayerMovement : MonoBehaviour {
 		StageData.currentData.RespawnDamage ();
 		cleanSection = false;
 		cleanAir = false;
-		groundingTime = 0;
+		groundedTime = 0;
 		ungroundedTime = 0;
 		accumulatedSpeed = 0;
 		turnInput = 0;
@@ -441,15 +410,15 @@ public class PlayerMovement : MonoBehaviour {
 	void SetCarStats()
 	{
 		carReferenced = GlobalGameData.currentInstance.GetCarInUse();
-		turnRate = carReferenced.GetTurnRate ();
-		acceleration = carReferenced.GetAcceleration ();
-		maxFwdSpeed = carReferenced.GetMaxSpeed ();
+		turnRate = STAT_TURNRATE_BASE + carReferenced.GetTurnRate () * STAT_TURNRATE_SCAL;
+		acceleration = STAT_ACCELERATION_BASE  + carReferenced.GetAcceleration () * STAT_ACCELERATION_SCAL;
+		maxFwdSpeed = STAT_MAXSPEED_BASE + carReferenced.GetMaxSpeed () * STAT_MAXSPEED_SCAL;
 		maxBwdSpeed = -(maxFwdSpeed * 0.35f);
-		driftStrenght = carReferenced.GetDriftStrenght ();
-		maxDrift = carReferenced.GetMaxDriftDegree ();
-		driftSpeedLoss = carReferenced.GetSpeedLossOnDrift ();
+		driftStrenght = STAT_DRIFTSTR_BASE  + carReferenced.GetDriftStrenght () * STAT_DRIFTSTR_SCAL;
+		maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
+		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + carReferenced.GetSpeedLossOnDrift () * STAT_DRIFTSPDCONS_SCAL;
 		driftStabilization = carReferenced.GetDriftStabilization ();
-		speedFalloffReductionFwd = carReferenced.GetSpeedFalloffStartingPoint ();
+		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetSpeedFalloffStartingPoint () * STAT_SPDFALLOFF_SCAL;
 		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
 	}
 
@@ -477,9 +446,13 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		return driftDegree;
 	}
-	public void SetGroundedHitboxDetection(bool arg)
+	public void SetDetectingGrounded(bool arg)
 	{
-		groundedHitbox = arg;
+		detectingGrounded = arg;
+	}
+	public void AllowPlayerControl(bool arg)
+	{
+		allowPlayerControl = arg;
 	}
 	public float GetCurrentSpeedPercentage()
 	{

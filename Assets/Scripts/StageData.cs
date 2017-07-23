@@ -71,18 +71,7 @@ public class StageData : MonoBehaviour {
 	}
 
 	void Update () {
-		if (eventFinished)
-		{
-			gameOverDelay -= Time.deltaTime;
-			if (gameOverDelay <= 0.0f) 
-			{
-				
-			}
-		} 
-		else 
-		{
-			UpdateTime ();
-		}
+		UpdateTime ();
 	}
 
 	public void StartEvent()
@@ -98,7 +87,7 @@ public class StageData : MonoBehaviour {
 	}
 	public void EndEvent(int type)
 	{
-		pm.SetAsEventFinished ();
+		pm.AllowPlayerControl (false);
 		SetEndGameScreen (type);
 		eventFinished = true;
 		IngameHudManager.currentInstance.SetHudVisibility (false);
@@ -293,6 +282,7 @@ public class StageData : MonoBehaviour {
 			} else if (startGameDelay > -2 && startGameDelay <= 0) {
 				countDownText.text = "GO!";
 				gameStarted = true;
+				pm.AllowPlayerControl (true);
 			} else {
 				countDownText.text = "";
 			}
