@@ -45,6 +45,8 @@ public class GlobalGameData : MonoBehaviour {
 		carsOwned = new List<CarData> ();
 		carsOwned.Add (new CarData (0));
 		carsOwned.Add (new CarData (1));
+		carsOwned.Add (new CarData (2));
+		carsOwned.Add (new CarData (3));
 		carSelectedIndex = 0;
 
 	}

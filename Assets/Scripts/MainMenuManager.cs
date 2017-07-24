@@ -39,11 +39,11 @@ public class MainMenuManager : MonoBehaviour {
 	public Transform carListParent;
 	public Transform carPanelParent;
 	public CanvasGroup carPanelCG;
-	public Slider sliderMaxSpeed;
-	public Slider sliderAcceleration;
-	public Slider sliderTurnRate;
-	public Slider sliderDriftStrenght;
-	public Slider sliderDriftControl;
+	public StatSliderBehaviour maxspeedSlider;
+	public StatSliderBehaviour accelerationSlider;
+	public StatSliderBehaviour turnrateSlider;
+	public StatSliderBehaviour driftstrSlider;
+	public StatSliderBehaviour driftspdconsSlider;
 	[Header("Loading Panel")]
 	public Text loadingInfo;
 	public CanvasGroup loadingCG;
@@ -78,12 +78,14 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void SetCarSelected(int index)
 	{
-		carNameText.text = GlobalGameData.currentInstance.carsOwned [index].GetCarName ();
-		sliderMaxSpeed.value = GlobalGameData.currentInstance.carsOwned [index].GetMaxSpeed () / 10;
-		sliderAcceleration.value = GlobalGameData.currentInstance.carsOwned [index].GetAcceleration () / 10;
-		sliderTurnRate.value = GlobalGameData.currentInstance.carsOwned [index].GetTurnRate () / 10;
-		sliderDriftStrenght.value = GlobalGameData.currentInstance.carsOwned [index].GetDriftStrenght () / 10;
-		sliderDriftControl.value = 1 - GlobalGameData.currentInstance.carsOwned [index].GetMaxDriftDegree () / 10;
+		CarData readedCar = GlobalGameData.currentInstance.carsOwned [index];
+
+		carNameText.text = readedCar.GetCarName ();
+		maxspeedSlider.SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
+		accelerationSlider.SetValues (readedCar.GetBaseAcceleration(), readedCar.GetUpgradedAcceleration());
+		turnrateSlider.SetValues (readedCar.GetBaseTurnRate(), readedCar.GetUpgradedTurnRate());
+		driftstrSlider.SetValues (readedCar.GetBaseDriftStrenght(), readedCar.GetUpgradedDriftStrenght());
+		driftspdconsSlider.SetValues (readedCar.GetBaseDriftSpdCons(), readedCar.GetUpgradedDriftSpdCons());
 
 		carInDisplayIndex = index;
 	}

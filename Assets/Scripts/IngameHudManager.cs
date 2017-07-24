@@ -7,13 +7,15 @@ public class IngameHudManager : MonoBehaviour {
 
 	public static IngameHudManager currentInstance;
 
+	public PlayerMovement pm;
+
 	public CanvasGroup ingameHudCg;
 	public Image timeRemainingBackground;
 	public Text timeRemainingText;
 
+	[Header("Score/Sector info")]
 	public Text eventScoreTitle;
 	public Text eventScoreText;
-
 	public Text eventSectorTitle;
 	public Text eventSectorText;
 
@@ -22,9 +24,13 @@ public class IngameHudManager : MonoBehaviour {
 	public Image sidePanelLarge;
 	public Image sidePanelSmall;
 
+	[Header("Objective info")]
 	public CanvasGroup objectiveCG;
 	public Image objectivePanel;
 	public Text objectiveText;
+	[Header("Speed meter")]
+	public Image speedMeterFill;
+	public Text speedMeterText;
 
 	private bool scoreUpdating = false;
 	private float tempScore = 0;
@@ -32,6 +38,7 @@ public class IngameHudManager : MonoBehaviour {
 	private Color currentTimeColor;
 
 	private bool timerIsCountdown;
+	private float playerSpeedConversion = 8.5f;
 
 	void Awake ()
 	{
@@ -56,6 +63,7 @@ public class IngameHudManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateRemainingTime ();
+		UpdateSpeedMeter ();
 	}
 	void UpdateRemainingTime()
 	{
@@ -86,6 +94,11 @@ public class IngameHudManager : MonoBehaviour {
 	{
 		objectiveCG.gameObject.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
 		objectiveText.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString ();
+	}
+	public void UpdateSpeedMeter()
+	{
+		speedMeterText.text = ((int)(pm.GetCurrentSpeed () * playerSpeedConversion)).ToString();
+		speedMeterFill.fillAmount = Mathf.Clamp(pm.GetCurrentSpeedPercentage () * 0.75f, 0, 0.75f);
 	}
 	public void UpdateSectorInfo()
 	{

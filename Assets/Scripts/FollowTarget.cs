@@ -42,11 +42,9 @@ public class FollowTarget : MonoBehaviour {
 	private float tiltMultiplier = 0.15f;
 	private float tiltCurrent = 0;
 	private float camTurnSpeed = 200f;
-	private float camRaceModeHeight = 2.2f;
-	private float camRaceModeDistance = 3.5f;
+	private float camRaceModeHeight = 1.9f;
+	private float camRaceModeDistance = 2.85f;
 
-	private float camShake = 0;
-	private float currentShake = 0;
 
 	void Awake()
 	{

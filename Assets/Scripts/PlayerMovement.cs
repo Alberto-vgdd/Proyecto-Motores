@@ -39,15 +39,15 @@ public class PlayerMovement : MonoBehaviour {
 	private const float STAT_TURNRATE_BASE = 2f;
 	private const float STAT_TURNRATE_SCAL = 0.4f;
 	private const float STAT_ACCELERATION_BASE = 0.5f;
-	private const float STAT_ACCELERATION_SCAL = 0.325f;
+	private const float STAT_ACCELERATION_SCAL = 0.225f;
 	private const float STAT_MAXSPEED_BASE = 20f;
 	private const float STAT_MAXSPEED_SCAL = 2.15f;
 	private const float STAT_DRIFTSTR_BASE = 2.5f;
 	private const float STAT_DRIFTSTR_SCAL = 0.375f;
 	private const float STAT_MAXDRIFT_BASE = 15f;
 	private const float STAT_MAXDRIFT_SCAL = 3.5f;
-	private const float STAT_DRIFTSPDCONS_BASE = 0.5f;
-	private const float STAT_DRIFTSPDCONS_SCAL = 0.05f;
+	private const float STAT_DRIFTSPDCONS_BASE = 0.2f;
+	private const float STAT_DRIFTSPDCONS_SCAL = 0.08f;
 	private const float STAT_SPDFALLOFF_BASE = 1f;
 	private const float STAT_SPDFALLOFF_SCAL = 0.5f;
 
@@ -222,7 +222,7 @@ public class PlayerMovement : MonoBehaviour {
 		turnMultiplier = Mathf.Clamp (accumulatedSpeed/10, -1,1);
 
 		if (drifting) {
-			accumulatedSpeed -= Mathf.Abs(driftDegree) * (1-driftSpeedConservation) * Time.fixedDeltaTime;
+			accumulatedSpeed -= (Mathf.Abs(driftDegree)+accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime;
 			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 2.5f);
 			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
@@ -456,7 +456,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 	public float GetCurrentSpeedPercentage()
 	{
-		return accumulatedSpeed / maxFwdSpeed;
+		return Mathf.Abs(accumulatedSpeed) / maxFwdSpeed;
 	}
 	public bool IsStopped()
 	{
