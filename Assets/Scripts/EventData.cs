@@ -39,6 +39,8 @@ public class EventData {
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
 	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.05f;
+	private const float SILVER_REWARD_MULTIPLIER = 0.8f;
+	private const float BRONZE_REWARD_MULTIPLIER = 0.6f;
 
 	public EventData (int league, bool seasonal, bool canBeRestarted)
 	{
@@ -392,12 +394,12 @@ public class EventData {
 		switch (m_gameMode) {
 		case 1: // Standard Endurance
 			{
-				str = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints.";
+				str = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints. Points are awarded based on the distance travelled.";
 				break;
 			}
 		case 2: // Drift Endurance
 			{
-				str = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting.";
+				str = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting. Points are awarded based on the distance travelled.";
 				break;
 			}
 		case 3: // Drift Exhibition
@@ -486,33 +488,46 @@ public class EventData {
 			return "--";
 		}
 	}
-	public string GetRewardString()
+	public string GetRewardString(int pos = 1)
 	{
-		if (m_rewardType == 1) {
-			return m_rewardValue.ToString () + " Cr.";
-		} else {
-			return "Special car part.";
+		string txt;
+		switch (pos) {
+		case 1:
+			{
+				if (m_rewardType == 1) {
+					txt = m_rewardValue.ToString () + " Cr.";
+				} else {
+					txt = "Special car part.";
+				}
+				break;
+			}
+		case 2:
+			{
+				txt = ((int)(m_rewardValue*SILVER_REWARD_MULTIPLIER)).ToString () + " Cr.";
+				break;
+			}
+		case 3:
+			{
+				txt = ((int)(m_rewardValue*BRONZE_REWARD_MULTIPLIER)).ToString () + " Cr.";
+				break;
+			}
+		default:
+			{
+				txt = " -- ";
+				break;
+			}
 		}
+		return txt;
 	}
-	public string GetObjectiveString()
+	public string GetObjectiveString(int pos)
 	{
-		string txt = "";
+		string txt;
 		if (m_gameMode == 0) {
 			txt = "- No objectives -";
-		}
-		else if (m_objectiveTypeScore) {
-			txt = 
-				"1ST: " + GetObjectiveForPosition(1) +
-				"\n2ND: " + GetObjectiveForPosition(2) +
-				"\n3RD: " + GetObjectiveForPosition(3);
+		} else if (m_objectiveTypeScore) {
+			txt = GetObjectiveForPosition (pos).ToString();
 		} else {
-			txt = 
-				"1ST: " + ((int)(GetObjectiveForPosition(1) / 60)).ToString () 
-				+ ":" + ((int)(GetObjectiveForPosition(1) % 60)).ToString("D2") + ":00" +
-				"\n2ND: " + ((int)(GetObjectiveForPosition(2) / 60)).ToString () 
-				+ ":" + ((int)(GetObjectiveForPosition(2) % 60)).ToString("D2") + ":00" +
-				"\n3RD: " + ((int)(GetObjectiveForPosition(3) / 60)).ToString () 
-				+ ":" + ((int)(GetObjectiveForPosition(3) % 60)).ToString("D2") + ":00";
+			txt = ((int)(GetObjectiveForPosition (pos) / 60)).ToString () + ":" + ((int)(GetObjectiveForPosition (pos) % 60)).ToString ("D2") + ":00";
 		}
 		return txt;
 	}

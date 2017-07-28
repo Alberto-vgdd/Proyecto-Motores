@@ -145,7 +145,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 				}
 			}
 		}
-		endGameObjectives.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString ();
+		endGameObjectives.text = "--";
 
 
 	}

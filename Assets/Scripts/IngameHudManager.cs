@@ -93,7 +93,7 @@ public class IngameHudManager : MonoBehaviour {
 	public void SetObjectivePanel()
 	{
 		objectiveCG.gameObject.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
-		objectiveText.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString ();
+		objectiveText.text = "";
 	}
 	public void UpdateSpeedMeter()
 	{
