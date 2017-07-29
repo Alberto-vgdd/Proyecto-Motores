@@ -10,35 +10,37 @@ public class IngameHudManager : MonoBehaviour {
 	public PlayerMovement pm;
 
 	public CanvasGroup ingameHudCg;
-	public Image timeRemainingBackground;
+
+	[Header("Time info")]
+	public GameObject timeRemainingParent;
+	public GameObject timeElapsedParent;
+	public Image timeRemainingBorder;
+	public Image timeElapsedBorder;
 	public Text timeRemainingText;
+	public Text timeElapsedText;
 
 	[Header("Score/Sector info")]
-	public Text eventScoreTitle;
-	public Text eventScoreText;
-	public Text eventSectorTitle;
-	public Text eventSectorText;
-
-	public Color baseInterfaceColor;
-
-	public Image sidePanelLarge;
-	public Image sidePanelSmall;
+	public GameObject ScoreParent;
+	public GameObject CpointParent;
+	public Text ScoreInfo;
+	public Text CpointInfo;
 
 	[Header("Objective info")]
-	public CanvasGroup objectiveCG;
-	public Image objectivePanel;
-	public Text objectiveText;
+	public GameObject objectivePanelParent;
+	public Text objective1;
+	public Text objective2;
+	public Text objective3;
+
 	[Header("Speed meter")]
 	public Image speedMeterFill;
 	public Text speedMeterText;
 
+
 	private bool scoreUpdating = false;
 	private float tempScore = 0;
-
-	private Color currentTimeColor;
-
-	private bool timerIsCountdown;
+	private Color currentTimeColor = Color.white;
 	private float playerSpeedConversion = 8.5f;
+	private bool eventFinished = false;
 
 	void Awake ()
 	{
@@ -46,40 +48,17 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	// Use this for initialization
 	void Start () {
-		if (GlobalGameData.currentInstance.eventActive.GetEventCheckpoints() > 0) {
-			UpdateSectorInfo ();
-		}
-		sidePanelLarge.color = sidePanelSmall.color = eventScoreText.color = eventSectorText.color = objectiveText.color = objectivePanel.color = currentTimeColor = baseInterfaceColor;
 		SetObjectivePanel ();
-		eventScoreText.text = tempScore.ToString();
-		timerIsCountdown = GlobalGameData.currentInstance.eventActive.HasTimelimit();
-		//TODO: Es la mejor forma?
-		if (!timerIsCountdown) {
-			timeRemainingText.fontSize = 60;
+		if (GlobalGameData.currentInstance.eventActive.HasTimelimit ()) {
+			StartCoroutine ("UpdateRemainingTime");
+		} else {
+			StartCoroutine ("UpdateElapsedTime");
 		}
-
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		UpdateRemainingTime ();
 		UpdateSpeedMeter ();
-	}
-	void UpdateRemainingTime()
-	{
-		if (timerIsCountdown) {
-			if (StageData.currentData.time_remainingSec > 5) {
-				timeRemainingText.text = ((int)StageData.currentData.time_remainingSec).ToString();
-				currentTimeColor = Color.Lerp (currentTimeColor, baseInterfaceColor, Time.deltaTime * 2f);
-			} else {
-				timeRemainingText.text = StageData.currentData.time_remainingSec.ToString("N2");
-				currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime * 2f);
-			}
-		} else {
-			timeRemainingText.text = StageData.currentData.GetTimePassedString ();
-
-		}
-		timeRemainingBackground.color = timeRemainingText.color = currentTimeColor;
 	}
 	public void SetHudVisibility(bool arg)
 	{
@@ -90,10 +69,16 @@ public class IngameHudManager : MonoBehaviour {
 			StartCoroutine ("FadeOutHud");
 		}
 	}
+	public void EndEvent()
+	{
+		eventFinished = true;
+	}
 	public void SetObjectivePanel()
 	{
-		objectiveCG.gameObject.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
-		objectiveText.text = "";
+		objectivePanelParent.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
+		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(1);
+		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(2);
+		objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(3);
 	}
 	public void UpdateSpeedMeter()
 	{
@@ -102,7 +87,7 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	public void UpdateSectorInfo()
 	{
-		eventSectorText.text = StageData.currentData.GetCheckpointsCrossed().ToString() + "/" + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString();
+		CpointInfo.text = StageData.currentData.GetCheckpointsCrossed().ToString() + "/" + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString();
 	}
 	public void UpdateScoreInfo()
 	{
@@ -111,28 +96,25 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void SetElementsVisibility()
 	{
-		if (GlobalGameData.currentInstance.eventActive.HasScore() && !(GlobalGameData.currentInstance.eventActive.GetEventCheckpoints() > 0)) {
-			eventScoreTitle.transform.position = eventSectorTitle.transform.position;
-			eventScoreText.transform.position = eventSectorText.transform.position;
-			sidePanelLarge.gameObject.SetActive (false);
-			sidePanelSmall.gameObject.SetActive (true);
-			eventSectorTitle.gameObject.SetActive (false);
-			eventSectorText.gameObject.SetActive (false);
-		} else if (GlobalGameData.currentInstance.eventActive.GetGamemode() == 0) {
-			sidePanelLarge.gameObject.SetActive (false);
-			sidePanelSmall.gameObject.SetActive (false);
-			eventScoreTitle.gameObject.SetActive (false);
-			eventScoreText.gameObject.SetActive (false);
-			eventSectorText.gameObject.SetActive (false);
-			eventSectorTitle.gameObject.SetActive (false);
-			timeRemainingBackground.gameObject.SetActive (false);
-			timeRemainingText.gameObject.SetActive(false);
+		// Free roam gamemode.
+		if (GlobalGameData.currentInstance.eventActive.GetGamemode () == 0) {
+			timeRemainingParent.SetActive (false);
+			timeElapsedParent.SetActive (false);
+			objectivePanelParent.SetActive (false);
+			CpointParent.SetActive (false);
+			ScoreParent.SetActive (false);
 		} else {
-			sidePanelLarge.gameObject.SetActive (GlobalGameData.currentInstance.eventActive.HasScore());
-			sidePanelSmall.gameObject.SetActive (!sidePanelLarge.gameObject.activeInHierarchy);
-			eventScoreTitle.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);
-			eventScoreText.gameObject.SetActive (sidePanelLarge.gameObject.activeInHierarchy);
+			timeRemainingParent.SetActive (GlobalGameData.currentInstance.eventActive.HasTimelimit ());
+			timeElapsedParent.SetActive (!GlobalGameData.currentInstance.eventActive.HasTimelimit ());
 		}
+		objectivePanelParent.SetActive (GlobalGameData.currentInstance.eventActive.HasObjectives ());
+		CpointParent.SetActive (GlobalGameData.currentInstance.eventActive.GetEventCheckpoints () > 0);
+		ScoreParent.SetActive (GlobalGameData.currentInstance.eventActive.HasScore ());
+		if (GlobalGameData.currentInstance.eventActive.GetEventCheckpoints () <= 0) {
+			ScoreParent.transform.localPosition = CpointParent.transform.localPosition;
+		}
+		UpdateSectorInfo ();
+		ScoreInfo.text = tempScore.ToString();
 	}
 	IEnumerator UpdateScore()
 	{
@@ -141,7 +123,7 @@ public class IngameHudManager : MonoBehaviour {
 		while (tempScore != StageData.currentData.GetEventScore ()) {
 			animSpeed = Mathf.Abs (tempScore - StageData.currentData.GetEventScore ()) + 20f;
 			tempScore = Mathf.MoveTowards (tempScore, StageData.currentData.GetEventScore (), Time.deltaTime * animSpeed);
-			eventScoreText.text = ((int)tempScore).ToString();
+			ScoreInfo.text = ((int)tempScore).ToString();
 			yield return null;
 		}
 		scoreUpdating = false;
@@ -157,6 +139,29 @@ public class IngameHudManager : MonoBehaviour {
 	{
 		while (ingameHudCg.alpha < 1) {
 			ingameHudCg.alpha = Mathf.MoveTowards (ingameHudCg.alpha, 1, Time.deltaTime*0.25f);
+			yield return null;
+		}
+	}
+	IEnumerator UpdateRemainingTime()
+	{
+		float readedTime;
+		while (!eventFinished) {
+			readedTime = StageData.currentData.time_remainingSec;
+			if (readedTime < 5) {
+				timeRemainingText.text = readedTime.ToString ("F2");
+				currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime*4);
+			} else {
+				timeRemainingText.text = ((int)readedTime).ToString ();
+				currentTimeColor = Color.Lerp (currentTimeColor, Color.white, Time.deltaTime*4);
+			}
+			timeRemainingText.color = timeRemainingBorder.color = currentTimeColor;
+			yield return null;
+		}
+	}
+	IEnumerator UpdateElapsedTime()
+	{
+		while (!eventFinished) {
+			timeElapsedText.text = StageData.currentData.GetTimePassedString ();
 			yield return null;
 		}
 	}

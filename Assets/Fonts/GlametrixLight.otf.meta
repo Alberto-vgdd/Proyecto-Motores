@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: c7ce66c6e6c14e747b78c9a8ba79ac8a
+timeCreated: 1501265102
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Glametrix
+  fontNames:
+  - Glametrix
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

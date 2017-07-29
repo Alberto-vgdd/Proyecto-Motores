@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 4f5d291e8ff06e64d88244b25b3a4197
+timeCreated: 1501264813
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Perspective Sans
+  fontNames:
+  - Perspective Sans
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 4569d99db6dbbed4a995942f497177a4, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

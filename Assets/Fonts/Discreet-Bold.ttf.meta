@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 26b689d49a697ca4ebefe27197538607
+timeCreated: 1501266735
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Discreet
+  fontNames:
+  - Discreet
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 24f15ce58c92cb64f8e24b5cb48f56a6, type: 3}
+  - {fileID: 12800000, guid: 205b0f8f23c37ae40b20f6fcdc1ada57, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

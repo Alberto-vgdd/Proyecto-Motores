@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: b3260eafc7d75f946baf90d938d16902
+timeCreated: 1501265577
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Formation Sans Regular
+  fontNames:
+  - Formation Sans Regular
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

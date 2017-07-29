@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 26a30c956207f314490905c8ff8d39cb
+timeCreated: 1501263874
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Young
+  fontNames:
+  - Young
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

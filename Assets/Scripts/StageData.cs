@@ -91,6 +91,7 @@ public class StageData : MonoBehaviour {
 		SetEndGameScreen (type);
 		eventFinished = true;
 		IngameHudManager.currentInstance.SetHudVisibility (false);
+		IngameHudManager.currentInstance.EndEvent ();
 	}
 
 	public void PlayerCrossedNode()

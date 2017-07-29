@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 4c3aa867ef20c114eb560b8e4d760ccf
+timeCreated: 1501264813
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Perspective Sans Black
+  fontNames:
+  - Perspective Sans Black
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

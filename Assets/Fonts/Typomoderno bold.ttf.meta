@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: fbbf4289dd14f7143b9528786c1e3666
+timeCreated: 1501266392
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Typomoderno
+  fontNames:
+  - Typomoderno
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

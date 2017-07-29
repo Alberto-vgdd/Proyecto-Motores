@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 134d160189e9e404eabbee28435eac1d
+timeCreated: 1501262879
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Bitstream Vera Sans
+  fontNames:
+  - Bitstream Vera Sans
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: a145bf0810a785543a8e0daf1cc8dc85
+timeCreated: 1501266149
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Lunchtype21
+  fontNames:
+  - Lunchtype21
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 5aa13d5c047b82f489f48ef88dbf1637, type: 3}
+  - {fileID: 12800000, guid: 480fb44e2c42afe4298ab0968fdb75d5, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

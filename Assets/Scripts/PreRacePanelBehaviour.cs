@@ -7,8 +7,6 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	public static PreRacePanelBehaviour currentInstance;
 
-	private bool fadeCalled = false;
-
 	public Text event_title;
 	public Text event_subName;
 	public Text event_description;
@@ -21,10 +19,12 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	public Text event_reward3;
 	public CanvasGroup panelCG;
 	public CanvasGroup fadeCG;
+	public CanvasGroup PressAnyKeyCG;
 	public List<CanvasGroup> panelsWithFadeInAnimation;
 
 	private float fadeSpeed = 0.5f;
-	private bool fadeFinished = false;
+	private bool animationsFinished = false;
+	private bool fadeCalled = false;
 
 	void Awake ()
 	{
@@ -37,7 +37,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	}
 
 	void Update () {
-		if (Input.anyKeyDown && !fadeCalled && fadeFinished) {
+		if (Input.anyKeyDown && animationsFinished && !fadeCalled) {
 			fadeCalled = true;
 			StartCoroutine ("FadeOutPanel");
 		}
@@ -65,7 +65,6 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 			fadeCG.alpha -= Time.deltaTime * fadeSpeed;
 			yield return null;
 		}
-		fadeFinished = true;
 	}
 	IEnumerator FadeOutPanel()
 	{
@@ -79,7 +78,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	}
 	IEnumerator SubPanelAnimation()
 	{
-		yield return new WaitForSeconds (1f);
+		yield return new WaitForSeconds (1.5f);
 		float t = 0;
 		float animSpeed = 5f;
 
@@ -98,7 +97,30 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 			t += Time.deltaTime * animSpeed;
 			yield return null;
 		}
-
-
+		yield return new WaitForSeconds (0.75f);
+		while (PressAnyKeyCG.alpha < 1) {
+			PressAnyKeyCG.alpha = Mathf.MoveTowards (PressAnyKeyCG.alpha, 1, Time.deltaTime);
+			yield return null;
+		}
+		animationsFinished = true;
+		StartCoroutine ("PressAnyKeyBlinkAnimation");
+	}
+	IEnumerator PressAnyKeyBlinkAnimation()
+	{
+		float t = 1;
+		bool increase = false;
+		while (!fadeCalled) {
+			if (increase) {
+				t += Time.deltaTime;
+				if (t > 1)
+					increase = false;
+			} else {
+				t -= Time.deltaTime;
+				if (t < 0)
+					increase = true;
+			}
+			PressAnyKeyCG.alpha = t;
+			yield return null;
+		}
 	}
 }
