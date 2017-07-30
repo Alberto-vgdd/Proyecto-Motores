@@ -8,21 +8,29 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 
 	public static EndGameScreenBehaviour currentInstance;
 
-	public CanvasGroup GlobalCG;
-	public CanvasGroup CG1;
-	public CanvasGroup CG2;
-	public CanvasGroup CG3;
-	public CanvasGroup CG4;
+	public CanvasGroup endGameNoticePanel;
+	public Text endGameNoticeInfo;
 
-	public Text endGameResultTitle;
-	public Text endGameResultSubtitle;
+	public CanvasGroup endGameBreakdownCG;
+	public List<CanvasGroup> panelsWithFadeInAnimation;
+	public CanvasGroup highlightFlash;
+	public Text headerInfo;
+	public Text subHeaderInfo;
+	public Text objective1;
+	public Text objective2;
+	public Text objective3;
+	public Text reward1;
+	public Text reward2;
+	public Text reward3;
+	public Text playerResult;
+	public Text playerReward;
+	public Text awardInfo;
+	public CanvasGroup continueButton;
+	public CanvasGroup restartButton;
 
-	public Text endGameScoreBreakdownTitle;
-	public Text endGameScoreBreakdown;
-	public Text endGameObjectives;
-	public Text endGameObjectivesAchieved;
-
-	private bool panelEnabled;
+	private bool panelEnabled = false;
+	private bool animationsFinished = false;
+	private bool leavingScene = false;
 
 	void Awake ()
 	{
@@ -34,127 +42,173 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetKeyDown (KeyCode.KeypadEnter) && panelEnabled) {
-			SceneManager.LoadScene ("MainMenu");
-		}
+		
 	}
 	public void SetAndEnable(int type, bool failed)
 	{
+		if (panelEnabled)
+			return;
+		
 		panelEnabled = true;
-		endGameScoreBreakdownTitle.text = " Seaside highway - [ ID: " + RoadGenerator.currentInstance.levelSeed + " ]";
-		StartCoroutine ("FadeIn");
+		endGameNoticePanel.gameObject.SetActive (true);
+		endGameNoticePanel.alpha = 0;
 			// Switch by event end reason
 		// ==============================================================================
 		switch (type) {
 		case 1: // Destroyed
 			{
-				endGameResultSubtitle.text = "Your car got destroyed.";
+				endGameNoticeInfo.text = "Car destroyed";
 				break;
 			}
 		case 2: // Time Up
 			{
-				endGameResultSubtitle.text = "Time up";
+				endGameNoticeInfo.text = "Time up";
 				break;
 			}
 		case 3: // Last Checkpoint Reached
 			{
-				endGameResultSubtitle.text = "All checkpoints reached.";
+				endGameNoticeInfo.text = "Event completed";
 				break;
 			}
 		default: // Other?
 			{
-				endGameResultSubtitle.text = "Event was finished.";
-				break;
-			}
-		}
-		// Switch by gamemode.
-		// ==============================================================================
-		switch (GlobalGameData.currentInstance.eventActive.GetGamemode()) {
-		case 1: // Standard Endurance
-			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
-				break;
-			}
-		case 2: // Drift Endurance
-			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
-				break;
-			}
-		case 3: // Drift Exhibition
-			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
-				break;
-			}
-		case 4: // High Speed Challenge
-			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
-				break;
-			}
-		case 5: // Chain Drift Challenge
-			{
-				endGameScoreBreakdown.text = "Event score: " + ((int)StageData.currentData.GetEventScore ()).ToString ();
-				break;
-			}
-		case 6: // Time Attack
-			{
-				endGameScoreBreakdown.text = "Final time: " + StageData.currentData.GetTimePassedString();
-				break;
-			}
-		default: // Free Roam
-			{
-				endGameScoreBreakdown.text = "- No score awarded on this event -";
+				endGameNoticeInfo.text = "Event completed";
 				break;
 			}
 		}
 
-		// Switch by result.
-		// ==============================================================================
 		if (failed) {
-			endGameResultTitle.text = "Event failed";
-			endGameObjectivesAchieved.text = "- No medals awarded -";
-			GlobalGameData.currentInstance.SetLastEventPlayedResult(0);
-			endGameScoreBreakdown.text = " -- ";
+			headerInfo.text = "Event failed";
 		} else {
-			// Switch by medal awarded
-			// ==============================================================================
-			endGameResultTitle.text = "Event completed";
-			switch (StageData.currentData.GetPlayerResult ()) {
-			case 1:
-				{
-					GlobalGameData.currentInstance.SetLastEventPlayedResult(1);
-					endGameObjectivesAchieved.text = "- GOLD medal awarded -";
-					break;
-				}
-			case 2:
-				{
-					GlobalGameData.currentInstance.SetLastEventPlayedResult(2);
-					endGameObjectivesAchieved.text = "- SILVER medal awarded -";
-					break;
-				}
-			case 3:
-				{
-					GlobalGameData.currentInstance.SetLastEventPlayedResult(3);
-					endGameObjectivesAchieved.text = "- BRONZE medal awarded -";
-					break;
-				}
-			default:
-				{
-					GlobalGameData.currentInstance.SetLastEventPlayedResult(0);
-					endGameObjectivesAchieved.text = "- No medals awarded -";
-					break;
-				}
+			headerInfo.text = "Event completed";
+		}
+		subHeaderInfo.text = GlobalGameData.currentInstance.eventActive.GetEventTypeName () + " | " + GlobalGameData.currentInstance.eventActive.GetEventArea () +
+		" | " + "[ Road ID: " + GlobalGameData.currentInstance.eventActive.GetSeed ().ToString () + " ]";
+		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (1);
+		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (2);
+		objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (3);
+		reward1.text = GlobalGameData.currentInstance.eventActive.GetRewardString(1);
+		reward2.text = GlobalGameData.currentInstance.eventActive.GetRewardString(2);
+		reward3.text = GlobalGameData.currentInstance.eventActive.GetRewardString(3);
+		playerResult.text = StageData.currentData.GetPlayerResultString ();
+
+		switch (StageData.currentData.GetPlayerResult())
+		{
+		case 1:
+			{
+				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
+				awardInfo.text = "Gold medal awarded";
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [0].transform.localPosition;
+				break;
+			}
+		case 2:
+			{
+				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
+				awardInfo.text = "Silver medal awarded";
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [1].transform.localPosition;
+				break;
+			}
+		case 3:
+			{
+				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [2].transform.localPosition;
+				awardInfo.text = "Bronze medal awarded";
+				break;
+			}
+		default:
+			{
+				playerReward.text = "No reward";
+				awardInfo.text = "No medal awarded";
+				highlightFlash.gameObject.SetActive (false);
+				break;
 			}
 		}
-		endGameObjectives.text = "--";
 
-
+		StartCoroutine ("EndGameNotice");
 	}
-	IEnumerator FadeIn()
+	IEnumerator EndGameNotice()
 	{
-		while (GlobalCG.alpha < 1)
-		{
-			GlobalCG.alpha = Mathf.MoveTowards (GlobalCG.alpha, 1, Time.deltaTime);
+		Vector3 initialPos = endGameNoticePanel.gameObject.transform.localPosition;
+		float t = 0;
+		float animSpeed = 3.5f;
+		yield return new WaitForSeconds (0.5f);
+		while (t < 1) {
+			endGameNoticePanel.transform.localPosition = initialPos + (Vector3.left * (1 - t) * 50);
+			endGameNoticePanel.alpha = t;
+			t = Mathf.MoveTowards(t, 1, Time.deltaTime * animSpeed);
 			yield return null;
 		}
+		yield return new WaitForSeconds (2f);
+		while (endGameNoticePanel.alpha > 0) {
+			endGameNoticePanel.alpha -= Time.deltaTime * animSpeed;
+			yield return null;
+		}
+		StartCoroutine ("EndGameDetails");
+	}
+	IEnumerator EndGameDetails()
+	{
+		float t = 0;
+		float animSpeed = 5f;
+
+		endGameBreakdownCG.gameObject.SetActive (true);
+		endGameBreakdownCG.alpha = 0;
+		while (endGameBreakdownCG.alpha < 1) {
+			endGameBreakdownCG.alpha = Mathf.MoveTowards (endGameBreakdownCG.alpha, 1, Time.deltaTime*2f);
+		}
+		List<Vector3> basePositions = new List<Vector3>();
+		for (int i = 0; i < panelsWithFadeInAnimation.Count; i++)
+		{
+			basePositions.Add (panelsWithFadeInAnimation [i].transform.localPosition);
+		}
+		while (t < panelsWithFadeInAnimation.Count+2) {
+			for (int i = 0; i < panelsWithFadeInAnimation.Count; i++)
+			{
+				panelsWithFadeInAnimation [i].transform.localPosition = basePositions[i] + Vector3.left * ((1-Mathf.Clamp01(t-i)) * 40);
+				panelsWithFadeInAnimation [i].alpha = Mathf.Clamp01(t-i);
+			}
+			t += Time.deltaTime * animSpeed;
+			yield return null;
+		}
+		yield return new WaitForSeconds (0.5f);
+		continueButton.GetComponent<Button> ().interactable = true;
+		continueButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.eventActive.CanBeRestarted();
+		t = 0;
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime);
+			continueButton.alpha = restartButton.alpha = t;
+		}
+		animationsFinished = true;
+		if (StageData.currentData.GetPlayerResult () != 0) {
+			StartCoroutine ("HighlightFlashAnimation");
+		}
+	}
+	IEnumerator HighlightFlashAnimation()
+	{
+		float t = 1;
+		bool increase = false;
+
+		while (!leavingScene) {
+			if (increase) {
+				t += Time.deltaTime;
+				if (t > 1)
+					increase = false;
+			} else {
+				t -= Time.deltaTime;
+				if (t < 0)
+					increase = true;
+			}
+			highlightFlash.alpha = t*0.5f;
+			yield return null;
+		}
+	}
+	public void ContinueButtonPressed()
+	{
+		if (animationsFinished)
+			return;
+	}
+	public void RestartButtonPressed()
+	{
+		if (animationsFinished)
+			return;
 	}
 }

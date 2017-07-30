@@ -51,7 +51,7 @@ public class StageData : MonoBehaviour {
 	private float timeCountMultiplier = 1f;
 	public bool gameStarted;
 	private bool eventFinished;
-	private float gameOverDelay = 5.0f;
+
 	private int startGameDelay = 6;
 	private float eventScore;
 	private int finalscore;
@@ -329,6 +329,13 @@ public class StageData : MonoBehaviour {
 	public int GetCheckpointsCrossed()
 	{
 		return checkPointsCrossed;
+	}
+	public string GetPlayerResultString()
+	{
+		if (eventActive.IsObjectiveTypeScore ()) {
+			return ((int)eventScore).ToString ();
+		}
+		return GetTimePassedString ();
 	}
 
 	public int GetPlayerResult()

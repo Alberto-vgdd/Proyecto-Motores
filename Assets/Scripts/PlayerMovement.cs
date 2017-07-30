@@ -60,7 +60,7 @@ public class PlayerMovement : MonoBehaviour {
 	private const float INCLINATION_ACCELERATION_MULTIPLIER = 0.02f;	// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
 	private const float DRIFT_CORRECTION_STRENGHT = 1.75f;				// Fuerza de correccion del drift al intentar estabilizar.
 	private const float FRICTION_SPD_CONSERVATION_FRONT = 0.85f;		// Factor de friccion frontal (menor = mas velocidad perdida al colisionar)
-	private const float FRICTION_SPD_CONSVERATION_SIDE = 0.99f;			// Factor de friccion lateral (menor = mas velocidad perdida al colisionar)
+	private const float FRICTION_SPD_CONSVERATION_SIDE = 0.994f;			// Factor de friccion lateral (menor = mas velocidad perdida al colisionar)
 
 	// Valores auxiliares privados
 
@@ -235,7 +235,7 @@ public class PlayerMovement : MonoBehaviour {
 
 			// Estabilizacion si se deja el input de giro en 0.
 			if (turnInput == 0) {
-				driftDegree = Mathf.MoveTowards (driftDegree, 0, Time.fixedDeltaTime * driftStabilization * 10);
+				driftDegree = Mathf.MoveTowards (driftDegree, 0, Time.fixedDeltaTime * driftStabilization * 5);
 				if (driftDegree == 0)
 					EndDrift ();
 			}
