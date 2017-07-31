@@ -96,8 +96,7 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void SetElementsVisibility()
 	{
-		// Free roam gamemode.
-		if (GlobalGameData.currentInstance.eventActive.GetGamemode () == 0) {
+		if (GlobalGameData.currentInstance.eventActive.GetGamemode () == 0) { // Free roam gamemode.
 			timeRemainingParent.SetActive (false);
 			timeElapsedParent.SetActive (false);
 			objectivePanelParent.SetActive (false);
@@ -134,9 +133,11 @@ public class IngameHudManager : MonoBehaviour {
 			ingameHudCg.alpha = Mathf.MoveTowards (ingameHudCg.alpha, 0, Time.deltaTime*2f);
 			yield return null;
 		}
+		ingameHudCg.gameObject.SetActive (false);
 	}
 	IEnumerator FadeInHud()
 	{
+		ingameHudCg.gameObject.SetActive (true);
 		while (ingameHudCg.alpha < 1) {
 			ingameHudCg.alpha = Mathf.MoveTowards (ingameHudCg.alpha, 1, Time.deltaTime*0.25f);
 			yield return null;

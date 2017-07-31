@@ -52,7 +52,6 @@ public class StageData : MonoBehaviour {
 	public bool gameStarted;
 	private bool eventFinished;
 
-	private int startGameDelay = 6;
 	private float eventScore;
 	private int finalscore;
 
@@ -271,26 +270,46 @@ public class StageData : MonoBehaviour {
 
 	IEnumerator Countdown()
 	{
-		print ("Countdown Called");
 		IngameHudManager.currentInstance.SetHudVisibility (true);
-		while (!(gameStarted && startGameDelay <= -3))
-		{
-			if (startGameDelay == 5) {
-				StartCoroutine ("FadeIn");
-			}
-			if (startGameDelay > 0 && startGameDelay <= 3) {
-				countDownText.text = startGameDelay.ToString();
-			} else if (startGameDelay > -2 && startGameDelay <= 0) {
-				countDownText.text = "GO!";
-				gameStarted = true;
-				pm.AllowPlayerControl (true);
-			} else {
-				countDownText.text = "";
-			}
+		yield return new WaitForSeconds (1f);
+		StartCoroutine ("FadeIn");
+		yield return new WaitForSeconds (1.5f);
 
-			startGameDelay--;
-			yield return new WaitForSeconds (1f);
+		float t = 0;
+		int i = 3;
+		float animSpeed = 5f;
+		Vector3 basePos = countDownText.transform.localPosition;
+		CanvasGroup CDCG = countDownText.GetComponent<CanvasGroup> ();
+
+		while (i > 0) {
+			countDownText.text = i.ToString ();
+			while (t < 1) {
+				t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+				countDownText.transform.localPosition = basePos + Vector3.left * (1-t) * 40f;
+				CDCG.alpha = t;
+				yield return null;
+			}
+			yield return new WaitForSeconds (0.8f);
+			i--;
+			t = 0;
 		}
+		countDownText.text = "GO";
+		gameStarted = true;
+		pm.AllowPlayerControl (true);
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			countDownText.transform.localPosition = basePos + Vector3.left * (1-t) * 40f;
+			CDCG.alpha = t;
+			yield return null;
+		}
+		yield return new WaitForSeconds (0.8f);
+		t = 1;
+		while (t > 0) {
+			CDCG.alpha = t;
+			t -= Time.deltaTime * 6f;
+			yield return null;
+		}
+		countDownText.gameObject.SetActive (false);
 	}
 	IEnumerator FadeIn()
 	{

@@ -15,7 +15,7 @@ public class AddToMinimap : MonoBehaviour {
 	public void SetAsActiveOnMinimap(bool arg)
 	{
 		if (referencedImage == null) {
-			referencedImage = Instantiate (iconToInstantiate, MinimapManager.currentInstance.gameObject.transform) as Image;
+			referencedImage = Instantiate (iconToInstantiate, MinimapManager.currentInstance.displaceParent) as Image;
 		}
 		referencedImage.gameObject.SetActive (true);
 		referencedImage.transform.SetAsLastSibling ();

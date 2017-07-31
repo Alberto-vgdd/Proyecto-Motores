@@ -274,7 +274,7 @@ public class MainMenuManager : MonoBehaviour {
 			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);
 			yield return null;
 		}
-		AsyncOperation AO = SceneManager.LoadSceneAsync ("test");
+		AsyncOperation AO = SceneManager.LoadSceneAsync ("InGame");
 		while (!AO.isDone) {
 			loadingInfo.text = "LOADING (" + ((int)(AO.progress * 100)) + "%)";
 			yield return null;

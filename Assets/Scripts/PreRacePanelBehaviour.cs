@@ -61,6 +61,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	IEnumerator FadeInScreen()
 	{
+		panelCG.gameObject.SetActive (true);
 		while (fadeCG.alpha > 0) {
 			fadeCG.alpha -= Time.deltaTime * fadeSpeed;
 			yield return null;
