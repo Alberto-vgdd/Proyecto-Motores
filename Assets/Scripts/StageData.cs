@@ -335,7 +335,7 @@ public class StageData : MonoBehaviour {
 
 	public string GetTimePassedString()
 	{
-		return time_passedMin.ToString ("D2") + ":" + time_passedSec.ToString ("D2") + ":" + ((int)(time_passedDec * 100)).ToString ("D2");
+		return time_passedMin.ToString () + ":" + time_passedSec.ToString ("D2") + ":" + ((int)(time_passedDec * 100)).ToString ("D2");
 	}
 	public float GetTimePassedValue()
 	{

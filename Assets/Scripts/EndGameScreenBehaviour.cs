@@ -98,20 +98,20 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			{
 				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
 				awardInfo.text = "Gold medal awarded";
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [0].transform.localPosition;
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [3].transform.localPosition;
 				break;
 			}
 		case 2:
 			{
 				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
 				awardInfo.text = "Silver medal awarded";
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [1].transform.localPosition;
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [4].transform.localPosition;
 				break;
 			}
 		case 3:
 			{
 				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [2].transform.localPosition;
+				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [5].transform.localPosition;
 				awardInfo.text = "Bronze medal awarded";
 				break;
 			}
@@ -174,8 +174,9 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		continueButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.eventActive.CanBeRestarted();
 		t = 0;
 		while (t < 1) {
-			t = Mathf.MoveTowards (t, 1, Time.deltaTime);
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime*2f);
 			continueButton.alpha = restartButton.alpha = t;
+			yield return null;
 		}
 		animationsFinished = true;
 		if (StageData.currentData.GetPlayerResult () != 0) {
@@ -184,8 +185,8 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	}
 	IEnumerator HighlightFlashAnimation()
 	{
-		float t = 1;
-		bool increase = false;
+		float t = 0;
+		bool increase = true;
 
 		while (!leavingScene) {
 			if (increase) {
