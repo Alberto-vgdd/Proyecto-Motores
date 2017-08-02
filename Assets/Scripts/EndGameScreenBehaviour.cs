@@ -8,9 +8,11 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 
 	public static EndGameScreenBehaviour currentInstance;
 
+	[Header("EndGame Notice")]
 	public CanvasGroup endGameNoticePanel;
 	public Text endGameNoticeInfo;
 
+	[Header("EndGame Panel")]
 	public CanvasGroup endGameBreakdownCG;
 	public List<CanvasGroup> panelsWithFadeInAnimation;
 	public CanvasGroup highlightFlash;
@@ -90,39 +92,48 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		reward1.text = GlobalGameData.currentInstance.eventActive.GetRewardString(1);
 		reward2.text = GlobalGameData.currentInstance.eventActive.GetRewardString(2);
 		reward3.text = GlobalGameData.currentInstance.eventActive.GetRewardString(3);
-		playerResult.text = StageData.currentData.GetPlayerResultString ();
 
-		switch (StageData.currentData.GetPlayerResult())
-		{
-		case 1:
+
+		if (failed) {
+			playerReward.text = "No reward";
+			awardInfo.text = "No medal awarded";
+			highlightFlash.gameObject.SetActive (false);
+			playerResult.text = " -- ";
+		} else {
+			playerResult.text = StageData.currentData.GetPlayerResultString ();
+			switch (StageData.currentData.GetPlayerResult())
 			{
-				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
-				awardInfo.text = "Gold medal awarded";
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [3].transform.localPosition;
-				break;
-			}
-		case 2:
-			{
-				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
-				awardInfo.text = "Silver medal awarded";
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [4].transform.localPosition;
-				break;
-			}
-		case 3:
-			{
-				playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
-				highlightFlash.transform.localPosition = panelsWithFadeInAnimation [5].transform.localPosition;
-				awardInfo.text = "Bronze medal awarded";
-				break;
-			}
-		default:
-			{
-				playerReward.text = "No reward";
-				awardInfo.text = "No medal awarded";
-				highlightFlash.gameObject.SetActive (false);
-				break;
+			case 1:
+				{
+					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
+					awardInfo.text = "Gold medal awarded";
+					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [3].transform.localPosition;
+					break;
+				}
+			case 2:
+				{
+					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
+					awardInfo.text = "Silver medal awarded";
+					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [4].transform.localPosition;
+					break;
+				}
+			case 3:
+				{
+					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
+					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [5].transform.localPosition;
+					awardInfo.text = "Bronze medal awarded";
+					break;
+				}
+			default:
+				{
+					playerReward.text = "No reward";
+					awardInfo.text = "No medal awarded";
+					highlightFlash.gameObject.SetActive (false);
+					break;
+				}
 			}
 		}
+
 
 		StartCoroutine ("EndGameNotice");
 	}
@@ -171,7 +182,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (0.5f);
 		continueButton.GetComponent<Button> ().interactable = true;
-		continueButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.eventActive.CanBeRestarted();
+		restartButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.eventActive.CanBeRestarted();
 		t = 0;
 		while (t < 1) {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime*2f);
@@ -204,12 +215,14 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 	}
 	public void ContinueButtonPressed()
 	{
-		if (animationsFinished)
+		if (!animationsFinished || ConfirmationPanelBehaviour.currentInstance.IsOpen())
 			return;
+		ConfirmationPanelBehaviour.currentInstance.OpenMenu (1);
 	}
 	public void RestartButtonPressed()
 	{
-		if (animationsFinished)
+		if (!animationsFinished || ConfirmationPanelBehaviour.currentInstance.IsOpen())
 			return;
+		ConfirmationPanelBehaviour.currentInstance.OpenMenu (2);
 	}
 }

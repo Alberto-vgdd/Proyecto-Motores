@@ -55,7 +55,7 @@ public class GlobalGameData : MonoBehaviour {
 		Random.InitState(System.Environment.TickCount);
 		eventsAvailable = new List<EventData> ();
 		for (int i = 0; i < 8; i++) {
-			eventsAvailable.Add (new EventData (m_playerRank, false, false));
+			eventsAvailable.Add (new EventData (m_playerRank, false, true));
 		}
 	}
 	public void UpdateRankStatus()
