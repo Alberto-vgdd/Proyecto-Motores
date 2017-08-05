@@ -13,7 +13,6 @@ public class CarData {
 	private float m_maxDriftDegree;
 	private float m_driftSpeedConservation;
 	private float m_driftStabilization;
-	private float m_speedFalloffReduction;
 
 	// Bonus car stats (upgrades)
 
@@ -24,7 +23,6 @@ public class CarData {
 	private float m_upgraded_maxDriftDegree;
 	private float m_upgraded_driftSpeedConservation;
 	private float m_upgraded_driftStabilization;
-	private float m_upgraded_speedFalloffReduction;
 
 	// Other car data
 
@@ -45,7 +43,6 @@ public class CarData {
 				m_driftStrenght = 4f;
 				m_driftSpeedConservation = 3f;
 				m_driftStabilization = 4f;
-				m_speedFalloffReduction = 2f;
 
 				m_upgraded_turnRate = 0;
 				m_upgraded_acceleration = 0;
@@ -54,7 +51,6 @@ public class CarData {
 				m_upgraded_maxDriftDegree = 0;
 				m_upgraded_driftSpeedConservation = 0;
 				m_upgraded_driftStabilization = 0;
-				m_upgraded_speedFalloffReduction = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -70,7 +66,6 @@ public class CarData {
 				m_driftStrenght = 7f;
 				m_driftSpeedConservation = 5f;
 				m_driftStabilization = 4f;
-				m_speedFalloffReduction = 2f;
 
 				m_upgraded_turnRate = -1f;
 				m_upgraded_acceleration = 2.1f;
@@ -79,7 +74,6 @@ public class CarData {
 				m_upgraded_maxDriftDegree = 0.5f;
 				m_upgraded_driftSpeedConservation = -2f;
 				m_upgraded_driftStabilization = 0;
-				m_upgraded_speedFalloffReduction = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -95,16 +89,14 @@ public class CarData {
 				m_driftStrenght = 5f;
 				m_driftSpeedConservation = 5f;
 				m_driftStabilization = 4f;
-				m_speedFalloffReduction = 2f;
 
-				m_upgraded_turnRate = 1f;
+				m_upgraded_turnRate = 99f;
 				m_upgraded_acceleration = 1.5f;
 				m_upgraded_maxSpeed = 1f;
 				m_upgraded_driftStrenght = -1.5f;
 				m_upgraded_maxDriftDegree = -1.5f;
 				m_upgraded_driftSpeedConservation = -3.5f;
 				m_upgraded_driftStabilization = 0;
-				m_upgraded_speedFalloffReduction = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -120,7 +112,6 @@ public class CarData {
 				m_driftStrenght = 6f;
 				m_driftSpeedConservation = 8f;
 				m_driftStabilization = 3f;
-				m_speedFalloffReduction = 2f;
 
 				m_upgraded_turnRate = 1f;
 				m_upgraded_acceleration = 2.4f;
@@ -129,7 +120,6 @@ public class CarData {
 				m_upgraded_maxDriftDegree = 0;
 				m_upgraded_driftSpeedConservation = -1.75f;
 				m_upgraded_driftStabilization = 0;
-				m_upgraded_speedFalloffReduction = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -178,10 +168,6 @@ public class CarData {
 	public float GetDriftStabilization()
 	{
 		return m_driftStabilization + m_upgraded_driftStabilization;
-	}
-	public float GetSpeedFalloffStartingPoint()
-	{
-		return m_speedFalloffReduction + m_upgraded_speedFalloffReduction;
 	}
 
 	// BASE STAT GETTERS

@@ -86,6 +86,9 @@ public class StageData : MonoBehaviour {
 	}
 	public void EndEvent(int type)
 	{
+		if (GhostRecorder.currentInstance != null)
+			GhostRecorder.currentInstance.StopRecording ();
+
 		pm.AllowPlayerControl (false);
 		SetEndGameScreen (type);
 		eventFinished = true;
@@ -296,6 +299,12 @@ public class StageData : MonoBehaviour {
 		countDownText.text = "GO";
 		gameStarted = true;
 		pm.AllowPlayerControl (true);
+
+		if (GhostRecorder.currentInstance != null)
+			GhostRecorder.currentInstance.StartRecording ();
+		if (GhostPlayer.currentInstance != null)
+			GhostPlayer.currentInstance.StartPlaying ();
+		
 		while (t < 1) {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
 			countDownText.transform.localPosition = basePos + Vector3.left * (1-t) * 40f;

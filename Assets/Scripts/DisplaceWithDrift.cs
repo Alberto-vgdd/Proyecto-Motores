@@ -6,12 +6,12 @@ public class DisplaceWithDrift : MonoBehaviour {
 
 	// Administra el desplazamiento del objetivo de la camara cuando el jugador este derrapando.
 
-	[Range(0.5f, 3f)]
-	public float displaceSpeed;
-	[Range(0.1f, 1)]
-	public float displaceMultiplier;
+
 	[Range(-1, 1)]
 	public float frontalOffset;
+
+	private float displacementMultiplier = 1f;
+	private float displacementSpeedMultiplier = 1f;
 	private float displacementCurrent;
 	private float displacementTarget;
 
@@ -23,8 +23,9 @@ public class DisplaceWithDrift : MonoBehaviour {
 	}
 
 	void FixedUpdate () {
-		displacementTarget = pm.GetDriftDegree() * displaceMultiplier / 10;
-		displacementCurrent = Mathf.MoveTowards (displacementCurrent, displacementTarget, Time.fixedDeltaTime * displaceSpeed);
+		displacementTarget = pm.GetHorizontalCamDisplacementValue() * displacementMultiplier;
+		displacementSpeedMultiplier = 0.125f + Mathf.Abs (displacementCurrent - displacementTarget) * 10f;
+		displacementCurrent = Mathf.MoveTowards (displacementCurrent, displacementTarget, Time.fixedDeltaTime * displacementSpeedMultiplier);
 		transform.localPosition = displacementCurrent * Vector3.right + Vector3.forward * frontalOffset;
 		
 	}

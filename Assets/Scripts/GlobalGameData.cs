@@ -17,6 +17,8 @@ public class GlobalGameData : MonoBehaviour {
 	public List<CarData> carsOwned;
 	private int carSelectedIndex = 0;
 
+	public GhostReplayData test;
+
 	public EventData eventActive;
 
 	void Awake ()

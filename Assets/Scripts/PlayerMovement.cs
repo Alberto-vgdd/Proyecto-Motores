@@ -43,13 +43,13 @@ public class PlayerMovement : MonoBehaviour {
 	private const float STAT_MAXSPEED_BASE = 20f;
 	private const float STAT_MAXSPEED_SCAL = 2.15f;
 	private const float STAT_DRIFTSTR_BASE = 2.5f;
-	private const float STAT_DRIFTSTR_SCAL = 0.375f;
+	private const float STAT_DRIFTSTR_SCAL = 0.175f;
 	private const float STAT_MAXDRIFT_BASE = 15f;
 	private const float STAT_MAXDRIFT_SCAL = 3.5f;
 	private const float STAT_DRIFTSPDCONS_BASE = 0.2f;
 	private const float STAT_DRIFTSPDCONS_SCAL = 0.08f;
 	private const float STAT_SPDFALLOFF_BASE = 1f;
-	private const float STAT_SPDFALLOFF_SCAL = 0.5f;
+	private const float STAT_SPDFALLOFF_SCAL = 0.25f;
 
 	private const float DRIFT_TURN_RATE = 6f;							// Turnrate utilizado en el drift, igual para todos los coches.
 	private const float GROUND_TRANSITION_THS = 0.05f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
@@ -168,8 +168,9 @@ public class PlayerMovement : MonoBehaviour {
 		else if (accumulatedSpeed < maxBwdSpeed + extraFwdSpeed) 
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, maxBwdSpeed + extraFwdSpeed, Time.fixedDeltaTime * 500);
 
-		MoveFwd ();
 		MoveTrn ();
+		MoveFwd ();
+
 
 	}
 
@@ -219,7 +220,8 @@ public class PlayerMovement : MonoBehaviour {
 	void MoveTrn()
 	{
 		// Para evitar que se pueda girar a 0km/h como un tanque.
-		turnMultiplier = Mathf.Clamp (accumulatedSpeed/10, -1,1);
+		turnMultiplier = Mathf.Clamp (accumulatedSpeed/3.5f, -1.5f,1.5f);
+		turnMultiplier = Mathf.MoveTowards (turnMultiplier, 0, accumulatedSpeed * 0.02f);
 
 		if (drifting) {
 			accumulatedSpeed -= (Mathf.Abs(driftDegree)+accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime;
@@ -401,7 +403,7 @@ public class PlayerMovement : MonoBehaviour {
 		accumulatedSpeed = 0;
 		turnInput = 0;
 		forwInput = 0;
-		transform.position = resetTransform.position;
+		transform.position = resetTransform.position + Vector3.up * 0.5f;
 		transform.rotation = resetTransform.rotation * Quaternion.Euler(0,-90,0);
 		rb.angularVelocity = Vector3.zero;
 		rb.velocity = Vector3.zero;
@@ -418,7 +420,7 @@ public class PlayerMovement : MonoBehaviour {
 		maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
 		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + carReferenced.GetSpeedLossOnDrift () * STAT_DRIFTSPDCONS_SCAL;
 		driftStabilization = carReferenced.GetDriftStabilization ();
-		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetSpeedFalloffStartingPoint () * STAT_SPDFALLOFF_SCAL;
+		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
 		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
 	}
 
@@ -457,6 +459,10 @@ public class PlayerMovement : MonoBehaviour {
 	public float GetCurrentSpeedPercentage()
 	{
 		return Mathf.Abs(accumulatedSpeed) / maxFwdSpeed;
+	}
+	public float GetHorizontalCamDisplacementValue()
+	{
+		return driftDegree * 0.04f + turnInput * 0.065f;
 	}
 	public bool IsStopped()
 	{

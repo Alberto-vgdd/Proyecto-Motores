@@ -58,6 +58,9 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 	}
 	IEnumerator LoadingScreen()
 	{
+		if (GhostRecorder.currentInstance != null)
+			GhostRecorder.currentInstance.StopRecording ();
+
 		loading = true;
 		loadingCG.gameObject.SetActive (true);
 		loadingInfo.text = "LOADING";
