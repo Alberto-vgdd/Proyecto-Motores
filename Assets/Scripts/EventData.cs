@@ -35,6 +35,7 @@ public class EventData {
 	private int m_eventLeague;
 	private int m_gameMode;
 	private float m_roadDifficulty;
+	private bool displayTimeLeftAlwaysFloat = false;
 	// AuxParameters
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
@@ -198,6 +199,7 @@ public class EventData {
 				m_eventCanBeFailed = false;
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
+				displayTimeLeftAlwaysFloat = true;
 
 				m_eventBonusTimeOnCPMultiplier = 0.25f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
@@ -219,6 +221,7 @@ public class EventData {
 				m_eventCanBeFailed = false;
 				m_hasObjectives = true;
 				m_objectiveTypeScore = true;
+				displayTimeLeftAlwaysFloat = true;
 
 				m_eventBonusTimeOnCPMultiplier = 0.2f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
@@ -382,6 +385,10 @@ public class EventData {
 	public int GetEventLeague()
 	{
 		return m_eventLeague;
+	}
+	public bool HasTimeDisplayedAlwaysAsFloat()
+	{
+		return displayTimeLeftAlwaysFloat;
 	}
 
 	// String getters

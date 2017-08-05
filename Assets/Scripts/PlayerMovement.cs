@@ -59,8 +59,10 @@ public class PlayerMovement : MonoBehaviour {
 	private const float INCLINATION_MAX_SPEED_MULTIPLIER = 0.1f;		// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
 	private const float INCLINATION_ACCELERATION_MULTIPLIER = 0.02f;	// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
 	private const float DRIFT_CORRECTION_STRENGHT = 1.75f;				// Fuerza de correccion del drift al intentar estabilizar.
-	private const float FRICTION_SPD_CONSERVATION_FRONT = 0.85f;		// Factor de friccion frontal (menor = mas velocidad perdida al colisionar)
-	private const float FRICTION_SPD_CONSVERATION_SIDE = 0.994f;			// Factor de friccion lateral (menor = mas velocidad perdida al colisionar)
+	private const float FRICTION_SPD_CONSERVATION_FRONT_STAY = 0.85f;	// Conservacion de velocidad en colision frontal (STAY)
+	private const float FRICTION_SPD_CONSERVATION_FRONT_ENTER = 0.8f;	// Conservacion de velocidad en colision frintal (ENTER)
+	private const float FRICTION_SPD_CONSERVATION_SIDE_STAY = 0.994f;	// Conservacion de velocidad en colision lateral (STAY)
+	private const float FRICTION_SPD_CONSERVATION_SIDE_ENTER = 0.9f;	// Conservacion de velocidad en colision lateral (ENTER)
 
 	// Valores auxiliares privados
 
@@ -308,7 +310,7 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.003f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.0005f);
-				accumulatedSpeed *= FRICTION_SPD_CONSVERATION_SIDE;
+				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_STAY;
 				break;
 			}
 		case "FRONTAL":
@@ -320,7 +322,7 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.06f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.002f);
-				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT;
+				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_STAY;
 				break;
 			}
 		case "TOP":
@@ -351,7 +353,7 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.075f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.01f);
-				accumulatedSpeed *= FRICTION_SPD_CONSVERATION_SIDE;
+				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER;
 				break;
 			}
 		case "FRONTAL":
@@ -363,7 +365,7 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.135f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.02f);
-				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT;
+				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER;
 				break;
 			}
 		case "TOP":

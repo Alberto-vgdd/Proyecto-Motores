@@ -24,6 +24,7 @@ public class IngameHudManager : MonoBehaviour {
 	public GameObject CpointParent;
 	public Text ScoreInfo;
 	public Text CpointInfo;
+	public Text SubTimerInfo;
 
 	[Header("Objective info")]
 	public GameObject objectivePanelParent;
@@ -50,7 +51,12 @@ public class IngameHudManager : MonoBehaviour {
 	void Start () {
 		SetObjectivePanel ();
 		if (GlobalGameData.currentInstance.eventActive.HasTimelimit ()) {
-			StartCoroutine ("UpdateRemainingTime");
+			if (GlobalGameData.currentInstance.eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
+				StartCoroutine ("UpdateRemainingTimeAlwaysFloat");
+			} else {
+				StartCoroutine ("UpdateRemainingTime");
+			}
+		
 		} else {
 			StartCoroutine ("UpdateElapsedTime");
 		}
@@ -155,6 +161,23 @@ public class IngameHudManager : MonoBehaviour {
 				timeRemainingText.text = ((int)readedTime).ToString ();
 				currentTimeColor = Color.Lerp (currentTimeColor, Color.white, Time.deltaTime*4);
 			}
+			timeRemainingText.color = timeRemainingBorder.color = currentTimeColor;
+			yield return null;
+		}
+	}
+	IEnumerator UpdateRemainingTimeAlwaysFloat()
+	{
+		float readedTime;
+		while (!eventFinished) {
+			readedTime = StageData.currentData.time_remainingSec;
+
+			timeRemainingText.text = readedTime.ToString ("F2");
+			if (readedTime < 5) {
+				currentTimeColor = Color.Lerp (currentTimeColor, Color.red, Time.deltaTime*4);
+			} else {
+				currentTimeColor = Color.Lerp (currentTimeColor, Color.white, Time.deltaTime*4);
+			}
+
 			timeRemainingText.color = timeRemainingBorder.color = currentTimeColor;
 			yield return null;
 		}

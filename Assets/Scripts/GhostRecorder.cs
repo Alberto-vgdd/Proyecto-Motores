@@ -40,7 +40,7 @@ public class GhostRecorder : MonoBehaviour {
 	public void StartRecording()
 	{
 		recording = true;
-		recordedData = new GhostReplayData (recordingInterval);
+		recordedData = new GhostReplayData (recordingInterval, GlobalGameData.currentInstance.eventActive.GetSeed(), GlobalGameData.currentInstance.eventActive.GetGamemode());
 		StartCoroutine ("RecordData");
 		print ("[REPLAY] Recording ghost data.");
 	}
