@@ -9,6 +9,8 @@ public class GhostReplayData {
 
 	private int recordedAt_seed;
 	private int recordedAt_gamemode;
+	private float scoreRecorded;
+	private bool scoreRecordedIsTime;
 	private string ghostName;
 
 	private float recordingInterval;
@@ -61,6 +63,19 @@ public class GhostReplayData {
 	public string GetGhostName()
 	{
 		return ghostName;
+	}
+	public void SetGhostScore(float score, bool isTime)
+	{
+		scoreRecorded = score;
+		scoreRecordedIsTime = isTime;
+	}
+	public float GetScoreRecorded()
+	{
+		return scoreRecorded;
+	}
+	public bool GetScoreRecordedIsTime()
+	{
+		return scoreRecordedIsTime;
 	}
 
 }

@@ -495,6 +495,33 @@ public class EventData {
 			return "--";
 		}
 	}
+	public int GetRewardValueForPosition(int pos = 0)
+	{
+		float _reward;
+		switch (pos) {
+		case 1:
+			{
+				_reward = m_rewardValue;
+				break;
+			}
+		case 2:
+			{
+				_reward = m_rewardValue * SILVER_REWARD_MULTIPLIER;
+				break;
+			}
+		case 3:
+			{
+				_reward = m_rewardValue * BRONZE_REWARD_MULTIPLIER;
+				break;
+			}
+		default:
+			{
+				_reward = 0;
+				break;
+			}
+		}
+		return (int)_reward;
+	}
 	public string GetRewardString(int pos = 1)
 	{
 		string txt;

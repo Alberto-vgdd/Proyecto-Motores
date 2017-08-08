@@ -17,7 +17,7 @@ public class GlobalGameData : MonoBehaviour {
 	public List<CarData> carsOwned;
 	private int carSelectedIndex = 0;
 
-	public GhostReplayData test;
+	private GhostReplayData playerGhostPB;
 
 	public EventData eventActive;
 
@@ -75,9 +75,23 @@ public class GlobalGameData : MonoBehaviour {
 			return -0.15f;
 		} 
 	}
-	public void UpdateRankStatus()
+	public void UpdatePostEventChanges()
 	{
-		if (m_lastEventPlayedResult < 0)
+		UpdateRewardStatus ();
+		UpdateRankStatus ();
+		m_lastEventPlayedResult = -1;
+		eventActive = null;
+	}
+	private void UpdateRewardStatus()
+	{
+		if (m_lastEventPlayedResult < 0 || eventActive == null)
+			return;
+		m_playerCurrency += eventActive.GetRewardValueForPosition(m_lastEventPlayedResult);
+		//TODO: algo para el caso en el que no sea dinero...
+	}
+	private void UpdateRankStatus()
+	{
+		if (m_lastEventPlayedResult < 0 || eventActive == null)
 			return;
 		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
 		float promotionMultiplier = 99;
@@ -103,6 +117,24 @@ public class GlobalGameData : MonoBehaviour {
 			m_playerRank++;
 			GenerateEventsAvailable ();
 		}
+	}
+	public void SetPlayerGhostPB(GhostReplayData ghost)
+	{
+		if (ghost.GetRecordedAtSeed () != eventActive.GetSeed () || playerGhostPB == null) {
+			playerGhostPB = ghost;
+		} else {
+			if (ghost.GetScoreRecordedIsTime()) {
+				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
+					playerGhostPB = ghost;
+			} else {
+				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
+					playerGhostPB = ghost;
+			}
+		}
+	}
+	public GhostReplayData GetPlayerGhostPB()
+	{
+		return playerGhostPB;
 	}
 	public void SetLastEventPlayedResult(int result)
 	{

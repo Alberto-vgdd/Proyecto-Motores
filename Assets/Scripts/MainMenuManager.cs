@@ -134,7 +134,7 @@ public class MainMenuManager : MonoBehaviour {
 		if (GlobalGameData.currentInstance == null)
 			return;
 		playerNameText.text = "Player";
-		playerRankText.text = "Driver rank: " + GlobalGameData.currentInstance.GetPlayerRank ().ToString ();
+		playerRankText.text = GlobalGameData.currentInstance.GetRankName ();
 		normalCurrencyText.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
 		alternativeCurrencyText.text = GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
 	}
@@ -185,7 +185,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		int rankOld = GlobalGameData.currentInstance.GetPlayerRank();
 		float rankStatusOld = GlobalGameData.currentInstance.GetPlayerRankStatus();
-		GlobalGameData.currentInstance.UpdateRankStatus ();
+		GlobalGameData.currentInstance.UpdatePostEventChanges ();
 		int rankNew = GlobalGameData.currentInstance.GetPlayerRank ();
 		float rankStatusNew = GlobalGameData.currentInstance.GetPlayerRankStatus ();
 

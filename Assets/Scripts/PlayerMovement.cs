@@ -210,7 +210,7 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 
-		driftOutsideForce = 1 + accumulatedSpeed/50f;
+		driftOutsideForce = 1 + accumulatedSpeed/35f;
 		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
 		if (accumulatedSpeed < 3) {
 			EndDrift();

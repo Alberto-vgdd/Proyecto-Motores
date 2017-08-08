@@ -23,7 +23,7 @@ public class GhostPlayer : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		currentInstance = this;
-		replayData = GlobalGameData.currentInstance.test;
+		replayData = GlobalGameData.currentInstance.GetPlayerGhostPB();
 	}
 	public void StartPlaying()
 	{
@@ -73,30 +73,24 @@ public class GhostPlayer : MonoBehaviour {
 					target.transform.localPosition = Vector3.Lerp (lerpPos0, lerpPos1, t);
 					target.transform.localRotation = Quaternion.Lerp (lerpRot0, lerpRot1, t);
 				}
-//				if (t > 1) {
-//					target.transform.localPosition = Vector3.Lerp (replayData.GetPositionAt(index+1), replayData.GetPositionAt(index+2), t-1);
-//					target.transform.localRotation = Quaternion.Lerp (replayData.GetRotationAt(index+1), replayData.GetRotationAt(index+2), t-1);
-//				} else {
-//					target.transform.localPosition = Vector3.Lerp (lerpPos0, lerpPos1, t);
-//					target.transform.localRotation = Quaternion.Lerp (lerpRot0, lerpRot1, t);
-//				}
 			}
 			index++;
 			t -= 1;
 		}
-		playing = false;
+		StopPlaying ();
 	}
 	private void UpdateGhostNameplate()
 	{
 		cg.transform.position = cam.WorldToScreenPoint (nameplateTarget.transform.position);
 		cg.gameObject.SetActive (cg.transform.position.z > 0);
-		nameplateFade = Mathf.Clamp(1.25f - cg.transform.position.z *0.005f, 0.5f, 1f);
+		nameplateFade = Mathf.Clamp(1.25f - cg.transform.position.z *0.0075f, 0.35f, 1f);
 		cg.alpha = nameplateFade * 0.9f;
-		cg.transform.localScale = Vector3.one * nameplateFade;
+		cg.transform.localScale = Vector3.one * nameplateFade * 0.8f;
 	}
 	public void StopPlaying()
 	{
 		playing = false;
 		cg.gameObject.SetActive (false);
+		target.gameObject.SetActive (false);
 	}
 }

@@ -86,8 +86,10 @@ public class StageData : MonoBehaviour {
 	}
 	public void EndEvent(int type)
 	{
+		if (eventFinished)
+			return;
 		if (GhostRecorder.currentInstance != null)
-			GhostRecorder.currentInstance.StopRecording ();
+			GhostRecorder.currentInstance.StopRecording (true);
 
 		pm.AllowPlayerControl (false);
 		SetEndGameScreen (type);
@@ -167,7 +169,7 @@ public class StageData : MonoBehaviour {
 
 	public void AddScore(float arg)
 	{
-		if (!eventActive.HasScore())
+		if (!eventActive.HasScore() || eventFinished)
 			return;
 		eventScore += arg;
 		IngameHudManager.currentInstance.UpdateScoreInfo ();
@@ -245,7 +247,7 @@ public class StageData : MonoBehaviour {
 	void UpdateTime()
 	{
 		timeCountMultiplier = 1f;
-		if (!gameStarted)
+		if (!gameStarted || eventFinished)
 			return;
 		if (eventActive.HasTimelimit()) {
 			if (eventActive.GetGamemode () == 4 && pm.GetCurrentSpeedPercentage() > 0.65f)

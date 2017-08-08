@@ -31,7 +31,7 @@ public class GhostRecorder : MonoBehaviour {
 			recordedData.AddRecording (target);
 			t -= 1;
 		}
-		StopRecording ();
+		StopRecording (false);
 	}
 	public bool IsRecording()
 	{
@@ -39,15 +39,23 @@ public class GhostRecorder : MonoBehaviour {
 	}
 	public void StartRecording()
 	{
+		if (recording)
+			return;
 		recording = true;
 		recordedData = new GhostReplayData (recordingInterval, GlobalGameData.currentInstance.eventActive.GetSeed(), GlobalGameData.currentInstance.eventActive.GetGamemode());
 		StartCoroutine ("RecordData");
 		print ("[REPLAY] Recording ghost data.");
 	}
-	public void StopRecording()
+	public void StopRecording(bool valid)
 	{
+		if (!recording)
+			return;
 		recording = false;
-		GlobalGameData.currentInstance.test = recordedData;
+		if (!valid)
+			return;
+
 		print ("[REPLAY] Ended ghost data recording.");
+		recordedData.SetGhostScore (StageData.currentData.GetEventScore (), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+		GlobalGameData.currentInstance.SetPlayerGhostPB(recordedData);
 	}
 }
