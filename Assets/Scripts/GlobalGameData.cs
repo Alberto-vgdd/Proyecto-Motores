@@ -60,11 +60,27 @@ public class GlobalGameData : MonoBehaviour {
 			eventsAvailable.Add (new EventData (m_playerRank, false, true));
 		}
 	}
+	public float GetRankChangeOnNextUpdate()
+	{
+		if (m_lastEventPlayedResult < 0)
+			return 0;
+		float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
+		if (m_lastEventPlayedResult == 1) {
+			return 0.15f * promotionMultiplier;
+		} else if (m_lastEventPlayedResult == 2) {
+			return 0.05f * promotionMultiplier;
+		} else if (m_lastEventPlayedResult == 3) {
+			return -0.075f;
+		} else {
+			return -0.15f;
+		} 
+	}
 	public void UpdateRankStatus()
 	{
 		if (m_lastEventPlayedResult < 0)
 			return;
-		float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
+		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
+		float promotionMultiplier = 99;
 		if (m_lastEventPlayedResult == 0) {
 			m_playerRankStatus -= 0.15f;
 		} else if (m_lastEventPlayedResult == 1) {
@@ -123,6 +139,93 @@ public class GlobalGameData : MonoBehaviour {
 	public void SetCarInUseIndex(int index)
 	{
 		carSelectedIndex = index;
+	}
+	public string GetRankName()
+	{
+		string txt = "Unknown";
+		switch (m_playerRank) {
+		case 1:
+			{
+				txt = "Novice 1";	
+				break;
+			}
+		case 2:
+			{
+				txt = "Novice 2";	
+				break;
+			}
+		case 3:
+			{
+				txt = "Novice 3";
+				break;
+			}
+		case 4:
+			{
+				txt = "Semi-professional 1";	
+				break;
+			}
+		case 5:
+			{
+				txt = "Semi-professional 2";	
+				break;
+			}
+		case 6:
+			{
+				txt = "Semi-professional 3";
+				break;
+			}
+		case 7:
+			{
+				txt = "Professional 1";
+				break;
+			}
+		case 8:
+			{
+				txt = "Professional 2";
+				break;
+			}
+		case 9:
+			{
+				txt = "Professional 3";
+				break;
+			}
+		case 10:
+			{
+				txt = "Master 1";
+				break;
+			}
+		case 11:
+			{
+				txt = "Master 2";
+				break;
+			}
+		case 12:
+			{
+				txt = "Master 3";
+				break;
+			}
+		case 13:
+			{
+				txt = "Legend 1";
+				break;
+			}
+		case 14:
+			{
+				txt = "Legend 2";
+				break;
+			}
+		case 15:
+			{
+				txt = "Legend 3";
+				break;
+			}
+		case 16:
+			{
+				txt = "Grand legend";
+				break;
+			}
+		}
+		return txt;
 	}
 
 }

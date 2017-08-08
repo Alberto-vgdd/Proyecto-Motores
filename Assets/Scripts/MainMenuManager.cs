@@ -28,11 +28,15 @@ public class MainMenuManager : MonoBehaviour {
 	public Text eventDetailsSubPanel;
 	public CanvasGroup eventDetailsCG;
 	public Transform eventDetailsWindow;
-	[Header("RankPromotionPanel")]
-	public Slider rankStatusSlider;
-	public Text rankName;
-	public Text promotionInfo;
-	public CanvasGroup rankPromotionCG;
+	[Header("Last Event Played Result Panel")]
+	public List<CanvasGroup> LEPpanel_animatedSubPanels;
+	public Text LEPpanel_eventResult;
+	public Text LEPpanel_playerRank;
+	public Text LEPpanel_rankPoints;
+	public Text LEPpanel_reward;
+	public Slider LEPpanel_slider;
+	public Button LEPpanel_continueButton;
+	public CanvasGroup LEPpanel_globalCG;
 	[Header("Garage Panel")]
 	public Text carNameText;
 	public Text noCarsAvailableText;
@@ -64,9 +68,9 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Start () {
+		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
 		CreateSelectableEvents ();
-		UpdateCurrencyAndRankValues ();
 	}
 	public void SelectEventAsActive(int index)
 	{
@@ -149,8 +153,35 @@ public class MainMenuManager : MonoBehaviour {
 	// ======================================================================
 	IEnumerator RankPromotionPanel()
 	{
-		if (GlobalGameData.currentInstance.GetLastEventPlayedResult() < 0)
+		CoRoutineActive = true;
+
+		if (GlobalGameData.currentInstance.GetLastEventPlayedResult () < 0 || GlobalGameData.currentInstance.eventActive == null) {
+			StartCoroutine ("FadeInMainSlider");
+			CoRoutineActive = false;
+			UpdateCurrencyAndRankValues ();
 			yield break;
+		}
+
+
+		List<Vector3> panelsInitialPositions;
+		panelsInitialPositions = new List<Vector3>();
+		for (int i = 0; i < LEPpanel_animatedSubPanels.Count; i++) {
+			panelsInitialPositions.Add(LEPpanel_animatedSubPanels [i].transform.localPosition);
+		}
+
+		LEPpanel_globalCG.gameObject.SetActive (true);
+		LEPpanel_playerRank.text = GlobalGameData.currentInstance.GetRankName ();
+		if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
+			LEPpanel_eventResult.text = "No medal awarded";
+		} else if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 1) {
+			LEPpanel_eventResult.text = "Gold medal awarded";
+		} else if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 2) {
+			LEPpanel_eventResult.text = "Silver medal awarded";
+		} else {
+			LEPpanel_eventResult.text = "Bronze medal awarded";
+		}
+		LEPpanel_reward.text = GlobalGameData.currentInstance.eventActive.GetRewardString(GlobalGameData.currentInstance.GetLastEventPlayedResult());
+		LEPpanel_rankPoints.text = "Rank points earned: " + GlobalGameData.currentInstance.GetRankChangeOnNextUpdate ().ToString ("F2");
 
 		int rankOld = GlobalGameData.currentInstance.GetPlayerRank();
 		float rankStatusOld = GlobalGameData.currentInstance.GetPlayerRankStatus();
@@ -158,41 +189,102 @@ public class MainMenuManager : MonoBehaviour {
 		int rankNew = GlobalGameData.currentInstance.GetPlayerRank ();
 		float rankStatusNew = GlobalGameData.currentInstance.GetPlayerRankStatus ();
 
-		CoRoutineActive = true;
-		rankPromotionCG.alpha = 1;
-		rankPromotionCG.gameObject.SetActive (true);
+		LEPpanel_slider.value = rankStatusOld;
 
-		float t_current = (rankStatusOld +1f) / 2f;
-		float t_target;
-		rankStatusSlider.value = t_current;
-
-		if (rankOld < rankNew) {
-			t_target = 1;
-		} else if (rankOld > rankNew) {
-			t_target = 0;
-		} else {
-			t_target = (rankStatusNew + 1f) / 2f;
-		}
-		rankName.text = "Rank: " + rankOld.ToString ();
-
-		yield return new WaitForSeconds (1.5f);
-
-		while (t_current != t_target) {
-			t_current = Mathf.MoveTowards (t_current, t_target, Time.deltaTime * 0.15f);
-			rankStatusSlider.value = t_current;
+		while (LEPpanel_globalCG.alpha < 1) {
+			LEPpanel_globalCG.alpha = Mathf.MoveTowards (LEPpanel_globalCG.alpha, 1, Time.deltaTime * 2f);
 			yield return null;
 		}
+		float t = 0;
+		float animSpeed = 4f;
+		while (t < 4) {
+			for (int i = 0; i < 4; i++)
+			{
+				LEPpanel_animatedSubPanels [i].transform.localPosition = panelsInitialPositions[i] + Vector3.left * ((1-Mathf.Clamp01(t-i)) * 40);
+				LEPpanel_animatedSubPanels [i].alpha = Mathf.Clamp01(t-i);
+			}
+			t += Time.deltaTime * animSpeed;
+			yield return null;
+		}
+		yield return new WaitForSeconds (0.5f);
+
+		float sliderTargetValue;
+		if (rankOld > rankNew) {
+			sliderTargetValue = 0;
+		} else if (rankOld < rankNew) {
+			sliderTargetValue = 1;
+		} else {
+			sliderTargetValue = rankStatusNew;
+		}
+		float sliderSpeed = Mathf.Abs (sliderTargetValue - LEPpanel_slider.value) *2f;
+		while (LEPpanel_slider.value != sliderTargetValue) {
+			LEPpanel_slider.value = Mathf.MoveTowards(LEPpanel_slider.value, sliderTargetValue, Time.deltaTime * sliderSpeed);
+			yield return null;
+		}
+
+		LEPpanel_slider.value = rankStatusNew;
+		t = 0;
+		int reverseAnim = 1;
+		if (rankOld > rankNew) {
+			reverseAnim = -1;
+		}
+
 		if (rankOld != rankNew) {
-			rankStatusSlider.value = 0.5f;
-			if (rankOld < rankNew) {
-				promotionInfo.text = "Rank increased!";
+			Vector3 rankInitialPos = LEPpanel_playerRank.transform.localPosition;
+			Vector3 pointsInitialPos = LEPpanel_rankPoints.transform.localPosition;
+			CanvasGroup ranknameCG = LEPpanel_playerRank.GetComponent<CanvasGroup> ();
+			CanvasGroup rankpointsCG = LEPpanel_rankPoints.GetComponent<CanvasGroup> ();
+			while (t < 1) {
+				ranknameCG.alpha = rankpointsCG.alpha = 1 - t;
+				ranknameCG.transform.localPosition = rankInitialPos + Vector3.left * (t) * -40 * reverseAnim;
+				rankpointsCG.transform.localPosition = pointsInitialPos + Vector3.left * (t) * -40 * reverseAnim;
+				t = Mathf.MoveTowards(t, 1, Time.deltaTime*4f);
+				yield return null;
+			}
+			t = 0;
+
+			LEPpanel_playerRank.text = GlobalGameData.currentInstance.GetRankName ();
+			if (rankOld > rankNew) {
+				LEPpanel_rankPoints.text = "Driver rank decreased!";
 			} else {
-				promotionInfo.text = "Rank decreased...";
+				LEPpanel_rankPoints.text = "Driver rank increased!";
+			}
+
+			while (t < 1) {
+				ranknameCG.alpha = rankpointsCG.alpha = t;
+				ranknameCG.transform.localPosition = rankInitialPos + Vector3.left * (1-t) * 40 * reverseAnim;
+				rankpointsCG.transform.localPosition = pointsInitialPos + Vector3.left * (1 - t) * 40 * reverseAnim;
+				t = Mathf.MoveTowards(t, 1, Time.deltaTime*4f);
+				yield return null;
 			}
 		}
-		rankName.text = "Rank: " + rankNew.ToString ();
-		yield return new WaitForSeconds (2.5f);
-		rankPromotionCG.gameObject.SetActive (false);
+
+		yield return new WaitForSeconds (0.5f);
+
+		t = 4;
+		while (t < 6) {
+			for (int i = 4; i < LEPpanel_animatedSubPanels.Count; i++)
+			{
+				LEPpanel_animatedSubPanels [i].transform.localPosition = panelsInitialPositions[i] + Vector3.left * ((1-Mathf.Clamp01(t-i)) * 40);
+				LEPpanel_animatedSubPanels [i].alpha = Mathf.Clamp01(t-i);
+			}
+			t += Time.deltaTime * animSpeed;
+			yield return null;
+		}
+
+		UpdateCurrencyAndRankValues ();
+		CoRoutineActive = false;
+
+	}
+	IEnumerator FadeOutRankDetailsPanel()
+	{
+		CoRoutineActive = true;
+		while (LEPpanel_globalCG.alpha > 0)
+		{
+			LEPpanel_globalCG.alpha = Mathf.MoveTowards (LEPpanel_globalCG.alpha, 0, Time.deltaTime*5f);
+			yield return null;
+		}
+		LEPpanel_globalCG.gameObject.SetActive (false);
 		CoRoutineActive = false;
 	}
 	IEnumerator FadeInEventPanel()
@@ -239,6 +331,22 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = false;
 		eventDetailsCG.gameObject.SetActive (false);
 	}
+	IEnumerator FadeInMainSlider()
+	{
+		mainSlider.gameObject.SetActive (true);
+		while (mainSlider.alpha < 1) {
+			mainSlider.alpha = Mathf.MoveTowards (mainSlider.alpha, 1, Time.deltaTime*5f);
+			yield return null;
+		}
+	}
+	IEnumerator FadeOutMainSlider()
+	{
+		while (mainSlider.alpha > 0) {
+			mainSlider.alpha = Mathf.MoveTowards (mainSlider.alpha, 0, Time.deltaTime*5f);
+			yield return null;
+		}
+		mainSlider.gameObject.SetActive (false);
+	}
 	IEnumerator FadeInGaragePanel()
 	{
 		CoRoutineActive = true;
@@ -246,11 +354,9 @@ public class MainMenuManager : MonoBehaviour {
 		MainMenuCamMovement.currentInstance.SwitchToCarView (true);
 		while (carPanelCG.alpha < 1) {
 			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 1, Time.deltaTime*5f);
-			mainSlider.alpha = 1 - carPanelCG.alpha;
 			yield return null;
 		}
 		CoRoutineActive = false;
-		mainSlider.gameObject.SetActive (false);
 	}
 	IEnumerator FadeOutGaragePanel()
 	{
@@ -289,6 +395,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		print ("EventPanel clicked");
 		StartCoroutine ("FadeInEventPanel");
+		StartCoroutine ("FadeOutMainSlider");
 	}
 	public void OnWeeklyEventClicked()
 	{
@@ -319,6 +426,7 @@ public class MainMenuManager : MonoBehaviour {
 		if (CoRoutineActive)
 			return;
 		StartCoroutine ("FadeInGaragePanel");
+		StartCoroutine ("FadeOutMainSlider");
 		CreateSelectableGarageCars ();
 		print ("Garage clicked");
 	}
@@ -346,6 +454,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		print ("CloseEventPanel clicked");
 		StartCoroutine ("FadeOutEventPanel");
+		StartCoroutine ("FadeInMainSlider");
 	}
 	public void OnCloseGaragePanelClicked()
 	{
@@ -353,6 +462,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		print ("CloseGaragePanel clicked");
 		StartCoroutine ("FadeOutGaragePanel");
+		StartCoroutine ("FadeInMainSlider");
 	}
 	public void OnConfirmEventClicked()
 	{
@@ -365,5 +475,12 @@ public class MainMenuManager : MonoBehaviour {
 		if (CoRoutineActive)
 			return;
 		StartCoroutine ("FadeOutEventDetailsPanel");
+	}
+	public void OnCloseRankUpdateDetails()
+	{
+		if (CoRoutineActive)
+			return;
+		StartCoroutine ("FadeInMainSlider");
+		StartCoroutine ("FadeOutRankDetailsPanel");
 	}
 }
