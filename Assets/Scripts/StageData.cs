@@ -371,12 +371,12 @@ public class StageData : MonoBehaviour {
 
 	public int GetPlayerResult()
 	{
-		if (eventActive.HasTimelimit()) {
+		if (eventActive.IsObjectiveTypeScore()) {
 			if (eventScore > eventActive.GetObjectiveForPosition(1)) {
 				return 1;
 			} else if (eventScore > eventActive.GetObjectiveForPosition(2)) {
 				return 2;
-			} else if (eventScore >eventActive.GetObjectiveForPosition(3)) {
+			} else if (eventScore > eventActive.GetObjectiveForPosition(3)) {
 				return 3;
 			} else
 				return 0;

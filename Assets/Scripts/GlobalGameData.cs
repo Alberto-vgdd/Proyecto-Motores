@@ -41,7 +41,7 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		m_playerCurrency = 0;
 		m_playerCurrencyAlternative = 0;
-		m_playerRank = 1;
+		m_playerRank = 14;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
 		carsOwned = new List<CarData> ();
@@ -93,8 +93,7 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		if (m_lastEventPlayedResult < 0 || eventActive == null)
 			return;
-		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
-		float promotionMultiplier = 99;
+		float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
 		if (m_lastEventPlayedResult == 0) {
 			m_playerRankStatus -= 0.15f;
 		} else if (m_lastEventPlayedResult == 1) {
@@ -124,10 +123,10 @@ public class GlobalGameData : MonoBehaviour {
 			playerGhostPB = ghost;
 		} else {
 			if (ghost.GetScoreRecordedIsTime()) {
-				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
+				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
 					playerGhostPB = ghost;
 			} else {
-				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
+				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
 					playerGhostPB = ghost;
 			}
 		}
