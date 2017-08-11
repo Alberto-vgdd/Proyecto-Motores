@@ -12,8 +12,22 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	//public AudioSource[] playerEffects;
 	// el 0 será el engine, y el 1 será el drift.
 
-	public bool driftEnableSound = false;
 	public float accumulatedEnginePitch = 0.0f;
+
+	private AudioSource engineSound;
+	private AudioSource driftSound;
+	private PlayerMovement pm;
+
+	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
+	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.035f;
+	private const float DRIFT_SOUND_PITCH_BASE = 0.3f;
+	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.035f;
+	private const float DRIFT_SOUND_PITCH_MAX = 2.5f;
+	private const float ENGINE_SOUND_VOLUME_BASE = 0.35f;
+	private const float ENGINE_SOUND_VOLUME_SPEEDSCALING = 0.075f;
+	private const float ENGINE_SOUND_PITCH_BASE = 0.5f;
+	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.2f;
+	private const float ENGINE_SOUND_PITCH_MAX = 4f;
 
 	// Use this for initialization
 	void Start ()
@@ -21,48 +35,48 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 		//playerEffects = this.GetComponents<AudioSource> ();
 		//print ("numero de audioSources obtenidos: " + playerEffects.Length);
 		playerReference = GameObject.FindGameObjectWithTag ("Player");
+		pm = playerReference.GetComponent<PlayerMovement> ();
 
 		GetFXFromResources ();
 
 		//this.GetComponents<AudioSource> () [0].clip = m_Engine;
-		this.GetComponents<AudioSource> () [0].volume = 0.8f;
-		this.GetComponents<AudioSource> () [0].pitch = 0.5f;
-		this.GetComponents<AudioSource> () [0].loop = true;
+		engineSound = this.GetComponents<AudioSource> () [0];
+		engineSound.volume = 0;
+		engineSound.pitch = 0;
+		engineSound.loop = true;
+		engineSound.Play ();
+
 
 		//this.GetComponents<AudioSource> () [1].clip = m_DriftingSound;
-		this.GetComponents<AudioSource> () [1].loop = true;
-		this.GetComponents<AudioSource> () [1].volume = 0.2f;
-
-
-		this.GetComponents<AudioSource> () [0].Play ();
-
+		driftSound = this.GetComponents<AudioSource> () [1];
+		driftSound.volume = 0;
+		driftSound.pitch = 0;
+		driftSound.loop = true;
+		driftSound.Play ();
 
 	}
 
 	private void EngineAudio()
 	{
 		//Primero, aumentaremos el pitch del audio del engine en funcion de la velocidad del jugador.
-		this.GetComponents<AudioSource> () [0].pitch = 0.5f + (playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed()) / 15f;
-		this.GetComponents<AudioSource> () [0].volume = 0.2f + playerReference.GetComponent<PlayerMovement> ().GetCurrentSpeed() * 0.07f;
+		engineSound.pitch = Mathf.Clamp(ENGINE_SOUND_PITCH_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed()) * ENGINE_SOUND_PITCH_SPEEDSCALING, 0, ENGINE_SOUND_PITCH_MAX);
+		engineSound.volume = Mathf.Clamp01(ENGINE_SOUND_VOLUME_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement> ().GetCurrentSpeed()) * ENGINE_SOUND_VOLUME_SPEEDSCALING);
 
-		//Despues, veremos que si está drifteando, sonará el ruido de drifteo.
+		if (pm.IsDrifting ()) {
+			driftSound.volume = Mathf.Clamp01 (pm.GetCurrentSpeed () * DRIFT_SOUND_VOLUME_SPEEDSCALING + DRIFT_SOUND_VOLUME_BASE) ;
+			driftSound.pitch = Mathf.Clamp (Mathf.Abs (pm.GetDriftDegree () * DRIFT_SOUND_PITCH_DEGREESCALING) + DRIFT_SOUND_PITCH_BASE, 0, DRIFT_SOUND_PITCH_MAX);
+		} else {
+			driftSound.volume = driftSound.pitch = 0;
+		}
 
-		if (playerReference.GetComponent<PlayerMovement> ().IsDrifting() && !driftEnableSound) 
-		{
-			driftEnableSound = true;
-			this.GetComponents<AudioSource> () [1].Play ();
-		}
-		if (!playerReference.GetComponent<PlayerMovement> ().IsDrifting() && driftEnableSound) 
-		{
-			driftEnableSound = false;
-			this.GetComponents<AudioSource> () [1].Stop ();
-		}
+
+
 	}
 
 	private void GetFXFromResources()
 	{
 		//m_Engine = Resources.Load ("ScriptsAndFXSounds/car_idle", typeof(AudioClip)) as AudioClip;
-		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngineSegundaVersion", typeof(AudioClip)) as AudioClip;
+		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngine", typeof(AudioClip)) as AudioClip;
 		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/Skid", typeof(AudioClip)) as AudioClip;
 	}
 	
