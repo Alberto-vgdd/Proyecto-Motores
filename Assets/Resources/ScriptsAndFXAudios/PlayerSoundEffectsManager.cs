@@ -25,8 +25,8 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 		GetFXFromResources ();
 
 		//this.GetComponents<AudioSource> () [0].clip = m_Engine;
-		this.GetComponents<AudioSource> () [0].volume = 0.4f;
-		this.GetComponents<AudioSource> () [0].pitch = 0.1f;
+		this.GetComponents<AudioSource> () [0].volume = 0.8f;
+		this.GetComponents<AudioSource> () [0].pitch = 0.5f;
 		this.GetComponents<AudioSource> () [0].loop = true;
 
 		//this.GetComponents<AudioSource> () [1].clip = m_DriftingSound;
@@ -42,8 +42,8 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	private void EngineAudio()
 	{
 		//Primero, aumentaremos el pitch del audio del engine en funcion de la velocidad del jugador.
-		this.GetComponents<AudioSource> () [0].pitch = playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed() / 45f;
-
+		this.GetComponents<AudioSource> () [0].pitch = 0.5f + (playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed()) / 15f;
+		this.GetComponents<AudioSource> () [0].volume = 0.2f + playerReference.GetComponent<PlayerMovement> ().GetCurrentSpeed() * 0.07f;
 
 		//Despues, veremos que si está drifteando, sonará el ruido de drifteo.
 
@@ -61,7 +61,8 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	private void GetFXFromResources()
 	{
-		m_Engine = Resources.Load ("ScriptsAndFXSounds/car_idle", typeof(AudioClip)) as AudioClip;
+		//m_Engine = Resources.Load ("ScriptsAndFXSounds/car_idle", typeof(AudioClip)) as AudioClip;
+		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngineSegundaVersion", typeof(AudioClip)) as AudioClip;
 		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/Skid", typeof(AudioClip)) as AudioClip;
 	}
 	
