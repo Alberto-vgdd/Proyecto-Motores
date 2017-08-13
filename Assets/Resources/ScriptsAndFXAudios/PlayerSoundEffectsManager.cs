@@ -20,9 +20,9 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
 	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.035f;
-	private const float DRIFT_SOUND_PITCH_BASE = 0.7f;
-	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.05f;
-	private const float DRIFT_SOUND_PITCH_MAX = 1f;
+	private const float DRIFT_SOUND_PITCH_BASE = 0.5f;
+	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.025f;
+	private const float DRIFT_SOUND_PITCH_MAX = 2.5f;
 	private const float ENGINE_SOUND_VOLUME_BASE = 0.35f;
 	private const float ENGINE_SOUND_VOLUME_SPEEDSCALING = 0.075f;
 	private const float ENGINE_SOUND_PITCH_BASE = 0.5f;

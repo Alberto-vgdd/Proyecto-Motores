@@ -71,6 +71,13 @@ public class MainMenuManager : MonoBehaviour {
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
 		CreateSelectableEvents ();
+		if (!GlobalGameData.currentInstance.testing_WelcomeMessagesShown) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (2)", "For testing purposes, rank points gain is increased by 1000%"));
+			GlobalGameData.currentInstance.testing_WelcomeMessagesShown = true;
+		}
+
 	}
 	public void SelectEventAsActive(int index)
 	{
@@ -100,7 +107,12 @@ public class MainMenuManager : MonoBehaviour {
 			noCarsAvailableText.gameObject.SetActive (true);
 		} else {
 			noCarsAvailableText.gameObject.SetActive (false);
-			SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+			if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+				SetCarSelected (0);
+			} else {
+				SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+			}
+
 		}
 		GameObject lastReadedElem;
 		while (carsOnDisplay.Count > 0) {
@@ -117,6 +129,8 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	void SetSelectedTagForGaragePanel()
 	{
+		if (GlobalGameData.currentInstance.GetCarInUse () == null)
+			return;
 		for (int i = 0; i < carsOnDisplay.Count; i++) {
 			carsOnDisplay [i].GetComponent<GarageSubPanelBehaviour> ().SetSelected (i == GlobalGameData.currentInstance.GetCarInUseIndex());
 		}
@@ -246,8 +260,10 @@ public class MainMenuManager : MonoBehaviour {
 			LEPpanel_playerRank.text = GlobalGameData.currentInstance.GetRankName ();
 			if (rankOld > rankNew) {
 				LEPpanel_rankPoints.text = "Driver rank decreased!";
+				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Your driver rank has decreased to " + GlobalGameData.currentInstance.GetRankName()));
 			} else {
 				LEPpanel_rankPoints.text = "Driver rank increased!";
+				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Your driver rank has increased to " + GlobalGameData.currentInstance.GetRankName()));
 			}
 
 			while (t < 1) {
@@ -393,7 +409,10 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
-		print ("EventPanel clicked");
+		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
+			return;
+		}
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 	}
@@ -401,25 +420,25 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
-		print ("WeeklyEvents clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnCustomEventClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("CustomEvent clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnCarShopClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("CarShop clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnPartShopClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("PartShop clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnGarageClicked()
 	{
@@ -428,31 +447,29 @@ public class MainMenuManager : MonoBehaviour {
 		StartCoroutine ("FadeInGaragePanel");
 		StartCoroutine ("FadeOutMainSlider");
 		CreateSelectableGarageCars ();
-		print ("Garage clicked");
 	}
 	public void OnSelectCarClicked()
 	{
-		print ("SelectCar clicked");
 		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
 		SetSelectedTagForGaragePanel ();
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: " + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
 	}
 	public void OnProfileClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("Profile clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnSettingsClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("Settings clicked");
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnCloseEventPanelClicked()
 	{
 		if (CoRoutineActive)
 			return;
-		print ("CloseEventPanel clicked");
 		StartCoroutine ("FadeOutEventPanel");
 		StartCoroutine ("FadeInMainSlider");
 	}
@@ -460,7 +477,6 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
-		print ("CloseGaragePanel clicked");
 		StartCoroutine ("FadeOutGaragePanel");
 		StartCoroutine ("FadeInMainSlider");
 	}

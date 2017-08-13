@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour {
 	{
 		//print ("Nombre Cancion a mostrar: " + actualSong.name);
 		this.GetComponent<AudioSource> ().clip = actualSong;
-		this.GetComponent<AudioSource> ().volume = 0.2f;
+		this.GetComponent<AudioSource> ().volume = 0f; // Disabled for testing (0.2)
 		this.GetComponent<AudioSource> ().Play ();
 	}
 
@@ -82,7 +82,7 @@ public class SoundManager : MonoBehaviour {
 
 		//print ("Nombre Cancion a mostrar: " + actualSong.name);
 		this.GetComponent<AudioSource> ().clip = actualSong;
-		this.GetComponent<AudioSource> ().volume = 0.2f;
+		this.GetComponent<AudioSource> ().volume = 0f; // Disabled for testing.
 		this.GetComponent<AudioSource> ().Play ();
 	}
 

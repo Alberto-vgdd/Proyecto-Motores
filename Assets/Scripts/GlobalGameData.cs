@@ -13,6 +13,8 @@ public class GlobalGameData : MonoBehaviour {
 	private int m_playerRank;
 	private float m_playerRankStatus;
 
+	public bool testing_WelcomeMessagesShown = false; 
+
 	public List<EventData> eventsAvailable;
 	public List<CarData> carsOwned;
 	private int carSelectedIndex = 0;
@@ -49,7 +51,7 @@ public class GlobalGameData : MonoBehaviour {
 		carsOwned.Add (new CarData (1));
 		carsOwned.Add (new CarData (2));
 		carsOwned.Add (new CarData (3));
-		carSelectedIndex = 0;
+		carSelectedIndex = -1;
 
 	}
 	void GenerateEventsAvailable()
@@ -93,7 +95,8 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		if (m_lastEventPlayedResult < 0 || eventActive == null)
 			return;
-		float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
+		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
+		float promotionMultiplier = 99f;
 		if (m_lastEventPlayedResult == 0) {
 			m_playerRankStatus -= 0.15f;
 		} else if (m_lastEventPlayedResult == 1) {
@@ -123,10 +126,10 @@ public class GlobalGameData : MonoBehaviour {
 			playerGhostPB = ghost;
 		} else {
 			if (ghost.GetScoreRecordedIsTime()) {
-				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
+				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
 					playerGhostPB = ghost;
 			} else {
-				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
+				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
 					playerGhostPB = ghost;
 			}
 		}
@@ -161,6 +164,9 @@ public class GlobalGameData : MonoBehaviour {
 	}
 	public CarData GetCarInUse()
 	{
+		if (carSelectedIndex < 0) {
+			return null;
+		}
 		return carsOwned [carSelectedIndex];
 	}
 	public int GetCarInUseIndex()
