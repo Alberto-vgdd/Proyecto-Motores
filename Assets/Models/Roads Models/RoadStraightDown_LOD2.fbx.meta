@@ -1,26 +1,26 @@
 fileFormatVersion: 2
-guid: dc31bd06f773f5f4b8f136826deb2a03
-timeCreated: 1500810512
+guid: d407ddfdc0a0856429e040a0f9404479
+timeCreated: 1502627166
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
-    100000: //RootNode
-    100002: AdFenceLeft
-    100004: AdFenceRight
-    100006: CliffLeft
-    100008: CliffRight
-    100010: ConcreteWallLeft
-    100012: ConcreteWallRight
-    100014: MountainLeft
-    100016: MountainRight
-    100018: PianoLeft
-    100020: PianoRight
-    100022: RailGuardLeft
-    100024: RailGuardRight
-    100026: Road
-    100028: Road Collider
-    100030: Road Mask
+    100000: AdFenceLeft
+    100002: AdFenceRight
+    100004: CliffLeft
+    100006: CliffRight
+    100008: ConcreteWallLeft
+    100010: ConcreteWallRight
+    100012: MountainLeft
+    100014: MountainRight
+    100016: PianoLeft
+    100018: PianoRight
+    100020: RailGuardLeft
+    100022: RailGuardRight
+    100024: Road
+    100026: Road Collider
+    100028: Road Mask
+    100030: //RootNode
     100032: StreetLampLeft
     100034: StreetLampRight
     100036: TerrainLeft
@@ -29,22 +29,22 @@ ModelImporter:
     100042: TreeWallRight
     100044: WaterCanalLeft
     100046: WaterCanalRight
-    400000: //RootNode
-    400002: AdFenceLeft
-    400004: AdFenceRight
-    400006: CliffLeft
-    400008: CliffRight
-    400010: ConcreteWallLeft
-    400012: ConcreteWallRight
-    400014: MountainLeft
-    400016: MountainRight
-    400018: PianoLeft
-    400020: PianoRight
-    400022: RailGuardLeft
-    400024: RailGuardRight
-    400026: Road
-    400028: Road Collider
-    400030: Road Mask
+    400000: AdFenceLeft
+    400002: AdFenceRight
+    400004: CliffLeft
+    400006: CliffRight
+    400008: ConcreteWallLeft
+    400010: ConcreteWallRight
+    400012: MountainLeft
+    400014: MountainRight
+    400016: PianoLeft
+    400018: PianoRight
+    400020: RailGuardLeft
+    400022: RailGuardRight
+    400024: Road
+    400026: Road Collider
+    400028: Road Mask
+    400030: //RootNode
     400032: StreetLampLeft
     400034: StreetLampRight
     400036: TerrainLeft
@@ -123,7 +123,7 @@ ModelImporter:
     4300042: AdFenceRight
     4300044: AdFenceLeft
   materials:
-    importMaterials: 1
+    importMaterials: 0
     materialName: 0
     materialSearch: 1
   animations:
@@ -171,7 +171,7 @@ ModelImporter:
     normalSmoothAngle: 60
     normalImportMode: 0
     tangentImportMode: 3
-    normalCalculationMode: 0
+    normalCalculationMode: 4
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
