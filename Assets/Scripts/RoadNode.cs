@@ -14,7 +14,8 @@ public class RoadNode : MonoBehaviour {
 	public float dispLateral;									// Desplazamiento lateral relativo
 	public float dispFrontal;									// Desplazamiento frontal relativo
 	public float dispVertical;									// Desplazamiento vertical relativo
-	public float dispAngular;									// Desplazamiento angular relativo
+	public float dispAngularHorizontal;							// Desplazamiento angular horizontal relativo
+	public float dispAngularVertical;							// Desplazamiento angular vertical relativo
 
 	[Header("References")]
 	public List<GameObject> envLeftWall;						// Posibles decoraciones de muro izquierdo

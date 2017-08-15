@@ -261,9 +261,11 @@ public class MainMenuManager : MonoBehaviour {
 			if (rankOld > rankNew) {
 				LEPpanel_rankPoints.text = "Driver rank decreased!";
 				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Your driver rank has decreased to " + GlobalGameData.currentInstance.GetRankName()));
+				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Event panel has been updated with harder events with better rewards."));
 			} else {
 				LEPpanel_rankPoints.text = "Driver rank increased!";
 				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Your driver rank has increased to " + GlobalGameData.currentInstance.GetRankName()));
+				MainMenuNotificationManager.currentInstance.AddNotification(new MainMenuNotificationData("Driver rank updated", "Event panel has been updated with easier events with less rewards."));
 			}
 
 			while (t < 1) {

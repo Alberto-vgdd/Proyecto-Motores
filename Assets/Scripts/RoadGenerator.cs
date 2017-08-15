@@ -18,12 +18,17 @@ public class RoadGenerator : MonoBehaviour {
 	private int curveChance;								// Probabilidad de curva
 	private int minStraight;								// Minima recta
 	private int maxStraight;								// Maxima recta
+	private float maxHeight;
+	private float rampChance;
 
 	private int nodesSinceLastActiveCP;						// (TEMP) Nodos desde el ultimo punto de control.
 	private int nodesSinceLastCurve;						// (TEMP) Nodos desde la ultima curva.
 	private bool nextNodeIsCurve;							// Decide si el proximo nodo sera curva.
+	private bool nextNodeIsRamp;
 	private int currentAngle = 0;							// Angulo global de la carretera. (No puede ser ni mayor de 180 ni menor de -180)
-	private float currentHeight;							// Altura actual (Sin usar, hacen falta piezas con desnivel)
+	private float currentHeight = 0;						// Altura actual
+	private float currentInclination = 0;
+	private float maxAbsoluteInclinationDegree = 15f;		// Desnivel maximo (absoluto)
 
 	private int nodeDecoWallL = 0;							// Indice de la decoracion del [MURO] [IZQUIERDO]
 	private int nodeDecoWallR = 0;							// Indice de la decoracion del [MURO] [DERECHO]
@@ -54,6 +59,10 @@ public class RoadGenerator : MonoBehaviour {
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);
 		maxStraight = Random.Range (minStraight, 8);
+		//maxHeight = Random.Range (2, 5);
+		//rampChance = Random.Range (0, 10);
+		rampChance = 50f;
+		maxHeight = 2f;
 		dayTime = Random.Range(0f, 24f);
 
 		totalNodesCreated = 0;
@@ -80,6 +89,8 @@ public class RoadGenerator : MonoBehaviour {
 		lastReadedNode = lastCreatedNode.GetComponent<RoadNode> ();
 		nodesSinceLastActiveCP++;
 		stackedNodeWeight += lastReadedNode.nodeWeight;
+		currentHeight += lastReadedNode.dispVertical;
+		currentInclination += lastReadedNode.dispAngularVertical;
 
 		// Node setup
 
@@ -102,12 +113,14 @@ public class RoadGenerator : MonoBehaviour {
 
 		transform.Translate (Vector3.forward * lastReadedNode.dispFrontal * globalRoadScale);
 		transform.Translate (Vector3.right * lastReadedNode.dispLateral * globalRoadScale);
-		transform.Rotate (new Vector3 (0, lastReadedNode.dispAngular, 0));
-		if (lastReadedNode.dispAngular == 0) {
+		transform.Translate (Vector3.up * lastReadedNode.dispVertical * globalRoadScale);
+		transform.Rotate (new Vector3 (0, lastReadedNode.dispAngularHorizontal, 0));
+		transform.Rotate (new Vector3 (lastReadedNode.dispAngularVertical, 0, 0));
+		if (lastReadedNode.dispAngularHorizontal == 0) {
 			nodesSinceLastCurve++;
 		} else {
 			nodesSinceLastCurve = 0;
-			currentAngle += (int) lastReadedNode.dispAngular;
+			currentAngle += (int) lastReadedNode.dispAngularHorizontal;
 		}
 		totalNodesCreated++;
 		spawnedNodes.Add (lastCreatedNode);
@@ -125,20 +138,56 @@ public class RoadGenerator : MonoBehaviour {
 
 	public GameObject GetNextNodeToSpawn()
 	{
-		nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ); 
-		if (totalNodesCreated < 4)
+		
+		if (totalNodesCreated < 4) {
 			nextNodeIsCurve = false;
+			nextNodeIsRamp = false;
+		} else {
+			if (currentInclination != 0) {
+				nextNodeIsRamp = Random.Range (1, 101) < rampChance;
+			} else {
+				nextNodeIsRamp = Random.Range (1, 101)*5f < rampChance;
+			}
+
+			if (nextNodeIsRamp) {
+				nextNodeIsCurve = false;
+			} else {
+				nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ) && currentInclination == 0; 
+			}
+
+		}
+			
 		tempValidNodes.Clear ();
 		for (int i = 0; i < RoadPool.currentInstance.instantiableRoads.Count; i++) {
 			lastReadedNode = RoadPool.currentInstance.instantiableRoads [i].GetComponent<RoadNode>();
-			if ((lastReadedNode.dispAngular + currentAngle) > 90 || (lastReadedNode.dispAngular + currentAngle) < -90) {
+
+			// Descartamos segun si el proximo nodo es rampa o no.
+			if (nextNodeIsRamp) {
+				if (lastReadedNode.dispAngularVertical == 0) {
+					continue;
+				}
+				if (currentInclination + lastReadedNode.dispAngularVertical > maxAbsoluteInclinationDegree || currentInclination + lastReadedNode.dispAngularVertical < -maxAbsoluteInclinationDegree)
+					continue;
+			} else {
+				if (lastReadedNode.dispAngularVertical != 0) {
+					continue;
+				}
+			}
+
+			// Descartamos segun si el proximo nodo es curva o no.
+			if ((lastReadedNode.dispAngularHorizontal + currentAngle) > 90 || (lastReadedNode.dispAngularHorizontal + currentAngle) < -90) {
 				continue;
 			}
-			if (nextNodeIsCurve && lastReadedNode.dispAngular == 0) {
-				continue;
-			} else if (!nextNodeIsCurve && lastReadedNode.dispAngular != 0) {
-				continue;
+			if (nextNodeIsCurve) {
+				if (lastReadedNode.dispAngularHorizontal == 0) {
+					continue;
+				}
+			} else {
+				if (lastReadedNode.dispAngularHorizontal != 0) {
+					continue;
+				}
 			}
+
 			tempValidNodes.Add (RoadPool.currentInstance.instantiableRoads[i]);
 
 		}
