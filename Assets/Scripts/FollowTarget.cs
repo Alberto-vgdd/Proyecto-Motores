@@ -55,6 +55,7 @@ public class FollowTarget : MonoBehaviour {
 		camDegreeTemp = 0;
 		// TODO: Eh...solucion spaghetti, cambiar esto.
 		pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement> ();
+		Camera.main.useOcclusionCulling = false;
 	}
 
 	void FixedUpdate () {

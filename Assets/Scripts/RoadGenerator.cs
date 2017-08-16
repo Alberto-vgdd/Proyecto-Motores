@@ -10,11 +10,8 @@ public class RoadGenerator : MonoBehaviour {
 
 	public static RoadGenerator currentInstance;
 
-	public int levelSeed;
-	public int maxLoadedNodes;								// Maximo de nodos cargados
+	private int levelSeed;
 	private int nodesBehindLoaded = 6;						// Nodos cargados DETRAS del jugador
-	public float globalRoadScale;							// Escala global del mundo
-	public int nodesBetweenActiveCP;						// Nodos entre puntos de control
 	private int curveChance;								// Probabilidad de curva
 	private int minStraight;								// Minima recta
 	private int maxStraight;								// Maxima recta
@@ -29,6 +26,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float currentHeight = 0;						// Altura actual
 	private float currentInclination = 0;
 	private float maxAbsoluteInclinationDegree = 15f;		// Desnivel maximo (absoluto)
+	private int forcedSraight = 5;
 
 	private int nodeDecoWallL = 0;							// Indice de la decoracion del [MURO] [IZQUIERDO]
 	private int nodeDecoWallR = 0;							// Indice de la decoracion del [MURO] [DERECHO]
@@ -46,6 +44,11 @@ public class RoadGenerator : MonoBehaviour {
 	private float dayTime;
 	private float dayTimescale = 0.025f;
 
+	private const int FORCED_STRAIGHT_AFTER_RAMP = 2;
+	private const int MAX_LOADED_NODES = 18;
+	private const int NODES_BETWEEN_CHECKPOINTS = 25;	
+	private const float GLOBAL_ROAD_SCALE = 10;
+
 	private float NodeWeight2Time = 0.4f;
 
 	void Awake () {
@@ -58,11 +61,9 @@ public class RoadGenerator : MonoBehaviour {
 		Random.InitState(levelSeed);
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);
-		maxStraight = Random.Range (minStraight, 8);
-		//maxHeight = Random.Range (2, 5);
-		//rampChance = Random.Range (0, 10);
-		rampChance = 50f;
-		maxHeight = 2f;
+		maxStraight = Random.Range (minStraight, minStraight +5);
+		maxHeight = Random.Range (2, 5);
+		rampChance = Random.Range (0, 10);
 		dayTime = Random.Range(0f, 24f);
 
 		totalNodesCreated = 0;
@@ -72,7 +73,7 @@ public class RoadGenerator : MonoBehaviour {
 		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
 		// ==========
 		tempValidNodes = new List<GameObject>();
-		for (int i = 0; i < maxLoadedNodes - nodesBehindLoaded; i++) {
+		for (int i = 0; i < MAX_LOADED_NODES - nodesBehindLoaded; i++) {
 			SpawnNextNode ();
 		}
 
@@ -91,16 +92,19 @@ public class RoadGenerator : MonoBehaviour {
 		stackedNodeWeight += lastReadedNode.nodeWeight;
 		currentHeight += lastReadedNode.dispVertical;
 		currentInclination += lastReadedNode.dispAngularVertical;
+		if (lastReadedNode.dispAngularVertical != 0 && currentInclination == 0) {
+			forcedSraight = FORCED_STRAIGHT_AFTER_RAMP;
+		}
 
 		// Node setup
 
 		lastReadedNode.SetID (totalNodesCreated);
-		lastCreatedNode.transform.localScale = Vector3.one * globalRoadScale;
+		lastCreatedNode.transform.localScale = Vector3.one * GLOBAL_ROAD_SCALE;
 		SetupDecorationsForNextNode ();
 		lastReadedNode.SetLightState (DayNightCycle.currentInstance.getLightsOn());
-		lastReadedNode.SetLighScale (globalRoadScale);
+		lastReadedNode.SetLighScale (GLOBAL_ROAD_SCALE);
 		//Aqui creamos CheckPoint
-		if (nodesSinceLastActiveCP >= nodesBetweenActiveCP) {
+		if (nodesSinceLastActiveCP >= NODES_BETWEEN_CHECKPOINTS) {
 			lastReadedNode.SetAsActiveCheckpoint ((stackedNodeWeight * NodeWeight2Time));
 			nodesSinceLastActiveCP = 0;
 			stackedNodeWeight = 0;
@@ -111,9 +115,9 @@ public class RoadGenerator : MonoBehaviour {
 
 		// Self setup for next node
 
-		transform.Translate (Vector3.forward * lastReadedNode.dispFrontal * globalRoadScale);
-		transform.Translate (Vector3.right * lastReadedNode.dispLateral * globalRoadScale);
-		transform.Translate (Vector3.up * lastReadedNode.dispVertical * globalRoadScale);
+		transform.Translate (Vector3.forward * lastReadedNode.dispFrontal * GLOBAL_ROAD_SCALE);
+		transform.Translate (Vector3.right * lastReadedNode.dispLateral * GLOBAL_ROAD_SCALE);
+		transform.Translate (Vector3.up * lastReadedNode.dispVertical * GLOBAL_ROAD_SCALE);
 		transform.Rotate (new Vector3 (0, lastReadedNode.dispAngularHorizontal, 0));
 		transform.Rotate (new Vector3 (lastReadedNode.dispAngularVertical, 0, 0));
 		if (lastReadedNode.dispAngularHorizontal == 0) {
@@ -127,7 +131,7 @@ public class RoadGenerator : MonoBehaviour {
 
 		// Remove Exceding nodes
 
-		if (spawnedNodes.Count > maxLoadedNodes) {
+		if (spawnedNodes.Count > MAX_LOADED_NODES) {
 			spawnedNodes [nodesBehindLoaded - 2].GetComponent<RoadNode> ().SetAsWrongWay ();
 			GameObject nodeToRemove = spawnedNodes [0];
 			spawnedNodes.Remove (nodeToRemove);
@@ -139,22 +143,22 @@ public class RoadGenerator : MonoBehaviour {
 	public GameObject GetNextNodeToSpawn()
 	{
 		
-		if (totalNodesCreated < 4) {
+		if (forcedSraight > 0) {
+			forcedSraight--;
 			nextNodeIsCurve = false;
 			nextNodeIsRamp = false;
 		} else {
-			if (currentInclination != 0) {
+			if (currentInclination == 0) {
 				nextNodeIsRamp = Random.Range (1, 101) < rampChance;
-			} else {
-				nextNodeIsRamp = Random.Range (1, 101)*5f < rampChance;
-			}
+				if (nextNodeIsRamp) {
+					nextNodeIsCurve = false;
+				} else {
+					nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ) && currentInclination == 0; 
+				}
 
-			if (nextNodeIsRamp) {
-				nextNodeIsCurve = false;
 			} else {
-				nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ) && currentInclination == 0; 
+				nextNodeIsRamp = true;
 			}
-
 		}
 			
 		tempValidNodes.Clear ();
@@ -166,27 +170,36 @@ public class RoadGenerator : MonoBehaviour {
 				if (lastReadedNode.dispAngularVertical == 0) {
 					continue;
 				}
+				if (transform.position.y < 0.3f*GLOBAL_ROAD_SCALE && lastReadedNode.dispVertical <= 0)
+					continue;
+				if (transform.position.y > maxHeight*GLOBAL_ROAD_SCALE && lastReadedNode.dispVertical >= 0)
+					continue;
+
+				
 				if (currentInclination + lastReadedNode.dispAngularVertical > maxAbsoluteInclinationDegree || currentInclination + lastReadedNode.dispAngularVertical < -maxAbsoluteInclinationDegree)
 					continue;
 			} else {
+				// Descartamos segun si el proximo nodo es curva o no.
 				if (lastReadedNode.dispAngularVertical != 0) {
 					continue;
 				}
+
+				if ((lastReadedNode.dispAngularHorizontal + currentAngle) > 90 || (lastReadedNode.dispAngularHorizontal + currentAngle) < -90) {
+					continue;
+				}
+				if (nextNodeIsCurve) {
+					if (lastReadedNode.dispAngularHorizontal == 0) {
+						continue;
+					}
+				} else {
+					if (lastReadedNode.dispAngularHorizontal != 0) {
+						continue;
+					}
+				}
 			}
 
-			// Descartamos segun si el proximo nodo es curva o no.
-			if ((lastReadedNode.dispAngularHorizontal + currentAngle) > 90 || (lastReadedNode.dispAngularHorizontal + currentAngle) < -90) {
-				continue;
-			}
-			if (nextNodeIsCurve) {
-				if (lastReadedNode.dispAngularHorizontal == 0) {
-					continue;
-				}
-			} else {
-				if (lastReadedNode.dispAngularHorizontal != 0) {
-					continue;
-				}
-			}
+
+
 
 			tempValidNodes.Add (RoadPool.currentInstance.instantiableRoads[i]);
 
