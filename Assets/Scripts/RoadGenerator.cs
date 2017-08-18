@@ -20,8 +20,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	private int nodesSinceLastActiveCP;						// (TEMP) Nodos desde el ultimo punto de control.
 	private int nodesSinceLastCurve;						// (TEMP) Nodos desde la ultima curva.
-	private bool nextNodeIsCurve;							// Decide si el proximo nodo sera curva.
-	private bool nextNodeIsRamp;
+	private int nextNodeType;								// Tipo del proximo nodo: 1 = recta, 2 = curva, 3 = inclinacion.
 	private int currentAngle = 0;							// Angulo global de la carretera. (No puede ser ni mayor de 180 ni menor de -180)
 	private float currentHeight = 0;						// Altura actual
 	private float currentInclination = 0;
@@ -45,7 +44,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float dayTimescale = 0.025f;
 
 	private const int FORCED_STRAIGHT_AFTER_RAMP = 2;
-	private const int MAX_LOADED_NODES = 18;
+	private const int MAX_LOADED_NODES = 25; // 18
 	private const int NODES_BETWEEN_CHECKPOINTS = 25;	
 	private const float GLOBAL_ROAD_SCALE = 10;
 
@@ -62,9 +61,15 @@ public class RoadGenerator : MonoBehaviour {
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);
 		maxStraight = Random.Range (minStraight, minStraight +5);
-		maxHeight = Random.Range (2, 5);
-		rampChance = Random.Range (0, 10);
 		dayTime = Random.Range(0f, 24f);
+		maxHeight = 5;
+
+		if (Random.Range (1, 4) == 1) {
+			rampChance = 0;
+		} else {
+			rampChance = Random.Range (3, 10);
+		}
+
 
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
@@ -145,19 +150,18 @@ public class RoadGenerator : MonoBehaviour {
 		
 		if (forcedSraight > 0) {
 			forcedSraight--;
-			nextNodeIsCurve = false;
-			nextNodeIsRamp = false;
+			nextNodeType = 1;
 		} else {
 			if (currentInclination == 0) {
-				nextNodeIsRamp = Random.Range (1, 101) < rampChance;
-				if (nextNodeIsRamp) {
-					nextNodeIsCurve = false;
+				if (Random.Range (1, 101) < rampChance) {
+					nextNodeType = 3;
+				} else if ((nodesSinceLastCurve >= minStraight) && ((nodesSinceLastCurve > maxStraight) || (Random.Range (1, 101) < curveChance)) && currentInclination == 0) {
+					nextNodeType = 2;
 				} else {
-					nextNodeIsCurve = (nodesSinceLastCurve >= minStraight) && ( (nodesSinceLastCurve > maxStraight) || (Random.Range(1,101) < curveChance) ) && currentInclination == 0; 
+					nextNodeType = 1;
 				}
-
 			} else {
-				nextNodeIsRamp = true;
+				nextNodeType = 3;
 			}
 		}
 			
@@ -165,42 +169,38 @@ public class RoadGenerator : MonoBehaviour {
 		for (int i = 0; i < RoadPool.currentInstance.instantiableRoads.Count; i++) {
 			lastReadedNode = RoadPool.currentInstance.instantiableRoads [i].GetComponent<RoadNode>();
 
-			// Descartamos segun si el proximo nodo es rampa o no.
-			if (nextNodeIsRamp) {
-				if (lastReadedNode.dispAngularVertical == 0) {
-					continue;
-				}
-				if (transform.position.y < 0.3f*GLOBAL_ROAD_SCALE && lastReadedNode.dispVertical <= 0)
-					continue;
-				if (transform.position.y > maxHeight*GLOBAL_ROAD_SCALE && lastReadedNode.dispVertical >= 0)
-					continue;
-
-				
-				if (currentInclination + lastReadedNode.dispAngularVertical > maxAbsoluteInclinationDegree || currentInclination + lastReadedNode.dispAngularVertical < -maxAbsoluteInclinationDegree)
-					continue;
-			} else {
-				// Descartamos segun si el proximo nodo es curva o no.
-				if (lastReadedNode.dispAngularVertical != 0) {
-					continue;
-				}
-
-				if ((lastReadedNode.dispAngularHorizontal + currentAngle) > 90 || (lastReadedNode.dispAngularHorizontal + currentAngle) < -90) {
-					continue;
-				}
-				if (nextNodeIsCurve) {
-					if (lastReadedNode.dispAngularHorizontal == 0) {
+			switch (nextNodeType) {
+			case 1: // Recta
+				{
+					if (lastReadedNode.dispVertical != 0 || lastReadedNode.dispAngularHorizontal != 0)
 						continue;
-					}
-				} else {
-					if (lastReadedNode.dispAngularHorizontal != 0) {
+					break;
+				}
+			case 2: // Curva
+				{
+					if (lastReadedNode.dispVertical != 0 || lastReadedNode.dispAngularHorizontal == 0)
 						continue;
-					}
+					if (Mathf.Abs (lastReadedNode.dispAngularHorizontal + currentAngle) > 90)
+						continue;
+					break;
+				}
+			case 3: // Inclinacion
+				{
+					if (lastReadedNode.dispVertical == 0)
+						continue;
+					if (Mathf.Abs (lastReadedNode.dispAngularVertical + currentInclination) > maxAbsoluteInclinationDegree)
+						continue;
+					if ( (lastReadedNode.dispVertical <= 0 && transform.position.y < 0.3f*GLOBAL_ROAD_SCALE) || (lastReadedNode.dispVertical >= 0 && transform.position.y > maxHeight*GLOBAL_ROAD_SCALE))
+						continue;
+
+					break;
+				}
+			default:
+				{
+					// Ninguna comprobacion.
+					break;
 				}
 			}
-
-
-
-
 			tempValidNodes.Add (RoadPool.currentInstance.instantiableRoads[i]);
 
 		}
