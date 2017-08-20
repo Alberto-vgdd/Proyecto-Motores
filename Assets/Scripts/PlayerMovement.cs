@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Parametros de estado
 
+	private bool lockPreRaceRotation = true;
 	private bool grounded;												// Esta en el suelo?
 	private bool detectingGrounded;										// Detecta colision con el suelo?
 	private bool drifting;												// Esta derrapando?
@@ -93,6 +94,7 @@ public class PlayerMovement : MonoBehaviour {
 		driftDegree = 0;
 		resetTransform.transform.position = transform.position;
 		resetTransform.transform.rotation = transform.rotation;
+		StartCoroutine ("LockRotation");
 	}
 
 	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta.
@@ -210,7 +212,7 @@ public class PlayerMovement : MonoBehaviour {
 			return;
 		}
 
-		driftOutsideForce = 1 + accumulatedSpeed/35f;
+		driftOutsideForce = 1 + accumulatedSpeed/30f;
 		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
 		if (accumulatedSpeed < 3) {
 			EndDrift();
@@ -425,6 +427,13 @@ public class PlayerMovement : MonoBehaviour {
 		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
 		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
 	}
+	IEnumerator LockRotation()
+	{
+		while (lockPreRaceRotation) {
+			transform.localRotation = Quaternion.identity;
+			yield return null;
+		}
+	}
 
 	public bool IsDrifting()
 	{
@@ -457,6 +466,7 @@ public class PlayerMovement : MonoBehaviour {
 	public void AllowPlayerControl(bool arg)
 	{
 		allowPlayerControl = arg;
+		lockPreRaceRotation = false;
 	}
 	public float GetCurrentSpeedPercentage()
 	{

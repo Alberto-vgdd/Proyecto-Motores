@@ -14,7 +14,7 @@ public class NotificationManager : MonoBehaviour {
 
 	private List<GameNotification> notifications;						// Lista de notificaciones en cola
 	private float notificationTimer;									// Tiempo que la notificacion lleva activa (temp)
-	private float notificationLifetime = 2;								// [AJUSTABLE] Tiempo de vida de cada notificacion
+	private float notificationLifetime = 1.55f;							// [AJUSTABLE] Tiempo de vida de cada notificacion
 
 	void Awake ()
 	{

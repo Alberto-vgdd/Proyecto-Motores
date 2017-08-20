@@ -91,6 +91,7 @@ public class StageData : MonoBehaviour {
 		if (GhostRecorder.currentInstance != null)
 			GhostRecorder.currentInstance.StopRecording (true);
 
+		ContextualHudManager.currentInstance.ForceDriftEnd ();
 		pm.AllowPlayerControl (false);
 		SetEndGameScreen (type);
 		eventFinished = true;
@@ -128,7 +129,6 @@ public class StageData : MonoBehaviour {
 		if (eventActive.GetEventCheckpoints() > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
 			if (checkPointsCrossed >= eventActive.GetEventCheckpoints()) {
-				ContextualHudManager.currentInstance.ForceDriftEnd ();
 				EndEvent (3);
 			}
 		}
@@ -176,9 +176,11 @@ public class StageData : MonoBehaviour {
 	}
 	public void SendFinishedDrift(float lenght, float multi = 1)
 	{
-		if (lenght > 100 && eventActive.GetBonusTimeOnDriftMultiplier() > 0) {
-			time_remainingSec += lenght * eventActive.GetBonusTimeOnDriftMultiplier();
-			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift! " + (lenght * eventActive.GetBonusTimeOnDriftMultiplier()).ToString("F1") + " bonus time.", Color.blue, 30));
+		if (eventFinished)
+			return;
+		if (eventActive.GetBonusTimeOnDriftMultiplier() > 0) {
+			time_remainingSec += (lenght * multi) * eventActive.GetBonusTimeOnDriftMultiplier();
+			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift!" + " (x" + multi.ToString("F1") + ") " + (lenght * multi * eventActive.GetBonusTimeOnDriftMultiplier()).ToString("F1") + " bonus time.", Color.blue, 30));
 		}
 		if (eventActive.GetScoreOnDriftMultiplier() > 0) {
 			AddScore (lenght * multi * eventActive.GetScoreOnDriftMultiplier());

@@ -137,7 +137,7 @@ public class EventData {
 
 				m_checkPoints = 0;
 				m_eventBonusTimeOnCPMultiplier = 1f;
-				m_eventBonusTimeOnDriftMultiplier = 0.005f;
+				m_eventBonusTimeOnDriftMultiplier = 0.001f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
@@ -159,7 +159,7 @@ public class EventData {
 
 				m_checkPoints = 0;
 				m_eventBonusTimeOnCPMultiplier = 0f;
-				m_eventBonusTimeOnDriftMultiplier = 0.01f;
+				m_eventBonusTimeOnDriftMultiplier = 0.004f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
@@ -181,7 +181,7 @@ public class EventData {
 
 				m_eventBonusTimeOnCPMultiplier = 1.8f;
 				m_eventBonusTimeOnDriftMultiplier = 0f;
-				m_eventScoreOnDriftMultiplier = 0.5f;
+				m_eventScoreOnDriftMultiplier = 0.35f;
 				m_eventScoreOnDistance = 0f;
 				m_eventScoreOnCheckpoint = 0f;
 				m_eventScoreOnCleanSection = 500f;
