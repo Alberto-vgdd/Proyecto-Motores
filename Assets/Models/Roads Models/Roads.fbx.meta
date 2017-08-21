@@ -1,0 +1,3308 @@
+fileFormatVersion: 2
+guid: 5c65ea6ff44f9df4ea4b861fe1e360b3
+timeCreated: 1503239112
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Left LOD0 Ad Fence Left
+    100002: Left LOD0 Ad Fence Right
+    100004: Left LOD0 Cliff Left
+    100006: Left LOD0 Cliff Right
+    100008: Left LOD0 Concrete Wall Left
+    100010: Left LOD0 Concrete Wall Right
+    100012: Left LOD0 Mountain Left
+    100014: Left LOD0 Mountain Right
+    100016: Left LOD0 Piano Left
+    100018: Left LOD0 Piano Right
+    100020: Left LOD0 Rail Guard Left
+    100022: Left LOD0 Rail Guard Right
+    100024: Left LOD0 Road
+    100026: Left LOD0 Road Collider
+    100028: Left LOD0 Road Mask
+    100030: Left LOD0 Terrain Left
+    100032: Left LOD0 Terrain Right
+    100034: Left LOD0 Tree Wall Left
+    100036: Left LOD0 Tree Wall Right
+    100038: Left LOD0 Water Canal Left
+    100040: Left LOD0 Water Canal Right
+    100042: Left LOD1 Ad Fence Left
+    100044: Left LOD1 Ad Fence Right
+    100046: Left LOD1 Cliff Left
+    100048: Left LOD1 Cliff Right
+    100050: Left LOD1 Concrete Wall Left
+    100052: Left LOD1 Concrete Wall Right
+    100054: Left LOD1 Mountain Left
+    100056: Left LOD1 Mountain Right
+    100058: Left LOD1 Piano Left
+    100060: Left LOD1 Piano Right
+    100062: Left LOD1 Rail Guard Left
+    100064: Left LOD1 Rail Guard Right
+    100066: Left LOD1 Road
+    100068: Left LOD1 Road Collider
+    100070: Left LOD1 Road Mask
+    100072: Left LOD1 Terrain Left
+    100074: Left LOD1 Terrain Right
+    100076: Left LOD1 Tree Wall Left
+    100078: Left LOD1 Tree Wall Right
+    100080: Left LOD1 Water Canal Left
+    100082: Left LOD1 Water Canal Right
+    100084: Left LOD2 Ad Fence Left
+    100086: Left LOD2 Ad Fence Right
+    100088: Left LOD2 Cliff Left
+    100090: Left LOD2 Cliff Right
+    100092: Left LOD2 Concrete Wall Left
+    100094: Left LOD2 Concrete Wall Right
+    100096: Left LOD2 Mountain Left
+    100098: Left LOD2 Mountain Right
+    100100: Left LOD2 Piano Left
+    100102: Left LOD2 Piano Right
+    100104: Left LOD2 Rail Guard Left
+    100106: Left LOD2 Rail Guard Right
+    100108: Left LOD2 Road
+    100110: Left LOD2 Road Collider
+    100112: Left LOD2 Road Mask
+    100114: Left LOD2 Terrain Left
+    100116: Left LOD2 Terrain Right
+    100118: Left LOD2 Tree Wall Left
+    100120: Left LOD2 Tree Wall Right
+    100122: Left LOD2 Water Canal Left
+    100124: Left LOD2 Water Canal Right
+    100126: Right LOD0 Ad Fence Left
+    100128: Right LOD0 Ad Fence Right
+    100130: Right LOD0 Cliff Left
+    100132: Right LOD0 Cliff Right
+    100134: Right LOD0 Concrete Wall Left
+    100136: Right LOD0 Concrete Wall Right
+    100138: Right LOD0 Mountain Left
+    100140: Right LOD0 Mountain Right
+    100142: Right LOD0 Piano Left
+    100144: Right LOD0 Piano Right
+    100146: Right LOD0 Rail Guard Left
+    100148: Right LOD0 Rail Guard Right
+    100150: Right LOD0 Road
+    100152: Right LOD0 Road Collider
+    100154: Right LOD0 Road Mask
+    100156: Right LOD0 Terrain Left
+    100158: Right LOD0 Terrain Right
+    100160: Right LOD0 Tree Wall Left
+    100162: Right LOD0 Tree Wall Right
+    100164: Right LOD0 Water Canal Left
+    100166: Right LOD0 Water Canal Right
+    100168: Right LOD1 Ad Fence Left
+    100170: Right LOD1 Ad Fence Right
+    100172: Right LOD1 Cliff Left
+    100174: Right LOD1 Cliff Right
+    100176: Right LOD1 Concrete Wall Left
+    100178: Right LOD1 Concrete Wall Right
+    100180: Right LOD1 Mountain Left
+    100182: Right LOD1 Mountain Right
+    100184: Right LOD1 Piano Left
+    100186: Right LOD1 Piano Right
+    100188: Right LOD1 Rail Guard Left
+    100190: Right LOD1 Rail Guard Right
+    100192: Right LOD1 Road
+    100194: Right LOD1 Road Collider
+    100196: Right LOD1 Road Mask
+    100198: Right LOD1 Terrain Left
+    100200: Right LOD1 Terrain Right
+    100202: Right LOD1 Tree Wall Left
+    100204: Right LOD1 Tree Wall Right
+    100206: Right LOD1 Water Canal Left
+    100208: Right LOD1 Water Canal Right
+    100210: Right LOD2 Ad Fence Left
+    100212: Right LOD2 Ad Fence Right
+    100214: Right LOD2 Cliff Left
+    100216: Right LOD2 Cliff Right
+    100218: Right LOD2 Concrete Wall Left
+    100220: Right LOD2 Concrete Wall Right
+    100222: Right LOD2 Mountain Left
+    100224: Right LOD2 Mountain Right
+    100226: Right LOD2 Piano Left
+    100228: Right LOD2 Piano Right
+    100230: Right LOD2 Rail Guard Left
+    100232: Right LOD2 Rail Guard Right
+    100234: Right LOD2 Road
+    100236: Right LOD2 Road Collider
+    100238: Right LOD2 Road Mask
+    100240: Right LOD2 Terrain Left
+    100242: Right LOD2 Terrain Right
+    100244: Right LOD2 Tree Wall Left
+    100246: Right LOD2 Tree Wall Right
+    100248: Right LOD2 Water Canal Left
+    100250: Right LOD2 Water Canal Right
+    100252: //RootNode
+    100254: Straight Down LOD0 Ad Fence Left
+    100256: Straight Down LOD0 Ad Fence Right
+    100258: Straight Down LOD0 Cliff Left
+    100260: Straight Down LOD0 Cliff Right
+    100262: Straight Down LOD0 Concrete Wall Left
+    100264: Straight Down LOD0 Concrete Wall Right
+    100266: Straight Down LOD0 Mountain Left
+    100268: Straight Down LOD0 Mountain Right
+    100270: Straight Down LOD0 Piano Left
+    100272: Straight Down LOD0 Piano Right
+    100274: Straight Down LOD0 Rail Guard Left
+    100276: Straight Down LOD0 Rail Guard Right
+    100278: Straight Down LOD0 Road
+    100280: Straight Down LOD0 Road Collider
+    100282: Straight Down LOD0 Road Mask
+    100284: Straight Down LOD0 Terrain Left
+    100286: Straight Down LOD0 Terrain Right
+    100288: Straight Down LOD0 Tree Wall Left
+    100290: Straight Down LOD0 Tree Wall Right
+    100292: Straight Down LOD0 Water Canal Left
+    100294: Straight Down LOD0 Water Canal Right
+    100296: Straight Down LOD1 Ad Fence Left
+    100298: Straight Down LOD1 Ad Fence Right
+    100300: Straight Down LOD1 Cliff Left
+    100302: Straight Down LOD1 Cliff Right
+    100304: Straight Down LOD1 Concrete Wall Left
+    100306: Straight Down LOD1 Concrete Wall Right
+    100308: Straight Down LOD1 Mountain Left
+    100310: Straight Down LOD1 Mountain Right
+    100312: Straight Down LOD1 Piano Left
+    100314: Straight Down LOD1 Piano Right
+    100316: Straight Down LOD1 Rail Guard Left
+    100318: Straight Down LOD1 Rail Guard Right
+    100320: Straight Down LOD1 Road
+    100322: Straight Down LOD1 Road Collider
+    100324: Straight Down LOD1 Road Mask
+    100326: Straight Down LOD1 Terrain Left
+    100328: Straight Down LOD1 Terrain Right
+    100330: Straight Down LOD1 Tree Wall Left
+    100332: Straight Down LOD1 Tree Wall Right
+    100334: Straight Down LOD1 Water Canal Left
+    100336: Straight Down LOD1 Water Canal Right
+    100338: Straight Down LOD2 Ad Fence Left
+    100340: Straight Down LOD2 Ad Fence Right
+    100342: Straight Down LOD2 Cliff Left
+    100344: Straight Down LOD2 Cliff Right
+    100346: Straight Down LOD2 Concrete Wall Left
+    100348: Straight Down LOD2 Concrete Wall Right
+    100350: Straight Down LOD2 Mountain Left
+    100352: Straight Down LOD2 Mountain Right
+    100354: Straight Down LOD2 Piano Left
+    100356: Straight Down LOD2 Piano Right
+    100358: Straight Down LOD2 Rail Guard Left
+    100360: Straight Down LOD2 Rail Guard Right
+    100362: Straight Down LOD2 Road
+    100364: Straight Down LOD2 Road Collider
+    100366: Straight Down LOD2 Road Mask
+    100368: Straight Down LOD2 Terrain Left
+    100370: Straight Down LOD2 Terrain Right
+    100372: Straight Down LOD2 Tree Wall Left
+    100374: Straight Down LOD2 Tree Wall Right
+    100376: Straight Down LOD2 Water Canal Left
+    100378: Straight Down LOD2 Water Canal Right
+    100380: Straight LOD0 Ad Fence Left
+    100382: Straight LOD0 Ad Fence Right
+    100384: Straight LOD0 Cliff Left
+    100386: Straight LOD0 Cliff Right
+    100388: Straight LOD0 Concrete Wall Left
+    100390: Straight LOD0 Concrete Wall Right
+    100392: Straight LOD0 Mountain Left
+    100394: Straight LOD0 Mountain Right
+    100396: Straight LOD0 Piano Left
+    100398: Straight LOD0 Piano Right
+    100400: Straight LOD0 Rail Guard Left
+    100402: Straight LOD0 Rail Guard Right
+    100404: Straight LOD0 Road
+    100406: Straight LOD0 Road Collider
+    100408: Straight LOD0 Road Mask
+    100410: Straight LOD0 Terrain Left
+    100412: Straight LOD0 Terrain Right
+    100414: Straight LOD0 Tree Wall Left
+    100416: Straight LOD0 Tree Wall Right
+    100418: Straight LOD0 Water Canal Left
+    100420: Straight LOD0 Water Canal Right
+    100422: Straight LOD1 Ad Fence Left
+    100424: Straight LOD1 Ad Fence Right
+    100426: Straight LOD1 Cliff Left
+    100428: Straight LOD1 Cliff Right
+    100430: Straight LOD1 Concrete Wall Left
+    100432: Straight LOD1 Concrete Wall Right
+    100434: Straight LOD1 Mountain Left
+    100436: Straight LOD1 Mountain Right
+    100438: Straight LOD1 Piano Left
+    100440: Straight LOD1 Piano Right
+    100442: Straight LOD1 Rail Guard Left
+    100444: Straight LOD1 Rail Guard Right
+    100446: Straight LOD1 Road
+    100448: Straight LOD1 Road Collider
+    100450: Straight LOD1 Road Mask
+    100452: Straight LOD1 Terrain Left
+    100454: Straight LOD1 Terrain Right
+    100456: Straight LOD1 Tree Wall Left
+    100458: Straight LOD1 Tree Wall Right
+    100460: Straight LOD1 Water Canal Left
+    100462: Straight LOD1 Water Canal Right
+    100464: Straight LOD2 Ad Fence Left
+    100466: Straight LOD2 Ad Fence Right
+    100468: Straight LOD2 Cliff Left
+    100470: Straight LOD2 Cliff Right
+    100472: Straight LOD2 Concrete Wall Left
+    100474: Straight LOD2 Concrete Wall Right
+    100476: Straight LOD2 Mountain Left
+    100478: Straight LOD2 Mountain Right
+    100480: Straight LOD2 Piano Left
+    100482: Straight LOD2 Piano Right
+    100484: Straight LOD2 Rail Guard Left
+    100486: Straight LOD2 Rail Guard Right
+    100488: Straight LOD2 Road
+    100490: Straight LOD2 Road Collider
+    100492: Straight LOD2 Road Mask
+    100494: Straight LOD2 Terrain Left
+    100496: Straight LOD2 Terrain Right
+    100498: Straight LOD2 Tree Wall Left
+    100500: Straight LOD2 Tree Wall Right
+    100502: Straight LOD2 Water Canal Left
+    100504: Straight LOD2 Water Canal Right
+    100506: Straight Up LOD0 Ad Fence Left
+    100508: Straight Up LOD0 Ad Fence Right
+    100510: Straight Up LOD0 Cliff Left
+    100512: Straight Up LOD0 Cliff Right
+    100514: Straight Up LOD0 Concrete Wall Left
+    100516: Straight Up LOD0 Concrete Wall Right
+    100518: Straight Up LOD0 Mountain Left
+    100520: Straight Up LOD0 Mountain Right
+    100522: Straight Up LOD0 Piano Left
+    100524: Straight Up LOD0 Piano Right
+    100526: Straight Up LOD0 Rail Guard Left
+    100528: Straight Up LOD0 Rail Guard Right
+    100530: Straight Up LOD0 Road
+    100532: Straight Up LOD0 Road Collider
+    100534: Straight Up LOD0 Road Mask
+    100536: Straight Up LOD0 Terrain Left
+    100538: Straight Up LOD0 Terrain Right
+    100540: Straight Up LOD0 Tree Wall Left
+    100542: Straight Up LOD0 Tree Wall Right
+    100544: Straight Up LOD0 Water Canal Left
+    100546: Straight Up LOD0 Water Canal Right
+    100548: Straight Up LOD1 Ad Fence Left
+    100550: Straight Up LOD1 Ad Fence Right
+    100552: Straight Up LOD1 Cliff Left
+    100554: Straight Up LOD1 Cliff Right
+    100556: Straight Up LOD1 Concrete Wall Left
+    100558: Straight Up LOD1 Concrete Wall Right
+    100560: Straight Up LOD1 Mountain Left
+    100562: Straight Up LOD1 Mountain Right
+    100564: Straight Up LOD1 Piano Left
+    100566: Straight Up LOD1 Piano Right
+    100568: Straight Up LOD1 Rail Guard Left
+    100570: Straight Up LOD1 Rail Guard Right
+    100572: Straight Up LOD1 Road
+    100574: Straight Up LOD1 Road Collider
+    100576: Straight Up LOD1 Road Mask
+    100578: Straight Up LOD1 Terrain Left
+    100580: Straight Up LOD1 Terrain Right
+    100582: Straight Up LOD1 Tree Wall Left
+    100584: Straight Up LOD1 Tree Wall Right
+    100586: Straight Up LOD1 Water Canal Left
+    100588: Straight Up LOD1 Water Canal Right
+    100590: Straight Up LOD2 Ad Fence Left
+    100592: Straight Up LOD2 Ad Fence Right
+    100594: Straight Up LOD2 Cliff Left
+    100596: Straight Up LOD2 Cliff Right
+    100598: Straight Up LOD2 Concrete Wall Left
+    100600: Straight Up LOD2 Concrete Wall Right
+    100602: Straight Up LOD2 Mountain Left
+    100604: Straight Up LOD2 Mountain Right
+    100606: Straight Up LOD2 Piano Left
+    100608: Straight Up LOD2 Piano Right
+    100610: Straight Up LOD2 Rail Guard Left
+    100612: Straight Up LOD2 Rail Guard Right
+    100614: Straight Up LOD2 Road
+    100616: Straight Up LOD2 Road Collider
+    100618: Straight Up LOD2 Road Mask
+    100620: Straight Up LOD2 Terrain Left
+    100622: Straight Up LOD2 Terrain Right
+    100624: Straight Up LOD2 Tree Wall Left
+    100626: Straight Up LOD2 Tree Wall Right
+    100628: Straight Up LOD2 Water Canal Left
+    100630: Straight Up LOD2 Water Canal Right
+    100632: Street Lamp Left
+    100634: Street Lamp Right
+    100636: Decoration LOD0 Street Lamp Left
+    100638: Decoration LOD0 Street Lamp Right
+    100640: Decoration LOD1 Street Lamp Left
+    100642: Decoration LOD1 Street Lamp Right
+    100644: Decoration LOD2 Street Lamp Left
+    100646: Decoration LOD2 Street Lamp Right
+    100648: Decoration_LOD0_Street_Lamp_Left
+    100650: Decoration_LOD0_Street_Lamp_Right
+    100652: Decoration_LOD1_Street_Lamp_Left
+    100654: Decoration_LOD1_Street_Lamp_Right
+    100656: Decoration_LOD2_Street_Lamp_Left
+    100658: Decoration_LOD2_Street_Lamp_Right
+    100660: Left_LOD0_Ad_Fence_Left
+    100662: Left_LOD0_Ad_Fence_Right
+    100664: Left_LOD0_Cliff_Left
+    100666: Left_LOD0_Cliff_Right
+    100668: Left_LOD0_Concrete_Wall_Left
+    100670: Left_LOD0_Concrete_Wall_Right
+    100672: Left_LOD0_Mountain_Left
+    100674: Left_LOD0_Mountain_Right
+    100676: Left_LOD0_Piano_Left
+    100678: Left_LOD0_Piano_Right
+    100680: Left_LOD0_Rail_Guard_Left
+    100682: Left_LOD0_Rail_Guard_Right
+    100684: Left_LOD0_Road
+    100686: Left_LOD0_Road_Collider
+    100688: Left_LOD0_Road_Mask
+    100690: Left_LOD0_Terrain_Left
+    100692: Left_LOD0_Terrain_Right
+    100694: Left_LOD0_Tree_Wall_Left
+    100696: Left_LOD0_Tree_Wall_Right
+    100698: Left_LOD0_Water_Canal_Left
+    100700: Left_LOD0_Water_Canal_Right
+    100702: Left_LOD1_Ad_Fence_Left
+    100704: Left_LOD1_Ad_Fence_Right
+    100706: Left_LOD1_Cliff_Left
+    100708: Left_LOD1_Cliff_Right
+    100710: Left_LOD1_Concrete_Wall_Left
+    100712: Left_LOD1_Concrete_Wall_Right
+    100714: Left_LOD1_Mountain_Left
+    100716: Left_LOD1_Mountain_Right
+    100718: Left_LOD1_Piano_Left
+    100720: Left_LOD1_Piano_Right
+    100722: Left_LOD1_Rail_Guard_Left
+    100724: Left_LOD1_Rail_Guard_Right
+    100726: Left_LOD1_Road
+    100728: Left_LOD1_Road_Collider
+    100730: Left_LOD1_Road_Mask
+    100732: Left_LOD1_Terrain_Left
+    100734: Left_LOD1_Terrain_Right
+    100736: Left_LOD1_Tree_Wall_Left
+    100738: Left_LOD1_Tree_Wall_Right
+    100740: Left_LOD1_Water_Canal_Left
+    100742: Left_LOD1_Water_Canal_Right
+    100744: Left_LOD2_Ad_Fence_Left
+    100746: Left_LOD2_Ad_Fence_Right
+    100748: Left_LOD2_Cliff_Left
+    100750: Left_LOD2_Cliff_Right
+    100752: Left_LOD2_Concrete_Wall_Left
+    100754: Left_LOD2_Concrete_Wall_Right
+    100756: Left_LOD2_Mountain_Left
+    100758: Left_LOD2_Mountain_Right
+    100760: Left_LOD2_Piano_Left
+    100762: Left_LOD2_Piano_Right
+    100764: Left_LOD2_Rail_Guard_Left
+    100766: Left_LOD2_Rail_Guard_Right
+    100768: Left_LOD2_Road
+    100770: Left_LOD2_Road_Collider
+    100772: Left_LOD2_Road_Mask
+    100774: Left_LOD2_Terrain_Left
+    100776: Left_LOD2_Terrain_Right
+    100778: Left_LOD2_Tree_Wall_Left
+    100780: Left_LOD2_Tree_Wall_Right
+    100782: Left_LOD2_Water_Canal_Left
+    100784: Left_LOD2_Water_Canal_Right
+    100786: Right_LOD0_Ad_Fence_Left
+    100788: Right_LOD0_Ad_Fence_Right
+    100790: Right_LOD0_Cliff_Left
+    100792: Right_LOD0_Cliff_Right
+    100794: Right_LOD0_Concrete_Wall_Left
+    100796: Right_LOD0_Concrete_Wall_Right
+    100798: Right_LOD0_Mountain_Left
+    100800: Right_LOD0_Mountain_Right
+    100802: Right_LOD0_Piano_Left
+    100804: Right_LOD0_Piano_Right
+    100806: Right_LOD0_Rail_Guard_Left
+    100808: Right_LOD0_Rail_Guard_Right
+    100810: Right_LOD0_Road
+    100812: Right_LOD0_Road_Collider
+    100814: Right_LOD0_Road_Mask
+    100816: Right_LOD0_Terrain_Left
+    100818: Right_LOD0_Terrain_Right
+    100820: Right_LOD0_Tree_Wall_Left
+    100822: Right_LOD0_Tree_Wall_Right
+    100824: Right_LOD0_Water_Canal_Left
+    100826: Right_LOD0_Water_Canal_Right
+    100828: Right_LOD1_Ad_Fence_Left
+    100830: Right_LOD1_Ad_Fence_Right
+    100832: Right_LOD1_Cliff_Left
+    100834: Right_LOD1_Cliff_Right
+    100836: Right_LOD1_Concrete_Wall_Left
+    100838: Right_LOD1_Concrete_Wall_Right
+    100840: Right_LOD1_Mountain_Left
+    100842: Right_LOD1_Mountain_Right
+    100844: Right_LOD1_Piano_Left
+    100846: Right_LOD1_Piano_Right
+    100848: Right_LOD1_Rail_Guard_Left
+    100850: Right_LOD1_Rail_Guard_Right
+    100852: Right_LOD1_Road
+    100854: Right_LOD1_Road_Collider
+    100856: Right_LOD1_Road_Mask
+    100858: Right_LOD1_Terrain_Left
+    100860: Right_LOD1_Terrain_Right
+    100862: Right_LOD1_Tree_Wall_Left
+    100864: Right_LOD1_Tree_Wall_Right
+    100866: Right_LOD1_Water_Canal_Left
+    100868: Right_LOD1_Water_Canal_Right
+    100870: Right_LOD2_Ad_Fence_Left
+    100872: Right_LOD2_Ad_Fence_Right
+    100874: Right_LOD2_Cliff_Left
+    100876: Right_LOD2_Cliff_Right
+    100878: Right_LOD2_Concrete_Wall_Left
+    100880: Right_LOD2_Concrete_Wall_Right
+    100882: Right_LOD2_Mountain_Left
+    100884: Right_LOD2_Mountain_Right
+    100886: Right_LOD2_Piano_Left
+    100888: Right_LOD2_Piano_Right
+    100890: Right_LOD2_Rail_Guard_Left
+    100892: Right_LOD2_Rail_Guard_Right
+    100894: Right_LOD2_Road
+    100896: Right_LOD2_Road_Collider
+    100898: Right_LOD2_Road_Mask
+    100900: Right_LOD2_Terrain_Left
+    100902: Right_LOD2_Terrain_Right
+    100904: Right_LOD2_Tree_Wall_Left
+    100906: Right_LOD2_Tree_Wall_Right
+    100908: Right_LOD2_Water_Canal_Left
+    100910: Right_LOD2_Water_Canal_Right
+    100912: Straight_Down_LOD0_Ad_Fence_Left
+    100914: Straight_Down_LOD0_Ad_Fence_Right
+    100916: Straight_Down_LOD0_Cliff_Left
+    100918: Straight_Down_LOD0_Cliff_Right
+    100920: Straight_Down_LOD0_Concrete_Wall_Left
+    100922: Straight_Down_LOD0_Concrete_Wall_Right
+    100924: Straight_Down_LOD0_Mountain_Left
+    100926: Straight_Down_LOD0_Mountain_Right
+    100928: Straight_Down_LOD0_Piano_Left
+    100930: Straight_Down_LOD0_Piano_Right
+    100932: Straight_Down_LOD0_Rail_Guard_Left
+    100934: Straight_Down_LOD0_Rail_Guard_Right
+    100936: Straight_Down_LOD0_Road
+    100938: Straight_Down_LOD0_Road_Collider
+    100940: Straight_Down_LOD0_Road_Mask
+    100942: Straight_Down_LOD0_Terrain_Left
+    100944: Straight_Down_LOD0_Terrain_Right
+    100946: Straight_Down_LOD0_Tree_Wall_Left
+    100948: Straight_Down_LOD0_Tree_Wall_Right
+    100950: Straight_Down_LOD0_Water_Canal_Left
+    100952: Straight_Down_LOD0_Water_Canal_Right
+    100954: Straight_Down_LOD1_Ad_Fence_Left
+    100956: Straight_Down_LOD1_Ad_Fence_Right
+    100958: Straight_Down_LOD1_Cliff_Left
+    100960: Straight_Down_LOD1_Cliff_Right
+    100962: Straight_Down_LOD1_Concrete_Wall_Left
+    100964: Straight_Down_LOD1_Concrete_Wall_Right
+    100966: Straight_Down_LOD1_Mountain_Left
+    100968: Straight_Down_LOD1_Mountain_Right
+    100970: Straight_Down_LOD1_Piano_Left
+    100972: Straight_Down_LOD1_Piano_Right
+    100974: Straight_Down_LOD1_Rail_Guard_Left
+    100976: Straight_Down_LOD1_Rail_Guard_Right
+    100978: Straight_Down_LOD1_Road
+    100980: Straight_Down_LOD1_Road_Collider
+    100982: Straight_Down_LOD1_Road_Mask
+    100984: Straight_Down_LOD1_Terrain_Left
+    100986: Straight_Down_LOD1_Terrain_Right
+    100988: Straight_Down_LOD1_Tree_Wall_Left
+    100990: Straight_Down_LOD1_Tree_Wall_Right
+    100992: Straight_Down_LOD1_Water_Canal_Left
+    100994: Straight_Down_LOD1_Water_Canal_Right
+    100996: Straight_Down_LOD2_Ad_Fence_Left
+    100998: Straight_Down_LOD2_Ad_Fence_Right
+    101000: Straight_Down_LOD2_Cliff_Left
+    101002: Straight_Down_LOD2_Cliff_Right
+    101004: Straight_Down_LOD2_Concrete_Wall_Left
+    101006: Straight_Down_LOD2_Concrete_Wall_Right
+    101008: Straight_Down_LOD2_Mountain_Left
+    101010: Straight_Down_LOD2_Mountain_Right
+    101012: Straight_Down_LOD2_Piano_Left
+    101014: Straight_Down_LOD2_Piano_Right
+    101016: Straight_Down_LOD2_Rail_Guard_Left
+    101018: Straight_Down_LOD2_Rail_Guard_Right
+    101020: Straight_Down_LOD2_Road
+    101022: Straight_Down_LOD2_Road_Collider
+    101024: Straight_Down_LOD2_Road_Mask
+    101026: Straight_Down_LOD2_Terrain_Left
+    101028: Straight_Down_LOD2_Terrain_Right
+    101030: Straight_Down_LOD2_Tree_Wall_Left
+    101032: Straight_Down_LOD2_Tree_Wall_Right
+    101034: Straight_Down_LOD2_Water_Canal_Left
+    101036: Straight_Down_LOD2_Water_Canal_Right
+    101038: Straight_LOD0_Ad_Fence_Left
+    101040: Straight_LOD0_Ad_Fence_Right
+    101042: Straight_LOD0_Cliff_Left
+    101044: Straight_LOD0_Cliff_Right
+    101046: Straight_LOD0_Concrete_Wall_Left
+    101048: Straight_LOD0_Concrete_Wall_Right
+    101050: Straight_LOD0_Mountain_Left
+    101052: Straight_LOD0_Mountain_Right
+    101054: Straight_LOD0_Piano_Left
+    101056: Straight_LOD0_Piano_Right
+    101058: Straight_LOD0_Rail_Guard_Left
+    101060: Straight_LOD0_Rail_Guard_Right
+    101062: Straight_LOD0_Road
+    101064: Straight_LOD0_Road_Collider
+    101066: Straight_LOD0_Road_Mask
+    101068: Straight_LOD0_Terrain_Left
+    101070: Straight_LOD0_Terrain_Right
+    101072: Straight_LOD0_Tree_Wall_Left
+    101074: Straight_LOD0_Tree_Wall_Right
+    101076: Straight_LOD0_Water_Canal_Left
+    101078: Straight_LOD0_Water_Canal_Right
+    101080: Straight_LOD1_Ad_Fence_Left
+    101082: Straight_LOD1_Ad_Fence_Right
+    101084: Straight_LOD1_Cliff_Left
+    101086: Straight_LOD1_Cliff_Right
+    101088: Straight_LOD1_Concrete_Wall_Left
+    101090: Straight_LOD1_Concrete_Wall_Right
+    101092: Straight_LOD1_Mountain_Left
+    101094: Straight_LOD1_Mountain_Right
+    101096: Straight_LOD1_Piano_Left
+    101098: Straight_LOD1_Piano_Right
+    101100: Straight_LOD1_Rail_Guard_Left
+    101102: Straight_LOD1_Rail_Guard_Right
+    101104: Straight_LOD1_Road
+    101106: Straight_LOD1_Road_Collider
+    101108: Straight_LOD1_Road_Mask
+    101110: Straight_LOD1_Terrain_Left
+    101112: Straight_LOD1_Terrain_Right
+    101114: Straight_LOD1_Tree_Wall_Left
+    101116: Straight_LOD1_Tree_Wall_Right
+    101118: Straight_LOD1_Water_Canal_Left
+    101120: Straight_LOD1_Water_Canal_Right
+    101122: Straight_LOD2_Ad_Fence_Left
+    101124: Straight_LOD2_Ad_Fence_Right
+    101126: Straight_LOD2_Cliff_Left
+    101128: Straight_LOD2_Cliff_Right
+    101130: Straight_LOD2_Concrete_Wall_Left
+    101132: Straight_LOD2_Concrete_Wall_Right
+    101134: Straight_LOD2_Mountain_Left
+    101136: Straight_LOD2_Mountain_Right
+    101138: Straight_LOD2_Piano_Left
+    101140: Straight_LOD2_Piano_Right
+    101142: Straight_LOD2_Rail_Guard_Left
+    101144: Straight_LOD2_Rail_Guard_Right
+    101146: Straight_LOD2_Road
+    101148: Straight_LOD2_Road_Collider
+    101150: Straight_LOD2_Road_Mask
+    101152: Straight_LOD2_Terrain_Left
+    101154: Straight_LOD2_Terrain_Right
+    101156: Straight_LOD2_Tree_Wall_Left
+    101158: Straight_LOD2_Tree_Wall_Right
+    101160: Straight_LOD2_Water_Canal_Left
+    101162: Straight_LOD2_Water_Canal_Right
+    101164: Straight_Up_LOD0_Ad_Fence_Left
+    101166: Straight_Up_LOD0_Ad_Fence_Right
+    101168: Straight_Up_LOD0_Cliff_Left
+    101170: Straight_Up_LOD0_Cliff_Right
+    101172: Straight_Up_LOD0_Concrete_Wall_Left
+    101174: Straight_Up_LOD0_Concrete_Wall_Right
+    101176: Straight_Up_LOD0_Mountain_Left
+    101178: Straight_Up_LOD0_Mountain_Right
+    101180: Straight_Up_LOD0_Piano_Left
+    101182: Straight_Up_LOD0_Piano_Right
+    101184: Straight_Up_LOD0_Rail_Guard_Left
+    101186: Straight_Up_LOD0_Rail_Guard_Right
+    101188: Straight_Up_LOD0_Road
+    101190: Straight_Up_LOD0_Road_Collider
+    101192: Straight_Up_LOD0_Road_Mask
+    101194: Straight_Up_LOD0_Terrain_Left
+    101196: Straight_Up_LOD0_Terrain_Right
+    101198: Straight_Up_LOD0_Tree_Wall_Left
+    101200: Straight_Up_LOD0_Tree_Wall_Right
+    101202: Straight_Up_LOD0_Water_Canal_Left
+    101204: Straight_Up_LOD0_Water_Canal_Right
+    101206: Straight_Up_LOD1_Ad_Fence_Left
+    101208: Straight_Up_LOD1_Ad_Fence_Right
+    101210: Straight_Up_LOD1_Cliff_Left
+    101212: Straight_Up_LOD1_Cliff_Right
+    101214: Straight_Up_LOD1_Concrete_Wall_Left
+    101216: Straight_Up_LOD1_Concrete_Wall_Right
+    101218: Straight_Up_LOD1_Mountain_Left
+    101220: Straight_Up_LOD1_Mountain_Right
+    101222: Straight_Up_LOD1_Piano_Left
+    101224: Straight_Up_LOD1_Piano_Right
+    101226: Straight_Up_LOD1_Rail_Guard_Left
+    101228: Straight_Up_LOD1_Rail_Guard_Right
+    101230: Straight_Up_LOD1_Road
+    101232: Straight_Up_LOD1_Road_Collider
+    101234: Straight_Up_LOD1_Road_Mask
+    101236: Straight_Up_LOD1_Terrain_Left
+    101238: Straight_Up_LOD1_Terrain_Right
+    101240: Straight_Up_LOD1_Tree_Wall_Left
+    101242: Straight_Up_LOD1_Tree_Wall_Right
+    101244: Straight_Up_LOD1_Water_Canal_Left
+    101246: Straight_Up_LOD1_Water_Canal_Right
+    101248: Straight_Up_LOD2_Ad_Fence_Left
+    101250: Straight_Up_LOD2_Ad_Fence_Right
+    101252: Straight_Up_LOD2_Cliff_Left
+    101254: Straight_Up_LOD2_Cliff_Right
+    101256: Straight_Up_LOD2_Concrete_Wall_Left
+    101258: Straight_Up_LOD2_Concrete_Wall_Right
+    101260: Straight_Up_LOD2_Mountain_Left
+    101262: Straight_Up_LOD2_Mountain_Right
+    101264: Straight_Up_LOD2_Piano_Left
+    101266: Straight_Up_LOD2_Piano_Right
+    101268: Straight_Up_LOD2_Rail_Guard_Left
+    101270: Straight_Up_LOD2_Rail_Guard_Right
+    101272: Straight_Up_LOD2_Road
+    101274: Straight_Up_LOD2_Road_Collider
+    101276: Straight_Up_LOD2_Road_Mask
+    101278: Straight_Up_LOD2_Terrain_Left
+    101280: Straight_Up_LOD2_Terrain_Right
+    101282: Straight_Up_LOD2_Tree_Wall_Left
+    101284: Straight_Up_LOD2_Tree_Wall_Right
+    101286: Straight_Up_LOD2_Water_Canal_Left
+    101288: Straight_Up_LOD2_Water_Canal_Right
+    400000: Left LOD0 Ad Fence Left
+    400002: Left LOD0 Ad Fence Right
+    400004: Left LOD0 Cliff Left
+    400006: Left LOD0 Cliff Right
+    400008: Left LOD0 Concrete Wall Left
+    400010: Left LOD0 Concrete Wall Right
+    400012: Left LOD0 Mountain Left
+    400014: Left LOD0 Mountain Right
+    400016: Left LOD0 Piano Left
+    400018: Left LOD0 Piano Right
+    400020: Left LOD0 Rail Guard Left
+    400022: Left LOD0 Rail Guard Right
+    400024: Left LOD0 Road
+    400026: Left LOD0 Road Collider
+    400028: Left LOD0 Road Mask
+    400030: Left LOD0 Terrain Left
+    400032: Left LOD0 Terrain Right
+    400034: Left LOD0 Tree Wall Left
+    400036: Left LOD0 Tree Wall Right
+    400038: Left LOD0 Water Canal Left
+    400040: Left LOD0 Water Canal Right
+    400042: Left LOD1 Ad Fence Left
+    400044: Left LOD1 Ad Fence Right
+    400046: Left LOD1 Cliff Left
+    400048: Left LOD1 Cliff Right
+    400050: Left LOD1 Concrete Wall Left
+    400052: Left LOD1 Concrete Wall Right
+    400054: Left LOD1 Mountain Left
+    400056: Left LOD1 Mountain Right
+    400058: Left LOD1 Piano Left
+    400060: Left LOD1 Piano Right
+    400062: Left LOD1 Rail Guard Left
+    400064: Left LOD1 Rail Guard Right
+    400066: Left LOD1 Road
+    400068: Left LOD1 Road Collider
+    400070: Left LOD1 Road Mask
+    400072: Left LOD1 Terrain Left
+    400074: Left LOD1 Terrain Right
+    400076: Left LOD1 Tree Wall Left
+    400078: Left LOD1 Tree Wall Right
+    400080: Left LOD1 Water Canal Left
+    400082: Left LOD1 Water Canal Right
+    400084: Left LOD2 Ad Fence Left
+    400086: Left LOD2 Ad Fence Right
+    400088: Left LOD2 Cliff Left
+    400090: Left LOD2 Cliff Right
+    400092: Left LOD2 Concrete Wall Left
+    400094: Left LOD2 Concrete Wall Right
+    400096: Left LOD2 Mountain Left
+    400098: Left LOD2 Mountain Right
+    400100: Left LOD2 Piano Left
+    400102: Left LOD2 Piano Right
+    400104: Left LOD2 Rail Guard Left
+    400106: Left LOD2 Rail Guard Right
+    400108: Left LOD2 Road
+    400110: Left LOD2 Road Collider
+    400112: Left LOD2 Road Mask
+    400114: Left LOD2 Terrain Left
+    400116: Left LOD2 Terrain Right
+    400118: Left LOD2 Tree Wall Left
+    400120: Left LOD2 Tree Wall Right
+    400122: Left LOD2 Water Canal Left
+    400124: Left LOD2 Water Canal Right
+    400126: Right LOD0 Ad Fence Left
+    400128: Right LOD0 Ad Fence Right
+    400130: Right LOD0 Cliff Left
+    400132: Right LOD0 Cliff Right
+    400134: Right LOD0 Concrete Wall Left
+    400136: Right LOD0 Concrete Wall Right
+    400138: Right LOD0 Mountain Left
+    400140: Right LOD0 Mountain Right
+    400142: Right LOD0 Piano Left
+    400144: Right LOD0 Piano Right
+    400146: Right LOD0 Rail Guard Left
+    400148: Right LOD0 Rail Guard Right
+    400150: Right LOD0 Road
+    400152: Right LOD0 Road Collider
+    400154: Right LOD0 Road Mask
+    400156: Right LOD0 Terrain Left
+    400158: Right LOD0 Terrain Right
+    400160: Right LOD0 Tree Wall Left
+    400162: Right LOD0 Tree Wall Right
+    400164: Right LOD0 Water Canal Left
+    400166: Right LOD0 Water Canal Right
+    400168: Right LOD1 Ad Fence Left
+    400170: Right LOD1 Ad Fence Right
+    400172: Right LOD1 Cliff Left
+    400174: Right LOD1 Cliff Right
+    400176: Right LOD1 Concrete Wall Left
+    400178: Right LOD1 Concrete Wall Right
+    400180: Right LOD1 Mountain Left
+    400182: Right LOD1 Mountain Right
+    400184: Right LOD1 Piano Left
+    400186: Right LOD1 Piano Right
+    400188: Right LOD1 Rail Guard Left
+    400190: Right LOD1 Rail Guard Right
+    400192: Right LOD1 Road
+    400194: Right LOD1 Road Collider
+    400196: Right LOD1 Road Mask
+    400198: Right LOD1 Terrain Left
+    400200: Right LOD1 Terrain Right
+    400202: Right LOD1 Tree Wall Left
+    400204: Right LOD1 Tree Wall Right
+    400206: Right LOD1 Water Canal Left
+    400208: Right LOD1 Water Canal Right
+    400210: Right LOD2 Ad Fence Left
+    400212: Right LOD2 Ad Fence Right
+    400214: Right LOD2 Cliff Left
+    400216: Right LOD2 Cliff Right
+    400218: Right LOD2 Concrete Wall Left
+    400220: Right LOD2 Concrete Wall Right
+    400222: Right LOD2 Mountain Left
+    400224: Right LOD2 Mountain Right
+    400226: Right LOD2 Piano Left
+    400228: Right LOD2 Piano Right
+    400230: Right LOD2 Rail Guard Left
+    400232: Right LOD2 Rail Guard Right
+    400234: Right LOD2 Road
+    400236: Right LOD2 Road Collider
+    400238: Right LOD2 Road Mask
+    400240: Right LOD2 Terrain Left
+    400242: Right LOD2 Terrain Right
+    400244: Right LOD2 Tree Wall Left
+    400246: Right LOD2 Tree Wall Right
+    400248: Right LOD2 Water Canal Left
+    400250: Right LOD2 Water Canal Right
+    400252: //RootNode
+    400254: Straight Down LOD0 Ad Fence Left
+    400256: Straight Down LOD0 Ad Fence Right
+    400258: Straight Down LOD0 Cliff Left
+    400260: Straight Down LOD0 Cliff Right
+    400262: Straight Down LOD0 Concrete Wall Left
+    400264: Straight Down LOD0 Concrete Wall Right
+    400266: Straight Down LOD0 Mountain Left
+    400268: Straight Down LOD0 Mountain Right
+    400270: Straight Down LOD0 Piano Left
+    400272: Straight Down LOD0 Piano Right
+    400274: Straight Down LOD0 Rail Guard Left
+    400276: Straight Down LOD0 Rail Guard Right
+    400278: Straight Down LOD0 Road
+    400280: Straight Down LOD0 Road Collider
+    400282: Straight Down LOD0 Road Mask
+    400284: Straight Down LOD0 Terrain Left
+    400286: Straight Down LOD0 Terrain Right
+    400288: Straight Down LOD0 Tree Wall Left
+    400290: Straight Down LOD0 Tree Wall Right
+    400292: Straight Down LOD0 Water Canal Left
+    400294: Straight Down LOD0 Water Canal Right
+    400296: Straight Down LOD1 Ad Fence Left
+    400298: Straight Down LOD1 Ad Fence Right
+    400300: Straight Down LOD1 Cliff Left
+    400302: Straight Down LOD1 Cliff Right
+    400304: Straight Down LOD1 Concrete Wall Left
+    400306: Straight Down LOD1 Concrete Wall Right
+    400308: Straight Down LOD1 Mountain Left
+    400310: Straight Down LOD1 Mountain Right
+    400312: Straight Down LOD1 Piano Left
+    400314: Straight Down LOD1 Piano Right
+    400316: Straight Down LOD1 Rail Guard Left
+    400318: Straight Down LOD1 Rail Guard Right
+    400320: Straight Down LOD1 Road
+    400322: Straight Down LOD1 Road Collider
+    400324: Straight Down LOD1 Road Mask
+    400326: Straight Down LOD1 Terrain Left
+    400328: Straight Down LOD1 Terrain Right
+    400330: Straight Down LOD1 Tree Wall Left
+    400332: Straight Down LOD1 Tree Wall Right
+    400334: Straight Down LOD1 Water Canal Left
+    400336: Straight Down LOD1 Water Canal Right
+    400338: Straight Down LOD2 Ad Fence Left
+    400340: Straight Down LOD2 Ad Fence Right
+    400342: Straight Down LOD2 Cliff Left
+    400344: Straight Down LOD2 Cliff Right
+    400346: Straight Down LOD2 Concrete Wall Left
+    400348: Straight Down LOD2 Concrete Wall Right
+    400350: Straight Down LOD2 Mountain Left
+    400352: Straight Down LOD2 Mountain Right
+    400354: Straight Down LOD2 Piano Left
+    400356: Straight Down LOD2 Piano Right
+    400358: Straight Down LOD2 Rail Guard Left
+    400360: Straight Down LOD2 Rail Guard Right
+    400362: Straight Down LOD2 Road
+    400364: Straight Down LOD2 Road Collider
+    400366: Straight Down LOD2 Road Mask
+    400368: Straight Down LOD2 Terrain Left
+    400370: Straight Down LOD2 Terrain Right
+    400372: Straight Down LOD2 Tree Wall Left
+    400374: Straight Down LOD2 Tree Wall Right
+    400376: Straight Down LOD2 Water Canal Left
+    400378: Straight Down LOD2 Water Canal Right
+    400380: Straight LOD0 Ad Fence Left
+    400382: Straight LOD0 Ad Fence Right
+    400384: Straight LOD0 Cliff Left
+    400386: Straight LOD0 Cliff Right
+    400388: Straight LOD0 Concrete Wall Left
+    400390: Straight LOD0 Concrete Wall Right
+    400392: Straight LOD0 Mountain Left
+    400394: Straight LOD0 Mountain Right
+    400396: Straight LOD0 Piano Left
+    400398: Straight LOD0 Piano Right
+    400400: Straight LOD0 Rail Guard Left
+    400402: Straight LOD0 Rail Guard Right
+    400404: Straight LOD0 Road
+    400406: Straight LOD0 Road Collider
+    400408: Straight LOD0 Road Mask
+    400410: Straight LOD0 Terrain Left
+    400412: Straight LOD0 Terrain Right
+    400414: Straight LOD0 Tree Wall Left
+    400416: Straight LOD0 Tree Wall Right
+    400418: Straight LOD0 Water Canal Left
+    400420: Straight LOD0 Water Canal Right
+    400422: Straight LOD1 Ad Fence Left
+    400424: Straight LOD1 Ad Fence Right
+    400426: Straight LOD1 Cliff Left
+    400428: Straight LOD1 Cliff Right
+    400430: Straight LOD1 Concrete Wall Left
+    400432: Straight LOD1 Concrete Wall Right
+    400434: Straight LOD1 Mountain Left
+    400436: Straight LOD1 Mountain Right
+    400438: Straight LOD1 Piano Left
+    400440: Straight LOD1 Piano Right
+    400442: Straight LOD1 Rail Guard Left
+    400444: Straight LOD1 Rail Guard Right
+    400446: Straight LOD1 Road
+    400448: Straight LOD1 Road Collider
+    400450: Straight LOD1 Road Mask
+    400452: Straight LOD1 Terrain Left
+    400454: Straight LOD1 Terrain Right
+    400456: Straight LOD1 Tree Wall Left
+    400458: Straight LOD1 Tree Wall Right
+    400460: Straight LOD1 Water Canal Left
+    400462: Straight LOD1 Water Canal Right
+    400464: Straight LOD2 Ad Fence Left
+    400466: Straight LOD2 Ad Fence Right
+    400468: Straight LOD2 Cliff Left
+    400470: Straight LOD2 Cliff Right
+    400472: Straight LOD2 Concrete Wall Left
+    400474: Straight LOD2 Concrete Wall Right
+    400476: Straight LOD2 Mountain Left
+    400478: Straight LOD2 Mountain Right
+    400480: Straight LOD2 Piano Left
+    400482: Straight LOD2 Piano Right
+    400484: Straight LOD2 Rail Guard Left
+    400486: Straight LOD2 Rail Guard Right
+    400488: Straight LOD2 Road
+    400490: Straight LOD2 Road Collider
+    400492: Straight LOD2 Road Mask
+    400494: Straight LOD2 Terrain Left
+    400496: Straight LOD2 Terrain Right
+    400498: Straight LOD2 Tree Wall Left
+    400500: Straight LOD2 Tree Wall Right
+    400502: Straight LOD2 Water Canal Left
+    400504: Straight LOD2 Water Canal Right
+    400506: Straight Up LOD0 Ad Fence Left
+    400508: Straight Up LOD0 Ad Fence Right
+    400510: Straight Up LOD0 Cliff Left
+    400512: Straight Up LOD0 Cliff Right
+    400514: Straight Up LOD0 Concrete Wall Left
+    400516: Straight Up LOD0 Concrete Wall Right
+    400518: Straight Up LOD0 Mountain Left
+    400520: Straight Up LOD0 Mountain Right
+    400522: Straight Up LOD0 Piano Left
+    400524: Straight Up LOD0 Piano Right
+    400526: Straight Up LOD0 Rail Guard Left
+    400528: Straight Up LOD0 Rail Guard Right
+    400530: Straight Up LOD0 Road
+    400532: Straight Up LOD0 Road Collider
+    400534: Straight Up LOD0 Road Mask
+    400536: Straight Up LOD0 Terrain Left
+    400538: Straight Up LOD0 Terrain Right
+    400540: Straight Up LOD0 Tree Wall Left
+    400542: Straight Up LOD0 Tree Wall Right
+    400544: Straight Up LOD0 Water Canal Left
+    400546: Straight Up LOD0 Water Canal Right
+    400548: Straight Up LOD1 Ad Fence Left
+    400550: Straight Up LOD1 Ad Fence Right
+    400552: Straight Up LOD1 Cliff Left
+    400554: Straight Up LOD1 Cliff Right
+    400556: Straight Up LOD1 Concrete Wall Left
+    400558: Straight Up LOD1 Concrete Wall Right
+    400560: Straight Up LOD1 Mountain Left
+    400562: Straight Up LOD1 Mountain Right
+    400564: Straight Up LOD1 Piano Left
+    400566: Straight Up LOD1 Piano Right
+    400568: Straight Up LOD1 Rail Guard Left
+    400570: Straight Up LOD1 Rail Guard Right
+    400572: Straight Up LOD1 Road
+    400574: Straight Up LOD1 Road Collider
+    400576: Straight Up LOD1 Road Mask
+    400578: Straight Up LOD1 Terrain Left
+    400580: Straight Up LOD1 Terrain Right
+    400582: Straight Up LOD1 Tree Wall Left
+    400584: Straight Up LOD1 Tree Wall Right
+    400586: Straight Up LOD1 Water Canal Left
+    400588: Straight Up LOD1 Water Canal Right
+    400590: Straight Up LOD2 Ad Fence Left
+    400592: Straight Up LOD2 Ad Fence Right
+    400594: Straight Up LOD2 Cliff Left
+    400596: Straight Up LOD2 Cliff Right
+    400598: Straight Up LOD2 Concrete Wall Left
+    400600: Straight Up LOD2 Concrete Wall Right
+    400602: Straight Up LOD2 Mountain Left
+    400604: Straight Up LOD2 Mountain Right
+    400606: Straight Up LOD2 Piano Left
+    400608: Straight Up LOD2 Piano Right
+    400610: Straight Up LOD2 Rail Guard Left
+    400612: Straight Up LOD2 Rail Guard Right
+    400614: Straight Up LOD2 Road
+    400616: Straight Up LOD2 Road Collider
+    400618: Straight Up LOD2 Road Mask
+    400620: Straight Up LOD2 Terrain Left
+    400622: Straight Up LOD2 Terrain Right
+    400624: Straight Up LOD2 Tree Wall Left
+    400626: Straight Up LOD2 Tree Wall Right
+    400628: Straight Up LOD2 Water Canal Left
+    400630: Straight Up LOD2 Water Canal Right
+    400632: Street Lamp Left
+    400634: Street Lamp Right
+    400636: Decoration LOD0 Street Lamp Left
+    400638: Decoration LOD0 Street Lamp Right
+    400640: Decoration LOD1 Street Lamp Left
+    400642: Decoration LOD1 Street Lamp Right
+    400644: Decoration LOD2 Street Lamp Left
+    400646: Decoration LOD2 Street Lamp Right
+    400648: Decoration_LOD0_Street_Lamp_Left
+    400650: Decoration_LOD0_Street_Lamp_Right
+    400652: Decoration_LOD1_Street_Lamp_Left
+    400654: Decoration_LOD1_Street_Lamp_Right
+    400656: Decoration_LOD2_Street_Lamp_Left
+    400658: Decoration_LOD2_Street_Lamp_Right
+    400660: Left_LOD0_Ad_Fence_Left
+    400662: Left_LOD0_Ad_Fence_Right
+    400664: Left_LOD0_Cliff_Left
+    400666: Left_LOD0_Cliff_Right
+    400668: Left_LOD0_Concrete_Wall_Left
+    400670: Left_LOD0_Concrete_Wall_Right
+    400672: Left_LOD0_Mountain_Left
+    400674: Left_LOD0_Mountain_Right
+    400676: Left_LOD0_Piano_Left
+    400678: Left_LOD0_Piano_Right
+    400680: Left_LOD0_Rail_Guard_Left
+    400682: Left_LOD0_Rail_Guard_Right
+    400684: Left_LOD0_Road
+    400686: Left_LOD0_Road_Collider
+    400688: Left_LOD0_Road_Mask
+    400690: Left_LOD0_Terrain_Left
+    400692: Left_LOD0_Terrain_Right
+    400694: Left_LOD0_Tree_Wall_Left
+    400696: Left_LOD0_Tree_Wall_Right
+    400698: Left_LOD0_Water_Canal_Left
+    400700: Left_LOD0_Water_Canal_Right
+    400702: Left_LOD1_Ad_Fence_Left
+    400704: Left_LOD1_Ad_Fence_Right
+    400706: Left_LOD1_Cliff_Left
+    400708: Left_LOD1_Cliff_Right
+    400710: Left_LOD1_Concrete_Wall_Left
+    400712: Left_LOD1_Concrete_Wall_Right
+    400714: Left_LOD1_Mountain_Left
+    400716: Left_LOD1_Mountain_Right
+    400718: Left_LOD1_Piano_Left
+    400720: Left_LOD1_Piano_Right
+    400722: Left_LOD1_Rail_Guard_Left
+    400724: Left_LOD1_Rail_Guard_Right
+    400726: Left_LOD1_Road
+    400728: Left_LOD1_Road_Collider
+    400730: Left_LOD1_Road_Mask
+    400732: Left_LOD1_Terrain_Left
+    400734: Left_LOD1_Terrain_Right
+    400736: Left_LOD1_Tree_Wall_Left
+    400738: Left_LOD1_Tree_Wall_Right
+    400740: Left_LOD1_Water_Canal_Left
+    400742: Left_LOD1_Water_Canal_Right
+    400744: Left_LOD2_Ad_Fence_Left
+    400746: Left_LOD2_Ad_Fence_Right
+    400748: Left_LOD2_Cliff_Left
+    400750: Left_LOD2_Cliff_Right
+    400752: Left_LOD2_Concrete_Wall_Left
+    400754: Left_LOD2_Concrete_Wall_Right
+    400756: Left_LOD2_Mountain_Left
+    400758: Left_LOD2_Mountain_Right
+    400760: Left_LOD2_Piano_Left
+    400762: Left_LOD2_Piano_Right
+    400764: Left_LOD2_Rail_Guard_Left
+    400766: Left_LOD2_Rail_Guard_Right
+    400768: Left_LOD2_Road
+    400770: Left_LOD2_Road_Collider
+    400772: Left_LOD2_Road_Mask
+    400774: Left_LOD2_Terrain_Left
+    400776: Left_LOD2_Terrain_Right
+    400778: Left_LOD2_Tree_Wall_Left
+    400780: Left_LOD2_Tree_Wall_Right
+    400782: Left_LOD2_Water_Canal_Left
+    400784: Left_LOD2_Water_Canal_Right
+    400786: Right_LOD0_Ad_Fence_Left
+    400788: Right_LOD0_Ad_Fence_Right
+    400790: Right_LOD0_Cliff_Left
+    400792: Right_LOD0_Cliff_Right
+    400794: Right_LOD0_Concrete_Wall_Left
+    400796: Right_LOD0_Concrete_Wall_Right
+    400798: Right_LOD0_Mountain_Left
+    400800: Right_LOD0_Mountain_Right
+    400802: Right_LOD0_Piano_Left
+    400804: Right_LOD0_Piano_Right
+    400806: Right_LOD0_Rail_Guard_Left
+    400808: Right_LOD0_Rail_Guard_Right
+    400810: Right_LOD0_Road
+    400812: Right_LOD0_Road_Collider
+    400814: Right_LOD0_Road_Mask
+    400816: Right_LOD0_Terrain_Left
+    400818: Right_LOD0_Terrain_Right
+    400820: Right_LOD0_Tree_Wall_Left
+    400822: Right_LOD0_Tree_Wall_Right
+    400824: Right_LOD0_Water_Canal_Left
+    400826: Right_LOD0_Water_Canal_Right
+    400828: Right_LOD1_Ad_Fence_Left
+    400830: Right_LOD1_Ad_Fence_Right
+    400832: Right_LOD1_Cliff_Left
+    400834: Right_LOD1_Cliff_Right
+    400836: Right_LOD1_Concrete_Wall_Left
+    400838: Right_LOD1_Concrete_Wall_Right
+    400840: Right_LOD1_Mountain_Left
+    400842: Right_LOD1_Mountain_Right
+    400844: Right_LOD1_Piano_Left
+    400846: Right_LOD1_Piano_Right
+    400848: Right_LOD1_Rail_Guard_Left
+    400850: Right_LOD1_Rail_Guard_Right
+    400852: Right_LOD1_Road
+    400854: Right_LOD1_Road_Collider
+    400856: Right_LOD1_Road_Mask
+    400858: Right_LOD1_Terrain_Left
+    400860: Right_LOD1_Terrain_Right
+    400862: Right_LOD1_Tree_Wall_Left
+    400864: Right_LOD1_Tree_Wall_Right
+    400866: Right_LOD1_Water_Canal_Left
+    400868: Right_LOD1_Water_Canal_Right
+    400870: Right_LOD2_Ad_Fence_Left
+    400872: Right_LOD2_Ad_Fence_Right
+    400874: Right_LOD2_Cliff_Left
+    400876: Right_LOD2_Cliff_Right
+    400878: Right_LOD2_Concrete_Wall_Left
+    400880: Right_LOD2_Concrete_Wall_Right
+    400882: Right_LOD2_Mountain_Left
+    400884: Right_LOD2_Mountain_Right
+    400886: Right_LOD2_Piano_Left
+    400888: Right_LOD2_Piano_Right
+    400890: Right_LOD2_Rail_Guard_Left
+    400892: Right_LOD2_Rail_Guard_Right
+    400894: Right_LOD2_Road
+    400896: Right_LOD2_Road_Collider
+    400898: Right_LOD2_Road_Mask
+    400900: Right_LOD2_Terrain_Left
+    400902: Right_LOD2_Terrain_Right
+    400904: Right_LOD2_Tree_Wall_Left
+    400906: Right_LOD2_Tree_Wall_Right
+    400908: Right_LOD2_Water_Canal_Left
+    400910: Right_LOD2_Water_Canal_Right
+    400912: Straight_Down_LOD0_Ad_Fence_Left
+    400914: Straight_Down_LOD0_Ad_Fence_Right
+    400916: Straight_Down_LOD0_Cliff_Left
+    400918: Straight_Down_LOD0_Cliff_Right
+    400920: Straight_Down_LOD0_Concrete_Wall_Left
+    400922: Straight_Down_LOD0_Concrete_Wall_Right
+    400924: Straight_Down_LOD0_Mountain_Left
+    400926: Straight_Down_LOD0_Mountain_Right
+    400928: Straight_Down_LOD0_Piano_Left
+    400930: Straight_Down_LOD0_Piano_Right
+    400932: Straight_Down_LOD0_Rail_Guard_Left
+    400934: Straight_Down_LOD0_Rail_Guard_Right
+    400936: Straight_Down_LOD0_Road
+    400938: Straight_Down_LOD0_Road_Collider
+    400940: Straight_Down_LOD0_Road_Mask
+    400942: Straight_Down_LOD0_Terrain_Left
+    400944: Straight_Down_LOD0_Terrain_Right
+    400946: Straight_Down_LOD0_Tree_Wall_Left
+    400948: Straight_Down_LOD0_Tree_Wall_Right
+    400950: Straight_Down_LOD0_Water_Canal_Left
+    400952: Straight_Down_LOD0_Water_Canal_Right
+    400954: Straight_Down_LOD1_Ad_Fence_Left
+    400956: Straight_Down_LOD1_Ad_Fence_Right
+    400958: Straight_Down_LOD1_Cliff_Left
+    400960: Straight_Down_LOD1_Cliff_Right
+    400962: Straight_Down_LOD1_Concrete_Wall_Left
+    400964: Straight_Down_LOD1_Concrete_Wall_Right
+    400966: Straight_Down_LOD1_Mountain_Left
+    400968: Straight_Down_LOD1_Mountain_Right
+    400970: Straight_Down_LOD1_Piano_Left
+    400972: Straight_Down_LOD1_Piano_Right
+    400974: Straight_Down_LOD1_Rail_Guard_Left
+    400976: Straight_Down_LOD1_Rail_Guard_Right
+    400978: Straight_Down_LOD1_Road
+    400980: Straight_Down_LOD1_Road_Collider
+    400982: Straight_Down_LOD1_Road_Mask
+    400984: Straight_Down_LOD1_Terrain_Left
+    400986: Straight_Down_LOD1_Terrain_Right
+    400988: Straight_Down_LOD1_Tree_Wall_Left
+    400990: Straight_Down_LOD1_Tree_Wall_Right
+    400992: Straight_Down_LOD1_Water_Canal_Left
+    400994: Straight_Down_LOD1_Water_Canal_Right
+    400996: Straight_Down_LOD2_Ad_Fence_Left
+    400998: Straight_Down_LOD2_Ad_Fence_Right
+    401000: Straight_Down_LOD2_Cliff_Left
+    401002: Straight_Down_LOD2_Cliff_Right
+    401004: Straight_Down_LOD2_Concrete_Wall_Left
+    401006: Straight_Down_LOD2_Concrete_Wall_Right
+    401008: Straight_Down_LOD2_Mountain_Left
+    401010: Straight_Down_LOD2_Mountain_Right
+    401012: Straight_Down_LOD2_Piano_Left
+    401014: Straight_Down_LOD2_Piano_Right
+    401016: Straight_Down_LOD2_Rail_Guard_Left
+    401018: Straight_Down_LOD2_Rail_Guard_Right
+    401020: Straight_Down_LOD2_Road
+    401022: Straight_Down_LOD2_Road_Collider
+    401024: Straight_Down_LOD2_Road_Mask
+    401026: Straight_Down_LOD2_Terrain_Left
+    401028: Straight_Down_LOD2_Terrain_Right
+    401030: Straight_Down_LOD2_Tree_Wall_Left
+    401032: Straight_Down_LOD2_Tree_Wall_Right
+    401034: Straight_Down_LOD2_Water_Canal_Left
+    401036: Straight_Down_LOD2_Water_Canal_Right
+    401038: Straight_LOD0_Ad_Fence_Left
+    401040: Straight_LOD0_Ad_Fence_Right
+    401042: Straight_LOD0_Cliff_Left
+    401044: Straight_LOD0_Cliff_Right
+    401046: Straight_LOD0_Concrete_Wall_Left
+    401048: Straight_LOD0_Concrete_Wall_Right
+    401050: Straight_LOD0_Mountain_Left
+    401052: Straight_LOD0_Mountain_Right
+    401054: Straight_LOD0_Piano_Left
+    401056: Straight_LOD0_Piano_Right
+    401058: Straight_LOD0_Rail_Guard_Left
+    401060: Straight_LOD0_Rail_Guard_Right
+    401062: Straight_LOD0_Road
+    401064: Straight_LOD0_Road_Collider
+    401066: Straight_LOD0_Road_Mask
+    401068: Straight_LOD0_Terrain_Left
+    401070: Straight_LOD0_Terrain_Right
+    401072: Straight_LOD0_Tree_Wall_Left
+    401074: Straight_LOD0_Tree_Wall_Right
+    401076: Straight_LOD0_Water_Canal_Left
+    401078: Straight_LOD0_Water_Canal_Right
+    401080: Straight_LOD1_Ad_Fence_Left
+    401082: Straight_LOD1_Ad_Fence_Right
+    401084: Straight_LOD1_Cliff_Left
+    401086: Straight_LOD1_Cliff_Right
+    401088: Straight_LOD1_Concrete_Wall_Left
+    401090: Straight_LOD1_Concrete_Wall_Right
+    401092: Straight_LOD1_Mountain_Left
+    401094: Straight_LOD1_Mountain_Right
+    401096: Straight_LOD1_Piano_Left
+    401098: Straight_LOD1_Piano_Right
+    401100: Straight_LOD1_Rail_Guard_Left
+    401102: Straight_LOD1_Rail_Guard_Right
+    401104: Straight_LOD1_Road
+    401106: Straight_LOD1_Road_Collider
+    401108: Straight_LOD1_Road_Mask
+    401110: Straight_LOD1_Terrain_Left
+    401112: Straight_LOD1_Terrain_Right
+    401114: Straight_LOD1_Tree_Wall_Left
+    401116: Straight_LOD1_Tree_Wall_Right
+    401118: Straight_LOD1_Water_Canal_Left
+    401120: Straight_LOD1_Water_Canal_Right
+    401122: Straight_LOD2_Ad_Fence_Left
+    401124: Straight_LOD2_Ad_Fence_Right
+    401126: Straight_LOD2_Cliff_Left
+    401128: Straight_LOD2_Cliff_Right
+    401130: Straight_LOD2_Concrete_Wall_Left
+    401132: Straight_LOD2_Concrete_Wall_Right
+    401134: Straight_LOD2_Mountain_Left
+    401136: Straight_LOD2_Mountain_Right
+    401138: Straight_LOD2_Piano_Left
+    401140: Straight_LOD2_Piano_Right
+    401142: Straight_LOD2_Rail_Guard_Left
+    401144: Straight_LOD2_Rail_Guard_Right
+    401146: Straight_LOD2_Road
+    401148: Straight_LOD2_Road_Collider
+    401150: Straight_LOD2_Road_Mask
+    401152: Straight_LOD2_Terrain_Left
+    401154: Straight_LOD2_Terrain_Right
+    401156: Straight_LOD2_Tree_Wall_Left
+    401158: Straight_LOD2_Tree_Wall_Right
+    401160: Straight_LOD2_Water_Canal_Left
+    401162: Straight_LOD2_Water_Canal_Right
+    401164: Straight_Up_LOD0_Ad_Fence_Left
+    401166: Straight_Up_LOD0_Ad_Fence_Right
+    401168: Straight_Up_LOD0_Cliff_Left
+    401170: Straight_Up_LOD0_Cliff_Right
+    401172: Straight_Up_LOD0_Concrete_Wall_Left
+    401174: Straight_Up_LOD0_Concrete_Wall_Right
+    401176: Straight_Up_LOD0_Mountain_Left
+    401178: Straight_Up_LOD0_Mountain_Right
+    401180: Straight_Up_LOD0_Piano_Left
+    401182: Straight_Up_LOD0_Piano_Right
+    401184: Straight_Up_LOD0_Rail_Guard_Left
+    401186: Straight_Up_LOD0_Rail_Guard_Right
+    401188: Straight_Up_LOD0_Road
+    401190: Straight_Up_LOD0_Road_Collider
+    401192: Straight_Up_LOD0_Road_Mask
+    401194: Straight_Up_LOD0_Terrain_Left
+    401196: Straight_Up_LOD0_Terrain_Right
+    401198: Straight_Up_LOD0_Tree_Wall_Left
+    401200: Straight_Up_LOD0_Tree_Wall_Right
+    401202: Straight_Up_LOD0_Water_Canal_Left
+    401204: Straight_Up_LOD0_Water_Canal_Right
+    401206: Straight_Up_LOD1_Ad_Fence_Left
+    401208: Straight_Up_LOD1_Ad_Fence_Right
+    401210: Straight_Up_LOD1_Cliff_Left
+    401212: Straight_Up_LOD1_Cliff_Right
+    401214: Straight_Up_LOD1_Concrete_Wall_Left
+    401216: Straight_Up_LOD1_Concrete_Wall_Right
+    401218: Straight_Up_LOD1_Mountain_Left
+    401220: Straight_Up_LOD1_Mountain_Right
+    401222: Straight_Up_LOD1_Piano_Left
+    401224: Straight_Up_LOD1_Piano_Right
+    401226: Straight_Up_LOD1_Rail_Guard_Left
+    401228: Straight_Up_LOD1_Rail_Guard_Right
+    401230: Straight_Up_LOD1_Road
+    401232: Straight_Up_LOD1_Road_Collider
+    401234: Straight_Up_LOD1_Road_Mask
+    401236: Straight_Up_LOD1_Terrain_Left
+    401238: Straight_Up_LOD1_Terrain_Right
+    401240: Straight_Up_LOD1_Tree_Wall_Left
+    401242: Straight_Up_LOD1_Tree_Wall_Right
+    401244: Straight_Up_LOD1_Water_Canal_Left
+    401246: Straight_Up_LOD1_Water_Canal_Right
+    401248: Straight_Up_LOD2_Ad_Fence_Left
+    401250: Straight_Up_LOD2_Ad_Fence_Right
+    401252: Straight_Up_LOD2_Cliff_Left
+    401254: Straight_Up_LOD2_Cliff_Right
+    401256: Straight_Up_LOD2_Concrete_Wall_Left
+    401258: Straight_Up_LOD2_Concrete_Wall_Right
+    401260: Straight_Up_LOD2_Mountain_Left
+    401262: Straight_Up_LOD2_Mountain_Right
+    401264: Straight_Up_LOD2_Piano_Left
+    401266: Straight_Up_LOD2_Piano_Right
+    401268: Straight_Up_LOD2_Rail_Guard_Left
+    401270: Straight_Up_LOD2_Rail_Guard_Right
+    401272: Straight_Up_LOD2_Road
+    401274: Straight_Up_LOD2_Road_Collider
+    401276: Straight_Up_LOD2_Road_Mask
+    401278: Straight_Up_LOD2_Terrain_Left
+    401280: Straight_Up_LOD2_Terrain_Right
+    401282: Straight_Up_LOD2_Tree_Wall_Left
+    401284: Straight_Up_LOD2_Tree_Wall_Right
+    401286: Straight_Up_LOD2_Water_Canal_Left
+    401288: Straight_Up_LOD2_Water_Canal_Right
+    2300000: Left LOD0 Ad Fence Left
+    2300002: Left LOD0 Ad Fence Right
+    2300004: Left LOD0 Cliff Left
+    2300006: Left LOD0 Cliff Right
+    2300008: Left LOD0 Concrete Wall Left
+    2300010: Left LOD0 Concrete Wall Right
+    2300012: Left LOD0 Mountain Left
+    2300014: Left LOD0 Mountain Right
+    2300016: Left LOD0 Piano Left
+    2300018: Left LOD0 Piano Right
+    2300020: Left LOD0 Rail Guard Left
+    2300022: Left LOD0 Rail Guard Right
+    2300024: Left LOD0 Road
+    2300026: Left LOD0 Road Collider
+    2300028: Left LOD0 Road Mask
+    2300030: Left LOD0 Terrain Left
+    2300032: Left LOD0 Terrain Right
+    2300034: Left LOD0 Tree Wall Left
+    2300036: Left LOD0 Tree Wall Right
+    2300038: Left LOD0 Water Canal Left
+    2300040: Left LOD0 Water Canal Right
+    2300042: Left LOD1 Ad Fence Left
+    2300044: Left LOD1 Ad Fence Right
+    2300046: Left LOD1 Cliff Left
+    2300048: Left LOD1 Cliff Right
+    2300050: Left LOD1 Concrete Wall Left
+    2300052: Left LOD1 Concrete Wall Right
+    2300054: Left LOD1 Mountain Left
+    2300056: Left LOD1 Mountain Right
+    2300058: Left LOD1 Piano Left
+    2300060: Left LOD1 Piano Right
+    2300062: Left LOD1 Rail Guard Left
+    2300064: Left LOD1 Rail Guard Right
+    2300066: Left LOD1 Road
+    2300068: Left LOD1 Road Collider
+    2300070: Left LOD1 Road Mask
+    2300072: Left LOD1 Terrain Left
+    2300074: Left LOD1 Terrain Right
+    2300076: Left LOD1 Tree Wall Left
+    2300078: Left LOD1 Tree Wall Right
+    2300080: Left LOD1 Water Canal Left
+    2300082: Left LOD1 Water Canal Right
+    2300084: Left LOD2 Ad Fence Left
+    2300086: Left LOD2 Ad Fence Right
+    2300088: Left LOD2 Cliff Left
+    2300090: Left LOD2 Cliff Right
+    2300092: Left LOD2 Concrete Wall Left
+    2300094: Left LOD2 Concrete Wall Right
+    2300096: Left LOD2 Mountain Left
+    2300098: Left LOD2 Mountain Right
+    2300100: Left LOD2 Piano Left
+    2300102: Left LOD2 Piano Right
+    2300104: Left LOD2 Rail Guard Left
+    2300106: Left LOD2 Rail Guard Right
+    2300108: Left LOD2 Road
+    2300110: Left LOD2 Road Collider
+    2300112: Left LOD2 Road Mask
+    2300114: Left LOD2 Terrain Left
+    2300116: Left LOD2 Terrain Right
+    2300118: Left LOD2 Tree Wall Left
+    2300120: Left LOD2 Tree Wall Right
+    2300122: Left LOD2 Water Canal Left
+    2300124: Left LOD2 Water Canal Right
+    2300126: Right LOD0 Ad Fence Left
+    2300128: Right LOD0 Ad Fence Right
+    2300130: Right LOD0 Cliff Left
+    2300132: Right LOD0 Cliff Right
+    2300134: Right LOD0 Concrete Wall Left
+    2300136: Right LOD0 Concrete Wall Right
+    2300138: Right LOD0 Mountain Left
+    2300140: Right LOD0 Mountain Right
+    2300142: Right LOD0 Piano Left
+    2300144: Right LOD0 Piano Right
+    2300146: Right LOD0 Rail Guard Left
+    2300148: Right LOD0 Rail Guard Right
+    2300150: Right LOD0 Road
+    2300152: Right LOD0 Road Collider
+    2300154: Right LOD0 Road Mask
+    2300156: Right LOD0 Terrain Left
+    2300158: Right LOD0 Terrain Right
+    2300160: Right LOD0 Tree Wall Left
+    2300162: Right LOD0 Tree Wall Right
+    2300164: Right LOD0 Water Canal Left
+    2300166: Right LOD0 Water Canal Right
+    2300168: Right LOD1 Ad Fence Left
+    2300170: Right LOD1 Ad Fence Right
+    2300172: Right LOD1 Cliff Left
+    2300174: Right LOD1 Cliff Right
+    2300176: Right LOD1 Concrete Wall Left
+    2300178: Right LOD1 Concrete Wall Right
+    2300180: Right LOD1 Mountain Left
+    2300182: Right LOD1 Mountain Right
+    2300184: Right LOD1 Piano Left
+    2300186: Right LOD1 Piano Right
+    2300188: Right LOD1 Rail Guard Left
+    2300190: Right LOD1 Rail Guard Right
+    2300192: Right LOD1 Road
+    2300194: Right LOD1 Road Collider
+    2300196: Right LOD1 Road Mask
+    2300198: Right LOD1 Terrain Left
+    2300200: Right LOD1 Terrain Right
+    2300202: Right LOD1 Tree Wall Left
+    2300204: Right LOD1 Tree Wall Right
+    2300206: Right LOD1 Water Canal Left
+    2300208: Right LOD1 Water Canal Right
+    2300210: Right LOD2 Ad Fence Left
+    2300212: Right LOD2 Ad Fence Right
+    2300214: Right LOD2 Cliff Left
+    2300216: Right LOD2 Cliff Right
+    2300218: Right LOD2 Concrete Wall Left
+    2300220: Right LOD2 Concrete Wall Right
+    2300222: Right LOD2 Mountain Left
+    2300224: Right LOD2 Mountain Right
+    2300226: Right LOD2 Piano Left
+    2300228: Right LOD2 Piano Right
+    2300230: Right LOD2 Rail Guard Left
+    2300232: Right LOD2 Rail Guard Right
+    2300234: Right LOD2 Road
+    2300236: Right LOD2 Road Collider
+    2300238: Right LOD2 Road Mask
+    2300240: Right LOD2 Terrain Left
+    2300242: Right LOD2 Terrain Right
+    2300244: Right LOD2 Tree Wall Left
+    2300246: Right LOD2 Tree Wall Right
+    2300248: Right LOD2 Water Canal Left
+    2300250: Right LOD2 Water Canal Right
+    2300252: Straight Down LOD0 Ad Fence Left
+    2300254: Straight Down LOD0 Ad Fence Right
+    2300256: Straight Down LOD0 Cliff Left
+    2300258: Straight Down LOD0 Cliff Right
+    2300260: Straight Down LOD0 Concrete Wall Left
+    2300262: Straight Down LOD0 Concrete Wall Right
+    2300264: Straight Down LOD0 Mountain Left
+    2300266: Straight Down LOD0 Mountain Right
+    2300268: Straight Down LOD0 Piano Left
+    2300270: Straight Down LOD0 Piano Right
+    2300272: Straight Down LOD0 Rail Guard Left
+    2300274: Straight Down LOD0 Rail Guard Right
+    2300276: Straight Down LOD0 Road
+    2300278: Straight Down LOD0 Road Collider
+    2300280: Straight Down LOD0 Road Mask
+    2300282: Straight Down LOD0 Terrain Left
+    2300284: Straight Down LOD0 Terrain Right
+    2300286: Straight Down LOD0 Tree Wall Left
+    2300288: Straight Down LOD0 Tree Wall Right
+    2300290: Straight Down LOD0 Water Canal Left
+    2300292: Straight Down LOD0 Water Canal Right
+    2300294: Straight Down LOD1 Ad Fence Left
+    2300296: Straight Down LOD1 Ad Fence Right
+    2300298: Straight Down LOD1 Cliff Left
+    2300300: Straight Down LOD1 Cliff Right
+    2300302: Straight Down LOD1 Concrete Wall Left
+    2300304: Straight Down LOD1 Concrete Wall Right
+    2300306: Straight Down LOD1 Mountain Left
+    2300308: Straight Down LOD1 Mountain Right
+    2300310: Straight Down LOD1 Piano Left
+    2300312: Straight Down LOD1 Piano Right
+    2300314: Straight Down LOD1 Rail Guard Left
+    2300316: Straight Down LOD1 Rail Guard Right
+    2300318: Straight Down LOD1 Road
+    2300320: Straight Down LOD1 Road Collider
+    2300322: Straight Down LOD1 Road Mask
+    2300324: Straight Down LOD1 Terrain Left
+    2300326: Straight Down LOD1 Terrain Right
+    2300328: Straight Down LOD1 Tree Wall Left
+    2300330: Straight Down LOD1 Tree Wall Right
+    2300332: Straight Down LOD1 Water Canal Left
+    2300334: Straight Down LOD1 Water Canal Right
+    2300336: Straight Down LOD2 Ad Fence Left
+    2300338: Straight Down LOD2 Ad Fence Right
+    2300340: Straight Down LOD2 Cliff Left
+    2300342: Straight Down LOD2 Cliff Right
+    2300344: Straight Down LOD2 Concrete Wall Left
+    2300346: Straight Down LOD2 Concrete Wall Right
+    2300348: Straight Down LOD2 Mountain Left
+    2300350: Straight Down LOD2 Mountain Right
+    2300352: Straight Down LOD2 Piano Left
+    2300354: Straight Down LOD2 Piano Right
+    2300356: Straight Down LOD2 Rail Guard Left
+    2300358: Straight Down LOD2 Rail Guard Right
+    2300360: Straight Down LOD2 Road
+    2300362: Straight Down LOD2 Road Collider
+    2300364: Straight Down LOD2 Road Mask
+    2300366: Straight Down LOD2 Terrain Left
+    2300368: Straight Down LOD2 Terrain Right
+    2300370: Straight Down LOD2 Tree Wall Left
+    2300372: Straight Down LOD2 Tree Wall Right
+    2300374: Straight Down LOD2 Water Canal Left
+    2300376: Straight Down LOD2 Water Canal Right
+    2300378: Straight LOD0 Ad Fence Left
+    2300380: Straight LOD0 Ad Fence Right
+    2300382: Straight LOD0 Cliff Left
+    2300384: Straight LOD0 Cliff Right
+    2300386: Straight LOD0 Concrete Wall Left
+    2300388: Straight LOD0 Concrete Wall Right
+    2300390: Straight LOD0 Mountain Left
+    2300392: Straight LOD0 Mountain Right
+    2300394: Straight LOD0 Piano Left
+    2300396: Straight LOD0 Piano Right
+    2300398: Straight LOD0 Rail Guard Left
+    2300400: Straight LOD0 Rail Guard Right
+    2300402: Straight LOD0 Road
+    2300404: Straight LOD0 Road Collider
+    2300406: Straight LOD0 Road Mask
+    2300408: Straight LOD0 Terrain Left
+    2300410: Straight LOD0 Terrain Right
+    2300412: Straight LOD0 Tree Wall Left
+    2300414: Straight LOD0 Tree Wall Right
+    2300416: Straight LOD0 Water Canal Left
+    2300418: Straight LOD0 Water Canal Right
+    2300420: Straight LOD1 Ad Fence Left
+    2300422: Straight LOD1 Ad Fence Right
+    2300424: Straight LOD1 Cliff Left
+    2300426: Straight LOD1 Cliff Right
+    2300428: Straight LOD1 Concrete Wall Left
+    2300430: Straight LOD1 Concrete Wall Right
+    2300432: Straight LOD1 Mountain Left
+    2300434: Straight LOD1 Mountain Right
+    2300436: Straight LOD1 Piano Left
+    2300438: Straight LOD1 Piano Right
+    2300440: Straight LOD1 Rail Guard Left
+    2300442: Straight LOD1 Rail Guard Right
+    2300444: Straight LOD1 Road
+    2300446: Straight LOD1 Road Collider
+    2300448: Straight LOD1 Road Mask
+    2300450: Straight LOD1 Terrain Left
+    2300452: Straight LOD1 Terrain Right
+    2300454: Straight LOD1 Tree Wall Left
+    2300456: Straight LOD1 Tree Wall Right
+    2300458: Straight LOD1 Water Canal Left
+    2300460: Straight LOD1 Water Canal Right
+    2300462: Straight LOD2 Ad Fence Left
+    2300464: Straight LOD2 Ad Fence Right
+    2300466: Straight LOD2 Cliff Left
+    2300468: Straight LOD2 Cliff Right
+    2300470: Straight LOD2 Concrete Wall Left
+    2300472: Straight LOD2 Concrete Wall Right
+    2300474: Straight LOD2 Mountain Left
+    2300476: Straight LOD2 Mountain Right
+    2300478: Straight LOD2 Piano Left
+    2300480: Straight LOD2 Piano Right
+    2300482: Straight LOD2 Rail Guard Left
+    2300484: Straight LOD2 Rail Guard Right
+    2300486: Straight LOD2 Road
+    2300488: Straight LOD2 Road Collider
+    2300490: Straight LOD2 Road Mask
+    2300492: Straight LOD2 Terrain Left
+    2300494: Straight LOD2 Terrain Right
+    2300496: Straight LOD2 Tree Wall Left
+    2300498: Straight LOD2 Tree Wall Right
+    2300500: Straight LOD2 Water Canal Left
+    2300502: Straight LOD2 Water Canal Right
+    2300504: Straight Up LOD0 Ad Fence Left
+    2300506: Straight Up LOD0 Ad Fence Right
+    2300508: Straight Up LOD0 Cliff Left
+    2300510: Straight Up LOD0 Cliff Right
+    2300512: Straight Up LOD0 Concrete Wall Left
+    2300514: Straight Up LOD0 Concrete Wall Right
+    2300516: Straight Up LOD0 Mountain Left
+    2300518: Straight Up LOD0 Mountain Right
+    2300520: Straight Up LOD0 Piano Left
+    2300522: Straight Up LOD0 Piano Right
+    2300524: Straight Up LOD0 Rail Guard Left
+    2300526: Straight Up LOD0 Rail Guard Right
+    2300528: Straight Up LOD0 Road
+    2300530: Straight Up LOD0 Road Collider
+    2300532: Straight Up LOD0 Road Mask
+    2300534: Straight Up LOD0 Terrain Left
+    2300536: Straight Up LOD0 Terrain Right
+    2300538: Straight Up LOD0 Tree Wall Left
+    2300540: Straight Up LOD0 Tree Wall Right
+    2300542: Straight Up LOD0 Water Canal Left
+    2300544: Straight Up LOD0 Water Canal Right
+    2300546: Straight Up LOD1 Ad Fence Left
+    2300548: Straight Up LOD1 Ad Fence Right
+    2300550: Straight Up LOD1 Cliff Left
+    2300552: Straight Up LOD1 Cliff Right
+    2300554: Straight Up LOD1 Concrete Wall Left
+    2300556: Straight Up LOD1 Concrete Wall Right
+    2300558: Straight Up LOD1 Mountain Left
+    2300560: Straight Up LOD1 Mountain Right
+    2300562: Straight Up LOD1 Piano Left
+    2300564: Straight Up LOD1 Piano Right
+    2300566: Straight Up LOD1 Rail Guard Left
+    2300568: Straight Up LOD1 Rail Guard Right
+    2300570: Straight Up LOD1 Road
+    2300572: Straight Up LOD1 Road Collider
+    2300574: Straight Up LOD1 Road Mask
+    2300576: Straight Up LOD1 Terrain Left
+    2300578: Straight Up LOD1 Terrain Right
+    2300580: Straight Up LOD1 Tree Wall Left
+    2300582: Straight Up LOD1 Tree Wall Right
+    2300584: Straight Up LOD1 Water Canal Left
+    2300586: Straight Up LOD1 Water Canal Right
+    2300588: Straight Up LOD2 Ad Fence Left
+    2300590: Straight Up LOD2 Ad Fence Right
+    2300592: Straight Up LOD2 Cliff Left
+    2300594: Straight Up LOD2 Cliff Right
+    2300596: Straight Up LOD2 Concrete Wall Left
+    2300598: Straight Up LOD2 Concrete Wall Right
+    2300600: Straight Up LOD2 Mountain Left
+    2300602: Straight Up LOD2 Mountain Right
+    2300604: Straight Up LOD2 Piano Left
+    2300606: Straight Up LOD2 Piano Right
+    2300608: Straight Up LOD2 Rail Guard Left
+    2300610: Straight Up LOD2 Rail Guard Right
+    2300612: Straight Up LOD2 Road
+    2300614: Straight Up LOD2 Road Collider
+    2300616: Straight Up LOD2 Road Mask
+    2300618: Straight Up LOD2 Terrain Left
+    2300620: Straight Up LOD2 Terrain Right
+    2300622: Straight Up LOD2 Tree Wall Left
+    2300624: Straight Up LOD2 Tree Wall Right
+    2300626: Straight Up LOD2 Water Canal Left
+    2300628: Straight Up LOD2 Water Canal Right
+    2300630: Street Lamp Left
+    2300632: Street Lamp Right
+    2300634: Decoration LOD0 Street Lamp Left
+    2300636: Decoration LOD0 Street Lamp Right
+    2300638: Decoration LOD1 Street Lamp Left
+    2300640: Decoration LOD1 Street Lamp Right
+    2300642: Decoration LOD2 Street Lamp Left
+    2300644: Decoration LOD2 Street Lamp Right
+    2300646: Decoration_LOD0_Street_Lamp_Left
+    2300648: Decoration_LOD0_Street_Lamp_Right
+    2300650: Decoration_LOD1_Street_Lamp_Left
+    2300652: Decoration_LOD1_Street_Lamp_Right
+    2300654: Decoration_LOD2_Street_Lamp_Left
+    2300656: Decoration_LOD2_Street_Lamp_Right
+    2300658: Left_LOD0_Ad_Fence_Left
+    2300660: Left_LOD0_Ad_Fence_Right
+    2300662: Left_LOD0_Cliff_Left
+    2300664: Left_LOD0_Cliff_Right
+    2300666: Left_LOD0_Concrete_Wall_Left
+    2300668: Left_LOD0_Concrete_Wall_Right
+    2300670: Left_LOD0_Mountain_Left
+    2300672: Left_LOD0_Mountain_Right
+    2300674: Left_LOD0_Piano_Left
+    2300676: Left_LOD0_Piano_Right
+    2300678: Left_LOD0_Rail_Guard_Left
+    2300680: Left_LOD0_Rail_Guard_Right
+    2300682: Left_LOD0_Road
+    2300684: Left_LOD0_Road_Collider
+    2300686: Left_LOD0_Road_Mask
+    2300688: Left_LOD0_Terrain_Left
+    2300690: Left_LOD0_Terrain_Right
+    2300692: Left_LOD0_Tree_Wall_Left
+    2300694: Left_LOD0_Tree_Wall_Right
+    2300696: Left_LOD0_Water_Canal_Left
+    2300698: Left_LOD0_Water_Canal_Right
+    2300700: Left_LOD1_Ad_Fence_Left
+    2300702: Left_LOD1_Ad_Fence_Right
+    2300704: Left_LOD1_Cliff_Left
+    2300706: Left_LOD1_Cliff_Right
+    2300708: Left_LOD1_Concrete_Wall_Left
+    2300710: Left_LOD1_Concrete_Wall_Right
+    2300712: Left_LOD1_Mountain_Left
+    2300714: Left_LOD1_Mountain_Right
+    2300716: Left_LOD1_Piano_Left
+    2300718: Left_LOD1_Piano_Right
+    2300720: Left_LOD1_Rail_Guard_Left
+    2300722: Left_LOD1_Rail_Guard_Right
+    2300724: Left_LOD1_Road
+    2300726: Left_LOD1_Road_Collider
+    2300728: Left_LOD1_Road_Mask
+    2300730: Left_LOD1_Terrain_Left
+    2300732: Left_LOD1_Terrain_Right
+    2300734: Left_LOD1_Tree_Wall_Left
+    2300736: Left_LOD1_Tree_Wall_Right
+    2300738: Left_LOD1_Water_Canal_Left
+    2300740: Left_LOD1_Water_Canal_Right
+    2300742: Left_LOD2_Ad_Fence_Left
+    2300744: Left_LOD2_Ad_Fence_Right
+    2300746: Left_LOD2_Cliff_Left
+    2300748: Left_LOD2_Cliff_Right
+    2300750: Left_LOD2_Concrete_Wall_Left
+    2300752: Left_LOD2_Concrete_Wall_Right
+    2300754: Left_LOD2_Mountain_Left
+    2300756: Left_LOD2_Mountain_Right
+    2300758: Left_LOD2_Piano_Left
+    2300760: Left_LOD2_Piano_Right
+    2300762: Left_LOD2_Rail_Guard_Left
+    2300764: Left_LOD2_Rail_Guard_Right
+    2300766: Left_LOD2_Road
+    2300768: Left_LOD2_Road_Collider
+    2300770: Left_LOD2_Road_Mask
+    2300772: Left_LOD2_Terrain_Left
+    2300774: Left_LOD2_Terrain_Right
+    2300776: Left_LOD2_Tree_Wall_Left
+    2300778: Left_LOD2_Tree_Wall_Right
+    2300780: Left_LOD2_Water_Canal_Left
+    2300782: Left_LOD2_Water_Canal_Right
+    2300784: Right_LOD0_Ad_Fence_Left
+    2300786: Right_LOD0_Ad_Fence_Right
+    2300788: Right_LOD0_Cliff_Left
+    2300790: Right_LOD0_Cliff_Right
+    2300792: Right_LOD0_Concrete_Wall_Left
+    2300794: Right_LOD0_Concrete_Wall_Right
+    2300796: Right_LOD0_Mountain_Left
+    2300798: Right_LOD0_Mountain_Right
+    2300800: Right_LOD0_Piano_Left
+    2300802: Right_LOD0_Piano_Right
+    2300804: Right_LOD0_Rail_Guard_Left
+    2300806: Right_LOD0_Rail_Guard_Right
+    2300808: Right_LOD0_Road
+    2300810: Right_LOD0_Road_Collider
+    2300812: Right_LOD0_Road_Mask
+    2300814: Right_LOD0_Terrain_Left
+    2300816: Right_LOD0_Terrain_Right
+    2300818: Right_LOD0_Tree_Wall_Left
+    2300820: Right_LOD0_Tree_Wall_Right
+    2300822: Right_LOD0_Water_Canal_Left
+    2300824: Right_LOD0_Water_Canal_Right
+    2300826: Right_LOD1_Ad_Fence_Left
+    2300828: Right_LOD1_Ad_Fence_Right
+    2300830: Right_LOD1_Cliff_Left
+    2300832: Right_LOD1_Cliff_Right
+    2300834: Right_LOD1_Concrete_Wall_Left
+    2300836: Right_LOD1_Concrete_Wall_Right
+    2300838: Right_LOD1_Mountain_Left
+    2300840: Right_LOD1_Mountain_Right
+    2300842: Right_LOD1_Piano_Left
+    2300844: Right_LOD1_Piano_Right
+    2300846: Right_LOD1_Rail_Guard_Left
+    2300848: Right_LOD1_Rail_Guard_Right
+    2300850: Right_LOD1_Road
+    2300852: Right_LOD1_Road_Collider
+    2300854: Right_LOD1_Road_Mask
+    2300856: Right_LOD1_Terrain_Left
+    2300858: Right_LOD1_Terrain_Right
+    2300860: Right_LOD1_Tree_Wall_Left
+    2300862: Right_LOD1_Tree_Wall_Right
+    2300864: Right_LOD1_Water_Canal_Left
+    2300866: Right_LOD1_Water_Canal_Right
+    2300868: Right_LOD2_Ad_Fence_Left
+    2300870: Right_LOD2_Ad_Fence_Right
+    2300872: Right_LOD2_Cliff_Left
+    2300874: Right_LOD2_Cliff_Right
+    2300876: Right_LOD2_Concrete_Wall_Left
+    2300878: Right_LOD2_Concrete_Wall_Right
+    2300880: Right_LOD2_Mountain_Left
+    2300882: Right_LOD2_Mountain_Right
+    2300884: Right_LOD2_Piano_Left
+    2300886: Right_LOD2_Piano_Right
+    2300888: Right_LOD2_Rail_Guard_Left
+    2300890: Right_LOD2_Rail_Guard_Right
+    2300892: Right_LOD2_Road
+    2300894: Right_LOD2_Road_Collider
+    2300896: Right_LOD2_Road_Mask
+    2300898: Right_LOD2_Terrain_Left
+    2300900: Right_LOD2_Terrain_Right
+    2300902: Right_LOD2_Tree_Wall_Left
+    2300904: Right_LOD2_Tree_Wall_Right
+    2300906: Right_LOD2_Water_Canal_Left
+    2300908: Right_LOD2_Water_Canal_Right
+    2300910: Straight_Down_LOD0_Ad_Fence_Left
+    2300912: Straight_Down_LOD0_Ad_Fence_Right
+    2300914: Straight_Down_LOD0_Cliff_Left
+    2300916: Straight_Down_LOD0_Cliff_Right
+    2300918: Straight_Down_LOD0_Concrete_Wall_Left
+    2300920: Straight_Down_LOD0_Concrete_Wall_Right
+    2300922: Straight_Down_LOD0_Mountain_Left
+    2300924: Straight_Down_LOD0_Mountain_Right
+    2300926: Straight_Down_LOD0_Piano_Left
+    2300928: Straight_Down_LOD0_Piano_Right
+    2300930: Straight_Down_LOD0_Rail_Guard_Left
+    2300932: Straight_Down_LOD0_Rail_Guard_Right
+    2300934: Straight_Down_LOD0_Road
+    2300936: Straight_Down_LOD0_Road_Collider
+    2300938: Straight_Down_LOD0_Road_Mask
+    2300940: Straight_Down_LOD0_Terrain_Left
+    2300942: Straight_Down_LOD0_Terrain_Right
+    2300944: Straight_Down_LOD0_Tree_Wall_Left
+    2300946: Straight_Down_LOD0_Tree_Wall_Right
+    2300948: Straight_Down_LOD0_Water_Canal_Left
+    2300950: Straight_Down_LOD0_Water_Canal_Right
+    2300952: Straight_Down_LOD1_Ad_Fence_Left
+    2300954: Straight_Down_LOD1_Ad_Fence_Right
+    2300956: Straight_Down_LOD1_Cliff_Left
+    2300958: Straight_Down_LOD1_Cliff_Right
+    2300960: Straight_Down_LOD1_Concrete_Wall_Left
+    2300962: Straight_Down_LOD1_Concrete_Wall_Right
+    2300964: Straight_Down_LOD1_Mountain_Left
+    2300966: Straight_Down_LOD1_Mountain_Right
+    2300968: Straight_Down_LOD1_Piano_Left
+    2300970: Straight_Down_LOD1_Piano_Right
+    2300972: Straight_Down_LOD1_Rail_Guard_Left
+    2300974: Straight_Down_LOD1_Rail_Guard_Right
+    2300976: Straight_Down_LOD1_Road
+    2300978: Straight_Down_LOD1_Road_Collider
+    2300980: Straight_Down_LOD1_Road_Mask
+    2300982: Straight_Down_LOD1_Terrain_Left
+    2300984: Straight_Down_LOD1_Terrain_Right
+    2300986: Straight_Down_LOD1_Tree_Wall_Left
+    2300988: Straight_Down_LOD1_Tree_Wall_Right
+    2300990: Straight_Down_LOD1_Water_Canal_Left
+    2300992: Straight_Down_LOD1_Water_Canal_Right
+    2300994: Straight_Down_LOD2_Ad_Fence_Left
+    2300996: Straight_Down_LOD2_Ad_Fence_Right
+    2300998: Straight_Down_LOD2_Cliff_Left
+    2301000: Straight_Down_LOD2_Cliff_Right
+    2301002: Straight_Down_LOD2_Concrete_Wall_Left
+    2301004: Straight_Down_LOD2_Concrete_Wall_Right
+    2301006: Straight_Down_LOD2_Mountain_Left
+    2301008: Straight_Down_LOD2_Mountain_Right
+    2301010: Straight_Down_LOD2_Piano_Left
+    2301012: Straight_Down_LOD2_Piano_Right
+    2301014: Straight_Down_LOD2_Rail_Guard_Left
+    2301016: Straight_Down_LOD2_Rail_Guard_Right
+    2301018: Straight_Down_LOD2_Road
+    2301020: Straight_Down_LOD2_Road_Collider
+    2301022: Straight_Down_LOD2_Road_Mask
+    2301024: Straight_Down_LOD2_Terrain_Left
+    2301026: Straight_Down_LOD2_Terrain_Right
+    2301028: Straight_Down_LOD2_Tree_Wall_Left
+    2301030: Straight_Down_LOD2_Tree_Wall_Right
+    2301032: Straight_Down_LOD2_Water_Canal_Left
+    2301034: Straight_Down_LOD2_Water_Canal_Right
+    2301036: Straight_LOD0_Ad_Fence_Left
+    2301038: Straight_LOD0_Ad_Fence_Right
+    2301040: Straight_LOD0_Cliff_Left
+    2301042: Straight_LOD0_Cliff_Right
+    2301044: Straight_LOD0_Concrete_Wall_Left
+    2301046: Straight_LOD0_Concrete_Wall_Right
+    2301048: Straight_LOD0_Mountain_Left
+    2301050: Straight_LOD0_Mountain_Right
+    2301052: Straight_LOD0_Piano_Left
+    2301054: Straight_LOD0_Piano_Right
+    2301056: Straight_LOD0_Rail_Guard_Left
+    2301058: Straight_LOD0_Rail_Guard_Right
+    2301060: Straight_LOD0_Road
+    2301062: Straight_LOD0_Road_Collider
+    2301064: Straight_LOD0_Road_Mask
+    2301066: Straight_LOD0_Terrain_Left
+    2301068: Straight_LOD0_Terrain_Right
+    2301070: Straight_LOD0_Tree_Wall_Left
+    2301072: Straight_LOD0_Tree_Wall_Right
+    2301074: Straight_LOD0_Water_Canal_Left
+    2301076: Straight_LOD0_Water_Canal_Right
+    2301078: Straight_LOD1_Ad_Fence_Left
+    2301080: Straight_LOD1_Ad_Fence_Right
+    2301082: Straight_LOD1_Cliff_Left
+    2301084: Straight_LOD1_Cliff_Right
+    2301086: Straight_LOD1_Concrete_Wall_Left
+    2301088: Straight_LOD1_Concrete_Wall_Right
+    2301090: Straight_LOD1_Mountain_Left
+    2301092: Straight_LOD1_Mountain_Right
+    2301094: Straight_LOD1_Piano_Left
+    2301096: Straight_LOD1_Piano_Right
+    2301098: Straight_LOD1_Rail_Guard_Left
+    2301100: Straight_LOD1_Rail_Guard_Right
+    2301102: Straight_LOD1_Road
+    2301104: Straight_LOD1_Road_Collider
+    2301106: Straight_LOD1_Road_Mask
+    2301108: Straight_LOD1_Terrain_Left
+    2301110: Straight_LOD1_Terrain_Right
+    2301112: Straight_LOD1_Tree_Wall_Left
+    2301114: Straight_LOD1_Tree_Wall_Right
+    2301116: Straight_LOD1_Water_Canal_Left
+    2301118: Straight_LOD1_Water_Canal_Right
+    2301120: Straight_LOD2_Ad_Fence_Left
+    2301122: Straight_LOD2_Ad_Fence_Right
+    2301124: Straight_LOD2_Cliff_Left
+    2301126: Straight_LOD2_Cliff_Right
+    2301128: Straight_LOD2_Concrete_Wall_Left
+    2301130: Straight_LOD2_Concrete_Wall_Right
+    2301132: Straight_LOD2_Mountain_Left
+    2301134: Straight_LOD2_Mountain_Right
+    2301136: Straight_LOD2_Piano_Left
+    2301138: Straight_LOD2_Piano_Right
+    2301140: Straight_LOD2_Rail_Guard_Left
+    2301142: Straight_LOD2_Rail_Guard_Right
+    2301144: Straight_LOD2_Road
+    2301146: Straight_LOD2_Road_Collider
+    2301148: Straight_LOD2_Road_Mask
+    2301150: Straight_LOD2_Terrain_Left
+    2301152: Straight_LOD2_Terrain_Right
+    2301154: Straight_LOD2_Tree_Wall_Left
+    2301156: Straight_LOD2_Tree_Wall_Right
+    2301158: Straight_LOD2_Water_Canal_Left
+    2301160: Straight_LOD2_Water_Canal_Right
+    2301162: Straight_Up_LOD0_Ad_Fence_Left
+    2301164: Straight_Up_LOD0_Ad_Fence_Right
+    2301166: Straight_Up_LOD0_Cliff_Left
+    2301168: Straight_Up_LOD0_Cliff_Right
+    2301170: Straight_Up_LOD0_Concrete_Wall_Left
+    2301172: Straight_Up_LOD0_Concrete_Wall_Right
+    2301174: Straight_Up_LOD0_Mountain_Left
+    2301176: Straight_Up_LOD0_Mountain_Right
+    2301178: Straight_Up_LOD0_Piano_Left
+    2301180: Straight_Up_LOD0_Piano_Right
+    2301182: Straight_Up_LOD0_Rail_Guard_Left
+    2301184: Straight_Up_LOD0_Rail_Guard_Right
+    2301186: Straight_Up_LOD0_Road
+    2301188: Straight_Up_LOD0_Road_Collider
+    2301190: Straight_Up_LOD0_Road_Mask
+    2301192: Straight_Up_LOD0_Terrain_Left
+    2301194: Straight_Up_LOD0_Terrain_Right
+    2301196: Straight_Up_LOD0_Tree_Wall_Left
+    2301198: Straight_Up_LOD0_Tree_Wall_Right
+    2301200: Straight_Up_LOD0_Water_Canal_Left
+    2301202: Straight_Up_LOD0_Water_Canal_Right
+    2301204: Straight_Up_LOD1_Ad_Fence_Left
+    2301206: Straight_Up_LOD1_Ad_Fence_Right
+    2301208: Straight_Up_LOD1_Cliff_Left
+    2301210: Straight_Up_LOD1_Cliff_Right
+    2301212: Straight_Up_LOD1_Concrete_Wall_Left
+    2301214: Straight_Up_LOD1_Concrete_Wall_Right
+    2301216: Straight_Up_LOD1_Mountain_Left
+    2301218: Straight_Up_LOD1_Mountain_Right
+    2301220: Straight_Up_LOD1_Piano_Left
+    2301222: Straight_Up_LOD1_Piano_Right
+    2301224: Straight_Up_LOD1_Rail_Guard_Left
+    2301226: Straight_Up_LOD1_Rail_Guard_Right
+    2301228: Straight_Up_LOD1_Road
+    2301230: Straight_Up_LOD1_Road_Collider
+    2301232: Straight_Up_LOD1_Road_Mask
+    2301234: Straight_Up_LOD1_Terrain_Left
+    2301236: Straight_Up_LOD1_Terrain_Right
+    2301238: Straight_Up_LOD1_Tree_Wall_Left
+    2301240: Straight_Up_LOD1_Tree_Wall_Right
+    2301242: Straight_Up_LOD1_Water_Canal_Left
+    2301244: Straight_Up_LOD1_Water_Canal_Right
+    2301246: Straight_Up_LOD2_Ad_Fence_Left
+    2301248: Straight_Up_LOD2_Ad_Fence_Right
+    2301250: Straight_Up_LOD2_Cliff_Left
+    2301252: Straight_Up_LOD2_Cliff_Right
+    2301254: Straight_Up_LOD2_Concrete_Wall_Left
+    2301256: Straight_Up_LOD2_Concrete_Wall_Right
+    2301258: Straight_Up_LOD2_Mountain_Left
+    2301260: Straight_Up_LOD2_Mountain_Right
+    2301262: Straight_Up_LOD2_Piano_Left
+    2301264: Straight_Up_LOD2_Piano_Right
+    2301266: Straight_Up_LOD2_Rail_Guard_Left
+    2301268: Straight_Up_LOD2_Rail_Guard_Right
+    2301270: Straight_Up_LOD2_Road
+    2301272: Straight_Up_LOD2_Road_Collider
+    2301274: Straight_Up_LOD2_Road_Mask
+    2301276: Straight_Up_LOD2_Terrain_Left
+    2301278: Straight_Up_LOD2_Terrain_Right
+    2301280: Straight_Up_LOD2_Tree_Wall_Left
+    2301282: Straight_Up_LOD2_Tree_Wall_Right
+    2301284: Straight_Up_LOD2_Water_Canal_Left
+    2301286: Straight_Up_LOD2_Water_Canal_Right
+    3300000: Left LOD0 Ad Fence Left
+    3300002: Left LOD0 Ad Fence Right
+    3300004: Left LOD0 Cliff Left
+    3300006: Left LOD0 Cliff Right
+    3300008: Left LOD0 Concrete Wall Left
+    3300010: Left LOD0 Concrete Wall Right
+    3300012: Left LOD0 Mountain Left
+    3300014: Left LOD0 Mountain Right
+    3300016: Left LOD0 Piano Left
+    3300018: Left LOD0 Piano Right
+    3300020: Left LOD0 Rail Guard Left
+    3300022: Left LOD0 Rail Guard Right
+    3300024: Left LOD0 Road
+    3300026: Left LOD0 Road Collider
+    3300028: Left LOD0 Road Mask
+    3300030: Left LOD0 Terrain Left
+    3300032: Left LOD0 Terrain Right
+    3300034: Left LOD0 Tree Wall Left
+    3300036: Left LOD0 Tree Wall Right
+    3300038: Left LOD0 Water Canal Left
+    3300040: Left LOD0 Water Canal Right
+    3300042: Left LOD1 Ad Fence Left
+    3300044: Left LOD1 Ad Fence Right
+    3300046: Left LOD1 Cliff Left
+    3300048: Left LOD1 Cliff Right
+    3300050: Left LOD1 Concrete Wall Left
+    3300052: Left LOD1 Concrete Wall Right
+    3300054: Left LOD1 Mountain Left
+    3300056: Left LOD1 Mountain Right
+    3300058: Left LOD1 Piano Left
+    3300060: Left LOD1 Piano Right
+    3300062: Left LOD1 Rail Guard Left
+    3300064: Left LOD1 Rail Guard Right
+    3300066: Left LOD1 Road
+    3300068: Left LOD1 Road Collider
+    3300070: Left LOD1 Road Mask
+    3300072: Left LOD1 Terrain Left
+    3300074: Left LOD1 Terrain Right
+    3300076: Left LOD1 Tree Wall Left
+    3300078: Left LOD1 Tree Wall Right
+    3300080: Left LOD1 Water Canal Left
+    3300082: Left LOD1 Water Canal Right
+    3300084: Left LOD2 Ad Fence Left
+    3300086: Left LOD2 Ad Fence Right
+    3300088: Left LOD2 Cliff Left
+    3300090: Left LOD2 Cliff Right
+    3300092: Left LOD2 Concrete Wall Left
+    3300094: Left LOD2 Concrete Wall Right
+    3300096: Left LOD2 Mountain Left
+    3300098: Left LOD2 Mountain Right
+    3300100: Left LOD2 Piano Left
+    3300102: Left LOD2 Piano Right
+    3300104: Left LOD2 Rail Guard Left
+    3300106: Left LOD2 Rail Guard Right
+    3300108: Left LOD2 Road
+    3300110: Left LOD2 Road Collider
+    3300112: Left LOD2 Road Mask
+    3300114: Left LOD2 Terrain Left
+    3300116: Left LOD2 Terrain Right
+    3300118: Left LOD2 Tree Wall Left
+    3300120: Left LOD2 Tree Wall Right
+    3300122: Left LOD2 Water Canal Left
+    3300124: Left LOD2 Water Canal Right
+    3300126: Right LOD0 Ad Fence Left
+    3300128: Right LOD0 Ad Fence Right
+    3300130: Right LOD0 Cliff Left
+    3300132: Right LOD0 Cliff Right
+    3300134: Right LOD0 Concrete Wall Left
+    3300136: Right LOD0 Concrete Wall Right
+    3300138: Right LOD0 Mountain Left
+    3300140: Right LOD0 Mountain Right
+    3300142: Right LOD0 Piano Left
+    3300144: Right LOD0 Piano Right
+    3300146: Right LOD0 Rail Guard Left
+    3300148: Right LOD0 Rail Guard Right
+    3300150: Right LOD0 Road
+    3300152: Right LOD0 Road Collider
+    3300154: Right LOD0 Road Mask
+    3300156: Right LOD0 Terrain Left
+    3300158: Right LOD0 Terrain Right
+    3300160: Right LOD0 Tree Wall Left
+    3300162: Right LOD0 Tree Wall Right
+    3300164: Right LOD0 Water Canal Left
+    3300166: Right LOD0 Water Canal Right
+    3300168: Right LOD1 Ad Fence Left
+    3300170: Right LOD1 Ad Fence Right
+    3300172: Right LOD1 Cliff Left
+    3300174: Right LOD1 Cliff Right
+    3300176: Right LOD1 Concrete Wall Left
+    3300178: Right LOD1 Concrete Wall Right
+    3300180: Right LOD1 Mountain Left
+    3300182: Right LOD1 Mountain Right
+    3300184: Right LOD1 Piano Left
+    3300186: Right LOD1 Piano Right
+    3300188: Right LOD1 Rail Guard Left
+    3300190: Right LOD1 Rail Guard Right
+    3300192: Right LOD1 Road
+    3300194: Right LOD1 Road Collider
+    3300196: Right LOD1 Road Mask
+    3300198: Right LOD1 Terrain Left
+    3300200: Right LOD1 Terrain Right
+    3300202: Right LOD1 Tree Wall Left
+    3300204: Right LOD1 Tree Wall Right
+    3300206: Right LOD1 Water Canal Left
+    3300208: Right LOD1 Water Canal Right
+    3300210: Right LOD2 Ad Fence Left
+    3300212: Right LOD2 Ad Fence Right
+    3300214: Right LOD2 Cliff Left
+    3300216: Right LOD2 Cliff Right
+    3300218: Right LOD2 Concrete Wall Left
+    3300220: Right LOD2 Concrete Wall Right
+    3300222: Right LOD2 Mountain Left
+    3300224: Right LOD2 Mountain Right
+    3300226: Right LOD2 Piano Left
+    3300228: Right LOD2 Piano Right
+    3300230: Right LOD2 Rail Guard Left
+    3300232: Right LOD2 Rail Guard Right
+    3300234: Right LOD2 Road
+    3300236: Right LOD2 Road Collider
+    3300238: Right LOD2 Road Mask
+    3300240: Right LOD2 Terrain Left
+    3300242: Right LOD2 Terrain Right
+    3300244: Right LOD2 Tree Wall Left
+    3300246: Right LOD2 Tree Wall Right
+    3300248: Right LOD2 Water Canal Left
+    3300250: Right LOD2 Water Canal Right
+    3300252: Straight Down LOD0 Ad Fence Left
+    3300254: Straight Down LOD0 Ad Fence Right
+    3300256: Straight Down LOD0 Cliff Left
+    3300258: Straight Down LOD0 Cliff Right
+    3300260: Straight Down LOD0 Concrete Wall Left
+    3300262: Straight Down LOD0 Concrete Wall Right
+    3300264: Straight Down LOD0 Mountain Left
+    3300266: Straight Down LOD0 Mountain Right
+    3300268: Straight Down LOD0 Piano Left
+    3300270: Straight Down LOD0 Piano Right
+    3300272: Straight Down LOD0 Rail Guard Left
+    3300274: Straight Down LOD0 Rail Guard Right
+    3300276: Straight Down LOD0 Road
+    3300278: Straight Down LOD0 Road Collider
+    3300280: Straight Down LOD0 Road Mask
+    3300282: Straight Down LOD0 Terrain Left
+    3300284: Straight Down LOD0 Terrain Right
+    3300286: Straight Down LOD0 Tree Wall Left
+    3300288: Straight Down LOD0 Tree Wall Right
+    3300290: Straight Down LOD0 Water Canal Left
+    3300292: Straight Down LOD0 Water Canal Right
+    3300294: Straight Down LOD1 Ad Fence Left
+    3300296: Straight Down LOD1 Ad Fence Right
+    3300298: Straight Down LOD1 Cliff Left
+    3300300: Straight Down LOD1 Cliff Right
+    3300302: Straight Down LOD1 Concrete Wall Left
+    3300304: Straight Down LOD1 Concrete Wall Right
+    3300306: Straight Down LOD1 Mountain Left
+    3300308: Straight Down LOD1 Mountain Right
+    3300310: Straight Down LOD1 Piano Left
+    3300312: Straight Down LOD1 Piano Right
+    3300314: Straight Down LOD1 Rail Guard Left
+    3300316: Straight Down LOD1 Rail Guard Right
+    3300318: Straight Down LOD1 Road
+    3300320: Straight Down LOD1 Road Collider
+    3300322: Straight Down LOD1 Road Mask
+    3300324: Straight Down LOD1 Terrain Left
+    3300326: Straight Down LOD1 Terrain Right
+    3300328: Straight Down LOD1 Tree Wall Left
+    3300330: Straight Down LOD1 Tree Wall Right
+    3300332: Straight Down LOD1 Water Canal Left
+    3300334: Straight Down LOD1 Water Canal Right
+    3300336: Straight Down LOD2 Ad Fence Left
+    3300338: Straight Down LOD2 Ad Fence Right
+    3300340: Straight Down LOD2 Cliff Left
+    3300342: Straight Down LOD2 Cliff Right
+    3300344: Straight Down LOD2 Concrete Wall Left
+    3300346: Straight Down LOD2 Concrete Wall Right
+    3300348: Straight Down LOD2 Mountain Left
+    3300350: Straight Down LOD2 Mountain Right
+    3300352: Straight Down LOD2 Piano Left
+    3300354: Straight Down LOD2 Piano Right
+    3300356: Straight Down LOD2 Rail Guard Left
+    3300358: Straight Down LOD2 Rail Guard Right
+    3300360: Straight Down LOD2 Road
+    3300362: Straight Down LOD2 Road Collider
+    3300364: Straight Down LOD2 Road Mask
+    3300366: Straight Down LOD2 Terrain Left
+    3300368: Straight Down LOD2 Terrain Right
+    3300370: Straight Down LOD2 Tree Wall Left
+    3300372: Straight Down LOD2 Tree Wall Right
+    3300374: Straight Down LOD2 Water Canal Left
+    3300376: Straight Down LOD2 Water Canal Right
+    3300378: Straight LOD0 Ad Fence Left
+    3300380: Straight LOD0 Ad Fence Right
+    3300382: Straight LOD0 Cliff Left
+    3300384: Straight LOD0 Cliff Right
+    3300386: Straight LOD0 Concrete Wall Left
+    3300388: Straight LOD0 Concrete Wall Right
+    3300390: Straight LOD0 Mountain Left
+    3300392: Straight LOD0 Mountain Right
+    3300394: Straight LOD0 Piano Left
+    3300396: Straight LOD0 Piano Right
+    3300398: Straight LOD0 Rail Guard Left
+    3300400: Straight LOD0 Rail Guard Right
+    3300402: Straight LOD0 Road
+    3300404: Straight LOD0 Road Collider
+    3300406: Straight LOD0 Road Mask
+    3300408: Straight LOD0 Terrain Left
+    3300410: Straight LOD0 Terrain Right
+    3300412: Straight LOD0 Tree Wall Left
+    3300414: Straight LOD0 Tree Wall Right
+    3300416: Straight LOD0 Water Canal Left
+    3300418: Straight LOD0 Water Canal Right
+    3300420: Straight LOD1 Ad Fence Left
+    3300422: Straight LOD1 Ad Fence Right
+    3300424: Straight LOD1 Cliff Left
+    3300426: Straight LOD1 Cliff Right
+    3300428: Straight LOD1 Concrete Wall Left
+    3300430: Straight LOD1 Concrete Wall Right
+    3300432: Straight LOD1 Mountain Left
+    3300434: Straight LOD1 Mountain Right
+    3300436: Straight LOD1 Piano Left
+    3300438: Straight LOD1 Piano Right
+    3300440: Straight LOD1 Rail Guard Left
+    3300442: Straight LOD1 Rail Guard Right
+    3300444: Straight LOD1 Road
+    3300446: Straight LOD1 Road Collider
+    3300448: Straight LOD1 Road Mask
+    3300450: Straight LOD1 Terrain Left
+    3300452: Straight LOD1 Terrain Right
+    3300454: Straight LOD1 Tree Wall Left
+    3300456: Straight LOD1 Tree Wall Right
+    3300458: Straight LOD1 Water Canal Left
+    3300460: Straight LOD1 Water Canal Right
+    3300462: Straight LOD2 Ad Fence Left
+    3300464: Straight LOD2 Ad Fence Right
+    3300466: Straight LOD2 Cliff Left
+    3300468: Straight LOD2 Cliff Right
+    3300470: Straight LOD2 Concrete Wall Left
+    3300472: Straight LOD2 Concrete Wall Right
+    3300474: Straight LOD2 Mountain Left
+    3300476: Straight LOD2 Mountain Right
+    3300478: Straight LOD2 Piano Left
+    3300480: Straight LOD2 Piano Right
+    3300482: Straight LOD2 Rail Guard Left
+    3300484: Straight LOD2 Rail Guard Right
+    3300486: Straight LOD2 Road
+    3300488: Straight LOD2 Road Collider
+    3300490: Straight LOD2 Road Mask
+    3300492: Straight LOD2 Terrain Left
+    3300494: Straight LOD2 Terrain Right
+    3300496: Straight LOD2 Tree Wall Left
+    3300498: Straight LOD2 Tree Wall Right
+    3300500: Straight LOD2 Water Canal Left
+    3300502: Straight LOD2 Water Canal Right
+    3300504: Straight Up LOD0 Ad Fence Left
+    3300506: Straight Up LOD0 Ad Fence Right
+    3300508: Straight Up LOD0 Cliff Left
+    3300510: Straight Up LOD0 Cliff Right
+    3300512: Straight Up LOD0 Concrete Wall Left
+    3300514: Straight Up LOD0 Concrete Wall Right
+    3300516: Straight Up LOD0 Mountain Left
+    3300518: Straight Up LOD0 Mountain Right
+    3300520: Straight Up LOD0 Piano Left
+    3300522: Straight Up LOD0 Piano Right
+    3300524: Straight Up LOD0 Rail Guard Left
+    3300526: Straight Up LOD0 Rail Guard Right
+    3300528: Straight Up LOD0 Road
+    3300530: Straight Up LOD0 Road Collider
+    3300532: Straight Up LOD0 Road Mask
+    3300534: Straight Up LOD0 Terrain Left
+    3300536: Straight Up LOD0 Terrain Right
+    3300538: Straight Up LOD0 Tree Wall Left
+    3300540: Straight Up LOD0 Tree Wall Right
+    3300542: Straight Up LOD0 Water Canal Left
+    3300544: Straight Up LOD0 Water Canal Right
+    3300546: Straight Up LOD1 Ad Fence Left
+    3300548: Straight Up LOD1 Ad Fence Right
+    3300550: Straight Up LOD1 Cliff Left
+    3300552: Straight Up LOD1 Cliff Right
+    3300554: Straight Up LOD1 Concrete Wall Left
+    3300556: Straight Up LOD1 Concrete Wall Right
+    3300558: Straight Up LOD1 Mountain Left
+    3300560: Straight Up LOD1 Mountain Right
+    3300562: Straight Up LOD1 Piano Left
+    3300564: Straight Up LOD1 Piano Right
+    3300566: Straight Up LOD1 Rail Guard Left
+    3300568: Straight Up LOD1 Rail Guard Right
+    3300570: Straight Up LOD1 Road
+    3300572: Straight Up LOD1 Road Collider
+    3300574: Straight Up LOD1 Road Mask
+    3300576: Straight Up LOD1 Terrain Left
+    3300578: Straight Up LOD1 Terrain Right
+    3300580: Straight Up LOD1 Tree Wall Left
+    3300582: Straight Up LOD1 Tree Wall Right
+    3300584: Straight Up LOD1 Water Canal Left
+    3300586: Straight Up LOD1 Water Canal Right
+    3300588: Straight Up LOD2 Ad Fence Left
+    3300590: Straight Up LOD2 Ad Fence Right
+    3300592: Straight Up LOD2 Cliff Left
+    3300594: Straight Up LOD2 Cliff Right
+    3300596: Straight Up LOD2 Concrete Wall Left
+    3300598: Straight Up LOD2 Concrete Wall Right
+    3300600: Straight Up LOD2 Mountain Left
+    3300602: Straight Up LOD2 Mountain Right
+    3300604: Straight Up LOD2 Piano Left
+    3300606: Straight Up LOD2 Piano Right
+    3300608: Straight Up LOD2 Rail Guard Left
+    3300610: Straight Up LOD2 Rail Guard Right
+    3300612: Straight Up LOD2 Road
+    3300614: Straight Up LOD2 Road Collider
+    3300616: Straight Up LOD2 Road Mask
+    3300618: Straight Up LOD2 Terrain Left
+    3300620: Straight Up LOD2 Terrain Right
+    3300622: Straight Up LOD2 Tree Wall Left
+    3300624: Straight Up LOD2 Tree Wall Right
+    3300626: Straight Up LOD2 Water Canal Left
+    3300628: Straight Up LOD2 Water Canal Right
+    3300630: Street Lamp Left
+    3300632: Street Lamp Right
+    3300634: Decoration LOD0 Street Lamp Left
+    3300636: Decoration LOD0 Street Lamp Right
+    3300638: Decoration LOD1 Street Lamp Left
+    3300640: Decoration LOD1 Street Lamp Right
+    3300642: Decoration LOD2 Street Lamp Left
+    3300644: Decoration LOD2 Street Lamp Right
+    3300646: Decoration_LOD0_Street_Lamp_Left
+    3300648: Decoration_LOD0_Street_Lamp_Right
+    3300650: Decoration_LOD1_Street_Lamp_Left
+    3300652: Decoration_LOD1_Street_Lamp_Right
+    3300654: Decoration_LOD2_Street_Lamp_Left
+    3300656: Decoration_LOD2_Street_Lamp_Right
+    3300658: Left_LOD0_Ad_Fence_Left
+    3300660: Left_LOD0_Ad_Fence_Right
+    3300662: Left_LOD0_Cliff_Left
+    3300664: Left_LOD0_Cliff_Right
+    3300666: Left_LOD0_Concrete_Wall_Left
+    3300668: Left_LOD0_Concrete_Wall_Right
+    3300670: Left_LOD0_Mountain_Left
+    3300672: Left_LOD0_Mountain_Right
+    3300674: Left_LOD0_Piano_Left
+    3300676: Left_LOD0_Piano_Right
+    3300678: Left_LOD0_Rail_Guard_Left
+    3300680: Left_LOD0_Rail_Guard_Right
+    3300682: Left_LOD0_Road
+    3300684: Left_LOD0_Road_Collider
+    3300686: Left_LOD0_Road_Mask
+    3300688: Left_LOD0_Terrain_Left
+    3300690: Left_LOD0_Terrain_Right
+    3300692: Left_LOD0_Tree_Wall_Left
+    3300694: Left_LOD0_Tree_Wall_Right
+    3300696: Left_LOD0_Water_Canal_Left
+    3300698: Left_LOD0_Water_Canal_Right
+    3300700: Left_LOD1_Ad_Fence_Left
+    3300702: Left_LOD1_Ad_Fence_Right
+    3300704: Left_LOD1_Cliff_Left
+    3300706: Left_LOD1_Cliff_Right
+    3300708: Left_LOD1_Concrete_Wall_Left
+    3300710: Left_LOD1_Concrete_Wall_Right
+    3300712: Left_LOD1_Mountain_Left
+    3300714: Left_LOD1_Mountain_Right
+    3300716: Left_LOD1_Piano_Left
+    3300718: Left_LOD1_Piano_Right
+    3300720: Left_LOD1_Rail_Guard_Left
+    3300722: Left_LOD1_Rail_Guard_Right
+    3300724: Left_LOD1_Road
+    3300726: Left_LOD1_Road_Collider
+    3300728: Left_LOD1_Road_Mask
+    3300730: Left_LOD1_Terrain_Left
+    3300732: Left_LOD1_Terrain_Right
+    3300734: Left_LOD1_Tree_Wall_Left
+    3300736: Left_LOD1_Tree_Wall_Right
+    3300738: Left_LOD1_Water_Canal_Left
+    3300740: Left_LOD1_Water_Canal_Right
+    3300742: Left_LOD2_Ad_Fence_Left
+    3300744: Left_LOD2_Ad_Fence_Right
+    3300746: Left_LOD2_Cliff_Left
+    3300748: Left_LOD2_Cliff_Right
+    3300750: Left_LOD2_Concrete_Wall_Left
+    3300752: Left_LOD2_Concrete_Wall_Right
+    3300754: Left_LOD2_Mountain_Left
+    3300756: Left_LOD2_Mountain_Right
+    3300758: Left_LOD2_Piano_Left
+    3300760: Left_LOD2_Piano_Right
+    3300762: Left_LOD2_Rail_Guard_Left
+    3300764: Left_LOD2_Rail_Guard_Right
+    3300766: Left_LOD2_Road
+    3300768: Left_LOD2_Road_Collider
+    3300770: Left_LOD2_Road_Mask
+    3300772: Left_LOD2_Terrain_Left
+    3300774: Left_LOD2_Terrain_Right
+    3300776: Left_LOD2_Tree_Wall_Left
+    3300778: Left_LOD2_Tree_Wall_Right
+    3300780: Left_LOD2_Water_Canal_Left
+    3300782: Left_LOD2_Water_Canal_Right
+    3300784: Right_LOD0_Ad_Fence_Left
+    3300786: Right_LOD0_Ad_Fence_Right
+    3300788: Right_LOD0_Cliff_Left
+    3300790: Right_LOD0_Cliff_Right
+    3300792: Right_LOD0_Concrete_Wall_Left
+    3300794: Right_LOD0_Concrete_Wall_Right
+    3300796: Right_LOD0_Mountain_Left
+    3300798: Right_LOD0_Mountain_Right
+    3300800: Right_LOD0_Piano_Left
+    3300802: Right_LOD0_Piano_Right
+    3300804: Right_LOD0_Rail_Guard_Left
+    3300806: Right_LOD0_Rail_Guard_Right
+    3300808: Right_LOD0_Road
+    3300810: Right_LOD0_Road_Collider
+    3300812: Right_LOD0_Road_Mask
+    3300814: Right_LOD0_Terrain_Left
+    3300816: Right_LOD0_Terrain_Right
+    3300818: Right_LOD0_Tree_Wall_Left
+    3300820: Right_LOD0_Tree_Wall_Right
+    3300822: Right_LOD0_Water_Canal_Left
+    3300824: Right_LOD0_Water_Canal_Right
+    3300826: Right_LOD1_Ad_Fence_Left
+    3300828: Right_LOD1_Ad_Fence_Right
+    3300830: Right_LOD1_Cliff_Left
+    3300832: Right_LOD1_Cliff_Right
+    3300834: Right_LOD1_Concrete_Wall_Left
+    3300836: Right_LOD1_Concrete_Wall_Right
+    3300838: Right_LOD1_Mountain_Left
+    3300840: Right_LOD1_Mountain_Right
+    3300842: Right_LOD1_Piano_Left
+    3300844: Right_LOD1_Piano_Right
+    3300846: Right_LOD1_Rail_Guard_Left
+    3300848: Right_LOD1_Rail_Guard_Right
+    3300850: Right_LOD1_Road
+    3300852: Right_LOD1_Road_Collider
+    3300854: Right_LOD1_Road_Mask
+    3300856: Right_LOD1_Terrain_Left
+    3300858: Right_LOD1_Terrain_Right
+    3300860: Right_LOD1_Tree_Wall_Left
+    3300862: Right_LOD1_Tree_Wall_Right
+    3300864: Right_LOD1_Water_Canal_Left
+    3300866: Right_LOD1_Water_Canal_Right
+    3300868: Right_LOD2_Ad_Fence_Left
+    3300870: Right_LOD2_Ad_Fence_Right
+    3300872: Right_LOD2_Cliff_Left
+    3300874: Right_LOD2_Cliff_Right
+    3300876: Right_LOD2_Concrete_Wall_Left
+    3300878: Right_LOD2_Concrete_Wall_Right
+    3300880: Right_LOD2_Mountain_Left
+    3300882: Right_LOD2_Mountain_Right
+    3300884: Right_LOD2_Piano_Left
+    3300886: Right_LOD2_Piano_Right
+    3300888: Right_LOD2_Rail_Guard_Left
+    3300890: Right_LOD2_Rail_Guard_Right
+    3300892: Right_LOD2_Road
+    3300894: Right_LOD2_Road_Collider
+    3300896: Right_LOD2_Road_Mask
+    3300898: Right_LOD2_Terrain_Left
+    3300900: Right_LOD2_Terrain_Right
+    3300902: Right_LOD2_Tree_Wall_Left
+    3300904: Right_LOD2_Tree_Wall_Right
+    3300906: Right_LOD2_Water_Canal_Left
+    3300908: Right_LOD2_Water_Canal_Right
+    3300910: Straight_Down_LOD0_Ad_Fence_Left
+    3300912: Straight_Down_LOD0_Ad_Fence_Right
+    3300914: Straight_Down_LOD0_Cliff_Left
+    3300916: Straight_Down_LOD0_Cliff_Right
+    3300918: Straight_Down_LOD0_Concrete_Wall_Left
+    3300920: Straight_Down_LOD0_Concrete_Wall_Right
+    3300922: Straight_Down_LOD0_Mountain_Left
+    3300924: Straight_Down_LOD0_Mountain_Right
+    3300926: Straight_Down_LOD0_Piano_Left
+    3300928: Straight_Down_LOD0_Piano_Right
+    3300930: Straight_Down_LOD0_Rail_Guard_Left
+    3300932: Straight_Down_LOD0_Rail_Guard_Right
+    3300934: Straight_Down_LOD0_Road
+    3300936: Straight_Down_LOD0_Road_Collider
+    3300938: Straight_Down_LOD0_Road_Mask
+    3300940: Straight_Down_LOD0_Terrain_Left
+    3300942: Straight_Down_LOD0_Terrain_Right
+    3300944: Straight_Down_LOD0_Tree_Wall_Left
+    3300946: Straight_Down_LOD0_Tree_Wall_Right
+    3300948: Straight_Down_LOD0_Water_Canal_Left
+    3300950: Straight_Down_LOD0_Water_Canal_Right
+    3300952: Straight_Down_LOD1_Ad_Fence_Left
+    3300954: Straight_Down_LOD1_Ad_Fence_Right
+    3300956: Straight_Down_LOD1_Cliff_Left
+    3300958: Straight_Down_LOD1_Cliff_Right
+    3300960: Straight_Down_LOD1_Concrete_Wall_Left
+    3300962: Straight_Down_LOD1_Concrete_Wall_Right
+    3300964: Straight_Down_LOD1_Mountain_Left
+    3300966: Straight_Down_LOD1_Mountain_Right
+    3300968: Straight_Down_LOD1_Piano_Left
+    3300970: Straight_Down_LOD1_Piano_Right
+    3300972: Straight_Down_LOD1_Rail_Guard_Left
+    3300974: Straight_Down_LOD1_Rail_Guard_Right
+    3300976: Straight_Down_LOD1_Road
+    3300978: Straight_Down_LOD1_Road_Collider
+    3300980: Straight_Down_LOD1_Road_Mask
+    3300982: Straight_Down_LOD1_Terrain_Left
+    3300984: Straight_Down_LOD1_Terrain_Right
+    3300986: Straight_Down_LOD1_Tree_Wall_Left
+    3300988: Straight_Down_LOD1_Tree_Wall_Right
+    3300990: Straight_Down_LOD1_Water_Canal_Left
+    3300992: Straight_Down_LOD1_Water_Canal_Right
+    3300994: Straight_Down_LOD2_Ad_Fence_Left
+    3300996: Straight_Down_LOD2_Ad_Fence_Right
+    3300998: Straight_Down_LOD2_Cliff_Left
+    3301000: Straight_Down_LOD2_Cliff_Right
+    3301002: Straight_Down_LOD2_Concrete_Wall_Left
+    3301004: Straight_Down_LOD2_Concrete_Wall_Right
+    3301006: Straight_Down_LOD2_Mountain_Left
+    3301008: Straight_Down_LOD2_Mountain_Right
+    3301010: Straight_Down_LOD2_Piano_Left
+    3301012: Straight_Down_LOD2_Piano_Right
+    3301014: Straight_Down_LOD2_Rail_Guard_Left
+    3301016: Straight_Down_LOD2_Rail_Guard_Right
+    3301018: Straight_Down_LOD2_Road
+    3301020: Straight_Down_LOD2_Road_Collider
+    3301022: Straight_Down_LOD2_Road_Mask
+    3301024: Straight_Down_LOD2_Terrain_Left
+    3301026: Straight_Down_LOD2_Terrain_Right
+    3301028: Straight_Down_LOD2_Tree_Wall_Left
+    3301030: Straight_Down_LOD2_Tree_Wall_Right
+    3301032: Straight_Down_LOD2_Water_Canal_Left
+    3301034: Straight_Down_LOD2_Water_Canal_Right
+    3301036: Straight_LOD0_Ad_Fence_Left
+    3301038: Straight_LOD0_Ad_Fence_Right
+    3301040: Straight_LOD0_Cliff_Left
+    3301042: Straight_LOD0_Cliff_Right
+    3301044: Straight_LOD0_Concrete_Wall_Left
+    3301046: Straight_LOD0_Concrete_Wall_Right
+    3301048: Straight_LOD0_Mountain_Left
+    3301050: Straight_LOD0_Mountain_Right
+    3301052: Straight_LOD0_Piano_Left
+    3301054: Straight_LOD0_Piano_Right
+    3301056: Straight_LOD0_Rail_Guard_Left
+    3301058: Straight_LOD0_Rail_Guard_Right
+    3301060: Straight_LOD0_Road
+    3301062: Straight_LOD0_Road_Collider
+    3301064: Straight_LOD0_Road_Mask
+    3301066: Straight_LOD0_Terrain_Left
+    3301068: Straight_LOD0_Terrain_Right
+    3301070: Straight_LOD0_Tree_Wall_Left
+    3301072: Straight_LOD0_Tree_Wall_Right
+    3301074: Straight_LOD0_Water_Canal_Left
+    3301076: Straight_LOD0_Water_Canal_Right
+    3301078: Straight_LOD1_Ad_Fence_Left
+    3301080: Straight_LOD1_Ad_Fence_Right
+    3301082: Straight_LOD1_Cliff_Left
+    3301084: Straight_LOD1_Cliff_Right
+    3301086: Straight_LOD1_Concrete_Wall_Left
+    3301088: Straight_LOD1_Concrete_Wall_Right
+    3301090: Straight_LOD1_Mountain_Left
+    3301092: Straight_LOD1_Mountain_Right
+    3301094: Straight_LOD1_Piano_Left
+    3301096: Straight_LOD1_Piano_Right
+    3301098: Straight_LOD1_Rail_Guard_Left
+    3301100: Straight_LOD1_Rail_Guard_Right
+    3301102: Straight_LOD1_Road
+    3301104: Straight_LOD1_Road_Collider
+    3301106: Straight_LOD1_Road_Mask
+    3301108: Straight_LOD1_Terrain_Left
+    3301110: Straight_LOD1_Terrain_Right
+    3301112: Straight_LOD1_Tree_Wall_Left
+    3301114: Straight_LOD1_Tree_Wall_Right
+    3301116: Straight_LOD1_Water_Canal_Left
+    3301118: Straight_LOD1_Water_Canal_Right
+    3301120: Straight_LOD2_Ad_Fence_Left
+    3301122: Straight_LOD2_Ad_Fence_Right
+    3301124: Straight_LOD2_Cliff_Left
+    3301126: Straight_LOD2_Cliff_Right
+    3301128: Straight_LOD2_Concrete_Wall_Left
+    3301130: Straight_LOD2_Concrete_Wall_Right
+    3301132: Straight_LOD2_Mountain_Left
+    3301134: Straight_LOD2_Mountain_Right
+    3301136: Straight_LOD2_Piano_Left
+    3301138: Straight_LOD2_Piano_Right
+    3301140: Straight_LOD2_Rail_Guard_Left
+    3301142: Straight_LOD2_Rail_Guard_Right
+    3301144: Straight_LOD2_Road
+    3301146: Straight_LOD2_Road_Collider
+    3301148: Straight_LOD2_Road_Mask
+    3301150: Straight_LOD2_Terrain_Left
+    3301152: Straight_LOD2_Terrain_Right
+    3301154: Straight_LOD2_Tree_Wall_Left
+    3301156: Straight_LOD2_Tree_Wall_Right
+    3301158: Straight_LOD2_Water_Canal_Left
+    3301160: Straight_LOD2_Water_Canal_Right
+    3301162: Straight_Up_LOD0_Ad_Fence_Left
+    3301164: Straight_Up_LOD0_Ad_Fence_Right
+    3301166: Straight_Up_LOD0_Cliff_Left
+    3301168: Straight_Up_LOD0_Cliff_Right
+    3301170: Straight_Up_LOD0_Concrete_Wall_Left
+    3301172: Straight_Up_LOD0_Concrete_Wall_Right
+    3301174: Straight_Up_LOD0_Mountain_Left
+    3301176: Straight_Up_LOD0_Mountain_Right
+    3301178: Straight_Up_LOD0_Piano_Left
+    3301180: Straight_Up_LOD0_Piano_Right
+    3301182: Straight_Up_LOD0_Rail_Guard_Left
+    3301184: Straight_Up_LOD0_Rail_Guard_Right
+    3301186: Straight_Up_LOD0_Road
+    3301188: Straight_Up_LOD0_Road_Collider
+    3301190: Straight_Up_LOD0_Road_Mask
+    3301192: Straight_Up_LOD0_Terrain_Left
+    3301194: Straight_Up_LOD0_Terrain_Right
+    3301196: Straight_Up_LOD0_Tree_Wall_Left
+    3301198: Straight_Up_LOD0_Tree_Wall_Right
+    3301200: Straight_Up_LOD0_Water_Canal_Left
+    3301202: Straight_Up_LOD0_Water_Canal_Right
+    3301204: Straight_Up_LOD1_Ad_Fence_Left
+    3301206: Straight_Up_LOD1_Ad_Fence_Right
+    3301208: Straight_Up_LOD1_Cliff_Left
+    3301210: Straight_Up_LOD1_Cliff_Right
+    3301212: Straight_Up_LOD1_Concrete_Wall_Left
+    3301214: Straight_Up_LOD1_Concrete_Wall_Right
+    3301216: Straight_Up_LOD1_Mountain_Left
+    3301218: Straight_Up_LOD1_Mountain_Right
+    3301220: Straight_Up_LOD1_Piano_Left
+    3301222: Straight_Up_LOD1_Piano_Right
+    3301224: Straight_Up_LOD1_Rail_Guard_Left
+    3301226: Straight_Up_LOD1_Rail_Guard_Right
+    3301228: Straight_Up_LOD1_Road
+    3301230: Straight_Up_LOD1_Road_Collider
+    3301232: Straight_Up_LOD1_Road_Mask
+    3301234: Straight_Up_LOD1_Terrain_Left
+    3301236: Straight_Up_LOD1_Terrain_Right
+    3301238: Straight_Up_LOD1_Tree_Wall_Left
+    3301240: Straight_Up_LOD1_Tree_Wall_Right
+    3301242: Straight_Up_LOD1_Water_Canal_Left
+    3301244: Straight_Up_LOD1_Water_Canal_Right
+    3301246: Straight_Up_LOD2_Ad_Fence_Left
+    3301248: Straight_Up_LOD2_Ad_Fence_Right
+    3301250: Straight_Up_LOD2_Cliff_Left
+    3301252: Straight_Up_LOD2_Cliff_Right
+    3301254: Straight_Up_LOD2_Concrete_Wall_Left
+    3301256: Straight_Up_LOD2_Concrete_Wall_Right
+    3301258: Straight_Up_LOD2_Mountain_Left
+    3301260: Straight_Up_LOD2_Mountain_Right
+    3301262: Straight_Up_LOD2_Piano_Left
+    3301264: Straight_Up_LOD2_Piano_Right
+    3301266: Straight_Up_LOD2_Rail_Guard_Left
+    3301268: Straight_Up_LOD2_Rail_Guard_Right
+    3301270: Straight_Up_LOD2_Road
+    3301272: Straight_Up_LOD2_Road_Collider
+    3301274: Straight_Up_LOD2_Road_Mask
+    3301276: Straight_Up_LOD2_Terrain_Left
+    3301278: Straight_Up_LOD2_Terrain_Right
+    3301280: Straight_Up_LOD2_Tree_Wall_Left
+    3301282: Straight_Up_LOD2_Tree_Wall_Right
+    3301284: Straight_Up_LOD2_Water_Canal_Left
+    3301286: Straight_Up_LOD2_Water_Canal_Right
+    4300000: Straight Down LOD2 Road Mask
+    4300002: Straight Down LOD2 Road Collider
+    4300004: Straight Down LOD2 Rail Guard Right
+    4300006: Straight Down LOD2 Rail Guard Left
+    4300008: Straight Down LOD2 Ad Fence Left
+    4300010: Straight Down LOD2 Ad Fence Right
+    4300012: Straight Down LOD2 Cliff Left
+    4300014: Straight Down LOD2 Cliff Right
+    4300016: Straight Down LOD2 Mountain Left
+    4300018: Straight Down LOD2 Mountain Right
+    4300020: Straight Down LOD2 Piano Left
+    4300022: Straight Down LOD2 Water Canal Right
+    4300024: Straight Down LOD2 Water Canal Left
+    4300026: Straight Down LOD2 Terrain Left
+    4300028: Straight Down LOD2 Terrain Right
+    4300030: Straight Down LOD2 Piano Right
+    4300032: Straight Down LOD2 Tree Wall Left
+    4300034: Straight Down LOD2 Tree Wall Right
+    4300036: Straight Down LOD2 Concrete Wall Left
+    4300038: Straight Down LOD2 Concrete Wall Right
+    4300040: Straight Down LOD2 Road
+    4300042: Straight Down LOD1 Road
+    4300044: Straight Down LOD1 Concrete Wall Right
+    4300046: Straight Down LOD1 Concrete Wall Left
+    4300048: Straight Down LOD1 Tree Wall Right
+    4300050: Straight Down LOD1 Tree Wall Left
+    4300052: Straight Down LOD1 Piano Right
+    4300054: Straight Down LOD1 Terrain Right
+    4300056: Straight Down LOD1 Terrain Left
+    4300058: Straight Down LOD1 Water Canal Left
+    4300060: Straight Down LOD1 Water Canal Right
+    4300062: Straight Down LOD1 Piano Left
+    4300064: Straight Down LOD1 Mountain Right
+    4300066: Straight Down LOD1 Mountain Left
+    4300068: Straight Down LOD1 Cliff Right
+    4300070: Straight Down LOD1 Cliff Left
+    4300072: Straight Down LOD1 Ad Fence Right
+    4300074: Straight Down LOD1 Ad Fence Left
+    4300076: Straight Down LOD1 Rail Guard Left
+    4300078: Straight Down LOD1 Rail Guard Right
+    4300080: Straight Down LOD1 Road Collider
+    4300082: Straight Down LOD1 Road Mask
+    4300084: Straight Down LOD0 Road Mask
+    4300086: Straight Down LOD0 Road Collider
+    4300088: Straight Down LOD0 Rail Guard Right
+    4300090: Straight Down LOD0 Rail Guard Left
+    4300092: Straight Down LOD0 Ad Fence Left
+    4300094: Straight Down LOD0 Ad Fence Right
+    4300096: Straight Down LOD0 Cliff Left
+    4300098: Straight Down LOD0 Cliff Right
+    4300100: Straight Down LOD0 Mountain Left
+    4300102: Straight Down LOD0 Mountain Right
+    4300104: Straight Down LOD0 Piano Left
+    4300106: Straight Down LOD0 Water Canal Right
+    4300108: Straight Down LOD0 Water Canal Left
+    4300110: Straight Down LOD0 Terrain Left
+    4300112: Straight Down LOD0 Terrain Right
+    4300114: Straight Down LOD0 Piano Right
+    4300116: Straight Down LOD0 Tree Wall Left
+    4300118: Straight Down LOD0 Tree Wall Right
+    4300120: Straight Down LOD0 Concrete Wall Left
+    4300122: Straight Down LOD0 Concrete Wall Right
+    4300124: Straight Down LOD0 Road
+    4300126: Straight Up LOD2 Road
+    4300128: Straight Up LOD2 Concrete Wall Right
+    4300130: Straight Up LOD2 Concrete Wall Left
+    4300132: Straight Up LOD2 Tree Wall Right
+    4300134: Straight Up LOD2 Tree Wall Left
+    4300136: Straight Up LOD2 Piano Right
+    4300138: Straight Up LOD2 Terrain Right
+    4300140: Straight Up LOD2 Terrain Left
+    4300142: Straight Up LOD2 Water Canal Left
+    4300144: Straight Up LOD2 Water Canal Right
+    4300146: Straight Up LOD2 Piano Left
+    4300148: Straight Up LOD2 Mountain Right
+    4300150: Straight Up LOD2 Mountain Left
+    4300152: Straight Up LOD2 Cliff Right
+    4300154: Straight Up LOD2 Cliff Left
+    4300156: Straight Up LOD2 Ad Fence Right
+    4300158: Straight Up LOD2 Ad Fence Left
+    4300160: Straight Up LOD2 Rail Guard Left
+    4300162: Straight Up LOD2 Rail Guard Right
+    4300164: Straight Up LOD2 Road Collider
+    4300166: Straight Up LOD2 Road Mask
+    4300168: Straight Up LOD1 Road Mask
+    4300170: Straight Up LOD1 Road Collider
+    4300172: Straight Up LOD1 Rail Guard Right
+    4300174: Straight Up LOD1 Rail Guard Left
+    4300176: Straight Up LOD1 Ad Fence Left
+    4300178: Straight Up LOD1 Ad Fence Right
+    4300180: Straight Up LOD1 Cliff Left
+    4300182: Straight Up LOD1 Cliff Right
+    4300184: Straight Up LOD1 Mountain Left
+    4300186: Straight Up LOD1 Mountain Right
+    4300188: Straight Up LOD1 Piano Left
+    4300190: Straight Up LOD1 Water Canal Right
+    4300192: Straight Up LOD1 Water Canal Left
+    4300194: Straight Up LOD1 Terrain Left
+    4300196: Straight Up LOD1 Terrain Right
+    4300198: Straight Up LOD1 Piano Right
+    4300200: Straight Up LOD1 Tree Wall Left
+    4300202: Straight Up LOD1 Tree Wall Right
+    4300204: Straight Up LOD1 Concrete Wall Left
+    4300206: Straight Up LOD1 Concrete Wall Right
+    4300208: Straight Up LOD1 Road
+    4300210: Straight Up LOD0 Road
+    4300212: Straight Up LOD0 Concrete Wall Right
+    4300214: Straight Up LOD0 Concrete Wall Left
+    4300216: Straight Up LOD0 Tree Wall Right
+    4300218: Straight Up LOD0 Tree Wall Left
+    4300220: Straight Up LOD0 Piano Right
+    4300222: Straight Up LOD0 Terrain Right
+    4300224: Straight Up LOD0 Terrain Left
+    4300226: Straight Up LOD0 Water Canal Left
+    4300228: Straight Up LOD0 Water Canal Right
+    4300230: Straight Up LOD0 Piano Left
+    4300232: Straight Up LOD0 Mountain Right
+    4300234: Straight Up LOD0 Mountain Left
+    4300236: Straight Up LOD0 Cliff Right
+    4300238: Straight Up LOD0 Cliff Left
+    4300240: Straight Up LOD0 Ad Fence Right
+    4300242: Straight Up LOD0 Ad Fence Left
+    4300244: Straight Up LOD0 Rail Guard Left
+    4300246: Straight Up LOD0 Rail Guard Right
+    4300248: Straight Up LOD0 Road Collider
+    4300250: Straight Up LOD0 Road Mask
+    4300252: Right LOD2 Road Mask
+    4300254: Right LOD2 Road Collider
+    4300256: Right LOD2 Rail Guard Right
+    4300258: Right LOD2 Rail Guard Left
+    4300260: Right LOD2 Ad Fence Left
+    4300262: Right LOD2 Ad Fence Right
+    4300264: Right LOD2 Cliff Left
+    4300266: Right LOD2 Cliff Right
+    4300268: Right LOD2 Mountain Left
+    4300270: Right LOD2 Mountain Right
+    4300272: Right LOD2 Piano Left
+    4300274: Right LOD2 Water Canal Right
+    4300276: Right LOD2 Water Canal Left
+    4300278: Right LOD2 Terrain Left
+    4300280: Right LOD2 Terrain Right
+    4300282: Right LOD2 Piano Right
+    4300284: Right LOD2 Tree Wall Left
+    4300286: Right LOD2 Tree Wall Right
+    4300288: Right LOD2 Concrete Wall Left
+    4300290: Right LOD2 Concrete Wall Right
+    4300292: Right LOD2 Road
+    4300294: Right LOD1 Road
+    4300296: Right LOD1 Concrete Wall Right
+    4300298: Right LOD1 Concrete Wall Left
+    4300300: Right LOD1 Tree Wall Right
+    4300302: Right LOD1 Tree Wall Left
+    4300304: Right LOD1 Piano Right
+    4300306: Right LOD1 Terrain Right
+    4300308: Right LOD1 Terrain Left
+    4300310: Right LOD1 Water Canal Left
+    4300312: Right LOD1 Water Canal Right
+    4300314: Right LOD1 Piano Left
+    4300316: Right LOD1 Mountain Right
+    4300318: Right LOD1 Mountain Left
+    4300320: Right LOD1 Cliff Right
+    4300322: Right LOD1 Cliff Left
+    4300324: Right LOD1 Ad Fence Right
+    4300326: Right LOD1 Ad Fence Left
+    4300328: Right LOD1 Rail Guard Left
+    4300330: Right LOD1 Rail Guard Right
+    4300332: Right LOD1 Road Collider
+    4300334: Right LOD1 Road Mask
+    4300336: Right LOD0 Road Mask
+    4300338: Right LOD0 Road Collider
+    4300340: Right LOD0 Rail Guard Right
+    4300342: Right LOD0 Rail Guard Left
+    4300344: Right LOD0 Ad Fence Left
+    4300346: Right LOD0 Ad Fence Right
+    4300348: Right LOD0 Cliff Left
+    4300350: Right LOD0 Cliff Right
+    4300352: Right LOD0 Mountain Left
+    4300354: Right LOD0 Mountain Right
+    4300356: Right LOD0 Piano Left
+    4300358: Right LOD0 Water Canal Right
+    4300360: Right LOD0 Water Canal Left
+    4300362: Right LOD0 Terrain Left
+    4300364: Right LOD0 Terrain Right
+    4300366: Right LOD0 Piano Right
+    4300368: Right LOD0 Tree Wall Left
+    4300370: Right LOD0 Tree Wall Right
+    4300372: Right LOD0 Concrete Wall Left
+    4300374: Right LOD0 Concrete Wall Right
+    4300376: Right LOD0 Road
+    4300378: Left LOD2 Road
+    4300380: Left LOD2 Concrete Wall Right
+    4300382: Left LOD2 Concrete Wall Left
+    4300384: Left LOD2 Tree Wall Right
+    4300386: Left LOD2 Tree Wall Left
+    4300388: Left LOD2 Piano Right
+    4300390: Left LOD2 Terrain Right
+    4300392: Left LOD2 Terrain Left
+    4300394: Left LOD2 Water Canal Left
+    4300396: Left LOD2 Water Canal Right
+    4300398: Left LOD2 Piano Left
+    4300400: Left LOD2 Mountain Right
+    4300402: Left LOD2 Mountain Left
+    4300404: Left LOD2 Cliff Right
+    4300406: Left LOD2 Cliff Left
+    4300408: Left LOD2 Ad Fence Right
+    4300410: Left LOD2 Ad Fence Left
+    4300412: Left LOD2 Rail Guard Left
+    4300414: Left LOD2 Rail Guard Right
+    4300416: Left LOD2 Road Collider
+    4300418: Left LOD2 Road Mask
+    4300420: Left LOD1 Road Mask
+    4300422: Left LOD1 Road Collider
+    4300424: Left LOD1 Rail Guard Right
+    4300426: Left LOD1 Rail Guard Left
+    4300428: Left LOD1 Ad Fence Left
+    4300430: Left LOD1 Ad Fence Right
+    4300432: Left LOD1 Cliff Left
+    4300434: Left LOD1 Cliff Right
+    4300436: Left LOD1 Mountain Left
+    4300438: Left LOD1 Mountain Right
+    4300440: Left LOD1 Piano Left
+    4300442: Left LOD1 Water Canal Right
+    4300444: Left LOD1 Water Canal Left
+    4300446: Left LOD1 Terrain Left
+    4300448: Left LOD1 Terrain Right
+    4300450: Left LOD1 Piano Right
+    4300452: Left LOD1 Tree Wall Left
+    4300454: Left LOD1 Tree Wall Right
+    4300456: Left LOD1 Concrete Wall Left
+    4300458: Left LOD1 Concrete Wall Right
+    4300460: Left LOD1 Road
+    4300462: Left LOD0 Road
+    4300464: Left LOD0 Concrete Wall Right
+    4300466: Left LOD0 Concrete Wall Left
+    4300468: Left LOD0 Tree Wall Right
+    4300470: Left LOD0 Tree Wall Left
+    4300472: Left LOD0 Piano Right
+    4300474: Left LOD0 Terrain Right
+    4300476: Left LOD0 Terrain Left
+    4300478: Left LOD0 Water Canal Left
+    4300480: Left LOD0 Water Canal Right
+    4300482: Left LOD0 Piano Left
+    4300484: Left LOD0 Mountain Right
+    4300486: Left LOD0 Mountain Left
+    4300488: Left LOD0 Cliff Right
+    4300490: Left LOD0 Cliff Left
+    4300492: Left LOD0 Ad Fence Right
+    4300494: Left LOD0 Ad Fence Left
+    4300496: Left LOD0 Rail Guard Left
+    4300498: Left LOD0 Rail Guard Right
+    4300500: Left LOD0 Road Collider
+    4300502: Left LOD0 Road Mask
+    4300504: Straight LOD0 Road Mask
+    4300506: Straight LOD0 Road Collider
+    4300508: Straight LOD0 Rail Guard Right
+    4300510: Straight LOD0 Rail Guard Left
+    4300512: Straight LOD0 Ad Fence Left
+    4300514: Straight LOD0 Ad Fence Right
+    4300516: Straight LOD0 Cliff Left
+    4300518: Straight LOD0 Cliff Right
+    4300520: Straight LOD0 Mountain Left
+    4300522: Straight LOD0 Mountain Right
+    4300524: Straight LOD0 Piano Left
+    4300526: Straight LOD0 Water Canal Right
+    4300528: Straight LOD0 Water Canal Left
+    4300530: Straight LOD0 Terrain Left
+    4300532: Straight LOD0 Terrain Right
+    4300534: Straight LOD0 Piano Right
+    4300536: Straight LOD0 Tree Wall Left
+    4300538: Straight LOD0 Tree Wall Right
+    4300540: Straight LOD0 Concrete Wall Left
+    4300542: Straight LOD0 Concrete Wall Right
+    4300544: Straight LOD0 Road
+    4300546: Straight LOD1 Road Mask
+    4300548: Straight LOD1 Road Collider
+    4300550: Straight LOD1 Rail Guard Right
+    4300552: Straight LOD1 Rail Guard Left
+    4300554: Straight LOD1 Ad Fence Left
+    4300556: Straight LOD1 Ad Fence Right
+    4300558: Straight LOD1 Cliff Left
+    4300560: Straight LOD1 Cliff Right
+    4300562: Straight LOD1 Mountain Left
+    4300564: Straight LOD1 Mountain Right
+    4300566: Straight LOD1 Piano Left
+    4300568: Straight LOD1 Water Canal Right
+    4300570: Straight LOD1 Water Canal Left
+    4300572: Straight LOD1 Terrain Left
+    4300574: Straight LOD1 Terrain Right
+    4300576: Straight LOD1 Piano Right
+    4300578: Straight LOD1 Tree Wall Left
+    4300580: Straight LOD1 Tree Wall Right
+    4300582: Straight LOD1 Concrete Wall Left
+    4300584: Straight LOD1 Concrete Wall Right
+    4300586: Straight LOD1 Road
+    4300588: Straight LOD2 Road Mask
+    4300590: Straight LOD2 Road Collider
+    4300592: Straight LOD2 Rail Guard Right
+    4300594: Straight LOD2 Rail Guard Left
+    4300596: Straight LOD2 Ad Fence Left
+    4300598: Straight LOD2 Ad Fence Right
+    4300600: Straight LOD2 Cliff Left
+    4300602: Straight LOD2 Cliff Right
+    4300604: Straight LOD2 Mountain Left
+    4300606: Straight LOD2 Mountain Right
+    4300608: Straight LOD2 Piano Left
+    4300610: Straight LOD2 Water Canal Right
+    4300612: Straight LOD2 Water Canal Left
+    4300614: Straight LOD2 Terrain Left
+    4300616: Straight LOD2 Terrain Right
+    4300618: Straight LOD2 Piano Right
+    4300620: Straight LOD2 Tree Wall Left
+    4300622: Straight LOD2 Tree Wall Right
+    4300624: Straight LOD2 Concrete Wall Left
+    4300626: Straight LOD2 Concrete Wall Right
+    4300628: Straight LOD2 Road
+    4300630: Street Lamp Right
+    4300632: Street Lamp Left
+    4300634: Decoration LOD2 Street Lamp Right
+    4300636: Decoration LOD2 Street Lamp Left
+    4300638: Decoration LOD1 Street Lamp Left
+    4300640: Decoration LOD1 Street Lamp Right
+    4300642: Decoration LOD0 Street Lamp Right
+    4300644: Decoration LOD0 Street Lamp Left
+    4300646: Decoration_LOD0_Street_Lamp_Left
+    4300648: Decoration_LOD1_Street_Lamp_Left
+    4300650: Decoration_LOD2_Street_Lamp_Left
+    4300652: Decoration_LOD2_Street_Lamp_Right
+    4300654: Decoration_LOD1_Street_Lamp_Right
+    4300656: Straight_Down_LOD2_Road_Mask
+    4300658: Straight_Down_LOD2_Road_Collider
+    4300660: Straight_Down_LOD2_Rail_Guard_Right
+    4300662: Straight_Down_LOD2_Rail_Guard_Left
+    4300664: Straight_Down_LOD2_Ad_Fence_Left
+    4300666: Straight_Down_LOD2_Ad_Fence_Right
+    4300668: Straight_Down_LOD2_Cliff_Left
+    4300670: Straight_Down_LOD2_Cliff_Right
+    4300672: Straight_Down_LOD2_Mountain_Left
+    4300674: Straight_Down_LOD2_Mountain_Right
+    4300676: Straight_Down_LOD2_Piano_Left
+    4300678: Straight_Down_LOD2_Water_Canal_Right
+    4300680: Straight_Down_LOD2_Water_Canal_Left
+    4300682: Straight_Down_LOD2_Terrain_Left
+    4300684: Straight_Down_LOD2_Terrain_Right
+    4300686: Straight_Down_LOD2_Piano_Right
+    4300688: Straight_Down_LOD2_Tree_Wall_Left
+    4300690: Straight_Down_LOD2_Tree_Wall_Right
+    4300692: Straight_Down_LOD2_Concrete_Wall_Left
+    4300694: Straight_Down_LOD2_Concrete_Wall_Right
+    4300696: Straight_Down_LOD2_Road
+    4300698: Straight_Down_LOD1_Road
+    4300700: Straight_Down_LOD1_Concrete_Wall_Right
+    4300702: Straight_Down_LOD1_Concrete_Wall_Left
+    4300704: Straight_Down_LOD1_Tree_Wall_Right
+    4300706: Straight_Down_LOD1_Tree_Wall_Left
+    4300708: Straight_Down_LOD1_Piano_Right
+    4300710: Straight_Down_LOD1_Terrain_Right
+    4300712: Straight_Down_LOD1_Terrain_Left
+    4300714: Straight_Down_LOD1_Water_Canal_Left
+    4300716: Straight_Down_LOD1_Water_Canal_Right
+    4300718: Straight_Down_LOD1_Piano_Left
+    4300720: Straight_Down_LOD1_Mountain_Right
+    4300722: Straight_Down_LOD1_Mountain_Left
+    4300724: Straight_Down_LOD1_Cliff_Right
+    4300726: Straight_Down_LOD1_Cliff_Left
+    4300728: Straight_Down_LOD1_Ad_Fence_Right
+    4300730: Straight_Down_LOD1_Ad_Fence_Left
+    4300732: Straight_Down_LOD1_Rail_Guard_Left
+    4300734: Straight_Down_LOD1_Rail_Guard_Right
+    4300736: Straight_Down_LOD1_Road_Collider
+    4300738: Straight_Down_LOD1_Road_Mask
+    4300740: Straight_Down_LOD0_Road_Mask
+    4300742: Straight_Down_LOD0_Road_Collider
+    4300744: Straight_Down_LOD0_Rail_Guard_Right
+    4300746: Straight_Down_LOD0_Rail_Guard_Left
+    4300748: Straight_Down_LOD0_Ad_Fence_Left
+    4300750: Straight_Down_LOD0_Ad_Fence_Right
+    4300752: Straight_Down_LOD0_Cliff_Left
+    4300754: Straight_Down_LOD0_Cliff_Right
+    4300756: Straight_Down_LOD0_Mountain_Left
+    4300758: Straight_Down_LOD0_Mountain_Right
+    4300760: Straight_Down_LOD0_Piano_Left
+    4300762: Straight_Down_LOD0_Water_Canal_Right
+    4300764: Straight_Down_LOD0_Water_Canal_Left
+    4300766: Straight_Down_LOD0_Terrain_Left
+    4300768: Straight_Down_LOD0_Terrain_Right
+    4300770: Straight_Down_LOD0_Piano_Right
+    4300772: Straight_Down_LOD0_Tree_Wall_Left
+    4300774: Straight_Down_LOD0_Tree_Wall_Right
+    4300776: Straight_Down_LOD0_Concrete_Wall_Left
+    4300778: Straight_Down_LOD0_Concrete_Wall_Right
+    4300780: Straight_Down_LOD0_Road
+    4300782: Straight_Up_LOD2_Road
+    4300784: Straight_Up_LOD2_Concrete_Wall_Right
+    4300786: Straight_Up_LOD2_Concrete_Wall_Left
+    4300788: Straight_Up_LOD2_Tree_Wall_Right
+    4300790: Straight_Up_LOD2_Tree_Wall_Left
+    4300792: Straight_Up_LOD2_Piano_Right
+    4300794: Straight_Up_LOD2_Terrain_Right
+    4300796: Straight_Up_LOD2_Terrain_Left
+    4300798: Straight_Up_LOD2_Water_Canal_Left
+    4300800: Straight_Up_LOD2_Water_Canal_Right
+    4300802: Straight_Up_LOD2_Piano_Left
+    4300804: Straight_Up_LOD2_Mountain_Right
+    4300806: Straight_Up_LOD2_Mountain_Left
+    4300808: Straight_Up_LOD2_Cliff_Right
+    4300810: Straight_Up_LOD2_Cliff_Left
+    4300812: Straight_Up_LOD2_Ad_Fence_Right
+    4300814: Straight_Up_LOD2_Ad_Fence_Left
+    4300816: Straight_Up_LOD2_Rail_Guard_Left
+    4300818: Straight_Up_LOD2_Rail_Guard_Right
+    4300820: Straight_Up_LOD2_Road_Collider
+    4300822: Straight_Up_LOD2_Road_Mask
+    4300824: Straight_Up_LOD1_Road_Mask
+    4300826: Straight_Up_LOD1_Road_Collider
+    4300828: Straight_Up_LOD1_Rail_Guard_Right
+    4300830: Straight_Up_LOD1_Rail_Guard_Left
+    4300832: Straight_Up_LOD1_Ad_Fence_Left
+    4300834: Straight_Up_LOD1_Ad_Fence_Right
+    4300836: Straight_Up_LOD1_Cliff_Left
+    4300838: Straight_Up_LOD1_Cliff_Right
+    4300840: Straight_Up_LOD1_Mountain_Left
+    4300842: Straight_Up_LOD1_Mountain_Right
+    4300844: Straight_Up_LOD1_Piano_Left
+    4300846: Straight_Up_LOD1_Water_Canal_Right
+    4300848: Straight_Up_LOD1_Water_Canal_Left
+    4300850: Straight_Up_LOD1_Terrain_Left
+    4300852: Straight_Up_LOD1_Terrain_Right
+    4300854: Straight_Up_LOD1_Piano_Right
+    4300856: Straight_Up_LOD1_Tree_Wall_Left
+    4300858: Straight_Up_LOD1_Tree_Wall_Right
+    4300860: Straight_Up_LOD1_Concrete_Wall_Left
+    4300862: Straight_Up_LOD1_Concrete_Wall_Right
+    4300864: Straight_Up_LOD1_Road
+    4300866: Straight_Up_LOD0_Road
+    4300868: Straight_Up_LOD0_Concrete_Wall_Right
+    4300870: Straight_Up_LOD0_Concrete_Wall_Left
+    4300872: Straight_Up_LOD0_Tree_Wall_Right
+    4300874: Straight_Up_LOD0_Tree_Wall_Left
+    4300876: Straight_Up_LOD0_Piano_Right
+    4300878: Straight_Up_LOD0_Terrain_Right
+    4300880: Straight_Up_LOD0_Terrain_Left
+    4300882: Straight_Up_LOD0_Water_Canal_Left
+    4300884: Straight_Up_LOD0_Water_Canal_Right
+    4300886: Straight_Up_LOD0_Piano_Left
+    4300888: Straight_Up_LOD0_Mountain_Right
+    4300890: Straight_Up_LOD0_Mountain_Left
+    4300892: Straight_Up_LOD0_Cliff_Right
+    4300894: Straight_Up_LOD0_Cliff_Left
+    4300896: Straight_Up_LOD0_Ad_Fence_Right
+    4300898: Straight_Up_LOD0_Ad_Fence_Left
+    4300900: Straight_Up_LOD0_Rail_Guard_Left
+    4300902: Straight_Up_LOD0_Rail_Guard_Right
+    4300904: Straight_Up_LOD0_Road_Collider
+    4300906: Straight_Up_LOD0_Road_Mask
+    4300908: Decoration_LOD0_Street_Lamp_Right
+    4300910: Straight_LOD0_Concrete_Wall_Left
+    4300912: Straight_LOD0_Tree_Wall_Left
+    4300914: Straight_LOD0_Piano_Left
+    4300916: Straight_LOD0_Terrain_Left
+    4300918: Straight_LOD0_Water_Canal_Left
+    4300920: Straight_LOD0_Mountain_Left
+    4300922: Straight_LOD0_Cliff_Left
+    4300924: Straight_LOD0_Ad_Fence_Left
+    4300926: Straight_LOD0_Rail_Guard_Left
+    4300928: Right_LOD2_Road_Mask
+    4300930: Right_LOD2_Road_Collider
+    4300932: Right_LOD2_Rail_Guard_Right
+    4300934: Right_LOD2_Rail_Guard_Left
+    4300936: Right_LOD2_Ad_Fence_Left
+    4300938: Right_LOD2_Ad_Fence_Right
+    4300940: Right_LOD2_Cliff_Left
+    4300942: Right_LOD2_Cliff_Right
+    4300944: Right_LOD2_Mountain_Left
+    4300946: Right_LOD2_Mountain_Right
+    4300948: Right_LOD2_Piano_Left
+    4300950: Right_LOD2_Water_Canal_Right
+    4300952: Right_LOD2_Water_Canal_Left
+    4300954: Right_LOD2_Terrain_Left
+    4300956: Right_LOD2_Terrain_Right
+    4300958: Right_LOD2_Piano_Right
+    4300960: Right_LOD2_Tree_Wall_Left
+    4300962: Right_LOD2_Tree_Wall_Right
+    4300964: Right_LOD2_Concrete_Wall_Left
+    4300966: Right_LOD2_Concrete_Wall_Right
+    4300968: Right_LOD2_Road
+    4300970: Right_LOD1_Road
+    4300972: Right_LOD1_Concrete_Wall_Right
+    4300974: Right_LOD1_Concrete_Wall_Left
+    4300976: Right_LOD1_Tree_Wall_Right
+    4300978: Right_LOD1_Tree_Wall_Left
+    4300980: Right_LOD1_Piano_Right
+    4300982: Right_LOD1_Terrain_Right
+    4300984: Right_LOD1_Terrain_Left
+    4300986: Right_LOD1_Water_Canal_Left
+    4300988: Right_LOD1_Water_Canal_Right
+    4300990: Right_LOD1_Piano_Left
+    4300992: Right_LOD1_Mountain_Right
+    4300994: Right_LOD1_Mountain_Left
+    4300996: Right_LOD1_Cliff_Right
+    4300998: Right_LOD1_Cliff_Left
+    4301000: Right_LOD1_Ad_Fence_Right
+    4301002: Right_LOD1_Ad_Fence_Left
+    4301004: Right_LOD1_Rail_Guard_Left
+    4301006: Right_LOD1_Rail_Guard_Right
+    4301008: Right_LOD1_Road_Collider
+    4301010: Right_LOD1_Road_Mask
+    4301012: Right_LOD0_Road_Mask
+    4301014: Right_LOD0_Road_Collider
+    4301016: Right_LOD0_Rail_Guard_Right
+    4301018: Right_LOD0_Rail_Guard_Left
+    4301020: Right_LOD0_Ad_Fence_Left
+    4301022: Right_LOD0_Ad_Fence_Right
+    4301024: Right_LOD0_Cliff_Left
+    4301026: Right_LOD0_Cliff_Right
+    4301028: Right_LOD0_Mountain_Left
+    4301030: Right_LOD0_Mountain_Right
+    4301032: Right_LOD0_Piano_Left
+    4301034: Right_LOD0_Water_Canal_Right
+    4301036: Right_LOD0_Water_Canal_Left
+    4301038: Right_LOD0_Terrain_Left
+    4301040: Right_LOD0_Terrain_Right
+    4301042: Right_LOD0_Piano_Right
+    4301044: Right_LOD0_Tree_Wall_Left
+    4301046: Right_LOD0_Tree_Wall_Right
+    4301048: Right_LOD0_Concrete_Wall_Left
+    4301050: Right_LOD0_Concrete_Wall_Right
+    4301052: Right_LOD0_Road
+    4301054: Left_LOD2_Road
+    4301056: Left_LOD2_Concrete_Wall_Right
+    4301058: Left_LOD2_Concrete_Wall_Left
+    4301060: Left_LOD2_Tree_Wall_Right
+    4301062: Left_LOD2_Tree_Wall_Left
+    4301064: Left_LOD2_Piano_Right
+    4301066: Left_LOD2_Terrain_Right
+    4301068: Left_LOD2_Terrain_Left
+    4301070: Left_LOD2_Water_Canal_Left
+    4301072: Left_LOD2_Water_Canal_Right
+    4301074: Left_LOD2_Piano_Left
+    4301076: Left_LOD2_Mountain_Right
+    4301078: Left_LOD2_Mountain_Left
+    4301080: Left_LOD2_Cliff_Right
+    4301082: Left_LOD2_Cliff_Left
+    4301084: Left_LOD2_Ad_Fence_Right
+    4301086: Left_LOD2_Ad_Fence_Left
+    4301088: Left_LOD2_Rail_Guard_Left
+    4301090: Left_LOD2_Rail_Guard_Right
+    4301092: Left_LOD2_Road_Collider
+    4301094: Left_LOD2_Road_Mask
+    4301096: Left_LOD1_Road_Mask
+    4301098: Left_LOD1_Road_Collider
+    4301100: Left_LOD1_Rail_Guard_Right
+    4301102: Left_LOD1_Rail_Guard_Left
+    4301104: Left_LOD1_Ad_Fence_Left
+    4301106: Left_LOD1_Ad_Fence_Right
+    4301108: Left_LOD1_Cliff_Left
+    4301110: Left_LOD1_Cliff_Right
+    4301112: Left_LOD1_Mountain_Left
+    4301114: Left_LOD1_Mountain_Right
+    4301116: Left_LOD1_Piano_Left
+    4301118: Left_LOD1_Water_Canal_Right
+    4301120: Left_LOD1_Water_Canal_Left
+    4301122: Left_LOD1_Terrain_Left
+    4301124: Left_LOD1_Terrain_Right
+    4301126: Left_LOD1_Piano_Right
+    4301128: Left_LOD1_Tree_Wall_Left
+    4301130: Left_LOD1_Tree_Wall_Right
+    4301132: Left_LOD1_Concrete_Wall_Left
+    4301134: Left_LOD1_Concrete_Wall_Right
+    4301136: Left_LOD1_Road
+    4301138: Left_LOD0_Road
+    4301140: Left_LOD0_Concrete_Wall_Right
+    4301142: Left_LOD0_Concrete_Wall_Left
+    4301144: Left_LOD0_Tree_Wall_Right
+    4301146: Left_LOD0_Tree_Wall_Left
+    4301148: Left_LOD0_Piano_Right
+    4301150: Left_LOD0_Terrain_Right
+    4301152: Left_LOD0_Terrain_Left
+    4301154: Left_LOD0_Water_Canal_Left
+    4301156: Left_LOD0_Water_Canal_Right
+    4301158: Left_LOD0_Piano_Left
+    4301160: Left_LOD0_Mountain_Right
+    4301162: Left_LOD0_Mountain_Left
+    4301164: Left_LOD0_Cliff_Right
+    4301166: Left_LOD0_Cliff_Left
+    4301168: Left_LOD0_Ad_Fence_Right
+    4301170: Left_LOD0_Ad_Fence_Left
+    4301172: Left_LOD0_Rail_Guard_Left
+    4301174: Left_LOD0_Rail_Guard_Right
+    4301176: Left_LOD0_Road_Collider
+    4301178: Left_LOD0_Road_Mask
+    4301180: Straight_LOD0_Road_Mask
+    4301182: Straight_LOD0_Road_Collider
+    4301184: Straight_LOD0_Rail_Guard_Right
+    4301186: Straight_LOD0_Ad_Fence_Right
+    4301188: Straight_LOD0_Cliff_Right
+    4301190: Straight_LOD0_Mountain_Right
+    4301192: Straight_LOD0_Water_Canal_Right
+    4301194: Straight_LOD0_Terrain_Right
+    4301196: Straight_LOD0_Piano_Right
+    4301198: Straight_LOD0_Tree_Wall_Right
+    4301200: Straight_LOD0_Concrete_Wall_Right
+    4301202: Straight_LOD0_Road
+    4301204: Straight_LOD1_Concrete_Wall_Left
+    4301206: Straight_LOD1_Tree_Wall_Left
+    4301208: Straight_LOD1_Piano_Left
+    4301210: Straight_LOD1_Terrain_Left
+    4301212: Straight_LOD1_Water_Canal_Left
+    4301214: Straight_LOD1_Mountain_Left
+    4301216: Straight_LOD1_Cliff_Left
+    4301218: Straight_LOD1_Ad_Fence_Left
+    4301220: Straight_LOD1_Rail_Guard_Left
+    4301222: Straight_LOD1_Road_Mask
+    4301224: Straight_LOD1_Road_Collider
+    4301226: Straight_LOD1_Rail_Guard_Right
+    4301228: Straight_LOD1_Ad_Fence_Right
+    4301230: Straight_LOD1_Cliff_Right
+    4301232: Straight_LOD1_Mountain_Right
+    4301234: Straight_LOD1_Water_Canal_Right
+    4301236: Straight_LOD1_Terrain_Right
+    4301238: Straight_LOD1_Piano_Right
+    4301240: Straight_LOD1_Tree_Wall_Right
+    4301242: Straight_LOD1_Concrete_Wall_Right
+    4301244: Straight_LOD1_Road
+    4301246: Straight_LOD2_Concrete_Wall_Left
+    4301248: Straight_LOD2_Tree_Wall_Left
+    4301250: Straight_LOD2_Piano_Left
+    4301252: Straight_LOD2_Terrain_Left
+    4301254: Straight_LOD2_Water_Canal_Left
+    4301256: Straight_LOD2_Mountain_Left
+    4301258: Straight_LOD2_Cliff_Left
+    4301260: Straight_LOD2_Ad_Fence_Left
+    4301262: Straight_LOD2_Rail_Guard_Left
+    4301264: Straight_LOD2_Road_Mask
+    4301266: Straight_LOD2_Road_Collider
+    4301268: Straight_LOD2_Rail_Guard_Right
+    4301270: Straight_LOD2_Ad_Fence_Right
+    4301272: Straight_LOD2_Cliff_Right
+    4301274: Straight_LOD2_Mountain_Right
+    4301276: Straight_LOD2_Water_Canal_Right
+    4301278: Straight_LOD2_Terrain_Right
+    4301280: Straight_LOD2_Piano_Right
+    4301282: Straight_LOD2_Tree_Wall_Right
+    4301284: Straight_LOD2_Concrete_Wall_Right
+    4301286: Straight_LOD2_Road
+    20500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages:
+    - 0.25
+    - 0.125
+    - 0.01
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
