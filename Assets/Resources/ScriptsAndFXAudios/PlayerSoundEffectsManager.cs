@@ -20,14 +20,14 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
 	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.035f;
-	private const float DRIFT_SOUND_PITCH_BASE = 0.5f;
+	private const float DRIFT_SOUND_PITCH_BASE = 0.8f;
 	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.025f;
-	private const float DRIFT_SOUND_PITCH_MAX = 2.5f;
+	private const float DRIFT_SOUND_PITCH_MAX = 2f;
 	private const float ENGINE_SOUND_VOLUME_BASE = 0.35f;
 	private const float ENGINE_SOUND_VOLUME_SPEEDSCALING = 0.075f;
-	private const float ENGINE_SOUND_PITCH_BASE = 0.5f;
-	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.05f;
-	private const float ENGINE_SOUND_PITCH_MAX = 2.5f;
+	private const float ENGINE_SOUND_PITCH_BASE = 0.1f;
+	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.025f;
+	private const float ENGINE_SOUND_PITCH_MAX = 1.5f;
 
 	// Use this for initialization
 	void Start ()
@@ -76,8 +76,8 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	private void GetFXFromResources()
 	{
 		//m_Engine = Resources.Load ("ScriptsAndFXSounds/car_idle", typeof(AudioClip)) as AudioClip;
-		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngine", typeof(AudioClip)) as AudioClip;
-		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/Skid", typeof(AudioClip)) as AudioClip;
+		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngineMotoCycle", typeof(AudioClip)) as AudioClip;
+		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/DRIFTSound", typeof(AudioClip)) as AudioClip;
 	}
 	
 	// Update is called once per frame
