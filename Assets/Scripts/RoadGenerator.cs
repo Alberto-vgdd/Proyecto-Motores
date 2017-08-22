@@ -69,7 +69,6 @@ public class RoadGenerator : MonoBehaviour {
 		} else {
 			rampChance = Random.Range (3, 10);
 		}
-		rampChance = 50;
 
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
