@@ -42,7 +42,7 @@ public class CarData {
 				m_maxDriftDegree = 8f;
 				m_driftStrenght = 4f;
 				m_driftSpeedConservation = 3f;
-				m_driftStabilization = 4f;
+				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 0;
 				m_upgraded_acceleration = 0;
@@ -65,7 +65,7 @@ public class CarData {
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 7f;
 				m_driftSpeedConservation = 5f;
-				m_driftStabilization = 4f;
+				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = -1f;
 				m_upgraded_acceleration = 2.1f;
@@ -88,7 +88,7 @@ public class CarData {
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 5f;
 				m_driftSpeedConservation = 5f;
-				m_driftStabilization = 4f;
+				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 99f;
 				m_upgraded_acceleration = 1.5f;
@@ -111,7 +111,7 @@ public class CarData {
 				m_maxDriftDegree = 5f;
 				m_driftStrenght = 6f;
 				m_driftSpeedConservation = 8f;
-				m_driftStabilization = 3f;
+				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 1f;
 				m_upgraded_acceleration = 2.4f;

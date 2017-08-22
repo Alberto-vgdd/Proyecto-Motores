@@ -40,11 +40,11 @@ public class PlayerMovement : MonoBehaviour {
 	private const float STAT_TURNRATE_BASE = 2f;
 	private const float STAT_TURNRATE_SCAL = 0.4f;
 	private const float STAT_ACCELERATION_BASE = 0.5f;
-	private const float STAT_ACCELERATION_SCAL = 0.225f;
+	private const float STAT_ACCELERATION_SCAL = 0.2f;
 	private const float STAT_MAXSPEED_BASE = 20f;
 	private const float STAT_MAXSPEED_SCAL = 2.15f;
 	private const float STAT_DRIFTSTR_BASE = 2.5f;
-	private const float STAT_DRIFTSTR_SCAL = 0.175f;
+	private const float STAT_DRIFTSTR_SCAL = 0.15f;
 	private const float STAT_MAXDRIFT_BASE = 15f;
 	private const float STAT_MAXDRIFT_SCAL = 3.5f;
 	private const float STAT_DRIFTSPDCONS_BASE = 0.2f;
@@ -53,10 +53,10 @@ public class PlayerMovement : MonoBehaviour {
 	private const float STAT_SPDFALLOFF_SCAL = 0.25f;
 
 	private const float DRIFT_TURN_RATE = 6f;							// Turnrate utilizado en el drift, igual para todos los coches.
-	private const float GROUND_TRANSITION_THS = 0.05f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
+	private const float GROUND_TRANSITION_THS = 0.1f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
 	private const float UNGROUNDED_RESPAWN_DELAY = 5f;					// Tiempo sin tocar suelo necesario para auto-reaparecer
 	private const float TRANSLATE_TO_VELOCITY = 3f;						// Proporcion traslacion-velocidad aplicado al objeto al dejar de tocar el suelo
-	private const float DOWNFORCE = 10f;								// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
+	private const float DOWNFORCE = 175f;								// Fuerza aplicada en Vector3.down RELATIVO al coche para pegarlo al suelo.
 	private const float INCLINATION_MAX_SPEED_MULTIPLIER = 0.1f;		// Intensidad de la modificacion de la velocidad maxima por inclinacion de terreno.
 	private const float INCLINATION_ACCELERATION_MULTIPLIER = 0.02f;	// Intensidad de la modificacion de la aceleracion por inclinacion de terreno.
 	private const float DRIFT_CORRECTION_STRENGHT = 1.75f;				// Fuerza de correccion del drift al intentar estabilizar.
@@ -355,7 +355,10 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.075f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.01f);
-				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER;
+				if (drifting)
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER*0.75f;
+				else
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER;
 				break;
 			}
 		case "FRONTAL":
@@ -367,7 +370,10 @@ public class PlayerMovement : MonoBehaviour {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.135f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.02f);
-				accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER;
+				if (drifting)
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER * 0.75f;
+				else
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER;
 				break;
 			}
 		case "TOP":
