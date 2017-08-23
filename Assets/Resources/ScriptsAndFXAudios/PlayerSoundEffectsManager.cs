@@ -20,15 +20,15 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	// Estos valores parecen funcionar...
 	// TODO: Revisar mas a fondo.
-	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
-	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.035f;
-	private const float DRIFT_SOUND_PITCH_BASE = 0.4f; // 0.8
+	private const float DRIFT_SOUND_VOLUME_BASE = 0.1f;
+	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.0135f;
+	private const float DRIFT_SOUND_PITCH_BASE = 0.8f; // 0.8 , o 0.4, depende del realismo
 	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.0135f; // 0.025
-	private const float DRIFT_SOUND_PITCH_MAX = 2f;
+	private const float DRIFT_SOUND_PITCH_MAX = 1f; // 2
 	private const float ENGINE_SOUND_VOLUME_BASE = 0.35f;
 	private const float ENGINE_SOUND_VOLUME_SPEEDSCALING = 0.075f;
 	private const float ENGINE_SOUND_PITCH_BASE = 0.1f;
-	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.025f;
+	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.035f;
 	private const float ENGINE_SOUND_PITCH_MAX = 1.5f;
 
 	private float targetDriftVolume = 0;
@@ -79,7 +79,7 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	private void GetFXFromResources()
 	{
 		//m_Engine = Resources.Load ("ScriptsAndFXSounds/car_idle", typeof(AudioClip)) as AudioClip;
-		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngineMotoCycle", typeof(AudioClip)) as AudioClip;
+		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngine", typeof(AudioClip)) as AudioClip;
 		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/DRIFTSound", typeof(AudioClip)) as AudioClip;
 	}
 	
