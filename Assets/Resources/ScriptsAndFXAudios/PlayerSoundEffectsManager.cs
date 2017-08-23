@@ -22,14 +22,16 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	// TODO: Revisar mas a fondo.
 	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
 	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.035f;
-	private const float DRIFT_SOUND_PITCH_BASE = 0.5f; // 0.8
-	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.01f; // 0.025
+	private const float DRIFT_SOUND_PITCH_BASE = 0.4f; // 0.8
+	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.0135f; // 0.025
 	private const float DRIFT_SOUND_PITCH_MAX = 2f;
 	private const float ENGINE_SOUND_VOLUME_BASE = 0.35f;
 	private const float ENGINE_SOUND_VOLUME_SPEEDSCALING = 0.075f;
 	private const float ENGINE_SOUND_PITCH_BASE = 0.1f;
 	private const float ENGINE_SOUND_PITCH_SPEEDSCALING = 0.025f;
 	private const float ENGINE_SOUND_PITCH_MAX = 1.5f;
+
+	private float targetDriftVolume = 0;
 
 	// Use this for initialization
 	void Start ()
@@ -60,18 +62,17 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	private void EngineAudio()
 	{
-		//Primero, aumentaremos el pitch del audio del engine en funcion de la velocidad del jugador.
-		engineSound.pitch = Mathf.Clamp(ENGINE_SOUND_PITCH_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed()) * ENGINE_SOUND_PITCH_SPEEDSCALING, 0, ENGINE_SOUND_PITCH_MAX);
-		engineSound.volume = Mathf.Clamp01(ENGINE_SOUND_VOLUME_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement> ().GetCurrentSpeed()) * ENGINE_SOUND_VOLUME_SPEEDSCALING);
 
 		if (pm.IsDrifting ()) {
-			driftSound.volume = Mathf.Clamp01 (pm.GetCurrentSpeed () * DRIFT_SOUND_VOLUME_SPEEDSCALING + DRIFT_SOUND_VOLUME_BASE) ;
+			targetDriftVolume = Mathf.Clamp01 (pm.GetCurrentSpeed () * DRIFT_SOUND_VOLUME_SPEEDSCALING + DRIFT_SOUND_VOLUME_BASE) ;
 			driftSound.pitch = Mathf.Clamp (Mathf.Abs (pm.GetDriftDegree () * DRIFT_SOUND_PITCH_DEGREESCALING) + DRIFT_SOUND_PITCH_BASE, 0, DRIFT_SOUND_PITCH_MAX);
 		} else {
-			driftSound.volume = driftSound.pitch = 0;
+			targetDriftVolume = driftSound.pitch = 0;
 		}
+		driftSound.volume = Mathf.MoveTowards (driftSound.volume, targetDriftVolume, Time.deltaTime * 5f);
 
-
+		engineSound.pitch = Mathf.Clamp(ENGINE_SOUND_PITCH_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement>().GetCurrentSpeed()) * ENGINE_SOUND_PITCH_SPEEDSCALING, 0, ENGINE_SOUND_PITCH_MAX);
+		engineSound.volume = Mathf.Clamp01(ENGINE_SOUND_VOLUME_BASE + Mathf.Abs(playerReference.GetComponent<PlayerMovement> ().GetCurrentSpeed()) * ENGINE_SOUND_VOLUME_SPEEDSCALING);
 
 	}
 

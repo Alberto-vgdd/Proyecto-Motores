@@ -31,6 +31,8 @@ public class IngameHudManager : MonoBehaviour {
 	public Text objective1;
 	public Text objective2;
 	public Text objective3;
+	public Text objectivePB;
+	public GameObject PBparent;
 
 	[Header("Speed meter")]
 	public Image speedMeterFill;
@@ -85,6 +87,16 @@ public class IngameHudManager : MonoBehaviour {
 		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(1);
 		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(2);
 		objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(3);
+		if (GlobalGameData.currentInstance.GetPlayerGhostPB () != null
+		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtSeed () == GlobalGameData.currentInstance.eventActive.GetSeed ()
+		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtGamemode () == GlobalGameData.currentInstance.eventActive.GetGamemode ()) {
+
+			PBparent.SetActive (true);
+			objectivePB.text = GlobalGameData.currentInstance.GetPlayerGhostPB ().GetScoreRecordedString ();
+		} else {
+			PBparent.SetActive (false);
+		}
+
 	}
 	public void UpdateSpeedMeter()
 	{

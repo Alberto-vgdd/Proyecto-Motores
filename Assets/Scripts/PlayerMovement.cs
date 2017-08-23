@@ -64,6 +64,7 @@ public class PlayerMovement : MonoBehaviour {
 	private const float FRICTION_SPD_CONSERVATION_FRONT_ENTER = 0.8f;	// Conservacion de velocidad en colision frintal (ENTER)
 	private const float FRICTION_SPD_CONSERVATION_SIDE_STAY = 0.994f;	// Conservacion de velocidad en colision lateral (STAY)
 	private const float FRICTION_SPD_CONSERVATION_SIDE_ENTER = 0.9f;	// Conservacion de velocidad en colision lateral (ENTER)
+	private const float FRICTION_SPD_CONSERVATION_DRIFT = 0.7f;         // Conservacion de velocidad en colision mientras se derrapa (para evitar que sea una forma viable de conducir)
 
 	// Valores auxiliares privados
 
@@ -228,7 +229,7 @@ public class PlayerMovement : MonoBehaviour {
 		turnMultiplier = Mathf.MoveTowards (turnMultiplier, 0, accumulatedSpeed * 0.02f);
 
 		if (drifting) {
-			accumulatedSpeed -= (Mathf.Abs(driftDegree)+accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime;
+			accumulatedSpeed -= (accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime * Mathf.Abs(driftDegree*0.135f);
 			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 2.5f);
 			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
@@ -350,30 +351,30 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				cleanSection = false;
 				cleanAir = false;
-				EndDrift ();
 				if (grounded)
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.075f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.01f);
 				if (drifting)
-					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER*0.75f;
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_DRIFT;
 				else
 					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_SIDE_ENTER;
+				EndDrift ();
 				break;
 			}
 		case "FRONTAL":
 			{
 				cleanSection = false;
 				cleanAir = false;
-				EndDrift ();
 				if (grounded)
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.135f);
 				else
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.02f);
 				if (drifting)
-					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER * 0.75f;
+					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_DRIFT;
 				else
 					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_FRONT_ENTER;
+				EndDrift ();
 				break;
 			}
 		case "TOP":

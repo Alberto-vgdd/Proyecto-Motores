@@ -69,13 +69,13 @@ public class RoadGenerator : MonoBehaviour {
 		} else {
 			rampChance = Random.Range (3, 10);
 		}
-		print ("rampchance: " + rampChance);
-		print ("maxstraight: " + maxStraight);
-		print ("curvechance:" + curveChance);
 
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
 		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + dayTime);
+		print ("[MAP] Rampchance: " + rampChance);
+		print ("[MAP] MaxStraight: " + maxStraight);
+		print ("[MAP] Curvechance:" + curveChance);
 
 		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
 		// ==========

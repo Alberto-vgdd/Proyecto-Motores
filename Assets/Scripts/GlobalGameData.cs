@@ -123,14 +123,21 @@ public class GlobalGameData : MonoBehaviour {
 	public void SetPlayerGhostPB(GhostReplayData ghost)
 	{
 		if (ghost.GetRecordedAtSeed () != eventActive.GetSeed () || playerGhostPB == null) {
+			print ("[REPLAY] No comparable ghost found, setting as PB");
 			playerGhostPB = ghost;
 		} else {
-			if (ghost.GetScoreRecordedIsTime()) {
-				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ())
+			if (ghost.GetScoreRecordedIsTime ()) {
+				if (ghost.GetScoreRecorded () < playerGhostPB.GetScoreRecorded ()) {
 					playerGhostPB = ghost;
+					print ("[REPLAY] New ghost PB");
+				} else 
+					print ("[REPLAY] Discarding ghost.");
 			} else {
-				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ())
+				if (ghost.GetScoreRecorded () > playerGhostPB.GetScoreRecorded ()) {
 					playerGhostPB = ghost;
+					print ("[REPLAY] New ghost PB");
+				} else
+					print ("[REPLAY] Discarding ghost.");
 			}
 		}
 	}

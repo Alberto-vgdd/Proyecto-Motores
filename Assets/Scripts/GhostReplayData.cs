@@ -77,5 +77,16 @@ public class GhostReplayData {
 	{
 		return scoreRecordedIsTime;
 	}
+	public string GetScoreRecordedString()
+	{
+		if (scoreRecordedIsTime) {
+			int seconds = (int)(scoreRecorded % 60);
+			int minutes = (int)(scoreRecorded / 60);
+			int milisec = (int)Mathf.Floor(scoreRecorded * 100 % 100);
+			return minutes + ":" + seconds.ToString ("D2") + ":" + milisec.ToString("D2");
+		} else {
+			return ((int)scoreRecorded).ToString ();
+		}
+	}
 
 }

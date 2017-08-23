@@ -55,7 +55,12 @@ public class GhostRecorder : MonoBehaviour {
 			return;
 
 		print ("[REPLAY] Ended ghost data recording.");
-		recordedData.SetGhostScore (StageData.currentData.GetEventScore (), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+		if (GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ()) {
+			recordedData.SetGhostScore (StageData.currentData.GetEventScore (), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+		} else {
+			recordedData.SetGhostScore (StageData.currentData.GetTimePassedValue(), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+		}
+	
 		GlobalGameData.currentInstance.SetPlayerGhostPB(recordedData);
 	}
 }
