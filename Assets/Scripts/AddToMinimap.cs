@@ -30,7 +30,7 @@ public class AddToMinimap : MonoBehaviour {
 	public void UpdateMinimapPosition()
 	{
 		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor;
-		referencedImage.transform.localRotation = Quaternion.Euler(0, 0, -transform.rotation.eulerAngles.y);
+		referencedImage.transform.localRotation = Quaternion.Euler(0f, 0f, -transform.rotation.eulerAngles.y + 90f);
 	}
 	void OnDisable()
 	{
