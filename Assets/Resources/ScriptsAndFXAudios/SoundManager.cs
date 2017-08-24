@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SoundManager : MonoBehaviour {
 
-	private Object[] playList;
+	//private Object[] playList;
 	//private AudioSource audioSource;
 
 	private AudioClip actualSong;
@@ -41,14 +41,16 @@ public class SoundManager : MonoBehaviour {
 		//if (playList == null) {	print ("Ruta equivocada");		}
 		//print ("Tamaño de playlist cargada: " + playList.Length);
 
-		actualSong = GetSongFromPlayList ();
+		actualSong = gameplayList [1];
+		nextSong = gameplayList [0];
+		//actualSong = GetSongFromPlayList ();
 		currentSongTime = 0.0f;
 		songSpaceTime = 0.0f;
 
-		nextSong = GetSongFromPlayList ();
+		//nextSong = GetSongFromPlayList ();
 
-		while (actualSong == nextSong) 
-		{nextSong = GetSongFromPlayList ();		}
+		//while (actualSong == nextSong) 
+		//{nextSong = GetSongFromPlayList ();		}
 
 	}
 		
@@ -57,7 +59,7 @@ public class SoundManager : MonoBehaviour {
 	{
 		//print ("Nombre Cancion a mostrar: " + actualSong.name);
 		this.GetComponent<AudioSource> ().clip = actualSong;
-		this.GetComponent<AudioSource> ().volume = 0f; // Disabled for testing (0.2)
+		this.GetComponent<AudioSource> ().volume = 0.6f; // Enabled for testing.
 		this.GetComponent<AudioSource> ().Play ();
 	}
 
@@ -74,15 +76,17 @@ public class SoundManager : MonoBehaviour {
 
 	private void SwitchSongs()
 	{
+		//VALOR DE TEST
+		AudioClip auxSong = actualSong;
 		actualSong = nextSong;
-		nextSong = GetSongFromPlayList ();
+		nextSong = actualSong; //Cuando tengas mas canciones, debes llamar a GetSongFromPlayList.
 
-		if (nextSong == actualSong) 
-		{ nextSong = GetSongFromPlayList ();	}
+		//if (nextSong == actualSong) 
+		//{ nextSong = GetSongFromPlayList ();	}
 
 		//print ("Nombre Cancion a mostrar: " + actualSong.name);
 		this.GetComponent<AudioSource> ().clip = actualSong;
-		this.GetComponent<AudioSource> ().volume = 0f; // Disabled for testing.
+		this.GetComponent<AudioSource> ().volume = 0.6f; // Enabled for testing.
 		this.GetComponent<AudioSource> ().Play ();
 	}
 
