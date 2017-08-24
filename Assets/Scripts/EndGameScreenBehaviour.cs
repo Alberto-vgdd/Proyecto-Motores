@@ -84,7 +84,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		} else {
 			headerInfo.text = "Event completed";
 		}
-		subHeaderInfo.text = GlobalGameData.currentInstance.eventActive.GetEventTypeName () + " | " + GlobalGameData.currentInstance.eventActive.GetEventArea () +
+		subHeaderInfo.text = GlobalGameData.currentInstance.eventActive.GetEventName() + " | " + GlobalGameData.currentInstance.eventActive.GetEventArea () +
 		" | " + "[ Road ID: " + GlobalGameData.currentInstance.eventActive.GetSeed ().ToString () + " ]";
 		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (1);
 		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (2);

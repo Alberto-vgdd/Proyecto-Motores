@@ -88,8 +88,13 @@ public class StageData : MonoBehaviour {
 	{
 		if (eventFinished)
 			return;
-		if (GhostRecorder.currentInstance != null)
-			GhostRecorder.currentInstance.StopRecording (true);
+	
+		if (GhostRecorder.currentInstance != null) {
+			if (eventActive.CanBeFailed() && type == 1)
+				GhostRecorder.currentInstance.StopRecording (false);
+			else
+				GhostRecorder.currentInstance.StopRecording (true);
+		}
 
 		ContextualHudManager.currentInstance.ForceDriftEnd ();
 		pm.AllowPlayerControl (false);
@@ -97,7 +102,12 @@ public class StageData : MonoBehaviour {
 		eventFinished = true;
 		IngameHudManager.currentInstance.SetHudVisibility (false);
 		IngameHudManager.currentInstance.EndEvent ();
-		GlobalGameData.currentInstance.SetLastEventPlayedResult (GetPlayerResult ());
+		if (eventActive.IsSeasonalEvent ()) {
+			GlobalGameData.currentInstance.SetLastEventPlayedResult (-1);
+		} else {
+			GlobalGameData.currentInstance.SetLastEventPlayedResult (GetPlayerResult ());
+		}
+
 	}
 
 	public void PlayerCrossedNode()

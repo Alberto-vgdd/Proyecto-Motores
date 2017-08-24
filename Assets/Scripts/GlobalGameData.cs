@@ -15,7 +15,8 @@ public class GlobalGameData : MonoBehaviour {
 
 	public bool testing_WelcomeMessagesShown = false; 
 
-	public List<EventData> eventsAvailable;
+	public List<EventData> eventsAvailable_offline;
+	public List<EventData> eventsAvailable_seasonal;
 	public List<CarData> carsOwned;
 	private int carSelectedIndex = 0;
 
@@ -46,6 +47,7 @@ public class GlobalGameData : MonoBehaviour {
 		m_playerRank = 1;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
+		GetSeasonalEvents ();
 		carsOwned = new List<CarData> ();
 		carsOwned.Add (new CarData (0));
 		carsOwned.Add (new CarData (1));
@@ -57,10 +59,17 @@ public class GlobalGameData : MonoBehaviour {
 	void GenerateEventsAvailable()
 	{
 		Random.InitState(System.Environment.TickCount);
-		eventsAvailable = new List<EventData> ();
+		eventsAvailable_offline = new List<EventData> ();
 		for (int i = 0; i < 8; i++) {
-			eventsAvailable.Add (new EventData (m_playerRank, false, true));
+			eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
 		}
+	}
+	void GetSeasonalEvents()
+	{
+		// Demomento ponemos eventos fijados ya que no tiene de donde scarlos.
+		eventsAvailable_seasonal = new List<EventData>();
+		eventsAvailable_seasonal.Add(new EventData(765, 5, 6, "Custom name LUL"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, 6, "More testing"));
 	}
 	public float GetRankChangeOnNextUpdate()
 	{

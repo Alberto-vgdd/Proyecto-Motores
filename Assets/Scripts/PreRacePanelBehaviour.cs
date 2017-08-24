@@ -47,7 +47,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 	{
 		event_subName.text = GlobalGameData.currentInstance.eventActive.GetEventArea() + " - " + DayNightCycle.currentInstance.getTimeString() 
 			+ " [ Road ID: " + GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + " ]";
-		event_title.text = GlobalGameData.currentInstance.eventActive.GetEventTypeName ();
+		event_title.text = GlobalGameData.currentInstance.eventActive.GetEventName();
 		event_description.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
 		event_limits.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetCheckpointsString () + " | Time limit: " + GlobalGameData.currentInstance.eventActive.GetTimeLimitString ();
 		event_objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (1);

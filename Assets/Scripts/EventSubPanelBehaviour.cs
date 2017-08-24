@@ -10,6 +10,7 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	public Text text_difficulty;
 	public Image image_background;
 	private int m_index;
+	private EventData m_dataReferenced;
 
 	// GAMEMODES:
 	// 0 = Free Roam 
@@ -23,13 +24,14 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	// Use this for initialization
 	public void OnClick()
 	{
-		MainMenuManager.currentInstance.SelectEventAsActive (m_index);
+		MainMenuManager.currentInstance.SelectEventAsActive (m_dataReferenced);
 	}
 	public void SetPanelForEvent(EventData data, int index)
 	{
 		m_index = index;
-		text_reward.text = data.GetRewardValue() + " cr.";
-		text_difficulty.text = data.GetRoadDifficulty().ToString ("F1");
-		text_header.text = data.GetEventArea () + " - " + data.GetEventTypeName ();
+		m_dataReferenced = data;
+		text_reward.text = m_dataReferenced.GetRewardString();
+		text_difficulty.text = m_dataReferenced.GetRoadDifficulty().ToString ("F1");
+		text_header.text = m_dataReferenced.GetEventName();
 	}
 }

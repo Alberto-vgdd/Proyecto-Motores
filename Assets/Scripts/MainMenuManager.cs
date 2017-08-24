@@ -10,8 +10,9 @@ public class MainMenuManager : MonoBehaviour {
 
 	[Header("Event List Panel")]
 	public CanvasGroup EventPanelCG;
-	public Transform EventPanelWindowParent;
-	public Transform EventPanelListParent;
+	public GameObject eventSliderParent;
+	public GameObject eventDetailsParent;
+	public List<EventSubPanelBehaviour> eventsInList;
 
 	[Header("MainSlider")]
 	public CanvasGroup mainSlider;
@@ -59,6 +60,9 @@ public class MainMenuManager : MonoBehaviour {
 
 	private int carInDisplayIndex = -1;
 
+	private Vector3 eventSliderInitialPos;
+	private Vector3 eventDetailsInitialPos;
+
 
 	private bool CoRoutineActive = false;
 
@@ -68,9 +72,11 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Start () {
+		eventSliderInitialPos = eventSliderParent.transform.localPosition;
+		eventDetailsInitialPos = eventDetailsParent.transform.localPosition;
+
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
-		CreateSelectableEvents ();
 		if (!GlobalGameData.currentInstance.testing_WelcomeMessagesShown) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Some features are in development."));
@@ -79,11 +85,42 @@ public class MainMenuManager : MonoBehaviour {
 		}
 
 	}
-	public void SelectEventAsActive(int index)
+	private void SetEventPanels(int eventCategory)
+	{
+		List<EventData> eventsToRead;
+		switch (eventCategory) {
+		case 1: // Eventos offline
+			{
+				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_offline;
+				break;
+			}
+		case 2: // Eventos de temporada
+			{
+				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_seasonal;
+				break;
+			}
+		default: //...para que no se ralle el compilador
+			{
+				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_offline;
+				break;
+			}
+		}
+
+		for (int i = 0; i < eventsInList.Count; i++) {
+			if (i >= eventsToRead.Count) {
+				eventsInList [i].gameObject.SetActive (false);
+			} else {
+				eventsInList [i].gameObject.SetActive (true);
+				eventsInList [i].SetPanelForEvent (eventsToRead [i], i);
+			}
+		}
+	}
+	public void SelectEventAsActive(EventData data)
 	{
 		if (CoRoutineActive)
 			return;
-		GlobalGameData.currentInstance.eventActive = GlobalGameData.currentInstance.eventsAvailable [index];
+		GlobalGameData.currentInstance.eventActive = data;
+		StopCoroutine ("FadeInEventDetailsPanel");
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
 	}
@@ -135,14 +172,6 @@ public class MainMenuManager : MonoBehaviour {
 			carsOnDisplay [i].GetComponent<GarageSubPanelBehaviour> ().SetSelected (i == GlobalGameData.currentInstance.GetCarInUseIndex());
 		}
 	}
-	void CreateSelectableEvents()
-	{
-		GameObject lastCreatedPanel;
-		for (int i = 0; i < GlobalGameData.currentInstance.eventsAvailable.Count; i++) {
-			lastCreatedPanel = Instantiate (EventButtonPrefab, EventPanelListParent) as GameObject;
-			lastCreatedPanel.GetComponent<EventSubPanelBehaviour> ().SetPanelForEvent (GlobalGameData.currentInstance.eventsAvailable [i], i);
-		}
-	}
 	public void UpdateCurrencyAndRankValues()
 	{
 		if (GlobalGameData.currentInstance == null)
@@ -156,7 +185,7 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (GlobalGameData.currentInstance.eventActive == null)
 			return;
-		eventDetailsHeader.text = GlobalGameData.currentInstance.eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.eventActive.GetEventTypeName ();
+		eventDetailsHeader.text = GlobalGameData.currentInstance.eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.eventActive.GetEventName();
 		eventDetailsDescription.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
 		eventDetailsAditionalDesc.text = "";
 		eventDetailsRewards.text = GlobalGameData.currentInstance.eventActive.GetRewardString ();
@@ -309,9 +338,15 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 		EventPanelCG.gameObject.SetActive (true);
-		while (EventPanelCG.alpha < 1) {
-			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 1, Time.deltaTime*5f);
-			EventPanelWindowParent.transform.localScale =  Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
+		EventPanelCG.alpha = 0;
+
+		float t = 0;
+		float animSpeed = 5f;
+
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime*animSpeed);
+			EventPanelCG.alpha = t;
+			eventSliderParent.transform.localPosition = eventSliderInitialPos + Vector3.left * 40 * (1 - t);
 			yield return null;
 		}
 		CoRoutineActive = false;
@@ -319,35 +354,31 @@ public class MainMenuManager : MonoBehaviour {
 	IEnumerator FadeOutEventPanel()
 	{
 		CoRoutineActive = true;
-		while (EventPanelCG.alpha > 0) {
-			EventPanelCG.alpha = Mathf.MoveTowards (EventPanelCG.alpha, 0, Time.deltaTime*5f);
-			EventPanelWindowParent.transform.localScale = Vector3.one * (0.5f + EventPanelCG.alpha*0.5f);
+		EventPanelCG.alpha = 1;
+
+		float t = 1;
+		float animSpeed = 5f;
+
+		while (t > 0) {
+			t = Mathf.MoveTowards (t, 0, Time.deltaTime*animSpeed);
+			EventPanelCG.alpha = t;
+			eventSliderParent.transform.localPosition = eventSliderInitialPos + Vector3.left * 40 * (1 - t);
 			yield return null;
 		}
-		EventPanelCG.gameObject.SetActive (false);
 		CoRoutineActive = false;
+		EventPanelCG.gameObject.SetActive (false);
 	}
 	IEnumerator FadeInEventDetailsPanel()
 	{
-		eventDetailsCG.gameObject.SetActive (true);
-		CoRoutineActive = true;
-		while (eventDetailsCG.alpha < 1) {
-			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 1, Time.deltaTime*5f);
-			eventDetailsWindow.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
+		float t = 0;
+		float animSpeed = 5f;
+
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			eventDetailsCG.alpha = t;
+			eventDetailsParent.transform.localPosition = eventDetailsInitialPos + Vector3.right * 40f * (1 - t);
 			yield return null;
 		}
-		CoRoutineActive = false;
-	}
-	IEnumerator FadeOutEventDetailsPanel()
-	{
-		CoRoutineActive = true;
-		while (eventDetailsCG.alpha > 0) {
-			eventDetailsCG.alpha = Mathf.MoveTowards (eventDetailsCG.alpha, 0, Time.deltaTime*5f);
-			eventDetailsWindow.transform.localScale = Vector3.one * (0.5f + eventDetailsCG.alpha*0.5f);
-			yield return null;
-		}
-		CoRoutineActive = false;
-		eventDetailsCG.gameObject.SetActive (false);
 	}
 	IEnumerator FadeInMainSlider()
 	{
@@ -415,6 +446,12 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
 			return;
 		}
+		if (GlobalGameData.currentInstance.eventsAvailable_offline.Count == 0) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No events available."));
+			return;
+		}
+		SetEventPanels (1);
+		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_offline[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 	}
@@ -422,7 +459,18 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
+			return;
+		}
+		if (GlobalGameData.currentInstance.eventsAvailable_seasonal.Count == 0) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No seasonal events available."));
+			return;
+		}
+		SetEventPanels (2);
+		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
+		StartCoroutine ("FadeInEventPanel");
+		StartCoroutine ("FadeOutMainSlider");
 	}
 	public void OnCustomEventClicked()
 	{
@@ -487,12 +535,6 @@ public class MainMenuManager : MonoBehaviour {
 		if (CoRoutineActive)
 			return;
 		StartCoroutine ("LoadScene");
-	}
-	public void OnCancelEventClicked()
-	{
-		if (CoRoutineActive)
-			return;
-		StartCoroutine ("FadeOutEventDetailsPanel");
 	}
 	public void OnCloseRankUpdateDetails()
 	{

@@ -36,12 +36,43 @@ public class EventData {
 	private int m_gameMode;
 	private float m_roadDifficulty;
 	private bool displayTimeLeftAlwaysFloat = false;
+	private string m_customEventName = "";
 	// AuxParameters
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
-	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.05f;
+	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.0125f;
 	private const float SILVER_REWARD_MULTIPLIER = 0.8f;
 	private const float BRONZE_REWARD_MULTIPLIER = 0.6f;
+
+
+	public EventData (int seed, int checkpoints, int gamemode, string customName = "")
+	{
+		m_gameMode = gamemode;
+		m_eventSeed = seed;
+		m_checkPoints = checkpoints;
+		m_customEventName = customName;
+		m_eventLeague = 16;
+		m_seasonalEvent = true;
+		m_canBeRestarted = true;
+
+		m_rewardType = 0;
+
+		SetEventRules ();
+		SetEventObjectives ();
+
+		Random.InitState(m_eventSeed);
+		int curveChance = Random.Range (10, 71);
+		int minStraight = Random.Range (0, 3);
+		int maxStraight = Random.Range (minStraight, 8);
+
+		// Difficulty bonus setting.
+		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
+
+
+
+
+		m_rewardValue = 0;
+	}
 
 	public EventData (int league, bool seasonal, bool canBeRestarted)
 	{
@@ -551,6 +582,8 @@ public class EventData {
 				break;
 			}
 		}
+		if (m_seasonalEvent)
+			txt = "--";
 		return txt;
 	}
 	public string GetObjectiveString(int pos)
@@ -564,5 +597,13 @@ public class EventData {
 			txt = ((int)(GetObjectiveForPosition (pos) / 60)).ToString () + ":" + ((int)(GetObjectiveForPosition (pos) % 60)).ToString ("D2") + ":00";
 		}
 		return txt;
+	}
+	public string GetEventName()
+	{
+		if (m_customEventName == "") {
+			return GetEventTypeName ();
+		} else {
+			return m_customEventName;
+		}
 	}
 }
