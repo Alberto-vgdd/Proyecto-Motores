@@ -103,6 +103,75 @@ public class CarData {
 				m_name = "[TEST] LMP-ONE";
 				break;
 			}
+		case 4:
+			{
+				m_turnRate = 10f;
+				m_acceleration = 10f;
+				m_maxSpeed = 10f;
+				m_maxDriftDegree = 10f;
+				m_driftStrenght = 10f;
+				m_driftSpeedConservation = 10f;
+				m_driftStabilization = 10f;
+
+				m_upgraded_turnRate = 0f;
+				m_upgraded_acceleration = 0f;
+				m_upgraded_maxSpeed = 0f;
+				m_upgraded_driftStrenght = 0f;
+				m_upgraded_maxDriftDegree = 0f;
+				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_driftStabilization = 0;
+
+				m_modelID = 1;
+				m_skinID = 1;
+				m_name = "[TEST] MAX STATS";
+				break;
+			}
+		case 5:
+			{
+				m_turnRate = 0f;
+				m_acceleration = 0f;
+				m_maxSpeed = 0f;
+				m_maxDriftDegree = 0f;
+				m_driftStrenght = 0f;
+				m_driftSpeedConservation = 0f;
+				m_driftStabilization = 0f;
+
+				m_upgraded_turnRate = 0f;
+				m_upgraded_acceleration = 0f;
+				m_upgraded_maxSpeed = 0f;
+				m_upgraded_driftStrenght = 0f;
+				m_upgraded_maxDriftDegree = 0f;
+				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_driftStabilization = 0;
+
+				m_modelID = 1;
+				m_skinID = 1;
+				m_name = "[TEST] MIN STATS";
+				break;
+			}
+		case 6:
+			{
+				m_turnRate = 5f;
+				m_acceleration = 5f;
+				m_maxSpeed = 5f;
+				m_maxDriftDegree = 5f;
+				m_driftStrenght = 5f;
+				m_driftSpeedConservation = 5f;
+				m_driftStabilization = 5f;
+
+				m_upgraded_turnRate = 0f;
+				m_upgraded_acceleration = 0f;
+				m_upgraded_maxSpeed = 0f;
+				m_upgraded_driftStrenght = 0f;
+				m_upgraded_maxDriftDegree = 0f;
+				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_driftStabilization = 0;
+
+				m_modelID = 1;
+				m_skinID = 1;
+				m_name = "[TEST] AVERAGE STATS";
+				break;
+			}
 		default:
 			{
 				m_turnRate = 3.5f;

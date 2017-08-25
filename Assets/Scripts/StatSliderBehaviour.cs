@@ -36,15 +36,17 @@ public class StatSliderBehaviour : MonoBehaviour {
 	void Update () {
 		statBaseCurrent = Mathf.MoveTowards (statBaseCurrent, statBaseTarget, Time.deltaTime * transitionSpeed);
 		statBonusCurrent = Mathf.MoveTowards (statBonusCurrent, statBonusTarget, Time.deltaTime * transitionSpeed);
-		statSliderBase.value = 0.1f + statBaseCurrent * 0.9f;
-		statSliderBonus.value = 0.1f + statBonusCurrent * 0.9f;
+		statSliderBase.value = Mathf.Clamp01 (0.1f + statBaseCurrent * 0.9f);
+		statSliderBonus.value = Mathf.Clamp01 (0.1f + statBonusCurrent * 0.9f);
 	}
 	public void SetValues(float statBase, float statBonus)
 	{
-		statBaseTarget = statBase / 10f;
-		statBonusTarget = Mathf.Clamp((statBase + statBonus) / 10f, 0, 10);
-		statTextBase.text = statBase.ToString ("F1");
-		statTextBonus.text = (statBase + statBonus).ToString ("F1");
+		statBase = Mathf.Clamp (statBase, 0, 10);
+		statBonus = Mathf.Clamp (statBonus, -10, 10);
+		statBaseTarget = Mathf.Clamp01(statBase / 10f);
+		statBonusTarget = Mathf.Clamp01((statBase + statBonus) / 10f);
+		statTextBase.text = Mathf.Clamp(statBase, 0, 10).ToString ("F1");
+		statTextBonus.text = Mathf.Clamp(statBase + statBonus, 0, 10).ToString ("F1");
 		if (statBonus < 0) {
 			statName.text = statNameString + " (" + statBonus.ToString ("F1") + ")";
 		} else {

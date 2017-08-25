@@ -16,7 +16,9 @@ public class MainMenuManager : MonoBehaviour {
 
 	[Header("MainSlider")]
 	public CanvasGroup mainSlider;
-	[Header("Top Panel")]
+	[Header("Top&Bottom Panels")]
+	public CanvasGroup topParent;
+	public CanvasGroup bottomParent;
 	public Text normalCurrencyText;
 	public Text alternativeCurrencyText;
 	public Text playerNameText;
@@ -39,22 +41,21 @@ public class MainMenuManager : MonoBehaviour {
 	public Button LEPpanel_continueButton;
 	public CanvasGroup LEPpanel_globalCG;
 	[Header("Garage Panel")]
-	public Text carNameText;
-	public Text noCarsAvailableText;
-	public Transform carListParent;
-	public Transform carPanelParent;
 	public CanvasGroup carPanelCG;
+	public GameObject carSliderParent;
+	public GameObject carStatsParent;
+	public GameObject carOptionsParent;
+	public Text carNameText;
 	public StatSliderBehaviour maxspeedSlider;
 	public StatSliderBehaviour accelerationSlider;
 	public StatSliderBehaviour turnrateSlider;
 	public StatSliderBehaviour driftstrSlider;
 	public StatSliderBehaviour driftspdconsSlider;
+	public List<GarageSubPanelBehaviour> carsInList;
 	[Header("Loading Panel")]
 	public Text loadingInfo;
 	public CanvasGroup loadingCG;
 	[Header("Other references")]
-	public GameObject EventButtonPrefab;
-	public GameObject CarButtonPrefab;
 	public List<GameObject> eventsOnDisplay;
 	public List<GameObject> carsOnDisplay;
 
@@ -62,6 +63,11 @@ public class MainMenuManager : MonoBehaviour {
 
 	private Vector3 eventSliderInitialPos;
 	private Vector3 eventDetailsInitialPos;
+	private Vector3 garageSliderInitialPos;
+	private Vector3 garageStatsInitialPos;
+	private Vector3 garageOptionsInitialPos;
+	private Vector3 topPanelInitialPos;
+	private Vector3 bottomPanelInitialPos;
 
 
 	private bool CoRoutineActive = false;
@@ -74,6 +80,11 @@ public class MainMenuManager : MonoBehaviour {
 	void Start () {
 		eventSliderInitialPos = eventSliderParent.transform.localPosition;
 		eventDetailsInitialPos = eventDetailsParent.transform.localPosition;
+		garageSliderInitialPos = carSliderParent.transform.localPosition;
+		garageStatsInitialPos = carStatsParent.transform.localPosition;
+		garageOptionsInitialPos = carOptionsParent.transform.localPosition;
+		topPanelInitialPos = topParent.transform.localPosition;
+		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
@@ -137,40 +148,25 @@ public class MainMenuManager : MonoBehaviour {
 
 		carInDisplayIndex = index;
 	}
-	void CreateSelectableGarageCars()
+	void SetGarageCarButtons()
 	{
-		//TODO: se puede optimizar un poco.
-		if (GlobalGameData.currentInstance.carsOwned.Count == 0) {
-			noCarsAvailableText.gameObject.SetActive (true);
-		} else {
-			noCarsAvailableText.gameObject.SetActive (false);
-			if (GlobalGameData.currentInstance.GetCarInUse () == null) {
-				SetCarSelected (0);
+		for (int i = 0; i < carsInList.Count; i++) {
+			if (i >= GlobalGameData.currentInstance.carsOwned.Count) {
+				carsInList [i].gameObject.SetActive (false);
 			} else {
-				SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+				carsInList [i].gameObject.SetActive (true);
+				carsInList [i].SetPanelForCar(GlobalGameData.currentInstance.carsOwned[i], i);
+				if (GlobalGameData.currentInstance.GetCarInUseIndex () == i) {
+					carsInList [i].SetSelected (true);
+				} else {
+					carsInList [i].SetSelected (false);
+				}
 			}
-
 		}
-		GameObject lastReadedElem;
-		while (carsOnDisplay.Count > 0) {
-			lastReadedElem = carsOnDisplay [0];
-			carsOnDisplay.RemoveAt (0);
-			Destroy (lastReadedElem.gameObject);
-		}
-		for (int i = 0; i < GlobalGameData.currentInstance.carsOwned.Count; i++) {
-			lastReadedElem = Instantiate (CarButtonPrefab, carListParent) as GameObject;
-			lastReadedElem.GetComponent<GarageSubPanelBehaviour> ().SetPanelForCar (GlobalGameData.currentInstance.carsOwned [i], i);
-			carsOnDisplay.Add (lastReadedElem);
-		}
-		SetSelectedTagForGaragePanel ();
 	}
-	void SetSelectedTagForGaragePanel()
+	private bool IsButtonAcctionAvailable()
 	{
-		if (GlobalGameData.currentInstance.GetCarInUse () == null)
-			return;
-		for (int i = 0; i < carsOnDisplay.Count; i++) {
-			carsOnDisplay [i].GetComponent<GarageSubPanelBehaviour> ().SetSelected (i == GlobalGameData.currentInstance.GetCarInUseIndex());
-		}
+		return !CoRoutineActive && !MainMenuNotificationManager.currentInstance.IsOpen ();
 	}
 	public void UpdateCurrencyAndRankValues()
 	{
@@ -192,14 +188,39 @@ public class MainMenuManager : MonoBehaviour {
 		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetCheckpointsString() + "  [ID: " + 
 			GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + "]";
 	}
-	// CO-Routines
-	// ======================================================================
+
+	// =====================================================================================
+	// Co-Routines
+	// =====================================================================================
+	// Todas las co-rutinas utilizadas por la clase, mayormente para animaciones de transicion
+	// de interfaz, cuando haya alguna animacion en curso, la variable CoRoutineActive tendra
+	// true, mientras este activa, no se recibira ningun click de ningun boton, para evitar
+	// que las animaciones se solapen y otros errores.
+	// =====================================================================================
+
+	IEnumerator FadeInTopAndBottomPanels()
+	{
+		// No hay fadeout, innecesario demomento.
+		topParent.alpha = bottomParent.alpha = 0;
+		topParent.gameObject.SetActive(true);
+		bottomParent.gameObject.SetActive (true);
+		float t = 0;
+		float animSpeed = 5f;
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			topParent.transform.localPosition = topPanelInitialPos + Vector3.up * 40 * (1 - t);
+			bottomParent.transform.localPosition = bottomPanelInitialPos + Vector3.down * 40 * (1 - t);
+			topParent.alpha = bottomParent.alpha = t;
+			yield return null;
+		}
+	}
 	IEnumerator RankPromotionPanel()
 	{
 		CoRoutineActive = true;
 
 		if (GlobalGameData.currentInstance.GetLastEventPlayedResult () < 0 || GlobalGameData.currentInstance.eventActive == null) {
 			StartCoroutine ("FadeInMainSlider");
+			StartCoroutine ("FadeInTopAndBottomPanels");
 			CoRoutineActive = false;
 			UpdateCurrencyAndRankValues ();
 			yield break;
@@ -382,6 +403,7 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	IEnumerator FadeInMainSlider()
 	{
+		StopCoroutine ("FadeOutMainSlider");
 		mainSlider.gameObject.SetActive (true);
 		while (mainSlider.alpha < 1) {
 			mainSlider.alpha = Mathf.MoveTowards (mainSlider.alpha, 1, Time.deltaTime*5f);
@@ -390,6 +412,7 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	IEnumerator FadeOutMainSlider()
 	{
+		StopCoroutine ("FadeInMainSlider");
 		while (mainSlider.alpha > 0) {
 			mainSlider.alpha = Mathf.MoveTowards (mainSlider.alpha, 0, Time.deltaTime*5f);
 			yield return null;
@@ -400,25 +423,41 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 		carPanelCG.gameObject.SetActive (true);
+		carPanelCG.alpha = 0;
 		MainMenuCamMovement.currentInstance.SwitchToCarView (true);
-		while (carPanelCG.alpha < 1) {
-			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 1, Time.deltaTime*5f);
+
+		float t = 0;
+		float animSpeed = 5f;
+
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime*animSpeed);
+			carPanelCG.alpha = t;
+			carOptionsParent.transform.localPosition = garageOptionsInitialPos + Vector3.left * 40 * (1 - t);
+			carStatsParent.transform.localPosition = garageStatsInitialPos + Vector3.right * 40 * (1 - t);
+			carSliderParent.transform.localPosition = garageSliderInitialPos + Vector3.up * 40 * (1 - t);
 			yield return null;
 		}
 		CoRoutineActive = false;
 	}
 	IEnumerator FadeOutGaragePanel()
 	{
-		mainSlider.gameObject.SetActive (true);
-		MainMenuCamMovement.currentInstance.SwitchToCarView (false);
 		CoRoutineActive = true;
-		while (carPanelCG.alpha > 0) {
-			carPanelCG.alpha = Mathf.MoveTowards (carPanelCG.alpha, 0, Time.deltaTime*5f);
-			mainSlider.alpha = 1 - carPanelCG.alpha;
+		MainMenuCamMovement.currentInstance.SwitchToCarView (false);
+
+		float t = 1;
+		float animSpeed = 5f;
+
+		while (t > 0) {
+			t = Mathf.MoveTowards (t, 0, Time.deltaTime*animSpeed);
+			carPanelCG.alpha = t;
+			carOptionsParent.transform.localPosition = garageOptionsInitialPos + Vector3.left * 40 * (1 - t);
+			carStatsParent.transform.localPosition = garageStatsInitialPos + Vector3.right * 40 * (1 - t);
+			carSliderParent.transform.localPosition = garageSliderInitialPos + Vector3.up * 40 * (1 - t);
 			yield return null;
 		}
 		carPanelCG.gameObject.SetActive (false);
 		CoRoutineActive = false;
+		StartCoroutine ("FadeInMainSlider");
 	}
 	IEnumerator LoadScene()
 	{
@@ -436,12 +475,24 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		CoRoutineActive = false;
 	}
+
+	// =====================================================================================
 	// Button Click Recievers
-	// =======================================================================
+	// =====================================================================================
+	// Todos los listeners de los botones del menu principal, los clicks seran ignorados si
+	// la funcion IsButtonActionAvailable() devuelve falso, esto ocurrira si hay alguna
+	// animacion de transicion en curso, o queda alguna notificacion por mostrarse.
+	// =====================================================================================
+
+
+	// Main slider buttons
+	// =====================================================================================
+
 	public void OnEventPanelClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
 			return;
@@ -457,8 +508,9 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void OnWeeklyEventClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
 			return;
@@ -474,73 +526,129 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void OnCustomEventClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnCarShopClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnPartShopClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnGarageClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
+		if (GlobalGameData.currentInstance.carsOwned.Count == 0) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You dont own any car"));
+			return;
+		}
+		SetGarageCarButtons();
+		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+			SetCarSelected (0);
+		} else {
+			SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+		}
 		StartCoroutine ("FadeInGaragePanel");
 		StartCoroutine ("FadeOutMainSlider");
-		CreateSelectableGarageCars ();
-	}
-	public void OnSelectCarClicked()
-	{
-		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
-		SetSelectedTagForGaragePanel ();
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: " + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
 	}
 	public void OnProfileClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
 	public void OnSettingsClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
 	}
+
+	// Event buttons
+	// =====================================================================================
+
 	public void OnCloseEventPanelClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		StartCoroutine ("FadeOutEventPanel");
-		StartCoroutine ("FadeInMainSlider");
-	}
-	public void OnCloseGaragePanelClicked()
-	{
-		if (CoRoutineActive)
-			return;
-		StartCoroutine ("FadeOutGaragePanel");
 		StartCoroutine ("FadeInMainSlider");
 	}
 	public void OnConfirmEventClicked()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		StartCoroutine ("LoadScene");
 	}
+
+	// Garage buttons
+	// =====================================================================================
+
+	public void OnSellCarClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+	}
+	public void OnCustomizeCarClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+	}
+	public void OnChangeCarPartsClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+	}
+	public void OnCloseGaragePanelClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		StartCoroutine ("FadeOutGaragePanel");
+		StartCoroutine ("FadeInMainSlider");
+	}
+	public void OnSelectCarClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
+		SetGarageCarButtons();
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: \n" + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
+	}
+
+	// Last event played result & rank update panel
+	// =====================================================================================
+
 	public void OnCloseRankUpdateDetails()
 	{
-		if (CoRoutineActive)
+		if (!IsButtonAcctionAvailable ()) {
 			return;
+		}
 		StartCoroutine ("FadeInMainSlider");
+		StartCoroutine ("FadeInTopAndBottomPanels");
 		StartCoroutine ("FadeOutRankDetailsPanel");
 	}
 }

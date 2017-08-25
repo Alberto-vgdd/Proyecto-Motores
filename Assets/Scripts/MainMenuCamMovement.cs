@@ -1,18 +1,27 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainMenuCamMovement : MonoBehaviour {
 
 	public static MainMenuCamMovement currentInstance;
 
 	public GameObject cam;
-	public GameObject camFocus;
+	public Transform camFocusNormalView;
+	public Transform camFocusGarageView;
 	public CanvasGroup fadeCG;
+
+	public EventSystem es;
 
 	public List<GameObject> camPositions;
 
 	private bool camInCarViewMode = false;
+
+	private float timeWithNoDragInput = 0f;
+	private float camAutoTurningTime = 2.5f;
+	private float camAutoTurningSpeed = 4.5f;
+	private float camDragStrenght = 100f;
 
 	void Awake ()
 	{
@@ -26,6 +35,9 @@ public class MainMenuCamMovement : MonoBehaviour {
 	public void SwitchToCarView(bool arg)
 	{
 		camInCarViewMode = arg;
+		if (arg) {
+			timeWithNoDragInput = 0f;
+		}
 	}
 	IEnumerator camMove1()
 	{
@@ -187,16 +199,25 @@ public class MainMenuCamMovement : MonoBehaviour {
 		}
 			
 		cam.transform.position = camPositions [5].transform.position;
-		cam.transform.LookAt (camFocus.transform);
+		cam.transform.LookAt (camFocusGarageView);
 
 		while (fadeCG.alpha > 0) {
 			fadeCG.alpha = Mathf.MoveTowards (fadeCG.alpha, 0, Time.deltaTime * fadespeed);
 			yield return null;
 		}
 		while (camInCarViewMode) {
-			if (Input.GetMouseButton (0)) {
-				cam.transform.RotateAround (camFocus.transform.position, new Vector3 (0, 1, 0), Input.GetAxis("Mouse X") * 2.5f); 
-				cam.transform.LookAt (camFocus.transform);
+			if (Input.GetMouseButton (0) && !es.IsPointerOverGameObject ()) {
+				cam.transform.RotateAround (camFocusNormalView.position, new Vector3 (0, 1, 0), Input.GetAxis ("Mouse X") * camDragStrenght * Time.deltaTime); 
+				cam.transform.LookAt (camFocusGarageView);
+				timeWithNoDragInput = 0;
+			} else {
+				if (timeWithNoDragInput > camAutoTurningTime) {
+					cam.transform.RotateAround (camFocusNormalView.position, new Vector3 (0, 1, 0), camAutoTurningSpeed * Time.deltaTime); 
+				} else {
+					timeWithNoDragInput += Time.deltaTime;
+				}
+
+
 			}
 
 			yield return null;
