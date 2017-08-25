@@ -463,6 +463,11 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 		loadingCG.gameObject.SetActive (true);
+		if (GlobalGameData.currentInstance.eventActive.IsSeasonalEvent ()) {
+			GlobalGameData.currentInstance.SetLastEventPlayedResult (-1);
+		} else {
+			GlobalGameData.currentInstance.SetLastEventPlayedResult (0);
+		}
 		loadingInfo.text = "LOADING";
 		while (loadingCG.alpha < 1) {
 			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);

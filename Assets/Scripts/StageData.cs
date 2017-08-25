@@ -357,6 +357,10 @@ public class StageData : MonoBehaviour {
 
 	// getters/setters
 
+	public bool IsEventInProgress()
+	{
+		return gameStarted && !eventFinished;
+	}
 	public string GetTimePassedString()
 	{
 		return time_passedMin.ToString () + ":" + time_passedSec.ToString ("D2") + ":" + ((int)(time_passedDec * 100)).ToString ("D2");

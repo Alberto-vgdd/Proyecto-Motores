@@ -65,7 +65,7 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 		loadingCG.gameObject.SetActive (true);
 		loadingInfo.text = "LOADING";
 		while (loadingCG.alpha < 1) {
-			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);
+			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.unscaledDeltaTime * 5);
 			yield return null;
 		}
 		AsyncOperation AO;
@@ -74,11 +74,18 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 		} else { // Restarting current scene
 			AO = SceneManager.LoadSceneAsync (SceneManager.GetActiveScene().name);
 		}
+		AO.allowSceneActivation = false;
 		while (!AO.isDone) {
 			loadingInfo.text = "LOADING (" + ((int)(AO.progress * 100)) + "%)";
+			if (AO.progress >= 0.9f) {
+				// TODO: miedo me da esto...
+				AO.allowSceneActivation = true;
+				Time.timeScale = 1;
+				loading = false;
+			}
 			yield return null;
 		}
-		loading = false;
+
 	}
 	public void OpenMenu(int mtype)
 	{
