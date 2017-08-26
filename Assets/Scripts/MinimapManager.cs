@@ -9,7 +9,7 @@ public class MinimapManager : MonoBehaviour {
 	public GameObject parentCG;
 	public Transform displaceParent;
 	public GameObject playerReference;
-	private float scaleConversionFactor = 0.2f;
+	private float scaleConversionFactor = 1f;
 
 	private Vector3 initialPosition;
 

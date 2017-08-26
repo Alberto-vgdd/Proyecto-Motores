@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class AddToMinimap : MonoBehaviour {
 
-	private float scaleConversionFactor = 0.2f;
+	private float scaleConversionFactor = 1f;
 
 	public Image iconToInstantiate;
 	private Image referencedImage;
@@ -29,7 +29,7 @@ public class AddToMinimap : MonoBehaviour {
 	}
 	public void UpdateMinimapPosition()
 	{
-		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor;
+		referencedImage.transform.localPosition = new Vector3(transform.position.x, transform.position.z, 0) * scaleConversionFactor ;
 		referencedImage.transform.localRotation = Quaternion.Euler(0f, 0f, -transform.rotation.eulerAngles.y + 90f);
 	}
 	void OnDisable()
