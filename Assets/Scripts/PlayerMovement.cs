@@ -37,18 +37,18 @@ public class PlayerMovement : MonoBehaviour {
 
 	// Constantes
 
-	private const float STAT_TURNRATE_BASE = 2f;
-	private const float STAT_TURNRATE_SCAL = 0.4f;
-	private const float STAT_ACCELERATION_BASE = 0.5f;
-	private const float STAT_ACCELERATION_SCAL = 0.165f;
-	private const float STAT_MAXSPEED_BASE = 20f;
-	private const float STAT_MAXSPEED_SCAL = 2.15f;
-	private const float STAT_DRIFTSTR_BASE = 2.5f;
-	private const float STAT_DRIFTSTR_SCAL = 0.15f;
+	private const float STAT_TURNRATE_BASE = 3f;
+	private const float STAT_TURNRATE_SCAL = 0.3f;
+	private const float STAT_ACCELERATION_BASE = 1f;
+	private const float STAT_ACCELERATION_SCAL = 0.135f;
+	private const float STAT_MAXSPEED_BASE = 25f;
+	private const float STAT_MAXSPEED_SCAL = 1.65f;
+	private const float STAT_DRIFTSTR_BASE = 2.75f;
+	private const float STAT_DRIFTSTR_SCAL = 0.115f;
 	private const float STAT_MAXDRIFT_BASE = 15f;
-	private const float STAT_MAXDRIFT_SCAL = 3.5f;
-	private const float STAT_DRIFTSPDCONS_BASE = 0.2f;
-	private const float STAT_DRIFTSPDCONS_SCAL = 0.08f;
+	private const float STAT_MAXDRIFT_SCAL = 1.85f;
+	private const float STAT_DRIFTSPDCONS_BASE = 0.35f;
+	private const float STAT_DRIFTSPDCONS_SCAL = 0.065f;
 	private const float STAT_SPDFALLOFF_BASE = 1f;
 	private const float STAT_SPDFALLOFF_SCAL = 0.25f;
 
@@ -172,6 +172,9 @@ public class PlayerMovement : MonoBehaviour {
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, maxFwdSpeed + extraFwdSpeed, Time.fixedDeltaTime);
 		else if (accumulatedSpeed < maxBwdSpeed + extraFwdSpeed) 
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, maxBwdSpeed + extraFwdSpeed, Time.fixedDeltaTime * 500);
+
+		if (!allowPlayerControl)
+			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, 0, Time.fixedDeltaTime * 20);
 
 		MoveTrn ();
 		MoveFwd ();
@@ -430,7 +433,7 @@ public class PlayerMovement : MonoBehaviour {
 		driftStrenght = STAT_DRIFTSTR_BASE  + carReferenced.GetDriftStrenght () * STAT_DRIFTSTR_SCAL;
 		maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
 		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + carReferenced.GetSpeedLossOnDrift () * STAT_DRIFTSPDCONS_SCAL;
-		driftStabilization = carReferenced.GetDriftStabilization ();
+		driftStabilization = driftStrenght * 0.65f;
 		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
 		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
 	}

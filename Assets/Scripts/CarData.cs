@@ -12,7 +12,6 @@ public class CarData {
 	private float m_driftStrenght;
 	private float m_maxDriftDegree;
 	private float m_driftSpeedConservation;
-	private float m_driftStabilization;
 
 	// Bonus car stats (upgrades)
 
@@ -22,7 +21,6 @@ public class CarData {
 	private float m_upgraded_driftStrenght;
 	private float m_upgraded_maxDriftDegree;
 	private float m_upgraded_driftSpeedConservation;
-	private float m_upgraded_driftStabilization;
 
 	// Other car data
 
@@ -42,7 +40,6 @@ public class CarData {
 				m_maxDriftDegree = 8f;
 				m_driftStrenght = 4f;
 				m_driftSpeedConservation = 3f;
-				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 0;
 				m_upgraded_acceleration = 0;
@@ -50,7 +47,6 @@ public class CarData {
 				m_upgraded_driftStrenght = 0;
 				m_upgraded_maxDriftDegree = 0;
 				m_upgraded_driftSpeedConservation = 0;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -65,7 +61,6 @@ public class CarData {
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 7f;
 				m_driftSpeedConservation = 5f;
-				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = -1f;
 				m_upgraded_acceleration = 2.1f;
@@ -73,7 +68,6 @@ public class CarData {
 				m_upgraded_driftStrenght = -3.7f;
 				m_upgraded_maxDriftDegree = 0.5f;
 				m_upgraded_driftSpeedConservation = -2f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -88,7 +82,6 @@ public class CarData {
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 5f;
 				m_driftSpeedConservation = 5f;
-				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 99f;
 				m_upgraded_acceleration = 1.5f;
@@ -96,7 +89,6 @@ public class CarData {
 				m_upgraded_driftStrenght = -1.5f;
 				m_upgraded_maxDriftDegree = -1.5f;
 				m_upgraded_driftSpeedConservation = -3.5f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -111,7 +103,6 @@ public class CarData {
 				m_maxDriftDegree = 10f;
 				m_driftStrenght = 10f;
 				m_driftSpeedConservation = 10f;
-				m_driftStabilization = 10f;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
@@ -119,7 +110,6 @@ public class CarData {
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
 				m_upgraded_driftSpeedConservation = 0f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -134,7 +124,6 @@ public class CarData {
 				m_maxDriftDegree = 0f;
 				m_driftStrenght = 0f;
 				m_driftSpeedConservation = 0f;
-				m_driftStabilization = 0f;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
@@ -142,7 +131,6 @@ public class CarData {
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
 				m_upgraded_driftSpeedConservation = 0f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -157,7 +145,6 @@ public class CarData {
 				m_maxDriftDegree = 5f;
 				m_driftStrenght = 5f;
 				m_driftSpeedConservation = 5f;
-				m_driftStabilization = 5f;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
@@ -165,7 +152,6 @@ public class CarData {
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
 				m_upgraded_driftSpeedConservation = 0f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -180,7 +166,6 @@ public class CarData {
 				m_maxDriftDegree = 5f;
 				m_driftStrenght = 6f;
 				m_driftSpeedConservation = 8f;
-				m_driftStabilization = 2f;
 
 				m_upgraded_turnRate = 1f;
 				m_upgraded_acceleration = 2.4f;
@@ -188,7 +173,6 @@ public class CarData {
 				m_upgraded_driftStrenght = 1.25f;
 				m_upgraded_maxDriftDegree = 0;
 				m_upgraded_driftSpeedConservation = -1.75f;
-				m_upgraded_driftStabilization = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -233,10 +217,6 @@ public class CarData {
 	public float GetSpeedLossOnDrift()
 	{
 		return Mathf.Clamp (m_driftSpeedConservation + m_upgraded_driftSpeedConservation, 0, 10);
-	}
-	public float GetDriftStabilization()
-	{
-		return m_driftStabilization + m_upgraded_driftStabilization;
 	}
 
 	// BASE STAT GETTERS
