@@ -218,11 +218,17 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		if (!animationsFinished || ConfirmationPanelBehaviour.currentInstance.IsOpen())
 			return;
 		ConfirmationPanelBehaviour.currentInstance.OpenMenu (1);
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void RestartButtonPressed()
 	{
 		if (!animationsFinished || ConfirmationPanelBehaviour.currentInstance.IsOpen())
 			return;
 		ConfirmationPanelBehaviour.currentInstance.OpenMenu (2);
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 }

@@ -10,7 +10,7 @@ public class PauseMenuBehaviour : MonoBehaviour {
 	private Vector3 windowInitialPos;
 	private bool gamePaused;
 	private bool animationInProgress;
-	private bool isOpen;
+	private bool m_isOpen;
 
 	// Use this for initialization
 	void Start () {
@@ -21,7 +21,7 @@ public class PauseMenuBehaviour : MonoBehaviour {
 	void Update () {
 		if (Input.GetKeyDown (KeyCode.Escape)) {
 			if (StageData.currentData.IsEventInProgress () && !ConfirmationPanelBehaviour.currentInstance.IsOpen()) {
-				if (isOpen) {
+				if (m_isOpen) {
 					CloseMenu ();
 				} else {
 					OpenMenu ();
@@ -32,37 +32,50 @@ public class PauseMenuBehaviour : MonoBehaviour {
 
 	void OpenMenu()
 	{
+		
 		Time.timeScale = 0;
 		windowCG.alpha = 0;
 		menuParent.SetActive (true);
-		isOpen = true;
+		m_isOpen = true;
 		StartCoroutine ("FadeInAnimation");
+		PlayerSoundEffectsManager.instance.SetPausedState (true);
 	}
 	void CloseMenu()
 	{
 		if (animationInProgress)
 			return;	
+		
 		Time.timeScale = 1;
 		menuParent.SetActive (false);
-		isOpen = false;
+		m_isOpen = false;
+		PlayerSoundEffectsManager.instance.SetPausedState (false);
+
 	}
 	public void OnContinueClicked()
 	{
 		if (animationInProgress)
 			return;	
 		CloseMenu ();
+
+		MainMenuSoundManager.instance.playCancelSound ();
+
 	}
 	public void OnRestartClicked()
 	{
 		if (animationInProgress)
 			return;	
 		ConfirmationPanelBehaviour.currentInstance.OpenMenu (2);
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void OnAbandonClicked()
 	{
 		if (animationInProgress)
 			return;	
 		ConfirmationPanelBehaviour.currentInstance.OpenMenu (3);
+
+		MainMenuSoundManager.instance.playAcceptSound ();
 	}
 
 	IEnumerator FadeInAnimation()
@@ -78,4 +91,13 @@ public class PauseMenuBehaviour : MonoBehaviour {
 		}
 		animationInProgress = false;
 	}
+
+	public bool isOpen()
+	{
+		return m_isOpen;
+	}
+
+
+
+
 }

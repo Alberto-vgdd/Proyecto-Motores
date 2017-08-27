@@ -117,6 +117,8 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 	}
 	public void OnConfirmClick()
 	{
+		MainMenuSoundManager.instance.playAcceptSound();
+
 		if (loading)
 			return;
 		switch (menuType) {
@@ -142,6 +144,7 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 		if (loading)
 			return;
 		StartCoroutine ("CloseMenuAnimation");
+		MainMenuSoundManager.instance.playCancelSound ();
 	}
 	public bool IsOpen()
 	{

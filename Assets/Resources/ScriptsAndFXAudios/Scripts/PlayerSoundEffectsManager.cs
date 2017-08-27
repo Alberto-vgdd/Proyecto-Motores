@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerSoundEffectsManager : MonoBehaviour {
  
+	public static PlayerSoundEffectsManager instance;
+
 	public AudioClip m_Engine;         
 	public AudioClip m_DriftingSound;
 
@@ -32,6 +34,8 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 	private const float ENGINE_SOUND_PITCH_MAX = 1.5f;
 
 	private float targetDriftVolume = 0;
+
+	void Awake() { instance = this;}
 
 	// Use this for initialization
 	void Start ()
@@ -82,6 +86,25 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 		m_Engine = Resources.Load ("ScriptsAndFXSounds/CarEngine", typeof(AudioClip)) as AudioClip;
 		m_DriftingSound = Resources.Load ("ScriptsAndFXSounds/DRIFTSound", typeof(AudioClip)) as AudioClip;
 	}
+
+	public void SetPausedState(bool state)
+	{
+		if (state) 
+		{
+			//print ("QUEREMOS PARARLE");
+			engineSound.enabled = false;
+			driftSound.enabled = false;
+		}
+		else
+		{	//print ("QUEREMOS SACARLE");
+			engineSound.enabled = true;
+			driftSound.enabled = true;
+			driftSound.Play ();
+		}
+
+		
+	}
+
 	
 	// Update is called once per frame
 	void Update () {

@@ -173,9 +173,11 @@ public class PlayerMovement : MonoBehaviour {
 		else if (accumulatedSpeed < maxBwdSpeed + extraFwdSpeed) 
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, maxBwdSpeed + extraFwdSpeed, Time.fixedDeltaTime * 500);
 
-		if (!allowPlayerControl)
+		if (!allowPlayerControl) 
+		{
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, 0, Time.fixedDeltaTime * 20);
-
+			extraFwdSpeed = Mathf.MoveTowards (extraFwdSpeed, 0, Time.fixedDeltaTime * 20);
+		}
 		MoveTrn ();
 		MoveFwd ();
 

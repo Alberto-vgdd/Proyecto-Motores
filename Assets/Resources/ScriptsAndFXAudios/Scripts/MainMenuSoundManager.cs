@@ -1,11 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MainMenuSoundManager : MonoBehaviour {
 
 	private static AudioSource currentFXSound;
-	private static AudioSource currentSong;
 
 	[Header("0 = Accept, 1 = Cancel, 2 = Notification")]
 	public AudioClip[]FXSounds;
@@ -25,13 +25,7 @@ public class MainMenuSoundManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
-		currentFXSound = this.GetComponents<AudioSource>() [1];
-		currentSong = this.GetComponents<AudioSource>() [0];
-
-		//Test de si funciona la referencia estatica
-		currentSong.Play ();
-		currentSong.volume = 0.5f;
-
+		currentFXSound = this.GetComponent<AudioSource>();
 		currentFXSound.loop = false;
 		currentFXSound.volume = 0.15f;
 
