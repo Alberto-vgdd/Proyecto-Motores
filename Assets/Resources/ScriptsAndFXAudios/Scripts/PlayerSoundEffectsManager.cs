@@ -41,7 +41,7 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 		playerReference = GameObject.FindGameObjectWithTag ("Player");
 		pm = playerReference.GetComponent<PlayerMovement> ();
 
-		GetFXFromResources ();
+		//GetFXFromResources ();
 
 		//this.GetComponents<AudioSource> () [0].clip = m_Engine;
 		engineSound = this.GetComponents<AudioSource> () [0];

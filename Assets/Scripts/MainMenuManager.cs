@@ -134,6 +134,9 @@ public class MainMenuManager : MonoBehaviour {
 		StopCoroutine ("FadeInEventDetailsPanel");
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void SetCarSelected(int index)
 	{
@@ -147,6 +150,9 @@ public class MainMenuManager : MonoBehaviour {
 		driftspdconsSlider.SetValues (readedCar.GetBaseDriftSpdCons(), readedCar.GetUpgradedDriftSpdCons());
 
 		carInDisplayIndex = index;
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	void SetGarageCarButtons()
 	{
@@ -510,6 +516,9 @@ public class MainMenuManager : MonoBehaviour {
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_offline[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void OnWeeklyEventClicked()
 	{
@@ -528,27 +537,30 @@ public class MainMenuManager : MonoBehaviour {
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void OnCustomEventClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnCarShopClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnPartShopClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnGarageClicked()
 	{
@@ -556,7 +568,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		}
 		if (GlobalGameData.currentInstance.carsOwned.Count == 0) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You dont own any car"));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You don't own any car"));
 			return;
 		}
 		SetGarageCarButtons();
@@ -567,20 +579,23 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		StartCoroutine ("FadeInGaragePanel");
 		StartCoroutine ("FadeOutMainSlider");
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 	public void OnProfileClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnSettingsClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 
 	// Event buttons
@@ -593,12 +608,14 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		StartCoroutine ("FadeOutEventPanel");
 		StartCoroutine ("FadeInMainSlider");
+		MainMenuSoundManager.instance.playCancelSound ();
 	}
 	public void OnConfirmEventClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
+		MainMenuSoundManager.instance.playAcceptSound ();
 		StartCoroutine ("LoadScene");
 	}
 
@@ -610,21 +627,21 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnCustomizeCarClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnChangeCarPartsClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feautre in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
 	}
 	public void OnCloseGaragePanelClicked()
 	{
@@ -633,6 +650,9 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		StartCoroutine ("FadeOutGaragePanel");
 		StartCoroutine ("FadeInMainSlider");
+
+		MainMenuSoundManager.instance.playCancelSound();
+
 	}
 	public void OnSelectCarClicked()
 	{
@@ -642,6 +662,9 @@ public class MainMenuManager : MonoBehaviour {
 		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
 		SetGarageCarButtons();
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: \n" + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
+
+		MainMenuSoundManager.instance.playAcceptSound ();
+
 	}
 
 	// Last event played result & rank update panel
@@ -655,5 +678,8 @@ public class MainMenuManager : MonoBehaviour {
 		StartCoroutine ("FadeInMainSlider");
 		StartCoroutine ("FadeInTopAndBottomPanels");
 		StartCoroutine ("FadeOutRankDetailsPanel");
+
+		MainMenuSoundManager.instance.playCancelSound();
+
 	}
 }

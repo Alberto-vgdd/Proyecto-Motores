@@ -52,6 +52,7 @@ public class MainMenuNotificationManager : MonoBehaviour {
 			yield return null;
 		}
 		animationInProcess = false;
+		MainMenuSoundManager.instance.playNotificationSound();
 	}
 	IEnumerator CloseNotification()
 	{
@@ -63,6 +64,9 @@ public class MainMenuNotificationManager : MonoBehaviour {
 			yield return null;
 		}
 		globalCG.gameObject.SetActive (false);
+
+		//MainMenuSoundManager.instance.playCancelSound();
+
 		CheckNotifications ();
 	
 	}
@@ -82,6 +86,9 @@ public class MainMenuNotificationManager : MonoBehaviour {
 	{
 		if (animationInProcess)
 			return;
+
+		MainMenuSoundManager.instance.playCancelSound();
+
 		StartCoroutine ("CloseNotification");
 	}
 	public bool IsOpen()
