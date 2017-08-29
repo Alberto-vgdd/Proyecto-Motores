@@ -650,6 +650,12 @@ ModelImporter:
     101284: Straight_Up_LOD2_Tree_Wall_Right
     101286: Straight_Up_LOD2_Water_Canal_Left
     101288: Straight_Up_LOD2_Water_Canal_Right
+    101290: Bush 1 2 LOD1
+    101292: Bush 1 LOD0
+    101294: Bush 2 LOD0
+    101296: Decoration Bush 1 2 LOD1
+    101298: Decoration Bush 1 LOD0
+    101300: Decoration Bush 2 LOD0
     400000: Left LOD0 Ad Fence Left
     400002: Left LOD0 Ad Fence Right
     400004: Left LOD0 Cliff Left
@@ -1295,6 +1301,12 @@ ModelImporter:
     401284: Straight_Up_LOD2_Tree_Wall_Right
     401286: Straight_Up_LOD2_Water_Canal_Left
     401288: Straight_Up_LOD2_Water_Canal_Right
+    401290: Bush 1 2 LOD1
+    401292: Bush 1 LOD0
+    401294: Bush 2 LOD0
+    401296: Decoration Bush 1 2 LOD1
+    401298: Decoration Bush 1 LOD0
+    401300: Decoration Bush 2 LOD0
     2300000: Left LOD0 Ad Fence Left
     2300002: Left LOD0 Ad Fence Right
     2300004: Left LOD0 Cliff Left
@@ -1939,6 +1951,12 @@ ModelImporter:
     2301282: Straight_Up_LOD2_Tree_Wall_Right
     2301284: Straight_Up_LOD2_Water_Canal_Left
     2301286: Straight_Up_LOD2_Water_Canal_Right
+    2301288: Bush 1 2 LOD1
+    2301290: Bush 1 LOD0
+    2301292: Bush 2 LOD0
+    2301294: Decoration Bush 1 2 LOD1
+    2301296: Decoration Bush 1 LOD0
+    2301298: Decoration Bush 2 LOD0
     3300000: Left LOD0 Ad Fence Left
     3300002: Left LOD0 Ad Fence Right
     3300004: Left LOD0 Cliff Left
@@ -2583,6 +2601,12 @@ ModelImporter:
     3301282: Straight_Up_LOD2_Tree_Wall_Right
     3301284: Straight_Up_LOD2_Water_Canal_Left
     3301286: Straight_Up_LOD2_Water_Canal_Right
+    3301288: Bush 1 2 LOD1
+    3301290: Bush 1 LOD0
+    3301292: Bush 2 LOD0
+    3301294: Decoration Bush 1 2 LOD1
+    3301296: Decoration Bush 1 LOD0
+    3301298: Decoration Bush 2 LOD0
     4300000: Straight Down LOD2 Road Mask
     4300002: Straight Down LOD2 Road Collider
     4300004: Straight Down LOD2 Rail Guard Right
@@ -3227,6 +3251,12 @@ ModelImporter:
     4301282: Straight_LOD2_Tree_Wall_Right
     4301284: Straight_LOD2_Concrete_Wall_Right
     4301286: Straight_LOD2_Road
+    4301288: Bush 1 2 LOD1
+    4301290: Bush 1 LOD0
+    4301292: Bush 2 LOD0
+    4301294: Decoration Bush 1 2 LOD1
+    4301296: Decoration Bush 1 LOD0
+    4301298: Decoration Bush 2 LOD0
     20500000: //RootNode
   materials:
     importMaterials: 0
