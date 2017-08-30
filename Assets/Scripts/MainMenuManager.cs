@@ -46,11 +46,8 @@ public class MainMenuManager : MonoBehaviour {
 	public GameObject carStatsParent;
 	public GameObject carOptionsParent;
 	public Text carNameText;
-	public StatSliderBehaviour maxspeedSlider;
-	public StatSliderBehaviour accelerationSlider;
-	public StatSliderBehaviour turnrateSlider;
-	public StatSliderBehaviour driftstrSlider;
-	public StatSliderBehaviour driftspdconsSlider;
+	public Text slotsInUse;
+	public List<StatSliderBehaviour> statSliders;
 	public List<GarageSubPanelBehaviour> carsInList;
 	[Header("Loading Panel")]
 	public Text loadingInfo;
@@ -143,11 +140,11 @@ public class MainMenuManager : MonoBehaviour {
 		CarData readedCar = GlobalGameData.currentInstance.carsOwned [index];
 
 		carNameText.text = readedCar.GetCarName ();
-		maxspeedSlider.SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
-		accelerationSlider.SetValues (readedCar.GetBaseAcceleration(), readedCar.GetUpgradedAcceleration());
-		turnrateSlider.SetValues (readedCar.GetBaseTurnRate(), readedCar.GetUpgradedTurnRate());
-		driftstrSlider.SetValues (readedCar.GetBaseDriftStrenght(), readedCar.GetUpgradedDriftStrenght());
-		driftspdconsSlider.SetValues (readedCar.GetBaseDriftSpdCons(), readedCar.GetUpgradedDriftSpdCons());
+		statSliders[0].SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
+		statSliders[1].SetValues (readedCar.GetBaseAcceleration(), readedCar.GetUpgradedAcceleration());
+		statSliders[2].SetValues (readedCar.GetBaseTurnRate(), readedCar.GetUpgradedTurnRate());
+		statSliders[3].SetValues (readedCar.GetBaseDriftStrenght(), readedCar.GetUpgradedDriftStrenght());
+		statSliders[4].SetValues (readedCar.GetBaseWeight (), readedCar.GetUpgradedWeight ());
 
 		carInDisplayIndex = index;
 
@@ -210,6 +207,11 @@ public class MainMenuManager : MonoBehaviour {
 		topParent.alpha = bottomParent.alpha = 0;
 		topParent.gameObject.SetActive(true);
 		bottomParent.gameObject.SetActive (true);
+		yield return new WaitForSeconds (0.25f);
+
+		while (MainMenuNotificationManager.currentInstance.IsOpen ())
+			yield return null;
+		
 		float t = 0;
 		float animSpeed = 5f;
 		while (t < 1) {
@@ -411,6 +413,11 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		StopCoroutine ("FadeOutMainSlider");
 		mainSlider.gameObject.SetActive (true);
+
+		yield return new WaitForSeconds (0.25f);
+
+		while (MainMenuNotificationManager.currentInstance.IsOpen ())
+			yield return null;
 		while (mainSlider.alpha < 1) {
 			mainSlider.alpha = Mathf.MoveTowards (mainSlider.alpha, 1, Time.deltaTime*5f);
 			yield return null;
@@ -572,6 +579,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		}
 		SetGarageCarButtons();
+		slotsInUse.text = GlobalGameData.currentInstance.carsOwned.Count + "/" + GlobalGameData.currentInstance.GetGarageSlots() + " slots in use";
 		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
 			SetCarSelected (0);
 		} else {

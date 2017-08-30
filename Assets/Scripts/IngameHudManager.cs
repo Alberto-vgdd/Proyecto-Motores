@@ -45,12 +45,21 @@ public class IngameHudManager : MonoBehaviour {
 	private float playerSpeedConversion = 8.5f;
 	private bool eventFinished = false;
 
+	private Vector3 globalParentInitialPosition;
+	private float shakeStr;
+	private float shakeSpeed = 500f;
+	private float shakeThs = 5;
+	private float shakeDecay = 0.8f;
+
+
+
 	void Awake ()
 	{
 		currentInstance = this;
 	}
 	// Use this for initialization
 	void Start () {
+		globalParentInitialPosition = ingameHudCg.transform.localPosition;
 		SetObjectivePanel ();
 		if (GlobalGameData.currentInstance.eventActive.HasTimelimit ()) {
 			if (GlobalGameData.currentInstance.eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
@@ -112,6 +121,12 @@ public class IngameHudManager : MonoBehaviour {
 		if (!scoreUpdating)
 			StartCoroutine ("UpdateScore");
 	}
+	public void ShakeHud(float intensity)
+	{
+		shakeStr = intensity;
+		StopCoroutine ("ShakeAnimation");
+		StartCoroutine ("ShakeAnimation");
+	}
 	void SetElementsVisibility()
 	{
 		if (GlobalGameData.currentInstance.eventActive.GetGamemode () == 0) { // Free roam gamemode.
@@ -132,6 +147,33 @@ public class IngameHudManager : MonoBehaviour {
 		}
 		UpdateSectorInfo ();
 		ScoreInfo.text = tempScore.ToString();
+	}
+
+	IEnumerator ShakeAnimation()
+	{
+		float currentX = 0;
+		float targetX = shakeStr;
+		int inverted = 1;
+
+		while (shakeStr > 0) {
+			currentX = Mathf.MoveTowards (currentX, targetX, Time.deltaTime * shakeSpeed);
+			if (currentX == targetX) {
+				shakeStr *= shakeDecay;
+				if (shakeStr < shakeThs) {
+					shakeStr = 0;
+				}
+				inverted *= -1;
+				targetX = shakeStr * inverted;
+			}
+
+			ingameHudCg.transform.localPosition = globalParentInitialPosition + Vector3.up * currentX;
+			yield return null;
+		}
+		while (currentX != 0) {
+			currentX = Mathf.MoveTowards (currentX, 0, Time.deltaTime * shakeSpeed);
+			ingameHudCg.transform.localPosition = globalParentInitialPosition + Vector3.up * currentX;
+			yield return null;
+		}
 	}
 	IEnumerator UpdateScore()
 	{

@@ -18,6 +18,7 @@ public class GlobalGameData : MonoBehaviour {
 	public List<EventData> eventsAvailable_offline;
 	public List<EventData> eventsAvailable_seasonal;
 	public List<CarData> carsOwned;
+	private int maxGarageSize = 20;
 	private int carSelectedIndex = 0;
 
 	private GhostReplayData playerGhostPB;
@@ -71,8 +72,8 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		// Demomento ponemos eventos fijados ya que no tiene de donde scarlos.
 		eventsAvailable_seasonal = new List<EventData>();
-		eventsAvailable_seasonal.Add(new EventData(765, 5, 6, "Custom name LUL"));
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, 6, "More testing"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, 6, "Car balance test"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, 1, "Long road car test"));
 	}
 	public float GetRankChangeOnNextUpdate()
 	{
@@ -195,6 +196,10 @@ public class GlobalGameData : MonoBehaviour {
 	public void SetCarInUseIndex(int index)
 	{
 		carSelectedIndex = index;
+	}
+	public int GetGarageSlots()
+	{
+		return maxGarageSize;
 	}
 	public string GetRankName()
 	{

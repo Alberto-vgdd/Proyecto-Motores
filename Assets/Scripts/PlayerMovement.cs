@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float driftStabilization;									// Auto-Estabilizacion del derrape
 	private float speedFalloffReductionFwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
 	private float speedFalloffReductionBwd;								// Velocidad a la que se empieza a dejar de acelerar, cuanto mas alto sea, mas tardara en activarse (hacia delante)
+	private float carWeight;											// Peso del vehiculo, afecta al deslizamiento de los derrapes, y lo que dura este.
 
 	// Parametros de estado
 
@@ -34,23 +35,28 @@ public class PlayerMovement : MonoBehaviour {
 	private bool cleanAir;												// En el aire sin colisionar con nada?
 	private bool cleanSection;											// Seccion limpia? (Sin recibir daños)
 	private float driftDegree;											// Angulo de derrape
+	private float driftSlideForce;										// Fuerza de empuje del derrape
+	private float driftSlideCorrectionForce;							// Velocidad de cambio de la fuerza de empuje del derrape
+	private float driftFwdDegree;										// Angulo real en el que se movera el coche mientras derrape
 
 	// Constantes
 
-	private const float STAT_TURNRATE_BASE = 3f;
-	private const float STAT_TURNRATE_SCAL = 0.3f;
-	private const float STAT_ACCELERATION_BASE = 1f;
-	private const float STAT_ACCELERATION_SCAL = 0.135f;
-	private const float STAT_MAXSPEED_BASE = 25f;
-	private const float STAT_MAXSPEED_SCAL = 1.65f;
-	private const float STAT_DRIFTSTR_BASE = 2.75f;
-	private const float STAT_DRIFTSTR_SCAL = 0.115f;
-	private const float STAT_MAXDRIFT_BASE = 15f;
-	private const float STAT_MAXDRIFT_SCAL = 1.85f;
-	private const float STAT_DRIFTSPDCONS_BASE = 0.35f;
-	private const float STAT_DRIFTSPDCONS_SCAL = 0.065f;
-	private const float STAT_SPDFALLOFF_BASE = 1f;
-	private const float STAT_SPDFALLOFF_SCAL = 0.25f;
+	private const float STAT_TURNRATE_BASE = 3.5f;						// (STAT) TurnRate - Base
+	private const float STAT_TURNRATE_SCAL = 0.125f;					// (STAT) TurnRate - Escalado
+	private const float STAT_ACCELERATION_BASE = 1f;					// (STAT) Acceleration - Base
+	private const float STAT_ACCELERATION_SCAL = 0.135f;				// (STAT) Acceleration - Escalado
+	private const float STAT_MAXSPEED_BASE = 25f;						// (STAT) MaxSpeed - Base
+	private const float STAT_MAXSPEED_SCAL = 1.65f;						// (STAT) MaxSpeed - Escalado
+	private const float STAT_DRIFTSTR_BASE = 2.75f;						// (STAT) DriftStrenght - Base
+	private const float STAT_DRIFTSTR_SCAL = 0.115f;					// (STAT) DriftStrenght - Escalado
+	private const float STAT_MAXDRIFT_BASE = 15f;						// (STAT) MaxDrift - Base
+	private const float STAT_MAXDRIFT_SCAL = 1.85f;						// (STAT) MaxDrift - Escalado
+	private const float STAT_DRIFTSPDCONS_BASE = 0.35f;					// (STAT) DriftSpeedConservation - Base
+	private const float STAT_DRIFTSPDCONS_SCAL = 0.065f;				// (STAT) DriftSpeedConservation - Escalado
+	private const float STAT_WEIGHT_BASE = 0.5f;						// (STAT) Weight - Base
+	private const float STAT_WEIGHT_SCAL = 0.05f;						// (STAT) Weight - Escalado
+	private const float STAT_SPDFALLOFF_BASE = 1f;						// (STAT DERIVADO DE VELOCIDAD) SpeedFalloff - Base
+	private const float STAT_SPDFALLOFF_SCAL = 0.25f;					// (STAT DERIVADO DE VELOCIDAD) SpeedFalloff - Escalado
 
 	private const float DRIFT_TURN_RATE = 6f;							// Turnrate utilizado en el drift, igual para todos los coches.
 	private const float GROUND_TRANSITION_THS = 0.1f;					// Margen de tiempo para dejar de tocar suelo (en seg.)
@@ -74,7 +80,6 @@ public class PlayerMovement : MonoBehaviour {
 	private float extraFwdSpeed;										// Velocidad limite extra por inclinacion de terreno.
 	private float turnMultiplier = 0f;									// Auxiliar para evitar que se pueda girar a 0 km/h.
 	private float driftMultiplier = 0.2f;
-	private float driftOutsideForce = 0f;
 	private float deltaEulerX;
 
 	// Otras referencias
@@ -88,18 +93,23 @@ public class PlayerMovement : MonoBehaviour {
 
 	void Start()
 	{
-		lastNodeCrossedID = -1;
 		rb = GetComponent<Rigidbody> ();
 		SetCarStats ();
-		rb.velocity = new Vector3 (0, 0, 0);
-		driftDegree = 0;
-		resetTransform.transform.position = transform.position;
-		resetTransform.transform.rotation = transform.rotation;
+		SetInitialAuxilarParameters ();
 		StartCoroutine ("LockRotation");
 	}
 
-	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta.
 
+	void SetInitialAuxilarParameters()
+	{
+		lastNodeCrossedID = -1;
+		rb.velocity = new Vector3 (0, 0, 0);
+		driftDegree = driftFwdDegree = 0;
+		resetTransform.transform.position = transform.position;
+		resetTransform.transform.rotation = transform.rotation;
+	}
+
+	// Los inputs del jugador son leidos en Update, mientras que las fisicas son procesadas en FixedUpdate, para asi mejorar la respuesta.
 	void Update()
 	{
 		if (!allowPlayerControl) {
@@ -121,9 +131,9 @@ public class PlayerMovement : MonoBehaviour {
 			drifting = true;
 
 		// Test only: 
-//		if (Input.GetKeyDown (KeyCode.R)) {
-//			ResetCar ();
-//		}
+		//		if (Input.GetKeyDown (KeyCode.R)) {
+		//			ResetCar ();
+		//		}
 	}
 
 	// Procesa las fisicas del coche.
@@ -173,11 +183,9 @@ public class PlayerMovement : MonoBehaviour {
 		else if (accumulatedSpeed < maxBwdSpeed + extraFwdSpeed) 
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, maxBwdSpeed + extraFwdSpeed, Time.fixedDeltaTime * 500);
 
-		if (!allowPlayerControl) 
-		{
+		if (!allowPlayerControl)
 			accumulatedSpeed = Mathf.MoveTowards (accumulatedSpeed, 0, Time.fixedDeltaTime * 20);
-			extraFwdSpeed = Mathf.MoveTowards (extraFwdSpeed, 0, Time.fixedDeltaTime * 20);
-		}
+
 		MoveTrn ();
 		MoveFwd ();
 
@@ -217,9 +225,10 @@ public class PlayerMovement : MonoBehaviour {
 			accumulatedSpeed = transform.InverseTransformDirection(rb.velocity).z / TRANSLATE_TO_VELOCITY;
 			return;
 		}
-
-		driftOutsideForce = 1 + accumulatedSpeed/30f;
-		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,-driftDegree * driftOutsideForce,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
+		driftSlideForce = (-0.75f - accumulatedSpeed * 0.05f -Mathf.Clamp01(forwInput*0.75f)) * carWeight;
+		driftSlideCorrectionForce = 90 - driftDegree*0.75f - carWeight*20;
+		driftFwdDegree = Mathf.MoveTowards(driftFwdDegree,driftDegree * driftSlideForce, Time.fixedDeltaTime * driftSlideCorrectionForce);
+		rb.MovePosition(transform.TransformPoint( (Quaternion.Euler(0,driftFwdDegree,0) * Vector3.forward * accumulatedSpeed * Time.fixedDeltaTime)));
 		if (accumulatedSpeed < 3) {
 			EndDrift();
 		}
@@ -234,9 +243,9 @@ public class PlayerMovement : MonoBehaviour {
 		turnMultiplier = Mathf.MoveTowards (turnMultiplier, 0, accumulatedSpeed * 0.02f);
 
 		if (drifting) {
-			accumulatedSpeed -= (accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime * Mathf.Abs(driftDegree*0.135f);
-			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.deltaTime * 2.5f);
-			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree/20) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
+			accumulatedSpeed -= (accumulatedSpeed) * 0.2f * (1-driftSpeedConservation) * Time.fixedDeltaTime * Mathf.Abs(driftDegree*0.2f);
+			driftMultiplier = Mathf.MoveTowards (driftMultiplier, 1, Time.fixedDeltaTime * 2.5f);
+			transform.Rotate (new Vector3(0,((turnInput*0.7f) + driftDegree*0.033f) * DRIFT_TURN_RATE * 10 * Time.fixedDeltaTime,0));
 			if ((driftDegree > 0 && turnInput > 0) || (driftDegree < 0 && turnInput < 0)) {
 				driftDegree += turnInput * Time.fixedDeltaTime * driftMultiplier *  driftStrenght * 10 * (Mathf.Clamp01 ((1 - (Mathf.Abs (driftDegree) / maxDrift)) * 1f)); // *1 es para recordar donde poner el ajuste
 			} else {
@@ -255,7 +264,7 @@ public class PlayerMovement : MonoBehaviour {
 			transform.Rotate (new Vector3(0,((turnInput*0.7f)) * turnRate * 10 * Time.fixedDeltaTime * turnMultiplier,0));
 		}
 	}
-		
+
 	// Administra la colision con triggers.
 
 	void OnTriggerEnter(Collider other)
@@ -356,10 +365,15 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				cleanSection = false;
 				cleanAir = false;
-				if (grounded)
+
+				if (grounded) {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.075f);
-				else
+					IngameHudManager.currentInstance.ShakeHud (accumulatedSpeed * 0.75f);
+				} else {
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.01f);
+					IngameHudManager.currentInstance.ShakeHud (rb.velocity.magnitude * 0.1f);
+				}
+					
 				if (drifting)
 					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_DRIFT;
 				else
@@ -371,10 +385,13 @@ public class PlayerMovement : MonoBehaviour {
 			{
 				cleanSection = false;
 				cleanAir = false;
-				if (grounded)
+				if (grounded) {
 					StageData.currentData.SendPlayerCollision (accumulatedSpeed * 0.135f);
-				else
+					IngameHudManager.currentInstance.ShakeHud (accumulatedSpeed * 1.35f);
+				} else {
 					StageData.currentData.SendPlayerCollision (rb.velocity.magnitude * 0.02f);
+					IngameHudManager.currentInstance.ShakeHud (rb.velocity.magnitude * 0.2f);
+				}
 				if (drifting)
 					accumulatedSpeed *= FRICTION_SPD_CONSERVATION_DRIFT;
 				else
@@ -402,6 +419,7 @@ public class PlayerMovement : MonoBehaviour {
 		drifting = false;
 		driftDegree = 0;
 		driftMultiplier = 0.2f;
+		driftFwdDegree = 0;
 	}
 
 	// Respawn (llamado al caer al vacio, o al ir en direccion contraria.
@@ -434,10 +452,11 @@ public class PlayerMovement : MonoBehaviour {
 		maxBwdSpeed = -(maxFwdSpeed * 0.35f);
 		driftStrenght = STAT_DRIFTSTR_BASE  + carReferenced.GetDriftStrenght () * STAT_DRIFTSTR_SCAL;
 		maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
-		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + carReferenced.GetSpeedLossOnDrift () * STAT_DRIFTSPDCONS_SCAL;
+		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + (10-carReferenced.GetCarWeight()) * STAT_DRIFTSPDCONS_SCAL;
 		driftStabilization = driftStrenght * 0.65f;
 		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
 		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
+		carWeight = STAT_WEIGHT_BASE + STAT_WEIGHT_SCAL * carReferenced.GetCarWeight ();
 	}
 	IEnumerator LockRotation()
 	{
@@ -491,5 +510,9 @@ public class PlayerMovement : MonoBehaviour {
 	public bool IsStopped()
 	{
 		return Mathf.Abs (accumulatedSpeed) < 0.5f;
+	}
+	public float GetDriftFwdDegree()
+	{
+		return driftFwdDegree;
 	}
 }

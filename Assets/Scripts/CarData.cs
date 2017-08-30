@@ -11,7 +11,7 @@ public class CarData {
 	private float m_maxSpeed;
 	private float m_driftStrenght;
 	private float m_maxDriftDegree;
-	private float m_driftSpeedConservation;
+	private float m_carWeight;
 
 	// Bonus car stats (upgrades)
 
@@ -20,7 +20,7 @@ public class CarData {
 	private float m_upgraded_maxSpeed;
 	private float m_upgraded_driftStrenght;
 	private float m_upgraded_maxDriftDegree;
-	private float m_upgraded_driftSpeedConservation;
+	private float m_upgraded_carWeight;
 
 	// Other car data
 
@@ -39,14 +39,14 @@ public class CarData {
 				m_maxSpeed = 8f;
 				m_maxDriftDegree = 8f;
 				m_driftStrenght = 4f;
-				m_driftSpeedConservation = 3f;
+				m_carWeight = 4.5f;
 
 				m_upgraded_turnRate = 0;
 				m_upgraded_acceleration = 0;
 				m_upgraded_maxSpeed = 0;
 				m_upgraded_driftStrenght = 0;
 				m_upgraded_maxDriftDegree = 0;
-				m_upgraded_driftSpeedConservation = 0;
+				m_upgraded_carWeight = -0.02f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -60,14 +60,14 @@ public class CarData {
 				m_maxSpeed = 6f;
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 7f;
-				m_driftSpeedConservation = 5f;
+				m_carWeight = 8;
 
 				m_upgraded_turnRate = -1f;
 				m_upgraded_acceleration = 2.1f;
 				m_upgraded_maxSpeed = 1.5f;
 				m_upgraded_driftStrenght = -3.7f;
 				m_upgraded_maxDriftDegree = 0.5f;
-				m_upgraded_driftSpeedConservation = -2f;
+				m_upgraded_carWeight = 0.25f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -81,14 +81,14 @@ public class CarData {
 				m_maxSpeed = 9f;
 				m_maxDriftDegree = 4f;
 				m_driftStrenght = 5f;
-				m_driftSpeedConservation = 5f;
+				m_carWeight = 8;
 
 				m_upgraded_turnRate = 99f;
 				m_upgraded_acceleration = 1.5f;
 				m_upgraded_maxSpeed = 1f;
 				m_upgraded_driftStrenght = -1.5f;
 				m_upgraded_maxDriftDegree = -1.5f;
-				m_upgraded_driftSpeedConservation = -3.5f;
+				m_upgraded_carWeight = -1f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -102,14 +102,14 @@ public class CarData {
 				m_maxSpeed = 10f;
 				m_maxDriftDegree = 10f;
 				m_driftStrenght = 10f;
-				m_driftSpeedConservation = 10f;
+				m_upgraded_carWeight = 0;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
 				m_upgraded_maxSpeed = 0f;
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_carWeight = 0;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -123,14 +123,14 @@ public class CarData {
 				m_maxSpeed = 0f;
 				m_maxDriftDegree = 0f;
 				m_driftStrenght = 0f;
-				m_driftSpeedConservation = 0f;
+				m_carWeight = 10f;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
 				m_upgraded_maxSpeed = 0f;
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_carWeight = 0f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -144,14 +144,14 @@ public class CarData {
 				m_maxSpeed = 5f;
 				m_maxDriftDegree = 5f;
 				m_driftStrenght = 5f;
-				m_driftSpeedConservation = 5f;
+				m_carWeight = 5f;
 
 				m_upgraded_turnRate = 0f;
 				m_upgraded_acceleration = 0f;
 				m_upgraded_maxSpeed = 0f;
 				m_upgraded_driftStrenght = 0f;
 				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_driftSpeedConservation = 0f;
+				m_upgraded_carWeight = 0f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -165,14 +165,14 @@ public class CarData {
 				m_maxSpeed = 4.5f;
 				m_maxDriftDegree = 5f;
 				m_driftStrenght = 6f;
-				m_driftSpeedConservation = 8f;
+				m_carWeight = 6.5f;
 
 				m_upgraded_turnRate = 1f;
 				m_upgraded_acceleration = 2.4f;
 				m_upgraded_maxSpeed = -0.55f;
 				m_upgraded_driftStrenght = 1.25f;
 				m_upgraded_maxDriftDegree = 0;
-				m_upgraded_driftSpeedConservation = -1.75f;
+				m_upgraded_carWeight = 0.5f;
 
 				m_modelID = 1;
 				m_skinID = 1;
@@ -194,6 +194,8 @@ public class CarData {
 	{
 		return m_skinID;
 	}
+
+	// COMBINED STAT GETTERS
 	public float GetTurnRate()
 	{
 		return Mathf.Clamp(m_turnRate + m_upgraded_turnRate, 0, 10);
@@ -214,9 +216,9 @@ public class CarData {
 	{
 		return Mathf.Clamp (m_maxDriftDegree + m_upgraded_maxDriftDegree, 0, 10);
 	}
-	public float GetSpeedLossOnDrift()
+	public float GetCarWeight()
 	{
-		return Mathf.Clamp (m_driftSpeedConservation + m_upgraded_driftSpeedConservation, 0, 10);
+		return Mathf.Clamp (m_carWeight + m_upgraded_carWeight, 0, 10);
 	}
 
 	// BASE STAT GETTERS
@@ -236,9 +238,9 @@ public class CarData {
 	{
 		return m_driftStrenght;
 	}
-	public float GetBaseDriftSpdCons()
+	public float GetBaseWeight()
 	{
-		return m_driftSpeedConservation;
+		return m_carWeight;
 	}
 	// UPGRADED STAT GETTERS
 	public float GetUpgradedMaxSpeed()
@@ -257,8 +259,8 @@ public class CarData {
 	{
 		return m_upgraded_driftStrenght;
 	}
-	public float GetUpgradedDriftSpdCons()
+	public float GetUpgradedWeight()
 	{
-		return m_upgraded_driftSpeedConservation;
+		return m_upgraded_carWeight;
 	}
 }
