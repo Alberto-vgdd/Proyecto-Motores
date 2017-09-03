@@ -262,9 +262,9 @@ public class StageData : MonoBehaviour {
 		if (!gameStarted || eventFinished)
 			return;
 		if (eventActive.HasTimelimit()) {
-			if (eventActive.GetGamemode () == 4 && pm.GetCurrentSpeedPercentage() > 0.65f)
+			if (eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge && pm.GetCurrentSpeedPercentage() > 0.65f)
 				timeCountMultiplier = 0.05f;
-			if (eventActive.GetGamemode() == 5 && pm.IsDrifting())
+			if (eventActive.GetGamemode() == EventData.Gamemode.ChainDriftChallenge && pm.IsDrifting())
 				timeCountMultiplier = 0.05f;
 			time_remainingSec = Mathf.MoveTowards (time_remainingSec, 0, Time.deltaTime * timeCountMultiplier);
 			if (time_remainingSec <= 0 && pm.IsStopped()) 

@@ -8,7 +8,7 @@ public class GhostReplayData {
 	private List<Quaternion> recordedRotations;
 
 	private int recordedAt_seed;
-	private int recordedAt_gamemode;
+	private EventData.Gamemode recordedAt_gamemode;
 	private float scoreRecorded;
 	private bool scoreRecordedIsTime;
 	private string ghostName;
@@ -16,11 +16,11 @@ public class GhostReplayData {
 	private float recordingInterval;
 	private const int MAX_ALLOWED_RECORDINGS = 5000;
 
-	public GhostReplayData (float interval, int seed, int gamemode)
+	public GhostReplayData (float interval, int seed, EventData.Gamemode gmode)
 	{
 		recordingInterval = interval;
 		recordedAt_seed = seed;
-		recordedAt_gamemode = gamemode;
+		recordedAt_gamemode = gmode;
 		ghostName = "[TEST] Ghost";
 		recordedPositions = new List<Vector3> ();
 		recordedRotations = new List<Quaternion> ();
@@ -56,7 +56,7 @@ public class GhostReplayData {
 	{
 		return recordedAt_seed;
 	}
-	public int GetRecordedAtGamemode()
+	public EventData.Gamemode GetRecordedAtGamemode()
 	{
 		return recordedAt_gamemode;
 	}

@@ -9,6 +9,7 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	public Text text_reward;
 	public Text text_difficulty;
 	public Image image_background;
+	public GameObject newTag;
 	private int m_index;
 	private EventData m_dataReferenced;
 
@@ -24,7 +25,9 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	// Use this for initialization
 	public void OnClick()
 	{
+		m_dataReferenced.SetAsViewed ();
 		MainMenuManager.currentInstance.SelectEventAsActive (m_dataReferenced);
+		UpdateNewTag ();
 	}
 	public void SetPanelForEvent(EventData data, int index)
 	{
@@ -33,5 +36,10 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 		text_reward.text = m_dataReferenced.GetRewardString();
 		text_difficulty.text = m_dataReferenced.GetRoadDifficulty().ToString ("F1");
 		text_header.text = m_dataReferenced.GetEventName();
+		UpdateNewTag ();
+	}
+	void UpdateNewTag()
+	{
+		newTag.SetActive (m_dataReferenced.IsNew());
 	}
 }

@@ -33,10 +33,11 @@ public class EventData {
 	private int m_rewardValue;
 	private int m_rewardType;
 	private int m_eventLeague;
-	private int m_gameMode;
+	private Gamemode m_gameMode;
 	private float m_roadDifficulty;
 	private bool displayTimeLeftAlwaysFloat = false;
 	private string m_customEventName = "";
+	private bool m_new;
 	// AuxParameters
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
@@ -44,10 +45,22 @@ public class EventData {
 	private const float SILVER_REWARD_MULTIPLIER = 0.8f;
 	private const float BRONZE_REWARD_MULTIPLIER = 0.6f;
 
-
-	public EventData (int seed, int checkpoints, int gamemode, string customName = "")
+	public enum Gamemode
 	{
-		m_gameMode = gamemode;
+		Endurance = 1,
+		DriftEndurance = 2,
+		DriftExhibition = 3,
+		HighSpeedChallenge = 4,
+		ChainDriftChallenge = 5,
+		TimeAttack = 6,
+		FreeRoam = 7
+	}
+
+	public EventData (int seed, int checkpoints, Gamemode gmode, string customName = "")
+	{
+		m_new = true;
+
+		m_gameMode = gmode;
 		m_eventSeed = seed;
 		m_checkPoints = checkpoints;
 		m_customEventName = customName;
@@ -76,7 +89,8 @@ public class EventData {
 
 	public EventData (int league, bool seasonal, bool canBeRestarted)
 	{
-		m_gameMode = Random.Range (1, 7);
+		m_new = true;
+
 		m_eventSeed = Random.Range (1, 99999999);
 		m_checkPoints = Random.Range (4, 10) + (int)(league/2);
 		m_eventLeague = league;
@@ -93,7 +107,7 @@ public class EventData {
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
 
-
+		SetGamemodeBasedOnRoadDifficulty ();
 		SetEventRules ();
 		SetEventObjectives ();
 
@@ -103,35 +117,115 @@ public class EventData {
 			m_rewardValue = (int)((BASE_REWARD_VALUE * (m_checkPoints*0.35f)) * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (league * LEAGUE_DIFFICULTY_MULTIPLIER)));
 		}
 	}
+	void SetGamemodeBasedOnRoadDifficulty()
+	{
+		int rand;
+		if (m_roadDifficulty < 2) {
+			// Allows HighSpeedChallenge, TimeAttack
+			rand = Random.Range (1, 3);
+			switch (rand) {
+			case 1:
+				{
+					m_gameMode = Gamemode.HighSpeedChallenge;
+					break;
+				}
+			case 2:
+				{
+					m_gameMode = Gamemode.TimeAttack;
+					break;
+				}
+			}
+		} else if (m_roadDifficulty < 3) {
+			// Allows Endurance, DriftEndurance, ChainDriftChallenge, DriftExhibition, HighSpeedChallenge, TimeAttack
+			rand = Random.Range (1, 6);
+			switch (rand) {
+			case 1:
+				{
+					m_gameMode = Gamemode.Endurance;
+					break;
+				}
+			case 2:
+				{
+					m_gameMode = Gamemode.DriftEndurance;
+					break;
+				}
+			case 3:
+				{
+					m_gameMode = Gamemode.ChainDriftChallenge;
+					break;
+				}
+			case 4:
+				{
+					m_gameMode = Gamemode.DriftExhibition;
+					break;
+				}
+			case 5:
+				{
+					m_gameMode = Gamemode.HighSpeedChallenge;
+					break;
+				}
+			case 6:
+				{
+					m_gameMode = Gamemode.TimeAttack;
+					break;
+				}
+			}
+		} else {
+			// Allows, DriftEndurance, ChainDriftChallenge, DriftExhibition, TimeAttack
+			rand = Random.Range (1, 5);
+			switch (rand) {
+			case 1:
+				{
+					m_gameMode = Gamemode.DriftEndurance;
+					break;
+				}
+			case 2:
+				{
+					m_gameMode = Gamemode.ChainDriftChallenge;
+					break;
+				}
+			case 3:
+				{
+					m_gameMode = Gamemode.DriftExhibition;
+					break;
+				}
+			case 4:
+				{
+					m_gameMode = Gamemode.TimeAttack;
+					break;
+				}
+			}
+		}
+	}
 	void SetEventObjectives()
 	{
 		switch (m_gameMode) {
-		case 1: // Standard endurance
+		case Gamemode.Endurance:
 			{
 				m_objectiveGold = (int)(10000 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
-		case 2: // Drift Endurance
+		case Gamemode.DriftEndurance:
 			{
 				m_objectiveGold = (int)(6750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
-		case 3: // Drift Exhibition
+		case Gamemode.DriftExhibition:
 			{
 				m_objectiveGold = (int)(m_checkPoints * 1250 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
-		case 4: // High speed challenge
+		case Gamemode.HighSpeedChallenge:
 			{
 				m_objectiveGold = (int)(m_checkPoints * 250 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
-		case 5: // Drift challenge
+		case Gamemode.ChainDriftChallenge:
 			{
 				m_objectiveGold = (int)(m_checkPoints * 215 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
-		case 6: // Time attack
+		case Gamemode.TimeAttack:
 			{
 				m_objectiveGold = (int)(m_checkPoints * 15.5f * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) - (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
@@ -155,7 +249,7 @@ public class EventData {
 	void SetEventRules()
 	{
 		switch (m_gameMode) {
-		case 1: // Standard Endurance
+		case Gamemode.Endurance:
 			{
 				m_initialTimeRemaining = 25f;
 				m_eventDamageTakenMultiplier = 1.5f;
@@ -177,7 +271,7 @@ public class EventData {
 				m_eventScoreDamagePenaltyMultiplier = 0f;
 				break;
 			}
-		case 2: // Drift Endurance
+		case Gamemode.DriftEndurance:
 			{
 				m_initialTimeRemaining = 25f;
 				m_eventDamageTakenMultiplier = 1.5f;
@@ -199,7 +293,7 @@ public class EventData {
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
-		case 3: // Drift Exhibition
+		case Gamemode.DriftExhibition:
 			{
 				m_initialTimeRemaining = 45f;
 				m_eventDamageTakenMultiplier = 1f;
@@ -220,7 +314,7 @@ public class EventData {
 				m_eventScoreDamagePenaltyMultiplier = 100f;
 				break;
 			}
-		case 4: // High Speed Challenge
+		case Gamemode.HighSpeedChallenge:
 			{
 				m_initialTimeRemaining = 10f;
 				m_eventDamageTakenMultiplier = 3f;
@@ -242,7 +336,7 @@ public class EventData {
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
-		case 5: // Chain Drift Challenge
+		case Gamemode.ChainDriftChallenge:
 			{
 				m_initialTimeRemaining = 8f;
 				m_eventDamageTakenMultiplier = 1f;
@@ -264,7 +358,7 @@ public class EventData {
 				m_eventScoreDamagePenaltyMultiplier = 20f;
 				break;
 			}
-		case 6: // Time Attack
+		case Gamemode.TimeAttack:
 			{
 				m_initialTimeRemaining = 0f;
 				m_eventDamageTakenMultiplier = 1f;
@@ -353,7 +447,7 @@ public class EventData {
 	{
 		return m_eventSeed;
 	}
-	public int GetGamemode() 
+	public Gamemode GetGamemode() 
 	{ 
 		return m_gameMode; 
 	}
@@ -421,6 +515,14 @@ public class EventData {
 	{
 		return displayTimeLeftAlwaysFloat;
 	}
+	public void SetAsViewed()
+	{
+		m_new = false;
+	}
+	public bool IsNew()
+	{
+		return m_new;
+	}
 
 	// String getters
 	// ==================================================================================================================
@@ -430,32 +532,32 @@ public class EventData {
 	{
 		string str = "";  // Innecesario, pero evita los warnings del compilador.
 		switch (m_gameMode) {
-		case 1: // Standard Endurance
+		case Gamemode.Endurance:
 			{
 				str = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints. Points are awarded based on the distance travelled.";
 				break;
 			}
-		case 2: // Drift Endurance
+		case Gamemode.DriftEndurance:
 			{
 				str = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting. Points are awarded based on the distance travelled.";
 				break;
 			}
-		case 3: // Drift Exhibition
+		case Gamemode.DriftExhibition:
 			{
 				str = "Drift to earn points before reaching the last checkpoint, longer drifts have a bonus score multiplier.";
 				break;
 			}
-		case 4: // High Speed Challenge
+		case Gamemode.HighSpeedChallenge:
 			{
 				str = "Reach the last checkpoint within the time limit, while driving at high speed, timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
-		case 5: // Chain Drift Challenge
+		case Gamemode.ChainDriftChallenge:
 			{
 				str = "Reach the last checkpoint within the time limit, while drifting the timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
-		case 6: // Time Attack
+		case Gamemode.TimeAttack:
 			{
 				str = "Reach the last checkpoint as fast as you can.";
 				break;
@@ -472,32 +574,32 @@ public class EventData {
 	{
 		string str = ""; // Innecesario pero evita warnings del compilador
 		switch (m_gameMode) {
-		case 1: // Endurance
+		case Gamemode.Endurance:
 			{
 				str = "Endurance";
 				break;
 			}
-		case 2: // Drift Endurance
+		case Gamemode.DriftEndurance:
 			{
 				str = "Drift Endurance";
 				break;
 			}
-		case 3: // Drift Exhibition
+		case Gamemode.DriftExhibition:
 			{
 				str = "Drift Exhibition";
 				break;
 			}
-		case 4: // High Speed Challenge
+		case Gamemode.HighSpeedChallenge:
 			{
 				str = "High Speed Challenge";
 				break;
 			}
-		case 5: // Chain Drift Challenge
+		case Gamemode.ChainDriftChallenge:
 			{
 				str = "Chain Drift Challenge";
 				break;
 			}
-		case 6: // Time Attack
+		case Gamemode.TimeAttack:
 			{
 				str = "Time attack";
 				break;

@@ -68,12 +68,17 @@ public class GlobalGameData : MonoBehaviour {
 			eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
 		}
 	}
+	public void ReplaceLastEventPlayed()
+	{
+		eventsAvailable_offline.Remove (eventActive);
+		eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
+	}
 	void GetSeasonalEvents()
 	{
 		// Demomento ponemos eventos fijados ya que no tiene de donde scarlos.
 		eventsAvailable_seasonal = new List<EventData>();
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, 6, "Car balance test"));
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, 1, "Long road car test"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, "Car balance test"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.Endurance, "Long road car test"));
 	}
 	public float GetRankChangeOnNextUpdate()
 	{
@@ -109,7 +114,8 @@ public class GlobalGameData : MonoBehaviour {
 		if (m_lastEventPlayedResult < 0 || eventActive == null)
 			return;
 		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
-		float promotionMultiplier = 99f;
+		float promotionMultiplier = 99f; //TODO: TEMP
+
 		if (m_lastEventPlayedResult == 0) {
 			m_playerRankStatus -= 0.15f;
 		} else if (m_lastEventPlayedResult == 1) {
@@ -126,6 +132,7 @@ public class GlobalGameData : MonoBehaviour {
 			} else {
 				m_playerRank--;
 				GenerateEventsAvailable ();
+				m_playerRankStatus = 0;
 			}
 		} else if (m_playerRankStatus > 1) {
 			m_playerRankStatus = 0;
@@ -200,6 +207,30 @@ public class GlobalGameData : MonoBehaviour {
 	public int GetGarageSlots()
 	{
 		return maxGarageSize;
+	}
+	public bool HasNewOfflineEvents()
+	{
+		if (eventsAvailable_offline.Count == 0)
+			return false;
+		
+		for (int i = 0; i < eventsAvailable_offline.Count; i++) {
+			if (eventsAvailable_offline [i].IsNew ())
+				return true;
+		}
+
+		return false;
+	}
+	public bool HasNewSeasonalEvents()
+	{
+		if (eventsAvailable_seasonal.Count == 0)
+			return false;
+
+		for (int i = 0; i < eventsAvailable_seasonal.Count; i++) {
+			if (eventsAvailable_seasonal [i].IsNew ())
+				return true;
+		}
+
+		return false;
 	}
 	public string GetRankName()
 	{

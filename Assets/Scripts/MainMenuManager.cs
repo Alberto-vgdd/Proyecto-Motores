@@ -16,6 +16,9 @@ public class MainMenuManager : MonoBehaviour {
 
 	[Header("MainSlider")]
 	public CanvasGroup mainSlider;
+	public GameObject newTag_offlineEvents;
+	public GameObject newTag_seasonalEvents;
+	public GameObject newTag_garage;
 	[Header("Top&Bottom Panels")]
 	public CanvasGroup topParent;
 	public CanvasGroup bottomParent;
@@ -66,6 +69,15 @@ public class MainMenuManager : MonoBehaviour {
 	private Vector3 topPanelInitialPos;
 	private Vector3 bottomPanelInitialPos;
 
+	// Categoria de eventos
+	private Category categoryOfEventsInDisplay;
+	enum Category
+	{
+		Offline = 0,
+		Seasonal = 1,
+		Other = 2
+	}
+
 
 	private bool CoRoutineActive = false;
 
@@ -93,16 +105,18 @@ public class MainMenuManager : MonoBehaviour {
 		}
 
 	}
-	private void SetEventPanels(int eventCategory)
+	private void SetEventPanels(Category eventCategory)
 	{
 		List<EventData> eventsToRead;
+		categoryOfEventsInDisplay = eventCategory;
+
 		switch (eventCategory) {
-		case 1: // Eventos offline
+		case Category.Other:
 			{
 				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_offline;
 				break;
 			}
-		case 2: // Eventos de temporada
+		case Category.Seasonal:
 			{
 				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_seasonal;
 				break;
@@ -282,7 +296,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		float sliderTargetValue;
 		if (rankOld > rankNew) {
-			sliderTargetValue = 0;
+			sliderTargetValue = -1;
 		} else if (rankOld < rankNew) {
 			sliderTargetValue = 1;
 		} else {
@@ -411,6 +425,10 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	IEnumerator FadeInMainSlider()
 	{
+		newTag_offlineEvents.SetActive (GlobalGameData.currentInstance.HasNewOfflineEvents ());
+		newTag_seasonalEvents.SetActive (GlobalGameData.currentInstance.HasNewSeasonalEvents ());
+		newTag_garage.SetActive (false); // TODO: Temporal, añadir condicion real.
+
 		StopCoroutine ("FadeOutMainSlider");
 		mainSlider.gameObject.SetActive (true);
 
@@ -480,6 +498,7 @@ public class MainMenuManager : MonoBehaviour {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (-1);
 		} else {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (0);
+			GlobalGameData.currentInstance.ReplaceLastEventPlayed ();
 		}
 		loadingInfo.text = "LOADING";
 		while (loadingCG.alpha < 1) {
@@ -519,7 +538,7 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No events available."));
 			return;
 		}
-		SetEventPanels (1);
+		SetEventPanels (Category.Offline);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_offline[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
@@ -540,7 +559,7 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No seasonal events available."));
 			return;
 		}
-		SetEventPanels (2);
+		SetEventPanels (Category.Seasonal);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
