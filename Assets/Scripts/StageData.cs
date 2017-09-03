@@ -314,6 +314,7 @@ public class StageData : MonoBehaviour {
 		countDownText.text = "GO";
 		gameStarted = true;
 		pm.AllowPlayerControl (true);
+		SoundManager.currentInstance.StartPlaying ();
 
 		if (GhostRecorder.currentInstance != null)
 			GhostRecorder.currentInstance.StartRecording ();

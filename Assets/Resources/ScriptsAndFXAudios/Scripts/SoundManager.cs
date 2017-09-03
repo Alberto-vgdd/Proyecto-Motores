@@ -7,6 +7,8 @@ public class SoundManager : MonoBehaviour {
 	//private Object[] playList;
 	//private AudioSource audioSource;
 
+	public static SoundManager currentInstance; 
+
 	private AudioClip actualSong;
 	private AudioClip nextSong;
 
@@ -15,6 +17,8 @@ public class SoundManager : MonoBehaviour {
 
 	private float fadeOutValue = 0.1f / 5.0f;
 	private bool isFadeOutActive;
+
+	private bool gamestarted = false;
 
 	public AudioClip[] gameplayList;
 
@@ -36,6 +40,8 @@ public class SoundManager : MonoBehaviour {
 
 	void Awake()
 	{
+		currentInstance = this;
+
 		//playList = Resources.LoadAll ("EurobeatInstrumentalLowQuality", typeof(AudioClip));
 		//song = playList [Random.Range (0, playList.Length)] as AudioClip;
 		//if (playList == null) {	print ("Ruta equivocada");		}
@@ -55,24 +61,14 @@ public class SoundManager : MonoBehaviour {
 	}
 		
 	// Use this for initialization
-	void Start () 
+	public void StartPlaying () 
 	{
+		gamestarted = true;
 		//print ("Nombre Cancion a mostrar: " + actualSong.name);
 		this.GetComponent<AudioSource> ().clip = actualSong;
 		this.GetComponent<AudioSource> ().volume = 0.6f; // Enabled for testing.
 		this.GetComponent<AudioSource> ().Play ();
 	}
-
-	private AudioClip GetSongFromPlayList()
-	{
-		//return Resources.Load ("EurobeatInstrumentalLowQuality/" + 
-		//	playListName [Random.Range(0, playListName.Length - 1)], typeof(AudioClip)) as AudioClip;
-
-		return gameplayList [Random.Range (0, gameplayList.Length - 1)];
-
-	}
-
-
 
 	private void SwitchSongs()
 	{
@@ -96,6 +92,8 @@ public class SoundManager : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+		if (!gamestarted)
+			return;
 		//Controlamos el ciclo de canciones.
 		currentSongTime += Time.deltaTime;
 		//if (currentSongTime >= actualSong.length) 
