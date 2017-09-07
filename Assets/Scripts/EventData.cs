@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
+using System;
 
-[System.Serializable]
+[Serializable]
 public class EventData {
 	
 	private int m_eventSeed;
@@ -73,10 +74,10 @@ public class EventData {
 		SetEventRules ();
 		SetEventObjectives ();
 
-		Random.InitState(m_eventSeed);
-		int curveChance = Random.Range (10, 71);
-		int minStraight = Random.Range (0, 3);
-		int maxStraight = Random.Range (minStraight, 8);
+		UnityEngine.Random.InitState(m_eventSeed);
+		int curveChance = UnityEngine.Random.Range (10, 71);
+		int minStraight = UnityEngine.Random.Range (0, 3);
+		int maxStraight = UnityEngine.Random.Range (minStraight, 8);
 
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
@@ -91,18 +92,18 @@ public class EventData {
 	{
 		m_new = true;
 
-		m_eventSeed = Random.Range (1, 99999999);
-		m_checkPoints = Random.Range (4, 10) + (int)(league/2);
+		m_eventSeed = UnityEngine.Random.Range (1, 99999999);
+		m_checkPoints = UnityEngine.Random.Range (4, 10) + (int)(league/2);
 		m_eventLeague = league;
 		m_seasonalEvent = seasonal;
 		m_canBeRestarted = canBeRestarted;
 
 		m_rewardType = 1;
 
-		Random.InitState(m_eventSeed);
-		int curveChance = Random.Range (10, 71);
-		int minStraight = Random.Range (0, 3);
-		int maxStraight = Random.Range (minStraight, 8);
+		UnityEngine.Random.InitState(m_eventSeed);
+		int curveChance = UnityEngine.Random.Range (10, 71);
+		int minStraight = UnityEngine.Random.Range (0, 3);
+		int maxStraight = UnityEngine.Random.Range (minStraight, 8);
 
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
@@ -122,7 +123,7 @@ public class EventData {
 		int rand;
 		if (m_roadDifficulty < 2) {
 			// Allows HighSpeedChallenge, TimeAttack
-			rand = Random.Range (1, 3);
+			rand = UnityEngine.Random.Range (1, 3);
 			switch (rand) {
 			case 1:
 				{
@@ -137,7 +138,7 @@ public class EventData {
 			}
 		} else if (m_roadDifficulty < 3) {
 			// Allows Endurance, DriftEndurance, ChainDriftChallenge, DriftExhibition, HighSpeedChallenge, TimeAttack
-			rand = Random.Range (1, 6);
+			rand = UnityEngine.Random.Range (1, 6);
 			switch (rand) {
 			case 1:
 				{
@@ -172,7 +173,7 @@ public class EventData {
 			}
 		} else {
 			// Allows, DriftEndurance, ChainDriftChallenge, DriftExhibition, TimeAttack
-			rand = Random.Range (1, 5);
+			rand = UnityEngine.Random.Range (1, 5);
 			switch (rand) {
 			case 1:
 				{

@@ -95,14 +95,21 @@ public class MainMenuManager : MonoBehaviour {
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
+		if (!GlobalGameData.currentInstance.HasAnySavedData ()) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New data", "No saved data detected, creating new file."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Beta version. Some features are in development."));
+			GlobalGameData.currentInstance.SaveData ();
+		} else {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Game Loaded", "Game progress loaded, welcome back."));
+
+			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
+				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished and will be counted as a loss."));
+			}
+		}
+
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
-		if (!GlobalGameData.currentInstance.testing_WelcomeMessagesShown) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Some features are in development."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (2)", "For testing purposes, rank points gain is increased by 1000%"));
-			GlobalGameData.currentInstance.testing_WelcomeMessagesShown = true;
-		}
 
 	}
 	private void SetEventPanels(Category eventCategory)
@@ -500,6 +507,7 @@ public class MainMenuManager : MonoBehaviour {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (0);
 			GlobalGameData.currentInstance.ReplaceLastEventPlayed ();
 		}
+		GlobalGameData.currentInstance.SaveData ();
 		loadingInfo.text = "LOADING";
 		while (loadingCG.alpha < 1) {
 			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);

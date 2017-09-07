@@ -107,6 +107,7 @@ public class StageData : MonoBehaviour {
 		} else {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (GetPlayerResult ());
 		}
+		GlobalGameData.currentInstance.SaveData ();
 
 	}
 

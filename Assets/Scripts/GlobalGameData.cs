@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 public class GlobalGameData : MonoBehaviour {
 
@@ -13,7 +16,7 @@ public class GlobalGameData : MonoBehaviour {
 	private int m_playerRank;
 	private float m_playerRankStatus;
 
-	public bool testing_WelcomeMessagesShown = false; 
+	private bool hasAnySavedData = false;
 
 	public List<EventData> eventsAvailable_offline;
 	public List<EventData> eventsAvailable_seasonal;
@@ -36,19 +39,18 @@ public class GlobalGameData : MonoBehaviour {
 			Destroy (this.gameObject);
 		}
 	}
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 	void InitializeData()
 	{
+		GetSeasonalEvents ();
+		if (LoadData()) {
+			hasAnySavedData = true;
+			return;
+		}
 		m_playerCurrency = 0;
 		m_playerCurrencyAlternative = 0;
 		m_playerRank = 1;
 		m_playerRankStatus = 0;
 		GenerateEventsAvailable ();
-		GetSeasonalEvents ();
 		carsOwned = new List<CarData> ();
 		carsOwned.Add (new CarData (0));
 		carsOwned.Add (new CarData (1));
@@ -60,9 +62,62 @@ public class GlobalGameData : MonoBehaviour {
 		carSelectedIndex = -1;
 
 	}
+	public void SaveData()
+	{
+		BinaryFormatter binForm = new BinaryFormatter ();
+		FileStream file = File.Create (Application.persistentDataPath + "/SavedData.dat");
+		SavedGameData data = new SavedGameData ();
+
+		print ("[SYSTEM]: Saving data...");
+
+		data.SetPlayerRank (m_playerRank);
+		data.SetPlayerRankStatus (m_playerRankStatus);
+		data.SetNormalCurrency (m_playerCurrency);
+		data.SetSpecialCurrency (m_playerCurrencyAlternative);
+		data.SetLastEventPlayedResult (m_lastEventPlayedResult);
+		data.SetOfflineEventsList (eventsAvailable_offline);
+		data.SetCarsOwnedList (carsOwned);
+		data.SetCarInUseIndex (carSelectedIndex);
+		data.SetLastEventSelected (eventActive);
+
+		binForm.Serialize (file, data);
+		file.Close ();
+
+		print ("[SYSTEM]: Saving on " + Application.persistentDataPath);
+		print ("[SYSTEM]: Data saved succesfully.");
+		hasAnySavedData = true;
+	}
+	public bool LoadData()
+	{
+		print ("[SYSTEM]: Loading data...");
+		print ("[SYSTEM]: Loading from " + Application.persistentDataPath);
+
+		if (File.Exists (Application.persistentDataPath + "/SavedData.dat")) {
+			print ("[SYSTEM]: Data found.");
+			BinaryFormatter binForm = new BinaryFormatter ();
+			FileStream file = File.Open (Application.persistentDataPath + "/SavedData.dat", FileMode.Open);
+			SavedGameData data = (SavedGameData)binForm.Deserialize (file);
+
+			m_playerRank = data.GetPlayerRank ();
+			m_playerRankStatus = data.GetPlayerRankStatus ();
+			m_playerCurrency = data.GetPlayerNormalCurrency ();
+			m_playerCurrencyAlternative = data.GetPlayerSpecialCurrency ();
+			m_lastEventPlayedResult = data.GetLastEventPlayedResult ();
+			eventsAvailable_offline = data.GetOfflineEvents ();
+			carsOwned = data.GetCarsOwned ();
+			carSelectedIndex = data.GetCarInUseIndex ();
+			eventActive = data.GetLastEventSelected ();
+
+			print ("[SYSTEM]: Data loaded succesfully.");
+			return true;
+		}
+
+		print ("[SYSTEM]: No available data found, Load failed.");
+		return false;
+	}
 	void GenerateEventsAvailable()
 	{
-		Random.InitState(System.Environment.TickCount);
+		UnityEngine.Random.InitState(System.Environment.TickCount);
 		eventsAvailable_offline = new List<EventData> ();
 		for (int i = 0; i < 8; i++) {
 			eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
@@ -113,8 +168,7 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		if (m_lastEventPlayedResult < 0 || eventActive == null)
 			return;
-		//float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
-		float promotionMultiplier = 99f; //TODO: TEMP
+		float promotionMultiplier = Mathf.Pow(0.9f, m_playerRank-1);
 
 		if (m_lastEventPlayedResult == 0) {
 			m_playerRankStatus -= 0.15f;
@@ -231,6 +285,10 @@ public class GlobalGameData : MonoBehaviour {
 		}
 
 		return false;
+	}
+	public bool HasAnySavedData()
+	{
+		return hasAnySavedData;
 	}
 	public string GetRankName()
 	{
