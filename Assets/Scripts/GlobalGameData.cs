@@ -17,6 +17,7 @@ public class GlobalGameData : MonoBehaviour {
 	private float m_playerRankStatus;
 
 	private bool hasAnySavedData = false;
+	private bool firstTimeOnMainMenu = true;
 
 	public List<EventData> eventsAvailable_offline;
 	public List<EventData> eventsAvailable_seasonal;
@@ -31,15 +32,16 @@ public class GlobalGameData : MonoBehaviour {
 	void Awake ()
 	{
 		if (currentInstance == null) {
-			DontDestroyOnLoad (transform.gameObject);
+			DontDestroyOnLoad (this.gameObject);
 			currentInstance = this;
-			InitializeData ();
+			//InitializeData ();
 		}
 		else {
 			Destroy (this.gameObject);
 		}
 	}
-	void InitializeData()
+
+	public void InitializeData()
 	{
 		GetSeasonalEvents ();
 		if (LoadData()) {
@@ -79,6 +81,7 @@ public class GlobalGameData : MonoBehaviour {
 		data.SetCarsOwnedList (carsOwned);
 		data.SetCarInUseIndex (carSelectedIndex);
 		data.SetLastEventSelected (eventActive);
+		data.SetFirstTimeOnMainMenu (firstTimeOnMainMenu);
 
 		binForm.Serialize (file, data);
 		file.Close ();
@@ -107,8 +110,10 @@ public class GlobalGameData : MonoBehaviour {
 			carsOwned = data.GetCarsOwned ();
 			carSelectedIndex = data.GetCarInUseIndex ();
 			eventActive = data.GetLastEventSelected ();
+			firstTimeOnMainMenu = data.FirstTimeOnMainMenu ();
 
 			print ("[SYSTEM]: Data loaded succesfully.");
+			file.Close (); // <- NO OLVIDAR NUNCA
 			return true;
 		}
 
@@ -289,6 +294,14 @@ public class GlobalGameData : MonoBehaviour {
 	public bool HasAnySavedData()
 	{
 		return hasAnySavedData;
+	}
+	public bool FirstTimeOnMainMenu()
+	{
+		return firstTimeOnMainMenu;
+	}
+	public void SetFirstTimeOnMainMenu(bool arg)
+	{
+		firstTimeOnMainMenu = arg;
 	}
 	public string GetRankName()
 	{

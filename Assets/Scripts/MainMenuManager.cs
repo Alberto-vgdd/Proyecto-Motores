@@ -95,14 +95,13 @@ public class MainMenuManager : MonoBehaviour {
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
-		if (!GlobalGameData.currentInstance.HasAnySavedData ()) {
+		if (GlobalGameData.currentInstance.FirstTimeOnMainMenu()) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New data", "No saved data detected, creating new file."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Beta version. Some features are in development."));
+			GlobalGameData.currentInstance.SetFirstTimeOnMainMenu (false);
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Game Loaded", "Game progress loaded, welcome back."));
-
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
 				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished and will be counted as a loss."));
 			}
@@ -110,7 +109,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
-
+		GlobalGameData.currentInstance.SaveData ();
 	}
 	private void SetEventPanels(Category eventCategory)
 	{

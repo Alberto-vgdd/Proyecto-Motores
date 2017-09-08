@@ -21,6 +21,7 @@ public class SavedGameData {
 	private EventData m_lastEventSelected;
 	private int m_carInUseIndex;
 
+	private bool firstTimeOnMainMenu;
 	// Setters
 	public void SetLastEventSelected(EventData data)
 	{
@@ -58,6 +59,10 @@ public class SavedGameData {
 	{
 		m_playerSpecialCurrency = arg;
 	}
+	public void SetFirstTimeOnMainMenu(bool arg)
+	{
+		firstTimeOnMainMenu = arg;
+	}
 	// Getters
 	public EventData GetLastEventSelected()
 	{
@@ -94,5 +99,9 @@ public class SavedGameData {
 	public int GetPlayerSpecialCurrency()
 	{
 		return m_playerSpecialCurrency;
+	}
+	public bool FirstTimeOnMainMenu()
+	{
+		return firstTimeOnMainMenu;
 	}
 }
