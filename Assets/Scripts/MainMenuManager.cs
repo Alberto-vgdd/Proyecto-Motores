@@ -96,9 +96,12 @@ public class MainMenuManager : MonoBehaviour {
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
 		if (GlobalGameData.currentInstance.FirstTimeOnMainMenu()) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New data", "No saved data detected, creating new file."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Beta version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile", "Welcome to Project Racing D."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "This is a beta version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (2)", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (3)", "Go to the event panel to start playing."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (4)", "You can also practice with the seasonal events."));
+
 			GlobalGameData.currentInstance.SetFirstTimeOnMainMenu (false);
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
