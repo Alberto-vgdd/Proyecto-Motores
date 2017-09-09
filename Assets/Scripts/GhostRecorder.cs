@@ -42,7 +42,7 @@ public class GhostRecorder : MonoBehaviour {
 		if (recording)
 			return;
 		recording = true;
-		recordedData = new GhostReplayData (recordingInterval, GlobalGameData.currentInstance.eventActive.GetSeed(), GlobalGameData.currentInstance.eventActive.GetGamemode());
+		recordedData = new GhostReplayData (recordingInterval, GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed(), GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode());
 		StartCoroutine ("RecordData");
 		print ("[REPLAY] Recording ghost data.");
 	}
@@ -55,10 +55,10 @@ public class GhostRecorder : MonoBehaviour {
 			return;
 
 		print ("[REPLAY] Ended ghost data recording.");
-		if (GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ()) {
-			recordedData.SetGhostScore (StageData.currentData.GetEventScore (), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.IsObjectiveTypeScore ()) {
+			recordedData.SetGhostScore (StageData.currentData.GetEventScore (), !GlobalGameData.currentInstance.m_playerData_eventActive.IsObjectiveTypeScore ());
 		} else {
-			recordedData.SetGhostScore (StageData.currentData.GetTimePassedValue(), !GlobalGameData.currentInstance.eventActive.IsObjectiveTypeScore ());
+			recordedData.SetGhostScore (StageData.currentData.GetTimePassedValue(), !GlobalGameData.currentInstance.m_playerData_eventActive.IsObjectiveTypeScore ());
 		}
 	
 		GlobalGameData.currentInstance.SetPlayerGhostPB(recordedData);

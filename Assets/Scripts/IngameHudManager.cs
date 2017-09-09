@@ -61,8 +61,8 @@ public class IngameHudManager : MonoBehaviour {
 	void Start () {
 		globalParentInitialPosition = ingameHudCg.transform.localPosition;
 		SetObjectivePanel ();
-		if (GlobalGameData.currentInstance.eventActive.HasTimelimit ()) {
-			if (GlobalGameData.currentInstance.eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimelimit ()) {
+			if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
 				StartCoroutine ("UpdateRemainingTimeAlwaysFloat");
 			} else {
 				StartCoroutine ("UpdateRemainingTime");
@@ -92,13 +92,13 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	public void SetObjectivePanel()
 	{
-		objectivePanelParent.SetActive(GlobalGameData.currentInstance.eventActive.HasObjectives());
-		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(1);
-		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(2);
-		objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString(3);
+		objectivePanelParent.SetActive(GlobalGameData.currentInstance.m_playerData_eventActive.HasObjectives());
+		objective1.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString(1);
+		objective2.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString(2);
+		objective3.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString(3);
 		if (GlobalGameData.currentInstance.GetPlayerGhostPB () != null
-		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtSeed () == GlobalGameData.currentInstance.eventActive.GetSeed ()
-		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtGamemode () == GlobalGameData.currentInstance.eventActive.GetGamemode ()) {
+		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtSeed () == GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed ()
+		    && GlobalGameData.currentInstance.GetPlayerGhostPB ().GetRecordedAtGamemode () == GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode ()) {
 
 			PBparent.SetActive (true);
 			objectivePB.text = GlobalGameData.currentInstance.GetPlayerGhostPB ().GetScoreRecordedString ();
@@ -114,7 +114,7 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	public void UpdateSectorInfo()
 	{
-		CpointInfo.text = StageData.currentData.GetCheckpointsCrossed().ToString() + "/" + GlobalGameData.currentInstance.eventActive.GetEventCheckpoints().ToString();
+		CpointInfo.text = StageData.currentData.GetCheckpointsCrossed().ToString() + "/" + GlobalGameData.currentInstance.m_playerData_eventActive.GetEventCheckpoints().ToString();
 	}
 	public void UpdateScoreInfo()
 	{
@@ -129,20 +129,20 @@ public class IngameHudManager : MonoBehaviour {
 	}
 	void SetElementsVisibility()
 	{
-		if (GlobalGameData.currentInstance.eventActive.GetGamemode () == 0) { // Free roam gamemode.
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == 0) { // Free roam gamemode.
 			timeRemainingParent.SetActive (false);
 			timeElapsedParent.SetActive (false);
 			objectivePanelParent.SetActive (false);
 			CpointParent.SetActive (false);
 			ScoreParent.SetActive (false);
 		} else {
-			timeRemainingParent.SetActive (GlobalGameData.currentInstance.eventActive.HasTimelimit ());
-			timeElapsedParent.SetActive (!GlobalGameData.currentInstance.eventActive.HasTimelimit ());
+			timeRemainingParent.SetActive (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimelimit ());
+			timeElapsedParent.SetActive (!GlobalGameData.currentInstance.m_playerData_eventActive.HasTimelimit ());
 		}
-		objectivePanelParent.SetActive (GlobalGameData.currentInstance.eventActive.HasObjectives ());
-		CpointParent.SetActive (GlobalGameData.currentInstance.eventActive.GetEventCheckpoints () > 0);
-		ScoreParent.SetActive (GlobalGameData.currentInstance.eventActive.HasScore ());
-		if (GlobalGameData.currentInstance.eventActive.GetEventCheckpoints () <= 0) {
+		objectivePanelParent.SetActive (GlobalGameData.currentInstance.m_playerData_eventActive.HasObjectives ());
+		CpointParent.SetActive (GlobalGameData.currentInstance.m_playerData_eventActive.GetEventCheckpoints () > 0);
+		ScoreParent.SetActive (GlobalGameData.currentInstance.m_playerData_eventActive.HasScore ());
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetEventCheckpoints () <= 0) {
 			ScoreParent.transform.localPosition = CpointParent.transform.localPosition;
 		}
 		UpdateSectorInfo ();

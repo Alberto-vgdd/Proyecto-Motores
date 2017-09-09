@@ -56,7 +56,7 @@ public class RoadGenerator : MonoBehaviour {
 
 	void Start ()
 	{
-		levelSeed = GlobalGameData.currentInstance.eventActive.GetSeed();
+		levelSeed = GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed();
 		Random.InitState(levelSeed);
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);

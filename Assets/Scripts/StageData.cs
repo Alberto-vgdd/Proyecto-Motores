@@ -63,7 +63,7 @@ public class StageData : MonoBehaviour {
 
 	void Awake () { currentData = this; }
 	void Start () {
-		eventActive = GlobalGameData.currentInstance.eventActive;
+		eventActive = GlobalGameData.currentInstance.m_playerData_eventActive;
 		time_remainingSec = eventActive.GetInitialTimeRemaining ();
 		time_remainingSec += 0.3f; // Pequeño margen.
 		UpdateTime ();
