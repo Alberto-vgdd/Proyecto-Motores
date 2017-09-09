@@ -9,12 +9,12 @@ public class SuspensionTiltSimulation : MonoBehaviour {
 	private float tiltTargetValue = 0;
 	private float currentTiltValue = 0;
 	private float tiltSpeed = 5;
-	private float tiltMultiplier = 0.075f;
+	private float tiltMultiplier = 0.09f;
 	
 	// Update is called once per frame
 	void Update () {
 		if (pm.IsGrounded ()) {
-			tiltTargetValue = ((-pm.GetDriftFwdDegree ()) + (pm.GetTurnInput() * 10)) * tiltMultiplier;
+			tiltTargetValue = ((-pm.GetDriftFwdDegree ()) + (pm.GetTurnInput() * 10)) * tiltMultiplier * Mathf.Abs(pm.GetCurrentSpeed()/30);
 		} else {
 			tiltTargetValue = 0;
 		}
