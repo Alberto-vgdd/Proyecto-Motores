@@ -656,6 +656,21 @@ ModelImporter:
     101296: Decoration Bush 1 2 LOD1
     101298: Decoration Bush 1 LOD0
     101300: Decoration Bush 2 LOD0
+    101302: Left LOD0 Tunnel 1
+    101304: Left LOD1 Tunnel 1
+    101306: Left LOD2 Tunnel 1
+    101308: Right LOD0 Tunnel 1
+    101310: Right LOD1 Tunnel 1
+    101312: Right LOD2 Tunnel 1
+    101314: Straight Down LOD0 Tunnel 1
+    101316: Straight Down LOD1 Tunnel 1
+    101318: Straight Down LOD2 Tunnel 1
+    101320: Straight LOD0 Tunnel 1
+    101322: Straight LOD1 Tunnel 1
+    101324: Straight LOD2 Tunnel 1
+    101326: Straight Up LOD0 Tunnel 1
+    101328: Straight Up LOD1 Tunnel 1
+    101330: Straight Up LOD1 Tunnel 1.001
     400000: Left LOD0 Ad Fence Left
     400002: Left LOD0 Ad Fence Right
     400004: Left LOD0 Cliff Left
@@ -1307,6 +1322,21 @@ ModelImporter:
     401296: Decoration Bush 1 2 LOD1
     401298: Decoration Bush 1 LOD0
     401300: Decoration Bush 2 LOD0
+    401302: Left LOD0 Tunnel 1
+    401304: Left LOD1 Tunnel 1
+    401306: Left LOD2 Tunnel 1
+    401308: Right LOD0 Tunnel 1
+    401310: Right LOD1 Tunnel 1
+    401312: Right LOD2 Tunnel 1
+    401314: Straight Down LOD0 Tunnel 1
+    401316: Straight Down LOD1 Tunnel 1
+    401318: Straight Down LOD2 Tunnel 1
+    401320: Straight LOD0 Tunnel 1
+    401322: Straight LOD1 Tunnel 1
+    401324: Straight LOD2 Tunnel 1
+    401326: Straight Up LOD0 Tunnel 1
+    401328: Straight Up LOD1 Tunnel 1
+    401330: Straight Up LOD1 Tunnel 1.001
     2300000: Left LOD0 Ad Fence Left
     2300002: Left LOD0 Ad Fence Right
     2300004: Left LOD0 Cliff Left
@@ -1957,6 +1987,21 @@ ModelImporter:
     2301294: Decoration Bush 1 2 LOD1
     2301296: Decoration Bush 1 LOD0
     2301298: Decoration Bush 2 LOD0
+    2301300: Left LOD0 Tunnel 1
+    2301302: Left LOD1 Tunnel 1
+    2301304: Left LOD2 Tunnel 1
+    2301306: Right LOD0 Tunnel 1
+    2301308: Right LOD1 Tunnel 1
+    2301310: Right LOD2 Tunnel 1
+    2301312: Straight Down LOD0 Tunnel 1
+    2301314: Straight Down LOD1 Tunnel 1
+    2301316: Straight Down LOD2 Tunnel 1
+    2301318: Straight LOD0 Tunnel 1
+    2301320: Straight LOD1 Tunnel 1
+    2301322: Straight LOD2 Tunnel 1
+    2301324: Straight Up LOD0 Tunnel 1
+    2301326: Straight Up LOD1 Tunnel 1
+    2301328: Straight Up LOD1 Tunnel 1.001
     3300000: Left LOD0 Ad Fence Left
     3300002: Left LOD0 Ad Fence Right
     3300004: Left LOD0 Cliff Left
@@ -2607,6 +2652,21 @@ ModelImporter:
     3301294: Decoration Bush 1 2 LOD1
     3301296: Decoration Bush 1 LOD0
     3301298: Decoration Bush 2 LOD0
+    3301300: Left LOD0 Tunnel 1
+    3301302: Left LOD1 Tunnel 1
+    3301304: Left LOD2 Tunnel 1
+    3301306: Right LOD0 Tunnel 1
+    3301308: Right LOD1 Tunnel 1
+    3301310: Right LOD2 Tunnel 1
+    3301312: Straight Down LOD0 Tunnel 1
+    3301314: Straight Down LOD1 Tunnel 1
+    3301316: Straight Down LOD2 Tunnel 1
+    3301318: Straight LOD0 Tunnel 1
+    3301320: Straight LOD1 Tunnel 1
+    3301322: Straight LOD2 Tunnel 1
+    3301324: Straight Up LOD0 Tunnel 1
+    3301326: Straight Up LOD1 Tunnel 1
+    3301328: Straight Up LOD1 Tunnel 1.001
     4300000: Straight Down LOD2 Road Mask
     4300002: Straight Down LOD2 Road Collider
     4300004: Straight Down LOD2 Rail Guard Right
@@ -3257,6 +3317,21 @@ ModelImporter:
     4301294: Decoration Bush 1 2 LOD1
     4301296: Decoration Bush 1 LOD0
     4301298: Decoration Bush 2 LOD0
+    4301300: Straight Down LOD2 Tunnel 1
+    4301302: Straight Down LOD1 Tunnel 1
+    4301304: Straight Up LOD1 Tunnel 1.001
+    4301306: Straight Up LOD1 Tunnel 1
+    4301308: Right LOD2 Tunnel 1
+    4301310: Straight Down LOD0 Tunnel 1
+    4301312: Straight Up LOD0 Tunnel 1
+    4301314: Straight LOD0 Tunnel 1
+    4301316: Right LOD1 Tunnel 1
+    4301318: Right LOD0 Tunnel 1
+    4301320: Left LOD2 Tunnel 1
+    4301322: Left LOD1 Tunnel 1
+    4301324: Left LOD0 Tunnel 1
+    4301326: Straight LOD1 Tunnel 1
+    4301328: Straight LOD2 Tunnel 1
     20500000: //RootNode
   materials:
     importMaterials: 0
