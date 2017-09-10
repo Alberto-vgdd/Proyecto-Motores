@@ -45,17 +45,17 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	public void SetPanelInfo()
 	{
-		event_subName.text = GlobalGameData.currentInstance.eventActive.GetEventArea() + " - " + DayNightCycle.currentInstance.getTimeString() 
-			+ " [ Road ID: " + GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + " ]";
-		event_title.text = GlobalGameData.currentInstance.eventActive.GetEventName();
-		event_description.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
-		event_limits.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetCheckpointsString () + " | Time limit: " + GlobalGameData.currentInstance.eventActive.GetTimeLimitString ();
-		event_objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (1);
-		event_objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (2);
-		event_objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (3);
-		event_reward1.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
-		event_reward2.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
-		event_reward3.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
+		event_subName.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea() + " - " + DayNightCycle.currentInstance.getTimeString() 
+			+ " [ Road ID: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed().ToString() + " ]";
+		event_title.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName();
+		event_description.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventTypeShortDesc ();
+		event_limits.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString () + " | Time limit: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetTimeLimitString ();
+		event_objective1.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (1);
+		event_objective2.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (2);
+		event_objective3.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (3);
+		event_reward1.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (1);
+		event_reward2.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (2);
+		event_reward3.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (3);
 		StartCoroutine ("SubPanelAnimation");
 	}
 

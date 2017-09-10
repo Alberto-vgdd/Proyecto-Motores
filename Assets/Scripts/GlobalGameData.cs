@@ -9,57 +9,60 @@ public class GlobalGameData : MonoBehaviour {
 
 	public static GlobalGameData currentInstance;
 
-	private int m_lastEventPlayedResult = -1;
+	private int m_playerData_lastEventPlayedResult = -1;
+	private int m_playerData_currencyNormal;
+	private int m_playerData_currencySpecial;
+	private int m_playerData_playerRank;
+	private int m_playerData_carSelectedIndex = 0;
+	private float m_playerData_rankStatus;
+	private string m_playerData_playerName = "Player";
+	private bool m_playerData_firstTimeOnMainMenu = true;
 
-	private int m_playerCurrency;
-	private int m_playerCurrencyAlternative;
-	private int m_playerRank;
-	private float m_playerRankStatus;
+	public EventData m_playerData_eventActive;
+	public List<EventData> m_playerData_eventsOffline;
+	public List<CarData> m_playerData_carsOwned;
+
 
 	private bool hasAnySavedData = false;
-
-	public List<EventData> eventsAvailable_offline;
 	public List<EventData> eventsAvailable_seasonal;
-	public List<CarData> carsOwned;
+
 	private int maxGarageSize = 20;
-	private int carSelectedIndex = 0;
 
 	private GhostReplayData playerGhostPB;
-
-	public EventData eventActive;
 
 	void Awake ()
 	{
 		if (currentInstance == null) {
-			DontDestroyOnLoad (transform.gameObject);
+			DontDestroyOnLoad (this.gameObject);
 			currentInstance = this;
-			InitializeData ();
+			//InitializeData ();
 		}
 		else {
 			Destroy (this.gameObject);
 		}
 	}
-	void InitializeData()
+
+	public void InitializeData()
 	{
 		GetSeasonalEvents ();
 		if (LoadData()) {
 			hasAnySavedData = true;
 			return;
 		}
-		m_playerCurrency = 0;
-		m_playerCurrencyAlternative = 0;
-		m_playerRank = 1;
-		m_playerRankStatus = 0;
+		m_playerData_currencyNormal = 0;
+		m_playerData_currencySpecial = 0;
+		m_playerData_playerRank = 1;
+		m_playerData_rankStatus = 0;
 		GenerateEventsAvailable ();
-		carsOwned = new List<CarData> ();
-		carsOwned.Add (new CarData (0));
-		carsOwned.Add (new CarData (1));
-		carsOwned.Add (new CarData (2));
-		carsOwned.Add (new CarData (3));
-		carsOwned.Add (new CarData (4));
-		carsOwned.Add (new CarData (5));
-		carsOwned.Add (new CarData (6));
-		carSelectedIndex = -1;
+		m_playerData_carsOwned = new List<CarData> ();
+		m_playerData_carsOwned.Add (new CarData (0));
+		m_playerData_carsOwned.Add (new CarData (1));
+		m_playerData_carsOwned.Add (new CarData (2));
+		m_playerData_carsOwned.Add (new CarData (3));
+		m_playerData_carsOwned.Add (new CarData (4));
+		m_playerData_carsOwned.Add (new CarData (5));
+		m_playerData_carsOwned.Add (new CarData (6));
+		m_playerData_carSelectedIndex = -1;
 
 	}
 	public void SaveData()
@@ -70,15 +73,17 @@ public class GlobalGameData : MonoBehaviour {
 
 		print ("[SYSTEM]: Saving data...");
 
-		data.SetPlayerRank (m_playerRank);
-		data.SetPlayerRankStatus (m_playerRankStatus);
-		data.SetNormalCurrency (m_playerCurrency);
-		data.SetSpecialCurrency (m_playerCurrencyAlternative);
-		data.SetLastEventPlayedResult (m_lastEventPlayedResult);
-		data.SetOfflineEventsList (eventsAvailable_offline);
-		data.SetCarsOwnedList (carsOwned);
-		data.SetCarInUseIndex (carSelectedIndex);
-		data.SetLastEventSelected (eventActive);
+		data.m_playerRank = m_playerData_playerRank;
+		data.m_playerRankStatus = m_playerData_rankStatus;
+		data.m_playerNormalCurrency = m_playerData_currencyNormal;
+		data.m_playerSpecialCurrency = m_playerData_currencySpecial;
+		data.m_lastEventPlayedResult = m_playerData_lastEventPlayedResult;
+		data.m_offlineEvents = m_playerData_eventsOffline;
+		data.m_carsOwned = m_playerData_carsOwned;
+		data.m_carInUseIndex = m_playerData_carSelectedIndex;
+		data.m_lastEventSelected = m_playerData_eventActive;
+		data.m_firstTimeOnMainMenu = m_playerData_firstTimeOnMainMenu;
+		data.m_playerName = m_playerData_playerName;
 
 		binForm.Serialize (file, data);
 		file.Close ();
@@ -98,17 +103,20 @@ public class GlobalGameData : MonoBehaviour {
 			FileStream file = File.Open (Application.persistentDataPath + "/SavedData.dat", FileMode.Open);
 			SavedGameData data = (SavedGameData)binForm.Deserialize (file);
 
-			m_playerRank = data.GetPlayerRank ();
-			m_playerRankStatus = data.GetPlayerRankStatus ();
-			m_playerCurrency = data.GetPlayerNormalCurrency ();
-			m_playerCurrencyAlternative = data.GetPlayerSpecialCurrency ();
-			m_lastEventPlayedResult = data.GetLastEventPlayedResult ();
-			eventsAvailable_offline = data.GetOfflineEvents ();
-			carsOwned = data.GetCarsOwned ();
-			carSelectedIndex = data.GetCarInUseIndex ();
-			eventActive = data.GetLastEventSelected ();
+			m_playerData_playerRank = data.m_playerRank;
+			m_playerData_rankStatus = data.m_playerRankStatus;
+			m_playerData_currencyNormal = data.m_playerNormalCurrency;
+			m_playerData_currencySpecial = data.m_playerSpecialCurrency;
+			m_playerData_lastEventPlayedResult = data.m_lastEventPlayedResult;
+			m_playerData_eventsOffline = data.m_offlineEvents;
+			m_playerData_carsOwned = data.m_carsOwned;
+			m_playerData_carSelectedIndex = data.m_carInUseIndex;
+			m_playerData_eventActive = data.m_lastEventSelected;
+			m_playerData_firstTimeOnMainMenu = data.m_firstTimeOnMainMenu;
+			m_playerData_playerName = data.m_playerName;
 
 			print ("[SYSTEM]: Data loaded succesfully.");
+			file.Close (); // <- NO OLVIDAR NUNCA
 			return true;
 		}
 
@@ -118,15 +126,15 @@ public class GlobalGameData : MonoBehaviour {
 	void GenerateEventsAvailable()
 	{
 		UnityEngine.Random.InitState(System.Environment.TickCount);
-		eventsAvailable_offline = new List<EventData> ();
+		m_playerData_eventsOffline = new List<EventData> ();
 		for (int i = 0; i < 8; i++) {
-			eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
+			m_playerData_eventsOffline.Add (new EventData (m_playerData_playerRank, false, true));
 		}
 	}
 	public void ReplaceLastEventPlayed()
 	{
-		eventsAvailable_offline.Remove (eventActive);
-		eventsAvailable_offline.Add (new EventData (m_playerRank, false, true));
+		m_playerData_eventsOffline.Remove (m_playerData_eventActive);
+		m_playerData_eventsOffline.Add (new EventData (m_playerData_playerRank, false, true));
 	}
 	void GetSeasonalEvents()
 	{
@@ -137,14 +145,14 @@ public class GlobalGameData : MonoBehaviour {
 	}
 	public float GetRankChangeOnNextUpdate()
 	{
-		if (m_lastEventPlayedResult < 0)
+		if (m_playerData_lastEventPlayedResult < 0)
 			return 0;
-		float promotionMultiplier = Mathf.Pow(0.8f, m_playerRank-1);
-		if (m_lastEventPlayedResult == 1) {
+		float promotionMultiplier = Mathf.Pow(0.8f, m_playerData_playerRank-1);
+		if (m_playerData_lastEventPlayedResult == 1) {
 			return 0.15f * promotionMultiplier;
-		} else if (m_lastEventPlayedResult == 2) {
+		} else if (m_playerData_lastEventPlayedResult == 2) {
 			return 0.05f * promotionMultiplier;
-		} else if (m_lastEventPlayedResult == 3) {
+		} else if (m_playerData_lastEventPlayedResult == 3) {
 			return -0.075f;
 		} else {
 			return -0.15f;
@@ -154,49 +162,49 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		UpdateRewardStatus ();
 		UpdateRankStatus ();
-		m_lastEventPlayedResult = -1;
-		eventActive = null;
+		m_playerData_lastEventPlayedResult = -1;
+		m_playerData_eventActive = null;
 	}
 	private void UpdateRewardStatus()
 	{
-		if (m_lastEventPlayedResult < 0 || eventActive == null)
+		if (m_playerData_lastEventPlayedResult < 0 || m_playerData_eventActive == null)
 			return;
-		m_playerCurrency += eventActive.GetRewardValueForPosition(m_lastEventPlayedResult);
+		m_playerData_currencyNormal += m_playerData_eventActive.GetRewardValueForPosition(m_playerData_lastEventPlayedResult);
 		//TODO: algo para el caso en el que no sea dinero...
 	}
 	private void UpdateRankStatus()
 	{
-		if (m_lastEventPlayedResult < 0 || eventActive == null)
+		if (m_playerData_lastEventPlayedResult < 0 || m_playerData_eventActive == null)
 			return;
-		float promotionMultiplier = Mathf.Pow(0.9f, m_playerRank-1);
+		float promotionMultiplier = Mathf.Pow(0.9f, m_playerData_playerRank-1);
 
-		if (m_lastEventPlayedResult == 0) {
-			m_playerRankStatus -= 0.15f;
-		} else if (m_lastEventPlayedResult == 1) {
-			m_playerRankStatus += 0.15f * promotionMultiplier;
-		} else if (m_lastEventPlayedResult == 2) {
-			m_playerRankStatus += 0.05f * promotionMultiplier;
-		} else if (m_lastEventPlayedResult == 3) {
-			m_playerRankStatus -= 0.05f;
+		if (m_playerData_lastEventPlayedResult == 0) {
+			m_playerData_rankStatus -= 0.15f;
+		} else if (m_playerData_lastEventPlayedResult == 1) {
+			m_playerData_rankStatus += 0.15f * promotionMultiplier;
+		} else if (m_playerData_lastEventPlayedResult == 2) {
+			m_playerData_rankStatus += 0.05f * promotionMultiplier;
+		} else if (m_playerData_lastEventPlayedResult == 3) {
+			m_playerData_rankStatus -= 0.05f;
 		}
 
-		if (m_playerRankStatus < -1) {
-			if (m_playerRank == 1) {
-				m_playerRankStatus = -1;
+		if (m_playerData_rankStatus < -1) {
+			if (m_playerData_playerRank == 1) {
+				m_playerData_rankStatus = -1;
 			} else {
-				m_playerRank--;
+				m_playerData_playerRank--;
 				GenerateEventsAvailable ();
-				m_playerRankStatus = 0;
+				m_playerData_rankStatus = 0;
 			}
-		} else if (m_playerRankStatus > 1) {
-			m_playerRankStatus = 0;
-			m_playerRank++;
+		} else if (m_playerData_rankStatus > 1) {
+			m_playerData_rankStatus = 0;
+			m_playerData_playerRank++;
 			GenerateEventsAvailable ();
 		}
 	}
 	public void SetPlayerGhostPB(GhostReplayData ghost)
 	{
-		if (ghost.GetRecordedAtSeed () != eventActive.GetSeed () || playerGhostPB == null) {
+		if (ghost.GetRecordedAtSeed () != m_playerData_eventActive.GetSeed () || playerGhostPB == null) {
 			print ("[REPLAY] No comparable ghost found, setting as PB");
 			playerGhostPB = ghost;
 		} else {
@@ -215,48 +223,52 @@ public class GlobalGameData : MonoBehaviour {
 			}
 		}
 	}
+	public void SetPlayerName(string arg)
+	{
+		m_playerData_playerName = arg;
+	}
 	public GhostReplayData GetPlayerGhostPB()
 	{
 		return playerGhostPB;
 	}
 	public void SetLastEventPlayedResult(int result)
 	{
-		m_lastEventPlayedResult = result;
+		m_playerData_lastEventPlayedResult = result;
 	}
 	public int GetLastEventPlayedResult()
 	{
-		return m_lastEventPlayedResult;
+		return m_playerData_lastEventPlayedResult;
 	}
 	public int GetPlayerRank()
 	{
-		return m_playerRank;
+		return m_playerData_playerRank;
 	}
 	public float GetPlayerRankStatus()
 	{
-		return m_playerRankStatus;
+		return m_playerData_rankStatus;
 	}
 	public int GetPlayerCurrency()
 	{
-		return m_playerCurrency;
+		return m_playerData_currencyNormal;
 	}
 	public int GetPlayerAlternativeCurrency()
 	{
-		return m_playerCurrencyAlternative;
+		return m_playerData_currencySpecial;
 	}
 	public CarData GetCarInUse()
 	{
-		if (carSelectedIndex < 0) {
+		if (m_playerData_carSelectedIndex < 0) {
 			return null;
 		}
-		return carsOwned [carSelectedIndex];
+		return m_playerData_carsOwned [m_playerData_carSelectedIndex];
 	}
 	public int GetCarInUseIndex()
 	{
-		return carSelectedIndex;
+		return m_playerData_carSelectedIndex;
 	}
 	public void SetCarInUseIndex(int index)
 	{
-		carSelectedIndex = index;
+		m_playerData_carSelectedIndex = index;
 	}
 	public int GetGarageSlots()
 	{
@@ -264,11 +276,11 @@ public class GlobalGameData : MonoBehaviour {
 	}
 	public bool HasNewOfflineEvents()
 	{
-		if (eventsAvailable_offline.Count == 0)
+		if (m_playerData_eventsOffline.Count == 0)
 			return false;
 		
-		for (int i = 0; i < eventsAvailable_offline.Count; i++) {
-			if (eventsAvailable_offline [i].IsNew ())
+		for (int i = 0; i < m_playerData_eventsOffline.Count; i++) {
+			if (m_playerData_eventsOffline [i].IsNew ())
 				return true;
 		}
 
@@ -290,10 +302,22 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		return hasAnySavedData;
 	}
+	public bool FirstTimeOnMainMenu()
+	{
+		return m_playerData_firstTimeOnMainMenu;
+	}
+	public void SetFirstTimeOnMainMenu(bool arg)
+	{
+		m_playerData_firstTimeOnMainMenu = arg;
+	}
+	public string GetPlayerName()
+	{
+		return m_playerData_playerName;
+	}
 	public string GetRankName()
 	{
 		string txt = "Unknown";
-		switch (m_playerRank) {
+		switch (m_playerData_playerRank) {
 		case 1:
 			{
 				txt = "Novice 1";	

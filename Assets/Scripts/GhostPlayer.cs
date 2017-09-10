@@ -29,7 +29,7 @@ public class GhostPlayer : MonoBehaviour {
 	{
 		if (replayData == null)
 			return;
-		if (replayData.GetRecordedAtSeed () != GlobalGameData.currentInstance.eventActive.GetSeed () || replayData.GetRecordedAtGamemode () != GlobalGameData.currentInstance.eventActive.GetGamemode ())
+		if (replayData.GetRecordedAtSeed () != GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed () || replayData.GetRecordedAtGamemode () != GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode ())
 			return;
 		ghostNameText.text = replayData.GetGhostName ();
 

@@ -46,13 +46,13 @@ public class ContextualHudManager : MonoBehaviour {
 
 	void Awake () { currentInstance = this; }
 	void Start () { 
-		if (GlobalGameData.currentInstance.eventActive.GetScoreOnDriftMultiplier () > 0) {
-			displayChainMultiplier = GlobalGameData.currentInstance.eventActive.GetScoreOnDriftMultiplier ();
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetScoreOnDriftMultiplier () > 0) {
+			displayChainMultiplier = GlobalGameData.currentInstance.m_playerData_eventActive.GetScoreOnDriftMultiplier ();
 			enableDriftDisplay = true;
 			displayDriftAsInteger = true;
 			extraDisplayString = " pts.";
-		} else if (GlobalGameData.currentInstance.eventActive.GetBonusTimeOnDriftMultiplier () > 0) {
-			displayChainMultiplier = GlobalGameData.currentInstance.eventActive.GetBonusTimeOnDriftMultiplier ();
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetBonusTimeOnDriftMultiplier () > 0) {
+			displayChainMultiplier = GlobalGameData.currentInstance.m_playerData_eventActive.GetBonusTimeOnDriftMultiplier ();
 			enableDriftDisplay = true;
 			displayDriftAsInteger = false;
 			extraDisplayString = " sec.";

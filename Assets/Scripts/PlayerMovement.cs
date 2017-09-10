@@ -515,4 +515,8 @@ public class PlayerMovement : MonoBehaviour {
 	{
 		return driftFwdDegree;
 	}
+	public float GetTurnInput()
+	{
+		return turnInput;
+	}
 }

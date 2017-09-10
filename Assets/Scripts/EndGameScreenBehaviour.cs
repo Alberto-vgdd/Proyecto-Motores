@@ -84,14 +84,14 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		} else {
 			headerInfo.text = "Event completed";
 		}
-		subHeaderInfo.text = GlobalGameData.currentInstance.eventActive.GetEventName() + " | " + GlobalGameData.currentInstance.eventActive.GetEventArea () +
-		" | " + "[ Road ID: " + GlobalGameData.currentInstance.eventActive.GetSeed ().ToString () + " ]";
-		objective1.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (1);
-		objective2.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (2);
-		objective3.text = GlobalGameData.currentInstance.eventActive.GetObjectiveString (3);
-		reward1.text = GlobalGameData.currentInstance.eventActive.GetRewardString(1);
-		reward2.text = GlobalGameData.currentInstance.eventActive.GetRewardString(2);
-		reward3.text = GlobalGameData.currentInstance.eventActive.GetRewardString(3);
+		subHeaderInfo.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName() + " | " + GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea () +
+		" | " + "[ Road ID: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed ().ToString () + " ]";
+		objective1.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (1);
+		objective2.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (2);
+		objective3.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetObjectiveString (3);
+		reward1.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString(1);
+		reward2.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString(2);
+		reward3.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString(3);
 
 
 		if (failed) {
@@ -105,21 +105,21 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 			{
 			case 1:
 				{
-					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (1);
+					playerReward.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (1);
 					awardInfo.text = "Gold medal awarded";
 					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [3].transform.localPosition;
 					break;
 				}
 			case 2:
 				{
-					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (2);
+					playerReward.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (2);
 					awardInfo.text = "Silver medal awarded";
 					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [4].transform.localPosition;
 					break;
 				}
 			case 3:
 				{
-					playerReward.text = GlobalGameData.currentInstance.eventActive.GetRewardString (3);
+					playerReward.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString (3);
 					highlightFlash.transform.localPosition = panelsWithFadeInAnimation [5].transform.localPosition;
 					awardInfo.text = "Bronze medal awarded";
 					break;
@@ -182,7 +182,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 		}
 		yield return new WaitForSeconds (0.5f);
 		continueButton.GetComponent<Button> ().interactable = true;
-		restartButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.eventActive.CanBeRestarted();
+		restartButton.GetComponent<Button> ().interactable = GlobalGameData.currentInstance.m_playerData_eventActive.CanBeRestarted();
 		t = 0;
 		while (t < 1) {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime*2f);

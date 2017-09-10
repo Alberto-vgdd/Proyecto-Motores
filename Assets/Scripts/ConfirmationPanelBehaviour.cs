@@ -63,7 +63,7 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 
 		loading = true;
 		loadingCG.gameObject.SetActive (true);
-		loadingInfo.text = "LOADING";
+		loadingInfo.text = "";
 		while (loadingCG.alpha < 1) {
 			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.unscaledDeltaTime * 5);
 			yield return null;
@@ -76,7 +76,6 @@ public class ConfirmationPanelBehaviour : MonoBehaviour {
 		}
 		AO.allowSceneActivation = false;
 		while (!AO.isDone) {
-			loadingInfo.text = "LOADING (" + ((int)(AO.progress * 100)) + "%)";
 			if (AO.progress >= 0.9f) {
 				// TODO: miedo me da esto...
 				AO.allowSceneActivation = true;

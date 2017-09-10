@@ -87,6 +87,8 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Start () {
+		playerNameText.text = GlobalGameData.currentInstance.GetPlayerName();
+
 		eventSliderInitialPos = eventSliderParent.transform.localPosition;
 		eventDetailsInitialPos = eventDetailsParent.transform.localPosition;
 		garageSliderInitialPos = carSliderParent.transform.localPosition;
@@ -95,14 +97,16 @@ public class MainMenuManager : MonoBehaviour {
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
-		if (!GlobalGameData.currentInstance.HasAnySavedData ()) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New data", "No saved data detected, creating new file."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Welcome", "Select a car from the garage to begin."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "Beta version. Some features are in development."));
+		if (GlobalGameData.currentInstance.FirstTimeOnMainMenu()) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile", "Welcome to Project Racing D."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "This is a beta version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (2)", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (3)", "Go to the event panel to start playing."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (4)", "You can also practice with the seasonal events."));
+
+			GlobalGameData.currentInstance.SetFirstTimeOnMainMenu (false);
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Game Loaded", "Game progress loaded, welcome back."));
-
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
 				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished and will be counted as a loss."));
 			}
@@ -110,7 +114,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
-
+		GlobalGameData.currentInstance.SaveData ();
 	}
 	private void SetEventPanels(Category eventCategory)
 	{
@@ -120,7 +124,7 @@ public class MainMenuManager : MonoBehaviour {
 		switch (eventCategory) {
 		case Category.Other:
 			{
-				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_offline;
+				eventsToRead = GlobalGameData.currentInstance.m_playerData_eventsOffline;
 				break;
 			}
 		case Category.Seasonal:
@@ -130,7 +134,7 @@ public class MainMenuManager : MonoBehaviour {
 			}
 		default: //...para que no se ralle el compilador
 			{
-				eventsToRead = GlobalGameData.currentInstance.eventsAvailable_offline;
+				eventsToRead = GlobalGameData.currentInstance.m_playerData_eventsOffline;
 				break;
 			}
 		}
@@ -148,7 +152,7 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (CoRoutineActive)
 			return;
-		GlobalGameData.currentInstance.eventActive = data;
+		GlobalGameData.currentInstance.m_playerData_eventActive = data;
 		StopCoroutine ("FadeInEventDetailsPanel");
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
@@ -158,7 +162,7 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void SetCarSelected(int index)
 	{
-		CarData readedCar = GlobalGameData.currentInstance.carsOwned [index];
+		CarData readedCar = GlobalGameData.currentInstance.m_playerData_carsOwned [index];
 
 		carNameText.text = readedCar.GetCarName ();
 		statSliders[0].SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
@@ -175,11 +179,11 @@ public class MainMenuManager : MonoBehaviour {
 	void SetGarageCarButtons()
 	{
 		for (int i = 0; i < carsInList.Count; i++) {
-			if (i >= GlobalGameData.currentInstance.carsOwned.Count) {
+			if (i >= GlobalGameData.currentInstance.m_playerData_carsOwned.Count) {
 				carsInList [i].gameObject.SetActive (false);
 			} else {
 				carsInList [i].gameObject.SetActive (true);
-				carsInList [i].SetPanelForCar(GlobalGameData.currentInstance.carsOwned[i], i);
+				carsInList [i].SetPanelForCar(GlobalGameData.currentInstance.m_playerData_carsOwned[i], i);
 				if (GlobalGameData.currentInstance.GetCarInUseIndex () == i) {
 					carsInList [i].SetSelected (true);
 				} else {
@@ -196,21 +200,20 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		if (GlobalGameData.currentInstance == null)
 			return;
-		playerNameText.text = "Player";
 		playerRankText.text = GlobalGameData.currentInstance.GetRankName ();
 		normalCurrencyText.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
 		alternativeCurrencyText.text = GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
 	}
 	void SetupEventDetailsPanel()
 	{
-		if (GlobalGameData.currentInstance.eventActive == null)
+		if (GlobalGameData.currentInstance.m_playerData_eventActive == null)
 			return;
-		eventDetailsHeader.text = GlobalGameData.currentInstance.eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.eventActive.GetEventName();
-		eventDetailsDescription.text = GlobalGameData.currentInstance.eventActive.GetEventTypeShortDesc ();
+		eventDetailsHeader.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName();
+		eventDetailsDescription.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventTypeShortDesc ();
 		eventDetailsAditionalDesc.text = "";
-		eventDetailsRewards.text = GlobalGameData.currentInstance.eventActive.GetRewardString ();
-		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.eventActive.GetCheckpointsString() + "  [ID: " + 
-			GlobalGameData.currentInstance.eventActive.GetSeed().ToString() + "]";
+		eventDetailsRewards.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString ();
+		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString() + "  [ID: " + 
+			GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed().ToString() + "]";
 	}
 
 	// =====================================================================================
@@ -247,7 +250,7 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 
-		if (GlobalGameData.currentInstance.GetLastEventPlayedResult () < 0 || GlobalGameData.currentInstance.eventActive == null) {
+		if (GlobalGameData.currentInstance.GetLastEventPlayedResult () < 0 || GlobalGameData.currentInstance.m_playerData_eventActive == null) {
 			StartCoroutine ("FadeInMainSlider");
 			StartCoroutine ("FadeInTopAndBottomPanels");
 			CoRoutineActive = false;
@@ -273,7 +276,7 @@ public class MainMenuManager : MonoBehaviour {
 		} else {
 			LEPpanel_eventResult.text = "Bronze medal awarded";
 		}
-		LEPpanel_reward.text = GlobalGameData.currentInstance.eventActive.GetRewardString(GlobalGameData.currentInstance.GetLastEventPlayedResult());
+		LEPpanel_reward.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString(GlobalGameData.currentInstance.GetLastEventPlayedResult());
 		LEPpanel_rankPoints.text = "Rank points earned: " + GlobalGameData.currentInstance.GetRankChangeOnNextUpdate ().ToString ("F2");
 
 		int rankOld = GlobalGameData.currentInstance.GetPlayerRank();
@@ -501,23 +504,51 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		CoRoutineActive = true;
 		loadingCG.gameObject.SetActive (true);
-		if (GlobalGameData.currentInstance.eventActive.IsSeasonalEvent ()) {
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.IsSeasonalEvent ()) {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (-1);
 		} else {
 			GlobalGameData.currentInstance.SetLastEventPlayedResult (0);
 			GlobalGameData.currentInstance.ReplaceLastEventPlayed ();
 		}
 		GlobalGameData.currentInstance.SaveData ();
-		loadingInfo.text = "LOADING";
+
+		float animSpeed = 5;
+		float t = 0;
+		loadingInfo.text = "Loading track";
+		CanvasGroup textCG = loadingInfo.gameObject.GetComponent<CanvasGroup> ();
+		textCG.alpha = t;
+		Vector3 textInitPos = loadingInfo.transform.localPosition;
+
 		while (loadingCG.alpha < 1) {
-			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * 5);
+			loadingCG.alpha = Mathf.MoveTowards (loadingCG.alpha, 1, Time.deltaTime * animSpeed * 2);
+			yield return null;
+		}
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			loadingInfo.transform.localPosition = Vector3.left * 40 * (1 - t) + textInitPos;
+			textCG.alpha = t;
 			yield return null;
 		}
 		AsyncOperation AO = SceneManager.LoadSceneAsync ("InGame");
-		while (!AO.isDone) {
-			loadingInfo.text = "LOADING (" + ((int)(AO.progress * 100)) + "%)";
+		AO.allowSceneActivation = false;
+		while (AO.progress < 0.9f) {
 			yield return null;
 		}
+
+		yield return new WaitForSeconds(0.25f);
+
+		t = 1;
+		animSpeed = 5;
+		while (t > 0) {
+			t = Mathf.MoveTowards(t, 0, Time.deltaTime * animSpeed);
+			loadingInfo.transform.localPosition = Vector3.right * 40 * (1 - t) + textInitPos;
+			textCG.alpha = t;
+			yield return null;
+		}
+		yield return new WaitForSeconds (0.5f);
+
+		AO.allowSceneActivation = true;
+
 		CoRoutineActive = false;
 	}
 
@@ -542,12 +573,12 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No car selected, select a car from your garage to begin."));
 			return;
 		}
-		if (GlobalGameData.currentInstance.eventsAvailable_offline.Count == 0) {
+		if (GlobalGameData.currentInstance.m_playerData_eventsOffline.Count == 0) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No events available."));
 			return;
 		}
 		SetEventPanels (Category.Offline);
-		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_offline[0]);
+		SelectEventAsActive (GlobalGameData.currentInstance.m_playerData_eventsOffline[0]);
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
@@ -601,12 +632,12 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		if (GlobalGameData.currentInstance.carsOwned.Count == 0) {
+		if (GlobalGameData.currentInstance.m_playerData_carsOwned.Count == 0) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You don't own any car"));
 			return;
 		}
 		SetGarageCarButtons();
-		slotsInUse.text = GlobalGameData.currentInstance.carsOwned.Count + "/" + GlobalGameData.currentInstance.GetGarageSlots() + " slots in use";
+		slotsInUse.text = GlobalGameData.currentInstance.m_playerData_carsOwned.Count + "/" + GlobalGameData.currentInstance.GetGarageSlots() + " slots in use";
 		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
 			SetCarSelected (0);
 		} else {
