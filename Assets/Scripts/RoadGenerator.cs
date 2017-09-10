@@ -232,8 +232,8 @@ public class RoadGenerator : MonoBehaviour {
 			}
 		}
 		if (nodeDecoTunnelEnabledFor <= 0) {
-			if (Random.Range (1, 101) < 5)
-				nodeDecoTunnelEnabledFor = Random.Range (2, 15);
+			if (Random.Range (1, 101) < 3)
+				nodeDecoTunnelEnabledFor = Random.Range (2, 20);
 		} else {
 			nodeDecoTunnelEnabledFor--;
 		}
