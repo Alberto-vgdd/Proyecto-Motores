@@ -7,9 +7,9 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 
 	public Text text_header;
 	public Text text_reward;
-	public Text text_difficulty;
 	public Image image_background;
 	public GameObject newTag;
+	public GameObject rewardPanel;
 	private int m_index;
 	private EventData m_dataReferenced;
 
@@ -33,8 +33,13 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	{
 		m_index = index;
 		m_dataReferenced = data;
-		text_reward.text = m_dataReferenced.GetRewardString();
-		text_difficulty.text = m_dataReferenced.GetRoadDifficulty().ToString ("F1");
+
+		if (data.IsSeasonalEvent ()) {
+			rewardPanel.gameObject.SetActive (false);
+		} else {
+			rewardPanel.gameObject.SetActive (true);
+			text_reward.text = m_dataReferenced.GetRewardString();
+		}
 		text_header.text = m_dataReferenced.GetEventName();
 		UpdateNewTag ();
 	}

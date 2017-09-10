@@ -29,9 +29,11 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Event Details Panel")]
 	public Text eventDetailsHeader;
 	public Text eventDetailsDescription;
-	public Text eventDetailsAditionalDesc;
+	public Text eventDetailsCheckpoints;
+	public Text eventDetailsRoadid;
+	public Text eventDetailsHour;
+	public Text eventDetailsRoadDifficulty;
 	public Text eventDetailsRewards;
-	public Text eventDetailsSubPanel;
 	public CanvasGroup eventDetailsCG;
 	public Transform eventDetailsWindow;
 	[Header("Last Event Played Result Panel")]
@@ -210,10 +212,11 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		eventDetailsHeader.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName();
 		eventDetailsDescription.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventTypeShortDesc ();
-		eventDetailsAditionalDesc.text = "";
 		eventDetailsRewards.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString ();
-		eventDetailsSubPanel.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString() + "  [ID: " + 
-			GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed().ToString() + "]";
+		eventDetailsCheckpoints.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString ();
+		eventDetailsRoadDifficulty.text = "Road difficulty: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty ().ToString ("F1");
+		eventDetailsHour.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetHourString ();
+		eventDetailsRoadid.text = "ID: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed ().ToString ();
 	}
 
 	// =====================================================================================

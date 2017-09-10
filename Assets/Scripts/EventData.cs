@@ -39,6 +39,7 @@ public class EventData {
 	private bool displayTimeLeftAlwaysFloat = false;
 	private string m_customEventName = "";
 	private bool m_new;
+	private float m_startingHour;
 	// AuxParameters
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
@@ -78,6 +79,7 @@ public class EventData {
 		int curveChance = UnityEngine.Random.Range (10, 71);
 		int minStraight = UnityEngine.Random.Range (0, 3);
 		int maxStraight = UnityEngine.Random.Range (minStraight, 8);
+		m_startingHour = UnityEngine.Random.Range(0f, 24f);
 
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
@@ -104,6 +106,7 @@ public class EventData {
 		int curveChance = UnityEngine.Random.Range (10, 71);
 		int minStraight = UnityEngine.Random.Range (0, 3);
 		int maxStraight = UnityEngine.Random.Range (minStraight, 8);
+		m_startingHour = UnityEngine.Random.Range(0f, 24f);
 
 		// Difficulty bonus setting.
 		m_roadDifficulty = ((curveChance - 10f) / 70f) * 3f; m_roadDifficulty += 1 - (minStraight / 3f); m_roadDifficulty += 1 - (maxStraight / 8f);
@@ -524,11 +527,33 @@ public class EventData {
 	{
 		return m_new;
 	}
+	public float GetStartingHour()
+	{
+		return m_startingHour;
+	}
 
 	// String getters
 	// ==================================================================================================================
 
 	public string GetEventArea() { return "Seaside Highway"; }
+	public string GetHourString()
+	{
+		int hourvalue = (int)m_startingHour;
+		int mntevalue = (int)((m_startingHour - (int)m_startingHour) / 1 * 60);
+		string m;
+		if (hourvalue > 13) {
+			hourvalue -= 12;
+			m = " PM";
+		} else {
+			m = " AM";
+		}
+		if (mntevalue < 10) {
+			return hourvalue + ":0" + mntevalue + m;
+		} else {
+			return hourvalue + ":" + mntevalue + m;
+		}
+
+	}
 	public string GetEventTypeShortDesc()
 	{
 		string str = "";  // Innecesario, pero evita los warnings del compilador.
