@@ -40,7 +40,6 @@ public class RoadGenerator : MonoBehaviour {
 	private int totalNodesCreated;							// Total de nodos creados
 	private float stackedNodeWeight;						// "Peso" acumulado de los nodos, determina el tiempo extra que dara el proximo P.Control.
 
-	private float dayTime;
 	private float dayTimescale = 0.025f;
 
 	private const int FORCED_STRAIGHT_AFTER_RAMP = 2;
@@ -61,7 +60,6 @@ public class RoadGenerator : MonoBehaviour {
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);
 		maxStraight = Random.Range (minStraight, minStraight +5);
-		dayTime = Random.Range(0f, 24f);
 		maxHeight = 5;
 
 		if (Random.Range (1, 4) == 1) {
@@ -72,12 +70,12 @@ public class RoadGenerator : MonoBehaviour {
 
 		totalNodesCreated = 0;
 		nodesUnttilDecoChange = -1;
-		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + dayTime);
+		print ("[MAP] Generating seed " + levelSeed + " | DayTime set to " + GlobalGameData.currentInstance.m_playerData_eventActive.GetStartingHour ());
 		print ("[MAP] Rampchance: " + rampChance);
 		print ("[MAP] MaxStraight: " + maxStraight);
 		print ("[MAP] Curvechance:" + curveChance);
 
-		DayNightCycle.currentInstance.SetTimeAndTimescale (dayTime, dayTimescale);
+		DayNightCycle.currentInstance.SetTimeAndTimescale (GlobalGameData.currentInstance.m_playerData_eventActive.GetStartingHour (), dayTimescale);
 		// ==========
 		tempValidNodes = new List<GameObject>();
 		for (int i = 0; i < MAX_LOADED_NODES - nodesBehindLoaded; i++) {
