@@ -22,6 +22,7 @@ public class RoadNode : MonoBehaviour {
 	public List<GameObject> envRightWall;						// Posibles decoraciones de muro derecho
 	public List<GameObject> envLeftGround;						// Posibles decoraciones de suelo izquierdo
 	public List<GameObject> envRightGround;						// Posibles decoraciones de suelo derecho
+	public List<GameObject> envTunnel;							// Posibles variantes de tunel. 
 	public List<Light> envLights;								// Luces ambientales de esta pieza
 	public GameObject checkPointTrigger;						// Trigger del checkpoint
 	public GameObject checkPointVisualParent;					// Parte visual del checkpoint
@@ -53,7 +54,7 @@ public class RoadNode : MonoBehaviour {
 
 	// Prepara la decoracion ambiental, IMPORTANTE, debe llamarse SOLO una vez para que funcione correctamente.
 
-	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround)
+	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround, bool Tunnel)
 	{
 		for (int i = 0; i < envLeftWall.Count; i++) {
 			if (i == LWall) {
@@ -83,6 +84,8 @@ public class RoadNode : MonoBehaviour {
 				envRightGround [i].SetActive (false);
 			}
 		}
+		envTunnel [0].SetActive (Tunnel);
+
 	}
 
 	// Prepara este nodo para que sea un punto de control activo.
