@@ -12,6 +12,7 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	public GameObject rewardPanel;
 	private int m_index;
 	private EventData m_dataReferenced;
+	public SelfBlinkAnimation SBA;
 
 	// GAMEMODES:
 	// 0 = Free Roam 
@@ -28,6 +29,7 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 		m_dataReferenced.SetAsViewed ();
 		MainMenuManager.currentInstance.SelectEventAsActive (m_dataReferenced);
 		UpdateNewTag ();
+		SetAsSelected ();
 	}
 	public void SetPanelForEvent(EventData data, int index)
 	{
@@ -46,5 +48,13 @@ public class EventSubPanelBehaviour : MonoBehaviour {
 	void UpdateNewTag()
 	{
 		newTag.SetActive (m_dataReferenced.IsNew());
+	}
+	public void DeSelect()
+	{
+		SBA.gameObject.SetActive (false);
+	}
+	public void SetAsSelected()
+	{
+		SBA.ResetBlinkingAnimation ();
 	}
 }

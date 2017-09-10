@@ -133,6 +133,7 @@ public class GlobalGameData : MonoBehaviour {
 	}
 	public void ReplaceLastEventPlayed()
 	{
+		UnityEngine.Random.InitState (System.Environment.TickCount);
 		m_playerData_eventsOffline.Remove (m_playerData_eventActive);
 		m_playerData_eventsOffline.Add (new EventData (m_playerData_playerRank, false, true));
 	}

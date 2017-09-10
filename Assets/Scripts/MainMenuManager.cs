@@ -158,6 +158,9 @@ public class MainMenuManager : MonoBehaviour {
 		StopCoroutine ("FadeInEventDetailsPanel");
 		StartCoroutine ("FadeInEventDetailsPanel");
 		SetupEventDetailsPanel ();
+		for (int i = 0; i < eventsInList.Count; i++) {
+			eventsInList [i].DeSelect ();
+		}
 
 		MainMenuSoundManager.instance.playAcceptSound ();
 
@@ -582,6 +585,7 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		SetEventPanels (Category.Offline);
 		SelectEventAsActive (GlobalGameData.currentInstance.m_playerData_eventsOffline[0]);
+		eventsInList [0].SetAsSelected ();
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
@@ -603,6 +607,7 @@ public class MainMenuManager : MonoBehaviour {
 		}
 		SetEventPanels (Category.Seasonal);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
+		eventsInList [0].SetAsSelected ();
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 

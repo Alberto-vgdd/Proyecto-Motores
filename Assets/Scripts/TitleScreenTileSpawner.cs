@@ -7,7 +7,7 @@ public class TitleScreenTileSpawner : MonoBehaviour {
 	public GameObject roadTilePrefab;
 	public List<Transform> wheelsToAnimate;
 	private List<GameObject> roadTiles;
-	private int totalTiles = 20;
+	private int totalTiles = 30;
 
 	private bool animated = true;
 
