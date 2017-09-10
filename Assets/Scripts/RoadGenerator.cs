@@ -27,6 +27,7 @@ public class RoadGenerator : MonoBehaviour {
 	private float maxAbsoluteInclinationDegree = 15f;		// Desnivel maximo (absoluto)
 	private int forcedSraight = 5;
 
+	private int nodeDecoTunnelEnabledFor = 0;
 	private int nodeDecoWallL = 0;							// Indice de la decoracion del [MURO] [IZQUIERDO]
 	private int nodeDecoWallR = 0;							// Indice de la decoracion del [MURO] [DERECHO]
 	private int nodeDecoGroundL = 0;						// Indice de la decoracion del [SUELO] [IZQUIERDO]
@@ -230,7 +231,13 @@ public class RoadGenerator : MonoBehaviour {
 				nodeDecoGroundR = Random.Range (0, 3);
 			}
 		}
-        lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR);
+		if (nodeDecoTunnelEnabledFor <= 0) {
+			if (Random.Range (1, 101) < 3)
+				nodeDecoTunnelEnabledFor = Random.Range (2, 20);
+		} else {
+			nodeDecoTunnelEnabledFor--;
+		}
+		lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR, nodeDecoTunnelEnabledFor > 0);
 	}
 
 	//TODO: Esto no deberia estar aqui...

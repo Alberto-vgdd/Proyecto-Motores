@@ -22,8 +22,10 @@ public class RoadNode : MonoBehaviour {
 	public List<GameObject> envRightWall;						// Posibles decoraciones de muro derecho
 	public List<GameObject> envLeftGround;						// Posibles decoraciones de suelo izquierdo
 	public List<GameObject> envRightGround;						// Posibles decoraciones de suelo derecho
+	public List<GameObject> envTunnel;							// Posibles variantes de tunel. 
 	public List<Light> envLights;								// Luces ambientales de esta pieza
 	public GameObject checkPointTrigger;						// Trigger del checkpoint
+	public GameObject checkPointVisualParentTunnel;				// Parte visual del checkpoint si es tunel
 	public GameObject checkPointVisualParent;					// Parte visual del checkpoint
 
 	[Header("Other Params")]
@@ -31,6 +33,7 @@ public class RoadNode : MonoBehaviour {
 	public float nodeWeight;									// Peso o dificultad del nodo, determina la contribucion a tiempo extendido del nodo.
 	private float timeAwarded = 0;								// Tiempo extra que dara este nodo si es un punto de control activo.
 	private int nodeID;											// ID del nodo (orden en el que se ha creado)
+	private bool isTunnel = false;
 
 	// Enciende o apaga las luces de este nodo, funcion llamada por defecto desde StageData o RoadGenerator al crear la pieza.
 
@@ -51,9 +54,9 @@ public class RoadNode : MonoBehaviour {
 		}
 	}
 
-	// Prepara la decoracion ambiental, IMPORTANTE, debe llamarse SOLO una vez para que funcione correctamente.
+	// Prepara la decoracion ambiental
 
-	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround)
+	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround, bool Tunnel)
 	{
 		for (int i = 0; i < envLeftWall.Count; i++) {
 			if (i == LWall) {
@@ -83,6 +86,9 @@ public class RoadNode : MonoBehaviour {
 				envRightGround [i].SetActive (false);
 			}
 		}
+		envTunnel [0].SetActive (Tunnel);
+		isTunnel = Tunnel;
+
 	}
 
 	// Prepara este nodo para que sea un punto de control activo.
@@ -90,15 +96,18 @@ public class RoadNode : MonoBehaviour {
 	public void SetAsActiveCheckpoint(float _timeAwarded)
 	{
 		timeAwarded = _timeAwarded;
-		checkPointVisualParent.SetActive (true);
+		checkPointVisualParent.SetActive (!isTunnel);
+		checkPointVisualParentTunnel.SetActive (isTunnel);
 		checkPointTrigger.tag = "CP_Active";
 		checkPointTrigger.SetActive (true);
+
 		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap (true);
 	}
 	public void SetAsPassiveCheckpoint()
 	{
 		timeAwarded = 0;
 		checkPointVisualParent.SetActive (false);
+		checkPointVisualParentTunnel.SetActive (false);
 		checkPointTrigger.tag = "CP_Passive";
 		checkPointTrigger.SetActive (true);
 		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap (false);
