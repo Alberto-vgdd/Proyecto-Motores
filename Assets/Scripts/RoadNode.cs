@@ -25,8 +25,8 @@ public class RoadNode : MonoBehaviour {
 	public List<GameObject> envTunnel;							// Posibles variantes de tunel. 
 	public List<Light> envLights;								// Luces ambientales de esta pieza
 	public GameObject checkPointTrigger;						// Trigger del checkpoint
-	public GameObject checkPointVisualParentTunnel;				// Parte visual del checkpoint si es tunel
-	public GameObject checkPointVisualParent;					// Parte visual del checkpoint
+	public GameObject CP_VisualTunnel;							// Parte visual del checkpoint si es tunel
+	public GameObject CP_VisualNormal;							// Parte visual del checkpoint
 
 	[Header("Other Params")]
 	public float lightRange;
@@ -96,8 +96,8 @@ public class RoadNode : MonoBehaviour {
 	public void SetAsActiveCheckpoint(float _timeAwarded)
 	{
 		timeAwarded = _timeAwarded;
-		checkPointVisualParent.SetActive (!isTunnel);
-		checkPointVisualParentTunnel.SetActive (isTunnel);
+		CP_VisualNormal.SetActive (!isTunnel);
+		CP_VisualTunnel.SetActive (isTunnel);
 		checkPointTrigger.tag = "CP_Active";
 		checkPointTrigger.SetActive (true);
 
@@ -106,8 +106,8 @@ public class RoadNode : MonoBehaviour {
 	public void SetAsPassiveCheckpoint()
 	{
 		timeAwarded = 0;
-		checkPointVisualParent.SetActive (false);
-		checkPointVisualParentTunnel.SetActive (false);
+		CP_VisualNormal.SetActive (false);
+		CP_VisualTunnel.SetActive (false);
 		checkPointTrigger.tag = "CP_Passive";
 		checkPointTrigger.SetActive (true);
 		GetComponent<AddToMinimap> ().SetAsActiveOnMinimap (false);
