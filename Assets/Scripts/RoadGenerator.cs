@@ -60,6 +60,7 @@ public class RoadGenerator : MonoBehaviour {
 		curveChance = Random.Range (10, 71);
 		minStraight = Random.Range (0, 3);
 		maxStraight = Random.Range (minStraight, minStraight +5);
+		Random.Range (1, 24); // LLAMADA DUMMY, NO HACE NADA, solo sincroniza la seed.
 		maxHeight = 5;
 
 		if (Random.Range (1, 4) == 1) {
