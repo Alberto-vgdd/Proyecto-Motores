@@ -99,14 +99,14 @@ public class MainMenuManager : MonoBehaviour {
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 
-		if (GlobalGameData.currentInstance.FirstTimeOnMainMenu()) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile", "Welcome to Project Racing D."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (1)", "This is a beta version. Some features are in development."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (2)", "Select a car from the garage to begin."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (3)", "Go to the event panel to start playing."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info (4)", "You can also practice with the seasonal events."));
+		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu) {
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (1/5)", "Welcome to Project Racing D."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/5)", "This is a beta version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (3/5)", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/5)", "Go to the event panel to start playing."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (5/5)", "You can also practice with the seasonal events."));
 
-			GlobalGameData.currentInstance.SetFirstTimeOnMainMenu (false);
+			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = true;
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
@@ -591,6 +591,16 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No events available."));
 			return;
 		}
+
+		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnEventPanel) {
+			GlobalGameData.currentInstance.m_playerData_firstTimeOnEventPanel = false;
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (1/5)", "Here you can select events to participate in."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (2/5)", "These events are randonly generated and new ones are added after every played event."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (3/3)", "Your result on these events will change your driver rank."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (4/5)", "The higher the driver rank, the higher the rewards and the difficulty."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (5/5)", "Keep in mind that losing will impact your rank negatively."));
+		}
+
 		SetEventPanels (Category.Offline);
 		SelectEventAsActive (GlobalGameData.currentInstance.m_playerData_eventsOffline[0]);
 		eventsInList [0].SetAsSelected ();
@@ -613,6 +623,15 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No seasonal events available."));
 			return;
 		}
+
+		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel) {
+			GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel = false;
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (1/4)", "You can play seasonal challenges here."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (2/4)", "Seasonal events will offer you challenges with unusual rules."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (3/4)", "Those events will reward you a special currency used to purchase visual customization parts."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (4/4)", "This events WONT have any impact on your driver rank."));
+		}
+
 		SetEventPanels (Category.Seasonal);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
 		eventsInList [0].SetAsSelected ();
@@ -651,6 +670,13 @@ public class MainMenuManager : MonoBehaviour {
 		if (GlobalGameData.currentInstance.m_playerData_carsOwned.Count == 0) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You don't own any car"));
 			return;
+		}
+		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnGaragePanel) {
+			GlobalGameData.currentInstance.m_playerData_firstTimeOnGaragePanel = false;
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Garage (1/4)", "You can check and manage your owned cars here."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Garage (2/4)", "Select a car from the list on the top to see its properties."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Garage (3/4)", "To drive the car click on the button at the middle bottom."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Garage (4/4)", "Car management features are disabled for this demo."));
 		}
 		SetGarageCarButtons ();
 		slotsInUse.text = GlobalGameData.currentInstance.m_playerData_carsOwned.Count + "/" + GlobalGameData.currentInstance.GetGarageSlots() + " slots in use";

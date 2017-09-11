@@ -16,7 +16,11 @@ public class GlobalGameData : MonoBehaviour {
 	private int m_playerData_carSelectedIndex = 0;
 	private float m_playerData_rankStatus;
 	private string m_playerData_playerName = "Player";
-	private bool m_playerData_firstTimeOnMainMenu = true;
+
+	public bool m_playerData_firstTimeOnMainMenu = true;
+	public bool m_playerData_firstTimeOnEventPanel = true;
+	public bool m_playerData_firstTimeOnSeasonalPanel = true;
+	public bool m_playerData_firstTimeOnGaragePanel = true;
 
 	public EventData m_playerData_eventActive;
 	public List<EventData> m_playerData_eventsOffline;
@@ -81,6 +85,9 @@ public class GlobalGameData : MonoBehaviour {
 		data.m_lastEventSelected = m_playerData_eventActive;
 		data.m_firstTimeOnMainMenu = m_playerData_firstTimeOnMainMenu;
 		data.m_playerName = m_playerData_playerName;
+		data.m_firstTimeGarage = m_playerData_firstTimeOnGaragePanel;
+		data.m_firstTimeOfflineEvents = m_playerData_firstTimeOnGaragePanel;
+		data.m_firstTimeSeasonalEvents = m_playerData_firstTimeOnSeasonalPanel;
 
 		binForm.Serialize (file, data);
 		file.Close ();
@@ -111,6 +118,9 @@ public class GlobalGameData : MonoBehaviour {
 			m_playerData_eventActive = data.m_lastEventSelected;
 			m_playerData_firstTimeOnMainMenu = data.m_firstTimeOnMainMenu;
 			m_playerData_playerName = data.m_playerName;
+			m_playerData_firstTimeOnGaragePanel = data.m_firstTimeGarage;
+			m_playerData_firstTimeOnSeasonalPanel = data.m_firstTimeSeasonalEvents;
+			m_playerData_firstTimeOnEventPanel = data.m_firstTimeOfflineEvents;
 
 			print ("[SYSTEM]: Data loaded succesfully.");
 			file.Close (); // <- NO OLVIDAR NUNCA
@@ -299,14 +309,6 @@ public class GlobalGameData : MonoBehaviour {
 	public bool HasAnySavedData()
 	{
 		return hasAnySavedData;
-	}
-	public bool FirstTimeOnMainMenu()
-	{
-		return m_playerData_firstTimeOnMainMenu;
-	}
-	public void SetFirstTimeOnMainMenu(bool arg)
-	{
-		m_playerData_firstTimeOnMainMenu = arg;
 	}
 	public string GetPlayerName()
 	{

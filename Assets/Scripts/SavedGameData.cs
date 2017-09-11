@@ -23,4 +23,7 @@ public class SavedGameData {
 	public int m_carInUseIndex;
 
 	public bool m_firstTimeOnMainMenu;
+	public bool m_firstTimeOfflineEvents;
+	public bool m_firstTimeSeasonalEvents;
+	public bool m_firstTimeGarage;
 }
