@@ -3,48 +3,45 @@ using System.Collections;
 
 public class FollowTarget : MonoBehaviour {
 
-	// Sigue al objetivo, IMPORTANTE: EL OBJETIVO DEBE TENER DISPLACEWITHDRIFT.
-	// PM (PlayerMovement) buscara automaticamente al objeto marcado como jugador en la escena.
-
-	// TODO: Ajustar el FOV.
-
 	public static FollowTarget currentInstance;
 
-	public GameObject target;
+	public GameObject cameraTarget;
+	public Transform firstPersonCamPosition;
+	public PlayerMovement pm;
 	private Vector3 targetPos;
-	private PlayerMovement pm;
 
-	[Header("Positioning Parameters")]
-	public float camDegree;
-	[Range(0.1f, 2)]
-	public float driftDegreeMultiplier;
-	[Range(0,12)]
-	public float camDistance;
-	[Range(0,10)]
-	public float camHeight;
-	[Header("FOV Parameters")]
-	[Range(40, 70)]
-	public float minFov;
-	[Range(70, 100)]
-	public float maxFov;
-	[Range(0.1f, 1)]
-	public float speedToFov;
+	private const float MIN_FOV = 40;
+	private const float MAX_FOV = 90;
+	private const float SPEED_TO_FOV = 0.9f;
+	private const float DRIFT_DEGREE_MULTIPLIER = 0.1f;
+	private const float DISTANCE_FARCAM = 2.85f;
+	private const float DISTANCE_CLOSECAM = 2.65f;
+	private const float DISTANCE_PRERACE = 4.1f;
+	private const float HEIGHT_FARCAM = 1.9f;
+	private const float HEIGHT_CLOSECAM = 1.65f;
+	private const float HEIGHT_PRERACE = 0;
+	private const float TILT_SPEED = 15;
+	private const float TILT_EFFECT_MULTIPLIER = 0.15f;
+	private const float CAMERA_TURN_SPEED = 200f;
 
-	// Variables auxiliares para calculos.
-
+	private float camDegree = 0;
+	private float camDistance = 0;
+	private float camHeight = 0;
 	private bool camRaceMode = false;
-	private float camDegreeTemp;
-	private float camDegreeRads;
-	private float camT;
-	private float camCos;
-	private float camSin;
-	private float tiltSpeed = 15;
-	private float tiltMultiplier = 0.15f;
+	private float camDegreeTemp = 0;
+	private float camDegreeRads = 0;
+	private float camT = 0;
+	private float camCos = 0;
+	private float camSin = 0;
 	private float tiltCurrent = 0;
-	private float camTurnSpeed = 200f;
-	private float camRaceModeHeight = 1.9f;
-	private float camRaceModeDistance = 2.85f;
 
+	enum CamMode
+	{
+		CloseCam,
+		FarCam,
+		FirstPerson
+	}
+	private CamMode currentCameraMode;
 
 	void Awake()
 	{
@@ -52,46 +49,96 @@ public class FollowTarget : MonoBehaviour {
 	}
 
 	void Start () {
-		camDegreeTemp = 0;
-		// TODO: Eh...solucion spaghetti, cambiar esto.
 		pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement> ();
 		Camera.main.useOcclusionCulling = false;
+		StartCoroutine ("PreRaceAnimation");
 	}
 
+	void Update()
+	{
+		if (Input.GetKeyDown (KeyCode.C) && camRaceMode) {
+			ChangeCameraMode ();
+		}
+	}
 	void FixedUpdate () {
-
-
 		if (camRaceMode) {
-			lookAtTarget ();
-			camDegree = 270 - target.transform.rotation.eulerAngles.y + pm.GetDriftDegree() * driftDegreeMultiplier;
-			sphericalPositionLock ();
-			updateFov ();
-		} else {
-			lookAtTarget ();
+			LookAtTarget ();
+			UpdateFov ();
+			if (currentCameraMode == CamMode.FirstPerson) {
+				transform.position = firstPersonCamPosition.position;
+				transform.rotation = firstPersonCamPosition.rotation;
+			} else {
+				SphericalPositionLock ();
+			}
+		}
+	}
+
+	void LookAtTarget()
+	{
+        transform.LookAt (cameraTarget.transform.position+new Vector3(0f,1f,0f));
+		tiltCurrent = Mathf.MoveTowards (tiltCurrent, TILT_EFFECT_MULTIPLIER * pm.GetDriftDegree(), Time.deltaTime * TILT_SPEED);
+		transform.Rotate (Vector3.forward * tiltCurrent);
+		camDegree = 270 - cameraTarget.transform.rotation.eulerAngles.y + pm.GetDriftDegree() * DRIFT_DEGREE_MULTIPLIER;
+	}
+	void SphericalPositionLock()
+	{
+		camDegreeTemp = Mathf.MoveTowardsAngle (camDegreeTemp, camDegree, Time.smoothDeltaTime * CAMERA_TURN_SPEED);
+		camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;
+		camCos = Mathf.Cos (camDegreeRads);
+		camSin = Mathf.Sin (camDegreeRads);
+
+		transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + cameraTarget.transform.position;
+	}
+	void UpdateFov()
+	{
+		GetComponent<Camera> ().fieldOfView = Mathf.Clamp(90 + pm.GetCurrentSpeed() * SPEED_TO_FOV, MIN_FOV, MAX_FOV );
+	}
+	void ChangeCameraMode()
+	{
+		switch (currentCameraMode) {
+			case CamMode.FarCam:
+			{
+				camHeight = HEIGHT_CLOSECAM;
+				camDistance = DISTANCE_CLOSECAM;
+				currentCameraMode = CamMode.CloseCam;
+				break;
+			}
+			case CamMode.CloseCam:
+			{
+				camHeight = 0;
+				camDistance = 0;
+				currentCameraMode = CamMode.FirstPerson;
+				break;
+			}
+			case CamMode.FirstPerson:
+			{
+				camHeight = HEIGHT_FARCAM;
+				camDistance = DISTANCE_FARCAM;
+				currentCameraMode = CamMode.FarCam;
+				LookAtTarget ();
+				camDegreeTemp = camDegree;
+				SphericalPositionLock ();
+				break;
+			}
+		}
+	}
+	public void SetRaceMode()
+	{
+		camDistance = DISTANCE_FARCAM;
+		camHeight = HEIGHT_FARCAM;
+		currentCameraMode = CamMode.FarCam;
+		camRaceMode = true;
+	}
+	IEnumerator PreRaceAnimation()
+	{
+		camHeight = HEIGHT_PRERACE;
+		camDistance = DISTANCE_PRERACE;
+
+		while (!camRaceMode) {
+			LookAtTarget ();
 			transform.Rotate (new Vector3(0,-32.5f,20));
 			camDegree = 240f;
-			sphericalPositionLock ();
-		}
 
-	}
-
-	void lookAtTarget()
-	{
-        transform.LookAt (target.transform.position+new Vector3(0f,1f,0f));
-		tiltCurrent = Mathf.MoveTowards (tiltCurrent, tiltMultiplier * pm.GetDriftDegree(), Time.deltaTime * tiltSpeed);
-		transform.Rotate (Vector3.forward * tiltCurrent);
-	}
-	void sphericalPositionLock()
-	{
-		if (camRaceMode) {
-			camDegreeTemp = Mathf.MoveTowardsAngle (camDegreeTemp, camDegree, Time.smoothDeltaTime * camTurnSpeed);
-			camDegreeRads = camDegreeTemp * Mathf.Deg2Rad;
-			camCos = Mathf.Cos (camDegreeRads);
-			camSin = Mathf.Sin (camDegreeRads);
-
-			transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + target.transform.position;
-		} else {
-			// TODO: No spaghetti?
 			camT = (1 - (Mathf.Abs (camDegreeTemp) / Mathf.Abs (camDegree))) - 0.5f;
 			if (Mathf.Abs (camT) < 0.005f)
 				camT = 0;
@@ -101,24 +148,7 @@ public class FollowTarget : MonoBehaviour {
 			camCos = Mathf.Cos (camDegreeRads);
 			camSin = Mathf.Sin (camDegreeRads);
 
-			transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + target.transform.position;
-		}
-
-	}
-	void updateFov()
-	{
-		GetComponent<Camera> ().fieldOfView = Mathf.Clamp(90 + pm.GetCurrentSpeed() * speedToFov, minFov, maxFov);
-	}
-	public void SetRaceMode()
-	{
-		StartCoroutine ("changeToRaceMode");
-		camRaceMode = true;
-	}
-	IEnumerator changeToRaceMode()
-	{
-		while (camHeight != camRaceModeHeight || camDistance != camRaceModeDistance) {
-			camHeight = Mathf.MoveTowards (camHeight, camRaceModeHeight, Time.deltaTime * 2f);
-			camDistance = Mathf.MoveTowards (camDistance, camRaceModeDistance, Time.deltaTime * 2f);
+			transform.position = new Vector3 (camCos * camDistance, camHeight, camSin * camDistance) + cameraTarget.transform.position;
 			yield return null;
 		}
 	}
