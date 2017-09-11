@@ -106,7 +106,7 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/5)", "Go to the event panel to start playing."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (5/5)", "You can also practice with the seasonal events."));
 
-			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = true;
+			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = false;
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
