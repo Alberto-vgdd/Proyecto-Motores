@@ -26,7 +26,7 @@ public class GlobalGameData : MonoBehaviour {
 	private bool hasAnySavedData = false;
 	public List<EventData> eventsAvailable_seasonal;
 
-	private int maxGarageSize = 20;
+	private int maxGarageSize = 10;
 
 	private GhostReplayData playerGhostPB;
 
@@ -59,9 +59,6 @@ public class GlobalGameData : MonoBehaviour {
 		m_playerData_carsOwned.Add (new CarData (1));
 		m_playerData_carsOwned.Add (new CarData (2));
 		m_playerData_carsOwned.Add (new CarData (3));
-		m_playerData_carsOwned.Add (new CarData (4));
-		m_playerData_carsOwned.Add (new CarData (5));
-		m_playerData_carsOwned.Add (new CarData (6));
 		m_playerData_carSelectedIndex = -1;
 
 	}

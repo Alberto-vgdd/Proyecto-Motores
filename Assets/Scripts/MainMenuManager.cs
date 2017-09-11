@@ -167,7 +167,15 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	public void SetCarSelected(int index)
 	{
+		for (int i = 0; i < carsInList.Count; i++) {
+			if (i == index)
+				carsInList [i].SBA.ResetBlinkingAnimation ();
+			else
+				carsInList [i].SBA.gameObject.SetActive (false);
+		}
+
 		CarData readedCar = GlobalGameData.currentInstance.m_playerData_carsOwned [index];
+
 
 		carNameText.text = readedCar.GetCarName ();
 		statSliders[0].SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
@@ -184,10 +192,10 @@ public class MainMenuManager : MonoBehaviour {
 	void SetGarageCarButtons()
 	{
 		for (int i = 0; i < carsInList.Count; i++) {
+			carsInList [i].SBA.gameObject.SetActive (i == GlobalGameData.currentInstance.GetCarInUseIndex());
 			if (i >= GlobalGameData.currentInstance.m_playerData_carsOwned.Count) {
-				carsInList [i].gameObject.SetActive (false);
+				carsInList [i].SetPanelForCar(null, i);
 			} else {
-				carsInList [i].gameObject.SetActive (true);
 				carsInList [i].SetPanelForCar(GlobalGameData.currentInstance.m_playerData_carsOwned[i], i);
 				if (GlobalGameData.currentInstance.GetCarInUseIndex () == i) {
 					carsInList [i].SetSelected (true);
@@ -644,12 +652,14 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "You don't own any car"));
 			return;
 		}
-		SetGarageCarButtons();
+		SetGarageCarButtons ();
 		slotsInUse.text = GlobalGameData.currentInstance.m_playerData_carsOwned.Count + "/" + GlobalGameData.currentInstance.GetGarageSlots() + " slots in use";
 		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
 			SetCarSelected (0);
+			carsInList [0].SBA.ResetBlinkingAnimation();
 		} else {
 			SetCarSelected (GlobalGameData.currentInstance.GetCarInUseIndex());
+			carsInList [GlobalGameData.currentInstance.GetCarInUseIndex()].SBA.ResetBlinkingAnimation();
 		}
 		StartCoroutine ("FadeInGaragePanel");
 		StartCoroutine ("FadeOutMainSlider");

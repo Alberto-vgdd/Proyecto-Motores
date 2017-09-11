@@ -34,133 +34,7 @@ public class CarData {
 	public CarData(int preset = 0)
 	{
 		switch (preset) {
-		case 1:
-			{
-				m_turnRate = 4f;
-				m_acceleration = 6.5f;
-				m_maxSpeed = 8f;
-				m_maxDriftDegree = 8f;
-				m_driftStrenght = 4f;
-				m_carWeight = 4.5f;
-
-				m_upgraded_turnRate = 0;
-				m_upgraded_acceleration = 0;
-				m_upgraded_maxSpeed = 0;
-				m_upgraded_driftStrenght = 0;
-				m_upgraded_maxDriftDegree = 0;
-				m_upgraded_carWeight = -0.02f;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] SPORTS CAR";
-				break;
-			}
-		case 2:
-			{
-				m_turnRate = 3f;
-				m_acceleration = 6f;
-				m_maxSpeed = 6f;
-				m_maxDriftDegree = 4f;
-				m_driftStrenght = 7f;
-				m_carWeight = 8;
-
-				m_upgraded_turnRate = -1f;
-				m_upgraded_acceleration = 2.1f;
-				m_upgraded_maxSpeed = 1.5f;
-				m_upgraded_driftStrenght = -3.7f;
-				m_upgraded_maxDriftDegree = 0.5f;
-				m_upgraded_carWeight = 0.25f;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] MUSCLE CAR";
-				break;
-			}
-		case 3:
-			{
-				m_turnRate = 4f;
-				m_acceleration = 8f;
-				m_maxSpeed = 9f;
-				m_maxDriftDegree = 4f;
-				m_driftStrenght = 5f;
-				m_carWeight = 8;
-
-				m_upgraded_turnRate = 99f;
-				m_upgraded_acceleration = 1.5f;
-				m_upgraded_maxSpeed = 1f;
-				m_upgraded_driftStrenght = -1.5f;
-				m_upgraded_maxDriftDegree = -1.5f;
-				m_upgraded_carWeight = -1f;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] LMP-ONE";
-				break;
-			}
-		case 4:
-			{
-				m_turnRate = 10f;
-				m_acceleration = 10f;
-				m_maxSpeed = 10f;
-				m_maxDriftDegree = 10f;
-				m_driftStrenght = 10f;
-				m_upgraded_carWeight = 0;
-
-				m_upgraded_turnRate = 0f;
-				m_upgraded_acceleration = 0f;
-				m_upgraded_maxSpeed = 0f;
-				m_upgraded_driftStrenght = 0f;
-				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_carWeight = 0;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] MAX STATS";
-				break;
-			}
-		case 5:
-			{
-				m_turnRate = 0f;
-				m_acceleration = 0f;
-				m_maxSpeed = 0f;
-				m_maxDriftDegree = 0f;
-				m_driftStrenght = 0f;
-				m_carWeight = 10f;
-
-				m_upgraded_turnRate = 0f;
-				m_upgraded_acceleration = 0f;
-				m_upgraded_maxSpeed = 0f;
-				m_upgraded_driftStrenght = 0f;
-				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_carWeight = 0f;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] MIN STATS";
-				break;
-			}
-		case 6:
-			{
-				m_turnRate = 5f;
-				m_acceleration = 5f;
-				m_maxSpeed = 5f;
-				m_maxDriftDegree = 5f;
-				m_driftStrenght = 5f;
-				m_carWeight = 5f;
-
-				m_upgraded_turnRate = 0f;
-				m_upgraded_acceleration = 0f;
-				m_upgraded_maxSpeed = 0f;
-				m_upgraded_driftStrenght = 0f;
-				m_upgraded_maxDriftDegree = 0f;
-				m_upgraded_carWeight = 0f;
-
-				m_modelID = 1;
-				m_skinID = 1;
-				m_name = "[TEST] AVERAGE STATS";
-				break;
-			}
-		default:
+		case 0:
 			{
 				m_turnRate = 3.5f;
 				m_acceleration = 5f;
@@ -177,8 +51,72 @@ public class CarData {
 				m_upgraded_carWeight = 0.5f;
 
 				m_modelID = 1;
+				m_skinID = 0;
+				m_name = "Wave86 Sport";
+				break;
+			}
+		case 1:
+			{
+				m_turnRate = 3.5f;
+				m_acceleration = 5f;
+				m_maxSpeed = 4.5f;
+				m_maxDriftDegree = 5f;
+				m_driftStrenght = 6f;
+				m_carWeight = 6.5f;
+
+				m_upgraded_turnRate = 2f;
+				m_upgraded_acceleration = 3f;
+				m_upgraded_maxSpeed = 0.5f;
+				m_upgraded_driftStrenght = 0.25f;
+				m_upgraded_maxDriftDegree = -0.25f;
+				m_upgraded_carWeight = 1f;
+
+				m_modelID = 1;
 				m_skinID = 1;
-				m_name = "[TEST] AE-86";
+				m_name = "Wave86 Type-R";
+				break;
+			}
+		case 2:
+			{
+				m_turnRate = 3.5f;
+				m_acceleration = 5f;
+				m_maxSpeed = 4.5f;
+				m_maxDriftDegree = 5f;
+				m_driftStrenght = 6f;
+				m_carWeight = 6.5f;
+
+				m_upgraded_turnRate = -1f;
+				m_upgraded_acceleration = 1.75f;
+				m_upgraded_maxSpeed = 3f;
+				m_upgraded_driftStrenght = 1f;
+				m_upgraded_maxDriftDegree = -1;
+				m_upgraded_carWeight = 2f;
+
+				m_modelID = 1;
+				m_skinID = 2;
+				m_name = "Wave86 Turbo";
+
+				break;
+			}
+		case 3:
+			{
+				m_turnRate = 3.5f;
+				m_acceleration = 5f;
+				m_maxSpeed = 4.5f;
+				m_maxDriftDegree = 5f;
+				m_driftStrenght = 6f;
+				m_carWeight = 6.5f;
+
+				m_upgraded_turnRate = 3.5f;
+				m_upgraded_acceleration = 5f;
+				m_upgraded_maxSpeed = -1.5f;
+				m_upgraded_driftStrenght = 3f;
+				m_upgraded_maxDriftDegree = 3;
+				m_upgraded_carWeight = -2.5f;
+
+				m_modelID = 1;
+				m_skinID = 3;
+				m_name = "Wave86 Rally edition";
 				break;
 			}
 		}
