@@ -45,6 +45,7 @@ public class PreRacePanelBehaviour : MonoBehaviour {
 
 	public void SetPanelInfo()
 	{
+		
 		event_subName.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea() + " - " + DayNightCycle.currentInstance.getTimeString() 
 			+ " [ Road ID: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed().ToString() + " ]";
 		event_title.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName();

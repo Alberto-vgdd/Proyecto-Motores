@@ -8,8 +8,8 @@ public class DayNightCycle : MonoBehaviour
 	public static DayNightCycle currentInstance;
 
     [Header("Day Night Cycle Configuration")]
-	public float dayCycleTimescale;
-	public float currentHour;
+	private float dayCycleTimescale = 0.2f;
+	private float currentHour;
 
 
     [Header("Different Skyboxes")]
@@ -33,15 +33,18 @@ public class DayNightCycle : MonoBehaviour
 	private Color currentIllumColor;
 	private float currentIllumT;
 
+
 	// Use this for initialization
 	void Awake ()
 	{
 		currentInstance = this;
+		currentHour = GlobalGameData.currentInstance.m_playerData_eventActive.GetStartingHour ();
+		directionalLight = GetComponent<Light> ();
 	}
 	void Start () 
     {
 		//RenderSettings.skybox = m_Skyboxes [1];
-		directionalLight = GetComponent<Light> ();
+
 	}
 	
 	// Update is called once per frame
@@ -104,14 +107,13 @@ public class DayNightCycle : MonoBehaviour
 		directionalLight.color = currentIllumColor;
 			
 	}
-	public void SetTimeAndTimescale(float time, float timescale)
-	{
-		currentHour = Mathf.Clamp (time, 0f, 24f);
-		dayCycleTimescale = timescale;
-	}
 	public bool getLightsOn()
 	{
 		return lightsOn;
+	}
+	public float GetTime()
+	{
+		return currentHour;
 	}
 	public string getTimeString()
 	{
