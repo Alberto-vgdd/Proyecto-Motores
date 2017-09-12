@@ -14,9 +14,9 @@ public class TitleScreenCamShake : MonoBehaviour {
 	
 	IEnumerator ShakeAnimation()
 	{
-		float shakeStrenght = 0.002f;
-		float shakeSpeedX = 0.025f;
-		float shakeSpeedY = 0.015f;
+		 float shakeStrenght = 0.005f;
+		 float shakeSpeedX = 0.001f;
+		 float shakeSpeedY = 0.005f;
 
 		float currentShakeX = 0;
 		float currentShakeY = 0;
