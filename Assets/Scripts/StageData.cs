@@ -61,7 +61,17 @@ public class StageData : MonoBehaviour {
 
 
 
-	void Awake () { currentData = this; }
+	void Awake () 
+	{ 
+		if (currentData == null) {
+			DontDestroyOnLoad (this.gameObject);
+			currentData = this;
+			//InitializeData ();
+		}
+		else {
+			Destroy (this.gameObject);
+		}
+	}
 	void Start () {
 		eventActive = GlobalGameData.currentInstance.m_playerData_eventActive;
 		time_remainingSec = eventActive.GetInitialTimeRemaining ();

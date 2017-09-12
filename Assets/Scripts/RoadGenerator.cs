@@ -51,7 +51,14 @@ public class RoadGenerator : MonoBehaviour {
 	private float NodeWeight2Time = 0.4f;
 
 	void Awake () {
-		currentInstance = this;
+		if (currentInstance == null) {
+			DontDestroyOnLoad (this.gameObject);
+			currentInstance = this;
+			//InitializeData ();
+		}
+		else {
+			Destroy (this.gameObject);
+		}
 	}
 
 	void Start ()

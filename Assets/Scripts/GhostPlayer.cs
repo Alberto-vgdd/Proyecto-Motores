@@ -22,7 +22,14 @@ public class GhostPlayer : MonoBehaviour {
 
 	// Use this for initialization
 	void Awake () {
-		currentInstance = this;
+		if (currentInstance == null) {
+			DontDestroyOnLoad (this.gameObject);
+			currentInstance = this;
+			//InitializeData ();
+		}
+		else {
+			Destroy (this.gameObject);
+		}
 		replayData = GlobalGameData.currentInstance.GetPlayerGhostPB();
 	}
 	public void StartPlaying()

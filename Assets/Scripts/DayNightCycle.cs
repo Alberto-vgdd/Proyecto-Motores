@@ -36,6 +36,7 @@ public class DayNightCycle : MonoBehaviour
 	// Use this for initialization
 	void Awake ()
 	{
+
 		currentInstance = this;
 	}
 	void Start () 

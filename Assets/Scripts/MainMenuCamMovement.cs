@@ -25,7 +25,8 @@ public class MainMenuCamMovement : MonoBehaviour {
 
 	void Awake ()
 	{
-		currentInstance = this;
+
+			currentInstance = this;
 	}
 
 	void Start () {
