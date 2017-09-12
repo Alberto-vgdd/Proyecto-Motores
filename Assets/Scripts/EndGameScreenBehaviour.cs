@@ -36,22 +36,7 @@ public class EndGameScreenBehaviour : MonoBehaviour {
 
 	void Awake ()
 	{
-		if (currentInstance == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentInstance = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		}
-	}
-	// Use this for initialization
-	void Start () {
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
+		currentInstance = this;
 	}
 	public void SetAndEnable(int type, bool failed)
 	{

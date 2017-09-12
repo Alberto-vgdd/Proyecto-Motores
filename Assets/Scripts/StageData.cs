@@ -63,14 +63,7 @@ public class StageData : MonoBehaviour {
 
 	void Awake () 
 	{ 
-		if (currentData == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentData = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		}
+		currentData = this;
 	}
 	void Start () {
 		eventActive = GlobalGameData.currentInstance.m_playerData_eventActive;

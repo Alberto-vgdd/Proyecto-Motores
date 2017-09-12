@@ -44,14 +44,10 @@ public class ContextualHudManager : MonoBehaviour {
 	public Color hpMinColor;
 
 
-	void Awake () { if (currentInstance == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentInstance = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		} }
+	void Awake () { 
+		currentInstance = this;
+	}
+	
 	void Start () { 
 		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetScoreOnDriftMultiplier () > 0) {
 			displayChainMultiplier = GlobalGameData.currentInstance.m_playerData_eventActive.GetScoreOnDriftMultiplier ();

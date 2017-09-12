@@ -85,14 +85,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	void Awake ()
 	{
-		if (currentInstance == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentInstance = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		}
+		currentInstance = this;
 	}
 
 	void Start () {

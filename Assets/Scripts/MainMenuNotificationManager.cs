@@ -21,14 +21,7 @@ public class MainMenuNotificationManager : MonoBehaviour {
 
 	void Awake ()
 	{
-		if (currentInstance == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentInstance = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		}
+		currentInstance = this;
 		notifications = new List<MainMenuNotificationData> ();
 	}
 

@@ -1,14 +1,7 @@
 fileFormatVersion: 2
-<<<<<<< HEAD:Assets/Scenes/InGame/LightingData.asset.meta
-guid: fbc8d1de97568c64dbd0cc255388a229
-timeCreated: 1505249843
-=======
-guid: b7abf13ecd09dda48821e2733b0512b7
-timeCreated: 1498122175
->>>>>>> parent of 853fcbf... Texturas--:Assets/Scenes/test/LightingData.asset.meta
-licenseType: Free
+guid: adb7f954d41969841ab0b79b385f49c4
 NativeFormatImporter:
-  mainObjectFileID: 25800000
+  mainObjectFileID: 0
   userData: 
   assetBundleName: 
   assetBundleVariant: 
