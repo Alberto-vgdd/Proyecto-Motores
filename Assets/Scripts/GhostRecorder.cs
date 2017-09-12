@@ -15,7 +15,14 @@ public class GhostRecorder : MonoBehaviour {
 
 	void Awake ()
 	{
-		currentInstance = this;
+		if (currentInstance == null) {
+			DontDestroyOnLoad (this.gameObject);
+			currentInstance = this;
+			//InitializeData ();
+		}
+		else {
+			Destroy (this.gameObject);
+		}
 	}
 
 	IEnumerator RecordData()
