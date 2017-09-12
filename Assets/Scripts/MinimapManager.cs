@@ -15,14 +15,7 @@ public class MinimapManager : MonoBehaviour {
 
 	void Awake ()
 	{
-		if (currentInstance == null) {
-			DontDestroyOnLoad (this.gameObject);
-			currentInstance = this;
-			//InitializeData ();
-		}
-		else {
-			Destroy (this.gameObject);
-		}
+		currentInstance = this;
 	}
 	// Use this for initialization
 	void Start () {

@@ -8,7 +8,7 @@ public class DayNightCycle : MonoBehaviour
 	public static DayNightCycle currentInstance;
 
     [Header("Day Night Cycle Configuration")]
-	private float dayCycleTimescale = 0.2f;
+	private float dayCycleTimescale = 0.025f;
 	private float currentHour;
 
 
