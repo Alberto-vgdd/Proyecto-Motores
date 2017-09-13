@@ -9,7 +9,7 @@ public class MainMenuSong : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 
 		currentSong = this.GetComponent<AudioSource>();
 		currentSong.loop = true;

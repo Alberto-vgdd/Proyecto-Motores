@@ -188,7 +188,7 @@ public class GlobalGameData : MonoBehaviour {
 			return;
 		float promotionMultiplier = Mathf.Pow(0.9f, m_playerData_playerRank-1);
 
-		m_playerData_rankStatus -= GetRankChangeOnNextUpdate ();
+		m_playerData_rankStatus += GetRankChangeOnNextUpdate ();
 
 		if (m_playerData_rankStatus < -1) {
 			if (m_playerData_playerRank == 1) {
