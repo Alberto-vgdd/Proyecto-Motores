@@ -9,6 +9,7 @@ public class GhostPlayer : MonoBehaviour {
 
 	public GameObject target;
 	public GameObject nameplateTarget;
+	public CarSkinManager CSManager;
 
 	private GhostReplayData replayData;
 	private bool playing = false;
@@ -32,6 +33,7 @@ public class GhostPlayer : MonoBehaviour {
 		if (replayData.GetRecordedAtSeed () != GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed () || replayData.GetRecordedAtGamemode () != GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode ())
 			return;
 		ghostNameText.text = replayData.GetGhostName ();
+		CSManager.ChangeBaseSkin (replayData.GetGhostSkinID ());
 
 		playing = true;
 		StartCoroutine ("PlayGhost");

@@ -34,6 +34,8 @@ public class GlobalGameData : MonoBehaviour {
 
 	private GhostReplayData playerGhostPB;
 
+	public Material[] m_carSkins;
+
 	void Awake ()
 	{
 		if (currentInstance == null) {

@@ -12,16 +12,20 @@ public class GhostReplayData {
 	private float scoreRecorded;
 	private bool scoreRecordedIsTime;
 	private string ghostName;
+	private int GhostSkinID;
+	private int GhostModelID;
 
 	private float recordingInterval;
 	private const int MAX_ALLOWED_RECORDINGS = 5000;
 
-	public GhostReplayData (float interval, int seed, EventData.Gamemode gmode, string playername)
+	public GhostReplayData (float interval, int seed, EventData.Gamemode gmode, string playername, int S_ID, int M_ID)
 	{
 		recordingInterval = interval;
 		recordedAt_seed = seed;
 		recordedAt_gamemode = gmode;
 		ghostName = playername;
+		GhostSkinID = S_ID;
+		GhostModelID = M_ID;
 		recordedPositions = new List<Vector3> ();
 		recordedRotations = new List<Quaternion> ();
 	}
@@ -76,6 +80,14 @@ public class GhostReplayData {
 	public bool GetScoreRecordedIsTime()
 	{
 		return scoreRecordedIsTime;
+	}
+	public int GetGhostSkinID()
+	{
+		return GhostSkinID;
+	}
+	public int GetGhostModelID()
+	{
+		return GhostModelID;
 	}
 	public string GetScoreRecordedString()
 	{

@@ -28,10 +28,9 @@ public class StageData : MonoBehaviour {
 
 	public CanvasGroup fadeCG;
 	public Text countDownText;
-	public CanvasGroup endGameStatsCG;
-	public Text endGameStatsText;
 
 	public PlayerMovement pm;												// Referencia a PlayerMovement.
+	public CarSkinManager CSManager;
 
     [Header("Ambient Light Parameters")]									//TODO: Unused?
     public float lightRange;
@@ -67,6 +66,7 @@ public class StageData : MonoBehaviour {
 	}
 	void Start () {
 		eventActive = GlobalGameData.currentInstance.m_playerData_eventActive;
+		CSManager.ChangeBaseSkin (GlobalGameData.currentInstance.GetCarInUse ().GetSkinId ());
 		time_remainingSec = eventActive.GetInitialTimeRemaining ();
 		time_remainingSec += 0.3f; // Pequeño margen.
 		UpdateTime ();

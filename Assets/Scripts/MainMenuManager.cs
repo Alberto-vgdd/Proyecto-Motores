@@ -61,6 +61,7 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Other references")]
 	public List<GameObject> eventsOnDisplay;
 	public List<GameObject> carsOnDisplay;
+	public CarSkinManager CSManager;
 
 	private int carInDisplayIndex = 0;
 
@@ -88,9 +89,6 @@ public class MainMenuManager : MonoBehaviour {
 	void Awake ()
 	{
 		currentInstance = this;
-				CarModel.currentInstance.ChangeMaterial(CarMaterials.currentInstance.GetMaterial(GlobalGameData.currentInstance.GetCarInUseIndex()));
-
-		
 	}
 
 	void Start () {
@@ -123,6 +121,11 @@ public class MainMenuManager : MonoBehaviour {
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
 		GlobalGameData.currentInstance.SaveData ();
+	}
+	private void ChangeCarDisplayed(bool active, int skinID)
+	{
+		CSManager.gameObject.SetActive (active);
+		CSManager.ChangeBaseSkin (skinID);
 	}
 	private void SetMovingInfo (string arg)
 	{
@@ -194,6 +197,8 @@ public class MainMenuManager : MonoBehaviour {
 		statSliders[2].SetValues (readedCar.GetBaseTurnRate(), readedCar.GetUpgradedTurnRate());
 		statSliders[3].SetValues (readedCar.GetBaseDriftStrenght(), readedCar.GetUpgradedDriftStrenght());
 		statSliders[4].SetValues (readedCar.GetBaseWeight (), readedCar.GetUpgradedWeight ());
+
+		ChangeCarDisplayed (true, readedCar.GetSkinId ());
 
 		carInDisplayIndex = index;
 
@@ -460,11 +465,16 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	IEnumerator FadeInMainSlider()
 	{
-				CarModel.currentInstance.ChangeMaterial(CarMaterials.currentInstance.GetMaterial(GlobalGameData.currentInstance.GetCarInUseIndex()));
-
 		newTag_offlineEvents.SetActive (GlobalGameData.currentInstance.HasNewOfflineEvents ());
 		newTag_seasonalEvents.SetActive (GlobalGameData.currentInstance.HasNewSeasonalEvents ());
 		newTag_garage.SetActive (false); // TODO: Temporal, añadir condicion real.
+
+		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+			ChangeCarDisplayed(false, 0);
+		} else {
+			ChangeCarDisplayed(true, GlobalGameData.currentInstance.GetCarInUse ().GetSkinId ());
+		}
+
 
 		StopCoroutine ("FadeOutMainSlider");
 		SetMovingInfo ("Welcome to Project racing D!, check the season challenges panel to find unique events, can you beat them?");
