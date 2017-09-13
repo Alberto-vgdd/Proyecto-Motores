@@ -43,7 +43,7 @@ public class EventData {
 	// AuxParameters
 	private const int BASE_REWARD_VALUE = 500;
 	private const float ROAD_DIFFICULTY_MULTIPLIER = 0.075f;
-	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.0125f;
+	private const float LEAGUE_DIFFICULTY_MULTIPLIER = 0.0105f;
 	private const float SILVER_REWARD_MULTIPLIER = 0.8f;
 	private const float BRONZE_REWARD_MULTIPLIER = 0.6f;
 
@@ -206,27 +206,27 @@ public class EventData {
 		switch (m_gameMode) {
 		case Gamemode.Endurance:
 			{
-				m_objectiveGold = (int)(10000 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(8500 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.DriftEndurance:
 			{
-				m_objectiveGold = (int)(6750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(7500 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.DriftExhibition:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 1250 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 1500 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.HighSpeedChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 250 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 700 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 215 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.TimeAttack:
@@ -288,7 +288,7 @@ public class EventData {
 
 				m_checkPoints = 0;
 				m_eventBonusTimeOnCPMultiplier = 0f;
-				m_eventBonusTimeOnDriftMultiplier = 0.004f;
+				m_eventBonusTimeOnDriftMultiplier = 0.001f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;

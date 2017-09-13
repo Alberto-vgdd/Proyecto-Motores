@@ -113,7 +113,7 @@ public class CarData {
 
 				m_upgraded_turnRate = 3.5f;
 				m_upgraded_acceleration = 5f;
-				m_upgraded_maxSpeed = -1.5f;
+				m_upgraded_maxSpeed = -1.9f;
 				m_upgraded_driftStrenght = 3f;
 				m_upgraded_maxDriftDegree = 3;
 				m_upgraded_carWeight = -2.5f;

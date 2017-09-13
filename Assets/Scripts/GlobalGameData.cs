@@ -159,13 +159,13 @@ public class GlobalGameData : MonoBehaviour {
 			return 0;
 		float promotionMultiplier = Mathf.Pow(0.8f, m_playerData_playerRank-1);
 		if (m_playerData_lastEventPlayedResult == 1) {
-			return 0.15f * promotionMultiplier;
+			return 0.3f * promotionMultiplier;
 		} else if (m_playerData_lastEventPlayedResult == 2) {
-			return 0.05f * promotionMultiplier;
+			return 0.1f * promotionMultiplier;
 		} else if (m_playerData_lastEventPlayedResult == 3) {
-			return -0.075f;
-		} else {
 			return -0.15f;
+		} else {
+			return -0.25f;
 		} 
 	}
 	public void UpdatePostEventChanges()
@@ -188,15 +188,7 @@ public class GlobalGameData : MonoBehaviour {
 			return;
 		float promotionMultiplier = Mathf.Pow(0.9f, m_playerData_playerRank-1);
 
-		if (m_playerData_lastEventPlayedResult == 0) {
-			m_playerData_rankStatus -= 0.15f;
-		} else if (m_playerData_lastEventPlayedResult == 1) {
-			m_playerData_rankStatus += 0.15f * promotionMultiplier;
-		} else if (m_playerData_lastEventPlayedResult == 2) {
-			m_playerData_rankStatus += 0.05f * promotionMultiplier;
-		} else if (m_playerData_lastEventPlayedResult == 3) {
-			m_playerData_rankStatus -= 0.05f;
-		}
+		m_playerData_rankStatus -= GetRankChangeOnNextUpdate ();
 
 		if (m_playerData_rankStatus < -1) {
 			if (m_playerData_playerRank == 1) {
