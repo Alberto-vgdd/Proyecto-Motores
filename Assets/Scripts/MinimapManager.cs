@@ -10,6 +10,7 @@ public class MinimapManager : MonoBehaviour {
 	public Transform displaceParent;
 	public GameObject playerReference;
 	private float scaleConversionFactor = 1f;
+	private float mapScale = 0.4f;
 
 	private Vector3 initialPosition;
 
@@ -20,6 +21,7 @@ public class MinimapManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		initialPosition = displaceParent.localPosition;
+		parentCG.transform.localScale = Vector3.one * mapScale;
 	}
 	
 	// Update is called once per frame

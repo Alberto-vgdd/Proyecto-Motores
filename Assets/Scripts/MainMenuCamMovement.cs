@@ -19,9 +19,9 @@ public class MainMenuCamMovement : MonoBehaviour {
 	private bool camInCarViewMode = false;
 
 	private float timeWithNoDragInput = 0f;
-	private float camAutoTurningTime = 2.5f;
-	private float camAutoTurningSpeed = 4.5f;
-	private float camDragStrenght = 100f;
+	private float camAutoTurningTime = 2f;
+	private float camAutoTurningSpeed = 5.5f;
+	private float camDragStrenght = 150f;
 
 	void Awake ()
 	{

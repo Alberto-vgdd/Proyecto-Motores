@@ -26,6 +26,7 @@ public class MainMenuManager : MonoBehaviour {
 	public Text alternativeCurrencyText;
 	public Text playerNameText;
 	public Text playerRankText;
+	public Text movingInfoText;
 	[Header("Event Details Panel")]
 	public Text eventDetailsHeader;
 	public Text eventDetailsDescription;
@@ -70,6 +71,7 @@ public class MainMenuManager : MonoBehaviour {
 	private Vector3 garageOptionsInitialPos;
 	private Vector3 topPanelInitialPos;
 	private Vector3 bottomPanelInitialPos;
+	private Vector3 movingInfoInitialPos;
 
 	// Categoria de eventos
 	private Category categoryOfEventsInDisplay;
@@ -98,13 +100,14 @@ public class MainMenuManager : MonoBehaviour {
 		garageOptionsInitialPos = carOptionsParent.transform.localPosition;
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
+		movingInfoInitialPos = movingInfoText.transform.localPosition;
 
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (1/5)", "Welcome to Project Racing D."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/5)", "This is a beta version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/5)", "This is a demo version. Some features are in development."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (3/5)", "Select a car from the garage to begin."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/5)", "Go to the event panel to start playing."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (5/5)", "You can also practice with the seasonal events."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (5/5)", "You can also practice with the season challenges."));
 
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = false;
 			GlobalGameData.currentInstance.SaveData ();
@@ -117,6 +120,12 @@ public class MainMenuManager : MonoBehaviour {
 		UpdateCurrencyAndRankValues ();
 		StartCoroutine ("RankPromotionPanel");
 		GlobalGameData.currentInstance.SaveData ();
+	}
+	private void SetMovingInfo (string arg)
+	{
+		movingInfoText.text = arg;
+		StopCoroutine ("MovingInfoAnimation");
+		StartCoroutine ("MovingInfoAnimation");
 	}
 	private void SetEventPanels(Category eventCategory)
 	{
@@ -454,6 +463,7 @@ public class MainMenuManager : MonoBehaviour {
 		newTag_garage.SetActive (false); // TODO: Temporal, añadir condicion real.
 
 		StopCoroutine ("FadeOutMainSlider");
+		SetMovingInfo ("Welcome to Project racing D!, check the season challenges panel to find unique events, can you beat them?");
 		mainSlider.gameObject.SetActive (true);
 
 		yield return new WaitForSeconds (0.25f);
@@ -480,6 +490,8 @@ public class MainMenuManager : MonoBehaviour {
 		carPanelCG.gameObject.SetActive (true);
 		carPanelCG.alpha = 0;
 		MainMenuCamMovement.currentInstance.SwitchToCarView (true);
+
+		SetMovingInfo ("Select a car to use from the list, check the car stats to find which one fits your playstyle. Drag to rotate the view arround the car");
 
 		float t = 0;
 		float animSpeed = 5f;
@@ -566,6 +578,38 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = false;
 	}
 
+	IEnumerator MovingInfoAnimation()
+	{
+		float info_OffsetX = movingInfoText.text.Length * 20f;
+		float info_OffsetY = -100f;
+		float animSpeed;
+		float t;
+
+
+		while (true) {
+			movingInfoText.transform.localPosition = movingInfoInitialPos + Vector3.up * info_OffsetY;
+			yield return new WaitForSeconds (0.5f);
+			animSpeed = 2f;
+			t = 0;
+			while (t < 1) {
+				t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+				movingInfoText.transform.localPosition = movingInfoInitialPos + Vector3.up * (1 - t) * info_OffsetY;
+				yield return null;
+			}
+
+			yield return new WaitForSeconds (0.75f);
+
+			t = 0;
+			animSpeed = (1/info_OffsetX) * 125f;
+			while (t < 1) {
+				t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+				movingInfoText.transform.localPosition = movingInfoInitialPos + Vector3.left * t * info_OffsetX;
+				yield return null;
+			}
+			yield return null;
+		}
+	}
+
 	// =====================================================================================
 	// Button Click Recievers
 	// =====================================================================================
@@ -604,6 +648,7 @@ public class MainMenuManager : MonoBehaviour {
 		SetEventPanels (Category.Offline);
 		SelectEventAsActive (GlobalGameData.currentInstance.m_playerData_eventsOffline[0]);
 		eventsInList [0].SetAsSelected ();
+		SetMovingInfo ("Select a event to participate in, the list will be updated after every race with new events.");
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
@@ -620,21 +665,22 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		}
 		if (GlobalGameData.currentInstance.eventsAvailable_seasonal.Count == 0) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No seasonal events available."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "No season challenges available."));
 			return;
 		}
 
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel) {
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel = false;
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (1/4)", "You can play seasonal challenges here."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (2/4)", "Seasonal events will offer you challenges with unusual rules."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (3/4)", "Those events will reward you a special currency used to purchase visual customization parts."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Seasonal Events (4/4)", "This events WONT have any impact on your driver rank."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (1/4)", "You can play season challenges here."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (2/4)", "Season challenges will offer you events with unusual rules."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (3/4)", "Those events will reward you a special currency used to purchase visual customization parts."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (4/4)", "This events WONT have any impact on your driver rank."));
 		}
 
 		SetEventPanels (Category.Seasonal);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
 		eventsInList [0].SetAsSelected ();
+		SetMovingInfo ("Season challenges wont have any impact on your driver rank, but they are much harder than normal events.");
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
@@ -646,21 +692,21 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnCarShopClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnPartShopClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnGarageClicked()
 	{
@@ -698,14 +744,14 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnSettingsClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 
 	// Event buttons
@@ -737,21 +783,21 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnCustomizeCarClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnChangeCarPartsClicked()
 	{
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature in development"));
+		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
 	}
 	public void OnCloseGaragePanelClicked()
 	{
