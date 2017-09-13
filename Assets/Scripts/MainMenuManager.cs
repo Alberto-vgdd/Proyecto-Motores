@@ -62,7 +62,7 @@ public class MainMenuManager : MonoBehaviour {
 	public List<GameObject> eventsOnDisplay;
 	public List<GameObject> carsOnDisplay;
 
-	private int carInDisplayIndex = -1;
+	private int carInDisplayIndex = 0;
 
 	private Vector3 eventSliderInitialPos;
 	private Vector3 eventDetailsInitialPos;
@@ -88,6 +88,9 @@ public class MainMenuManager : MonoBehaviour {
 	void Awake ()
 	{
 		currentInstance = this;
+				CarModel.currentInstance.ChangeMaterial(CarMaterials.currentInstance.GetMaterial(GlobalGameData.currentInstance.GetCarInUseIndex()));
+
+		
 	}
 
 	void Start () {
@@ -184,8 +187,7 @@ public class MainMenuManager : MonoBehaviour {
 		}
 
 		CarData readedCar = GlobalGameData.currentInstance.m_playerData_carsOwned [index];
-
-
+		
 		carNameText.text = readedCar.GetCarName ();
 		statSliders[0].SetValues (readedCar.GetBaseMaxSpeed(), readedCar.GetUpgradedMaxSpeed());
 		statSliders[1].SetValues (readedCar.GetBaseAcceleration(), readedCar.GetUpgradedAcceleration());
@@ -458,6 +460,8 @@ public class MainMenuManager : MonoBehaviour {
 	}
 	IEnumerator FadeInMainSlider()
 	{
+				CarModel.currentInstance.ChangeMaterial(CarMaterials.currentInstance.GetMaterial(GlobalGameData.currentInstance.GetCarInUseIndex()));
+
 		newTag_offlineEvents.SetActive (GlobalGameData.currentInstance.HasNewOfflineEvents ());
 		newTag_seasonalEvents.SetActive (GlobalGameData.currentInstance.HasNewSeasonalEvents ());
 		newTag_garage.SetActive (false); // TODO: Temporal, añadir condicion real.

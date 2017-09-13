@@ -29,6 +29,7 @@ public class CarData {
 	private int m_modelID;
 	private int m_skinID;
 	private string m_name;
+	private int m_MaterialIndex;
 
 	// Constructor sin parametros, coche de prueba.
 	public CarData(int preset = 0)
@@ -53,6 +54,7 @@ public class CarData {
 				m_modelID = 1;
 				m_skinID = 0;
 				m_name = "Wave86 Sport";
+				m_MaterialIndex = 0;
 				break;
 			}
 		case 1:
@@ -74,6 +76,7 @@ public class CarData {
 				m_modelID = 1;
 				m_skinID = 1;
 				m_name = "Wave86 Type-R";
+				m_MaterialIndex = 1;
 				break;
 			}
 		case 2:
@@ -95,6 +98,7 @@ public class CarData {
 				m_modelID = 1;
 				m_skinID = 2;
 				m_name = "Wave86 Turbo";
+				m_MaterialIndex = 2;
 
 				break;
 			}
@@ -117,6 +121,7 @@ public class CarData {
 				m_modelID = 1;
 				m_skinID = 3;
 				m_name = "Wave86 Rally edition";
+				m_MaterialIndex = 3;
 				break;
 			}
 		}
@@ -133,6 +138,10 @@ public class CarData {
 	public int GetSkinId()
 	{
 		return m_skinID;
+	}
+	public int GetMaterialIndex()
+	{
+		return m_MaterialIndex;
 	}
 
 	// COMBINED STAT GETTERS
