@@ -253,8 +253,8 @@ public class StageData : MonoBehaviour {
 			RoadGenerator.currentInstance.spawnedNodes [i].GetComponent<RoadNode> ().SetLightState (DayNightCycle.currentInstance.getLightsOn());
         }
 
-		nightChasis.SetActive(DayNightCycle.currentInstance.getLightsOn());
-		dayChasis.SetActive(!DayNightCycle.currentInstance.getLightsOn());
+		//nightChasis.SetActive(DayNightCycle.currentInstance.getLightsOn());
+		//dayChasis.SetActive(!DayNightCycle.currentInstance.getLightsOn());
 
     }
 

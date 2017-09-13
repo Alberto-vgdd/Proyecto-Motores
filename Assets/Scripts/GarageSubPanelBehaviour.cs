@@ -25,6 +25,8 @@ public class GarageSubPanelBehaviour : MonoBehaviour {
 			return;
 		MainMenuManager.currentInstance.SetCarSelected(m_index);
 		SBA.ResetBlinkingAnimation ();
+		CarModel.currentInstance.ChangeMaterial(CarMaterials.currentInstance.GetMaterial(m_index));
+
 	}
 	public void SetPanelForCar(CarData data, int index)
 	{
