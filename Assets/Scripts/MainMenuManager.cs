@@ -66,6 +66,7 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Loading Panel")]
 	public Text loadingInfo;
 	public CanvasGroup loadingCG;
+	public CanvasGroup tipsCG;
 	[Header("Other references")]
 	public List<GameObject> eventsOnDisplay;
 	public List<GameObject> carsOnDisplay;
@@ -114,11 +115,13 @@ public class MainMenuManager : MonoBehaviour {
 		settingsWindowInitialPos = settingsPanelWindow.transform.localPosition;
 
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu) {
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (1/5)", "Welcome to Project Racing D."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/5)", "This is a demo version. Some features are in development."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (3/5)", "Select a car from the garage to begin."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/5)", "Go to the event panel to start playing."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (5/5)", "You can also practice with the season challenges."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (1/4)", "Welcome to Project Racing D."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/4)", "This is a demo version. Some features are in development."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (3/4)", "Select a car from the garage to begin."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/4)", "Go to the event panel to start playing, try the seasonal challenges for unique events!"));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (1/3)", "Lastly, these are the ingame controls, press WASD or the arrows to drive."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (2/3)", "Hold space to start drifting, dont forget this."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (3/3)", "Press C to change the camera, and press ESC to open the menu."));
 
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = false;
 			GlobalGameData.currentInstance.SaveData ();
@@ -487,7 +490,7 @@ public class MainMenuManager : MonoBehaviour {
 
 
 		StopCoroutine ("FadeOutMainSlider");
-		SetMovingInfo ("Welcome to Project racing D!, check the season challenges panel to find unique events, can you beat them?");
+		SetMovingInfo ("Welcome to Project racing D! Check the season challenges panel to find unique events, or go to the event panel to find more traditional events.");
 		mainSlider.gameObject.SetActive (true);
 
 		yield return new WaitForSeconds (0.25f);
@@ -617,6 +620,7 @@ public class MainMenuManager : MonoBehaviour {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
 			loadingInfo.transform.localPosition = Vector3.left * 40 * (1 - t) + textInitPos;
 			textCG.alpha = t;
+			tipsCG.alpha = t;
 			yield return null;
 		}
 		AsyncOperation AO = SceneManager.LoadSceneAsync ("InGame");
@@ -633,6 +637,7 @@ public class MainMenuManager : MonoBehaviour {
 			t = Mathf.MoveTowards(t, 0, Time.deltaTime * animSpeed);
 			loadingInfo.transform.localPosition = Vector3.right * 40 * (1 - t) + textInitPos;
 			textCG.alpha = t;
+			tipsCG.alpha = t;
 			yield return null;
 		}
 		yield return new WaitForSeconds (0.5f);
