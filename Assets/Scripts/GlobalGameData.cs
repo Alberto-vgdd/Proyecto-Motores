@@ -133,6 +133,7 @@ public class GlobalGameData : MonoBehaviour {
 		if (devSavedReplays != null)
 			return;
 		DirectoryInfo di = new DirectoryInfo(Application.dataPath + "/DevReplays");
+		print (Application.dataPath);
 		FileInfo[] filesFound = di.GetFiles ();
 		BinaryFormatter binForm;
 		FileStream file;
