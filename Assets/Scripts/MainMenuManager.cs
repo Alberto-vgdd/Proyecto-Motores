@@ -883,6 +883,7 @@ public class MainMenuManager : MonoBehaviour {
 		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
 		SetGarageCarButtons();
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: \n" + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
+		GlobalGameData.currentInstance.SaveData ();
 
 		MainMenuSoundManager.instance.playAcceptSound ();
 
@@ -896,6 +897,7 @@ public class MainMenuManager : MonoBehaviour {
 			return;
 		}
 		MainMenuSoundManager.instance.playAcceptSound ();
+		GlobalGameData.currentInstance.SaveData ();
 		StartCoroutine ("FadeOutSettingsPanel");
 		StartCoroutine ("FadeInMainSlider");
 	}
