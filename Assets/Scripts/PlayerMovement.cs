@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour {
 	private const float STAT_MAXSPEED_BASE = 25f;						// (STAT) MaxSpeed - Base
 	private const float STAT_MAXSPEED_SCAL = 1.65f;						// (STAT) MaxSpeed - Escalado
 	private const float STAT_DRIFTSTR_BASE = 2.75f;						// (STAT) DriftStrenght - Base
-	private const float STAT_DRIFTSTR_SCAL = 0.115f;					// (STAT) DriftStrenght - Escalado
+	private const float STAT_DRIFTSTR_SCAL = 0.13f;						// (STAT) DriftStrenght - Escalado
 	private const float STAT_MAXDRIFT_BASE = 15f;						// (STAT) MaxDrift - Base
 	private const float STAT_MAXDRIFT_SCAL = 1.85f;						// (STAT) MaxDrift - Escalado
 	private const float STAT_DRIFTSPDCONS_BASE = 0.35f;					// (STAT) DriftSpeedConservation - Base

@@ -78,9 +78,9 @@ public class EventData {
 		m_checkPoints = checkpoints;
 		m_customEventName = customName;
 		m_customEventDesc = customDesc;
-		m_eventLeague = 16;
 		m_seasonalEvent = true;
 		m_canBeRestarted = true;
+		m_eventLeague = 16;
 
 		m_rewardType = 0;
 
@@ -254,6 +254,9 @@ public class EventData {
 			}
 		}
 			
+		if (m_special == SpecialEvent.SoundSpeed) {
+			m_objectiveGold = (int)(m_objectiveGold * 0.45f);
+		} 
 		// Scaling
 		if (m_objectiveTypeScore) {
 			m_objectiveSilver = (int)(m_objectiveGold * 0.9f);
