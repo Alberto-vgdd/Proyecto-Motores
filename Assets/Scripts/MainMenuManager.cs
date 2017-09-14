@@ -47,8 +47,7 @@ public class MainMenuManager : MonoBehaviour {
 	public Button LEPpanel_continueButton;
 	public CanvasGroup LEPpanel_globalCG;
 	[Header("SettingsPanel")]
-	public Transform settingsPanelParent;
-	public CanvasGroup settingsPanelBackground;
+	public CanvasGroup settingsPanelParent;
 	public CanvasGroup settingsPanelWindow;
 	public Text settingsPanelSliderValue;
 	public Slider settingsPanelSlider;
@@ -564,7 +563,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		while (t < 1) {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
-			settingsPanelBackground.alpha = t;
+			settingsPanelParent.alpha = t;
 			settingsPanelWindow.alpha = t;
 			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.left * (1 - t);
 			yield return null;
@@ -581,7 +580,7 @@ public class MainMenuManager : MonoBehaviour {
 
 		while (t > 0) {
 			t = Mathf.MoveTowards (t, 0, Time.deltaTime * animSpeed);
-			settingsPanelBackground.alpha = t;
+			settingsPanelParent.alpha = t;
 			settingsPanelWindow.alpha = t;
 			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.right * (1 - t);
 			yield return null;
