@@ -197,13 +197,13 @@ public class GlobalGameData : MonoBehaviour {
 			"Pues eso, grabad vuestros fantasmas aqui, es basicamente el evento donde testeabamos antes"));
 
 		eventsAvailable_seasonal.Add(new EventData(765, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.InstaGib, "Clean drive",
-			"A real endurance race, how long can you get with a car that will get instantly destroyed with the first collision? we hope you're used to perform clean sections."));
+			"A real endurance race, how far can you get with a car that will get instantly destroyed with the first collision? We hope you're used to perform clean sections."));
 		eventsAvailable_seasonal.Add(new EventData(322322, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.SoundSpeed, "Like the wind",
-			"A simple endurance race on a easy road, and your car will get all its stats boosted to the maximum! sounds easy, right? dont worry, just make sure you're not driving too fast," +
-			" did i forgot to mention this car has no brakes?"));
+			"A simple endurance race on a easy road, and your car will get all its stats boosted to the maximum! Sounds easy, right? Don't worry, just make sure you're not driving too fast..." +
+			" Did I forgot to mention this car has no brakes?"));
 		if (devReplaysLoadedSuccesfully) {
 			eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.AgainstDevs, "Better than the best", 
-				"A short Time Attack where you will race against the ghost replays of the developers of the game on the track seed we used for testing, can you beat us?"));
+				"A short Time Attack where you will race against the ghost replays of the developers, on the track seed used for testing. Can you beat us?"));
 		}
 	}
 	public float GetRankChangeOnNextUpdate()

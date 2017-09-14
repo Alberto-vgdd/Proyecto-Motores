@@ -637,12 +637,12 @@ public class EventData {
 			}
 		case Gamemode.HighSpeedChallenge:
 			{
-				str = "Reach the last checkpoint within the time limit, while driving at high speed, timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
+				str = "Reach the last checkpoint within the time limit. While driving at high speed, timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				str = "Reach the last checkpoint within the time limit, while drifting the timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
+				str = "Reach the last checkpoint within the time limit. While drifting, timer is slowed down. Score is awarded based on the remaining time when crossing a checkpoint.";
 				break;
 			}
 		case Gamemode.TimeAttack:

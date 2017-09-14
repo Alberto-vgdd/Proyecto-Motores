@@ -119,15 +119,15 @@ public class MainMenuManager : MonoBehaviour {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (2/4)", "This is a demo version. Some features are in development."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (3/4)", "Select a car from the garage to begin."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (4/4)", "Go to the event panel to start playing, try the seasonal challenges for unique events!"));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (1/3)", "Lastly, these are the ingame controls, press WASD or the arrows to drive."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (2/3)", "Hold space to start drifting, dont forget this."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (3/3)", "Press C to change the camera, and press ESC to open the menu."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (1/3)", "The ingame controls: Press WASD or the arrows to drive."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (2/3)", "Hold space to start drifting, don't forget this."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Controls (3/3)", "Press C to change the camera, and press ESC to open the Pause menu."));
 
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu = false;
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
-				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished or got no medals and will decrease your driver rank heavily."));
+				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished, or got no medals, and will decrease your driver rank heavily."));
 			}
 		}
 
@@ -518,7 +518,7 @@ public class MainMenuManager : MonoBehaviour {
 		carPanelCG.alpha = 0;
 		MainMenuCamMovement.currentInstance.SwitchToCarView (true);
 
-		SetMovingInfo ("Select a car to use from the list, check the car stats to find which one fits your playstyle. Drag to rotate the view arround the car");
+		SetMovingInfo ("Select a car to use from the list, check the car stats to find which one fits your playstyle. Drag to rotate the view arround the car.");
 
 		float t = 0;
 		float animSpeed = 5f;
@@ -708,7 +708,7 @@ public class MainMenuManager : MonoBehaviour {
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnEventPanel) {
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnEventPanel = false;
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (1/5)", "Here you can select events to participate in."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (2/5)", "These events are randonly generated and new ones are added after every played event."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (2/5)", "These events are randomly generated and new ones are added after every played event."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (3/3)", "Your result on these events will change your driver rank."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (4/5)", "The higher the driver rank, the higher the rewards and the difficulty."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Events (5/5)", "Keep in mind that losing will impact your rank negatively."));
@@ -717,7 +717,7 @@ public class MainMenuManager : MonoBehaviour {
 		SetEventPanels (Category.Offline);
 		SelectEventAsActive (GlobalGameData.currentInstance.m_playerData_eventsOffline[0]);
 		eventsInList [0].SetAsSelected ();
-		SetMovingInfo ("Select a event to participate in, the list will be updated after every race with new events.");
+		SetMovingInfo ("Select a event to participate: the list will be updated after every race with new events.");
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
@@ -740,8 +740,8 @@ public class MainMenuManager : MonoBehaviour {
 
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel) {
 			GlobalGameData.currentInstance.m_playerData_firstTimeOnSeasonalPanel = false;
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (1/4)", "You can play season challenges here."));
-			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (2/4)", "Season challenges will offer you events with unusual rules."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (1/4)", "You can play seasonal challenges here."));
+			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (2/4)", "Seasonal challenges will offer you events with unusual rules."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (3/4)", "Those events will reward you a special currency used to purchase visual customization parts."));
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Season Challenges (4/4)", "This events WONT have any impact on your driver rank."));
 		}
@@ -749,7 +749,7 @@ public class MainMenuManager : MonoBehaviour {
 		SetEventPanels (Category.Seasonal);
 		SelectEventAsActive (GlobalGameData.currentInstance.eventsAvailable_seasonal[0]);
 		eventsInList [0].SetAsSelected ();
-		SetMovingInfo ("Season challenges wont have any impact on your driver rank, but they are much harder than normal events.");
+		SetMovingInfo ("Season challenges won't have any impact on your driver rank, but they are much harder than normal events.");
 		StartCoroutine ("FadeInEventPanel");
 		StartCoroutine ("FadeOutMainSlider");
 
