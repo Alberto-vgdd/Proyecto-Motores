@@ -913,6 +913,7 @@ public class MainMenuManager : MonoBehaviour {
 		GlobalGameData.currentInstance.SetPlayerName (ProfileNameInputField.text);
 		playerNameText.text = ProfileNameInputField.text;
 		settingsPanelProfileName.text = ProfileNameInputField.text;
+		ProfileNameInputField.text = "";
 	}
 
 	// Last event played result & rank update panel
