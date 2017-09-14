@@ -563,7 +563,7 @@ public class MainMenuManager : MonoBehaviour {
 		settingsPanelProfileName.text = GlobalGameData.currentInstance.GetPlayerName ();
 
 		while (t < 1) {
-			t = Mathf.MoveTowards (t, 0, Time.deltaTime * animSpeed);
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
 			settingsPanelBackground.alpha = t;
 			settingsPanelWindow.alpha = t;
 			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.left * (1 - t);
@@ -580,7 +580,7 @@ public class MainMenuManager : MonoBehaviour {
 		float animSpeed = 4f;
 
 		while (t > 0) {
-			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			t = Mathf.MoveTowards (t, 0, Time.deltaTime * animSpeed);
 			settingsPanelBackground.alpha = t;
 			settingsPanelWindow.alpha = t;
 			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.right * (1 - t);
