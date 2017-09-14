@@ -37,7 +37,7 @@ public class GlobalGameData : MonoBehaviour {
 
 	private GhostReplayData playerGhostPB;
 	private List<GhostReplayData> devSavedReplays;
-	private bool devReplaysLoadedSuccesfully = false;
+	private bool devReplaysLoadedSuccesfully = true;
 
 	public Material[] m_carSkins;
 
