@@ -46,6 +46,15 @@ public class MainMenuManager : MonoBehaviour {
 	public Slider LEPpanel_slider;
 	public Button LEPpanel_continueButton;
 	public CanvasGroup LEPpanel_globalCG;
+	[Header("SettingsPanel")]
+	public Transform settingsPanelParent;
+	public CanvasGroup settingsPanelBackground;
+	public CanvasGroup settingsPanelWindow;
+	public Text settingsPanelSliderValue;
+	public Slider settingsPanelSlider;
+	public Text settingsPanelProfileName;
+	public Toggle settingsPanelToggle;
+	public InputField ProfileNameInputField;
 	[Header("Garage Panel")]
 	public CanvasGroup carPanelCG;
 	public GameObject carSliderParent;
@@ -73,6 +82,7 @@ public class MainMenuManager : MonoBehaviour {
 	private Vector3 topPanelInitialPos;
 	private Vector3 bottomPanelInitialPos;
 	private Vector3 movingInfoInitialPos;
+	private Vector3 settingsWindowInitialPos;
 
 	// Categoria de eventos
 	private Category categoryOfEventsInDisplay;
@@ -102,6 +112,7 @@ public class MainMenuManager : MonoBehaviour {
 		topPanelInitialPos = topParent.transform.localPosition;
 		bottomPanelInitialPos = bottomParent.transform.localPosition;
 		movingInfoInitialPos = movingInfoText.transform.localPosition;
+		settingsWindowInitialPos = settingsPanelWindow.transform.localPosition;
 
 		if (GlobalGameData.currentInstance.m_playerData_firstTimeOnMainMenu) {
 			MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("New profile (1/5)", "Welcome to Project Racing D."));
@@ -540,6 +551,45 @@ public class MainMenuManager : MonoBehaviour {
 		CoRoutineActive = false;
 		StartCoroutine ("FadeInMainSlider");
 	}
+	IEnumerator FadeInSettingsPanel()
+	{
+		settingsPanelParent.gameObject.SetActive (true);
+		CoRoutineActive = true;
+		float t = 0;
+		float animSpeed = 4f;
+
+		settingsPanelSlider.value = GlobalGameData.currentInstance.m_gameSettings_nodesLoaded;
+		settingsPanelToggle.isOn = GlobalGameData.currentInstance.m_gameSettings_postProcessing;
+		settingsPanelProfileName.text = GlobalGameData.currentInstance.GetPlayerName ();
+
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 0, Time.deltaTime * animSpeed);
+			settingsPanelBackground.alpha = t;
+			settingsPanelWindow.alpha = t;
+			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.left * (1 - t);
+			yield return null;
+		}
+
+		CoRoutineActive = false;
+
+	}
+	IEnumerator FadeOutSettingsPanel()
+	{
+		CoRoutineActive = true;
+		float t = 1;
+		float animSpeed = 4f;
+
+		while (t > 0) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			settingsPanelBackground.alpha = t;
+			settingsPanelWindow.alpha = t;
+			settingsPanelWindow.transform.localPosition = settingsWindowInitialPos + Vector3.right * (1 - t);
+			yield return null;
+		}
+
+		settingsPanelParent.gameObject.SetActive (false);
+		CoRoutineActive = false;
+	}
 	IEnumerator LoadScene()
 	{
 		CoRoutineActive = true;
@@ -765,7 +815,9 @@ public class MainMenuManager : MonoBehaviour {
 		if (!IsButtonAcctionAvailable ()) {
 			return;
 		}
-		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Error", "Feature not available in the demo."));
+		MainMenuSoundManager.instance.playAcceptSound ();
+		StartCoroutine ("FadeInSettingsPanel");
+		StartCoroutine ("FadeOutMainSlider");
 	}
 
 	// Event buttons
@@ -835,6 +887,33 @@ public class MainMenuManager : MonoBehaviour {
 
 		MainMenuSoundManager.instance.playAcceptSound ();
 
+	}
+
+	// Settings panel buttons
+	// =====================================================================================
+	public void OnConfirmSettingsClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		MainMenuSoundManager.instance.playAcceptSound ();
+		StartCoroutine ("FadeOutSettingsPanel");
+		StartCoroutine ("FadeInMainSlider");
+	}
+	public void OnSettingsRenderDistanceSliderValueChanged()
+	{
+		GlobalGameData.currentInstance.m_gameSettings_nodesLoaded = (int)settingsPanelSlider.value;
+		settingsPanelSliderValue.text = ((int)(settingsPanelSlider.value)).ToString();
+	}
+	public void OnSettingsPostProcessingToggleValueChanged()
+	{
+		GlobalGameData.currentInstance.m_gameSettings_postProcessing = settingsPanelToggle.isOn;
+	}
+	public void OnSettingsProfileNameValueChanged()
+	{
+		GlobalGameData.currentInstance.SetPlayerName (ProfileNameInputField.text);
+		playerNameText.text = ProfileNameInputField.text;
+		settingsPanelProfileName.text = ProfileNameInputField.text;
 	}
 
 	// Last event played result & rank update panel

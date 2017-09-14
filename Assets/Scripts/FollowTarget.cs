@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.PostProcessing;
 
 public class FollowTarget : MonoBehaviour {
 
@@ -49,6 +50,7 @@ public class FollowTarget : MonoBehaviour {
 	}
 
 	void Start () {
+		this.GetComponent<PostProcessingBehaviour> ().enabled = GlobalGameData.currentInstance.m_gameSettings_postProcessing;
 		pm = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerMovement> ();
 		Camera.main.useOcclusionCulling = false;
 		StartCoroutine ("PreRaceAnimation");

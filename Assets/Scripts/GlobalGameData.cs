@@ -22,6 +22,9 @@ public class GlobalGameData : MonoBehaviour {
 	public bool m_playerData_firstTimeOnSeasonalPanel = true;
 	public bool m_playerData_firstTimeOnGaragePanel = true;
 
+	public int m_gameSettings_nodesLoaded = 20;
+	public bool m_gameSettings_postProcessing = true;
+
 	public EventData m_playerData_eventActive;
 	public List<EventData> m_playerData_eventsOffline;
 	public List<CarData> m_playerData_carsOwned;
@@ -90,6 +93,8 @@ public class GlobalGameData : MonoBehaviour {
 		data.m_firstTimeGarage = m_playerData_firstTimeOnGaragePanel;
 		data.m_firstTimeOfflineEvents = m_playerData_firstTimeOnGaragePanel;
 		data.m_firstTimeSeasonalEvents = m_playerData_firstTimeOnSeasonalPanel;
+		data.m_settingsPostProcessing = m_gameSettings_postProcessing;
+		data.m_settingsRoadLoadDistance = m_gameSettings_nodesLoaded;
 
 		binForm.Serialize (file, data);
 		file.Close ();
@@ -120,6 +125,8 @@ public class GlobalGameData : MonoBehaviour {
 			m_playerData_firstTimeOnGaragePanel = data.m_firstTimeGarage;
 			m_playerData_firstTimeOnSeasonalPanel = data.m_firstTimeSeasonalEvents;
 			m_playerData_firstTimeOnEventPanel = data.m_firstTimeOfflineEvents;
+			m_gameSettings_nodesLoaded = data.m_settingsRoadLoadDistance;
+			m_gameSettings_postProcessing = data.m_settingsPostProcessing;
 
 			file.Close (); // <- NO OLVIDAR NUNCA
 			return true;

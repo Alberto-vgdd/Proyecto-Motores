@@ -26,4 +26,7 @@ public class SavedGameData {
 	public bool m_firstTimeOfflineEvents;
 	public bool m_firstTimeSeasonalEvents;
 	public bool m_firstTimeGarage;
+
+	public int m_settingsRoadLoadDistance;
+	public bool m_settingsPostProcessing;
 }
