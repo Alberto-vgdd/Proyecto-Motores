@@ -557,7 +557,7 @@ public class MainMenuManager : MonoBehaviour {
 		float t = 0;
 		float animSpeed = 4f;
 
-		settingsPanelSliderValue = GlobalGameData.currentInstance.m_gameSettings_nodesLoaded;
+		settingsPanelSliderValue.text = GlobalGameData.currentInstance.m_gameSettings_nodesLoaded.ToString();
 		settingsPanelSlider.value = GlobalGameData.currentInstance.m_gameSettings_nodesLoaded;
 		settingsPanelToggle.isOn = GlobalGameData.currentInstance.m_gameSettings_postProcessing;
 		settingsPanelProfileName.text = GlobalGameData.currentInstance.GetPlayerName ();
