@@ -39,6 +39,8 @@ public class RoadNode : MonoBehaviour {
 
 	public void SetLightState(bool state)
 	{
+		if (isTunnel)
+			state = false;
 		for (int i = 0; i < envLights.Count; i++) {
 			envLights [i].gameObject.SetActive (state);
 			envLights [i].enabled = state;
@@ -56,7 +58,7 @@ public class RoadNode : MonoBehaviour {
 
 	// Prepara la decoracion ambiental
 
-	public void SetEnvoirment(int LWall, int RWall, int LGround, int RGround, bool Tunnel)
+	public void SetEnvironment(int LWall, int RWall, int LGround, int RGround, bool Tunnel)
 	{
 		for (int i = 0; i < envLeftWall.Count; i++) {
 			if (i == LWall) {

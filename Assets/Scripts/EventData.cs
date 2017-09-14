@@ -234,12 +234,12 @@ public class EventData {
 			}
 		case Gamemode.HighSpeedChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 700 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 400 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 350 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.TimeAttack:

@@ -235,7 +235,7 @@ public class RoadGenerator : MonoBehaviour {
 		} else {
 			nodeDecoTunnelEnabledFor--;
 		}
-		lastReadedNode.SetEnvoirment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR, nodeDecoTunnelEnabledFor > 0);
+		lastReadedNode.SetEnvironment (nodeDecoWallL, nodeDecoWallR, nodeDecoGroundL, nodeDecoGroundR, nodeDecoTunnelEnabledFor > 0);
 	}
 
 	//TODO: Esto no deberia estar aqui...

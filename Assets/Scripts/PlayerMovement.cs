@@ -72,6 +72,8 @@ public class PlayerMovement : MonoBehaviour {
 	private const float FRICTION_SPD_CONSERVATION_SIDE_ENTER = 0.9f;	// Conservacion de velocidad en colision lateral (ENTER)
 	private const float FRICTION_SPD_CONSERVATION_DRIFT = 0.7f;         // Conservacion de velocidad en colision mientras se derrapa (para evitar que sea una forma viable de conducir)
 
+	private const float SPEED_PERCENT_HIGHSPEEDCHALLENGE = 0.65f;
+
 	// Valores auxiliares privados
 
 	private int lastNodeCrossedID;										// ID del ultimo nodo cruzado (Se inicia en -1).
@@ -522,6 +524,10 @@ public class PlayerMovement : MonoBehaviour {
 	public float GetCurrentSpeedPercentage()
 	{
 		return Mathf.Abs(accumulatedSpeed) / maxFwdSpeed;
+	}
+	public bool FastEnoughForHighSpeedChallenge()
+	{
+		return (Mathf.Abs(accumulatedSpeed) / maxFwdSpeed) > SPEED_PERCENT_HIGHSPEEDCHALLENGE;
 	}
 	public float GetHorizontalCamDisplacementValue()
 	{

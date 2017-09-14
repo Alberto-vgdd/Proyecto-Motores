@@ -68,7 +68,6 @@ public class StageData : MonoBehaviour {
 		eventActive = GlobalGameData.currentInstance.m_playerData_eventActive;
 		CSManager.ChangeBaseSkin (GlobalGameData.currentInstance.GetCarInUse ().GetSkinId ());
 		time_remainingSec = eventActive.GetInitialTimeRemaining ();
-		time_remainingSec += 0.3f; // Pequeño margen.
 		UpdateTime ();
 	}
 
@@ -137,8 +136,14 @@ public class StageData : MonoBehaviour {
 			eventScore += (int)(time_remainingSec * eventActive.GetScorePerRemainingTimeOnCheckpointMultiplier ());
 		}
 		if (eventActive.GetBonusTimeOnCheckpointMultiplier() > 0) {
-			time_remainingSec += awardedTime; 
-			NotificationManager.currentInstance.AddNotification(new GameNotification("Time extended! +" + awardedTime.ToString("F1") , Color.green, 30));
+			if (eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge || eventActive.GetGamemode () == EventData.Gamemode.ChainDriftChallenge) {
+				time_remainingSec = 10;
+				NotificationManager.currentInstance.AddNotification(new GameNotification("Checkpoint! Remaining time set to 10", Color.green, 30));
+			} else {
+				time_remainingSec += awardedTime; 
+				NotificationManager.currentInstance.AddNotification(new GameNotification("Time extended! +" + awardedTime.ToString("F1") , Color.green, 30));
+			}
+
 		}
 		if (eventActive.GetEventCheckpoints() > 0) {
 			IngameHudManager.currentInstance.UpdateSectorInfo ();
@@ -150,7 +155,6 @@ public class StageData : MonoBehaviour {
 			NotificationManager.currentInstance.AddNotification (new GameNotification ("Sector " + checkPointsCrossed + " - " + GetTimePassedString(), Color.cyan, 30));
 		}
 	}
-
 	public void RespawnDamage()
 	{
 		if (playerHealth > 0.1f) {
@@ -268,7 +272,7 @@ public class StageData : MonoBehaviour {
 		if (!gameStarted || eventFinished)
 			return;
 		if (eventActive.HasTimelimit()) {
-			if (eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge && pm.GetCurrentSpeedPercentage() > 0.65f)
+			if (eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge && pm.FastEnoughForHighSpeedChallenge())
 				timeCountMultiplier = 0.05f;
 			if (eventActive.GetGamemode() == EventData.Gamemode.ChainDriftChallenge && pm.IsDrifting())
 				timeCountMultiplier = 0.05f;

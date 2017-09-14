@@ -18,13 +18,14 @@ public class IngameHudManager : MonoBehaviour {
 	public Image timeElapsedBorder;
 	public Text timeRemainingText;
 	public Text timeElapsedText;
+	public CanvasGroup helpInfoCG;
+	public Text helpInfo;
 
 	[Header("Score/Sector info")]
 	public GameObject ScoreParent;
 	public GameObject CpointParent;
 	public Text ScoreInfo;
 	public Text CpointInfo;
-	public Text SubTimerInfo;
 
 	[Header("Objective info")]
 	public GameObject objectivePanelParent;
@@ -46,10 +47,12 @@ public class IngameHudManager : MonoBehaviour {
 	private bool eventFinished = false;
 
 	private Vector3 globalParentInitialPosition;
+	private Vector3 helpInfoInitialPos;
 	private float shakeStr;
 	private float shakeSpeed = 500f;
 	private float shakeThs = 5;
 	private float shakeDecay = 0.8f;
+
 
 
 
@@ -60,7 +63,16 @@ public class IngameHudManager : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		globalParentInitialPosition = ingameHudCg.transform.localPosition;
+		helpInfoInitialPos = helpInfoCG.transform.localPosition;
 		SetObjectivePanel ();
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == EventData.Gamemode.ChainDriftChallenge) {
+			helpInfoCG.gameObject.SetActive (true);
+			StartCoroutine ("HelpCheckForChainDriftChallenge");
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge) {
+			StartCoroutine ("HelpCheckForHighSpeedChallenge");
+			helpInfoCG.gameObject.SetActive (true);
+		}
+
 		if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimelimit ()) {
 			if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
 				StartCoroutine ("UpdateRemainingTimeAlwaysFloat");
@@ -127,6 +139,14 @@ public class IngameHudManager : MonoBehaviour {
 		StopCoroutine ("ShakeAnimation");
 		StartCoroutine ("ShakeAnimation");
 	}
+	void SetHelpText(string txt)
+	{
+		if (txt == helpInfo.text)
+			return;
+		StopCoroutine ("HelpFadeIn");
+		StartCoroutine ("HelpFadeIn");
+		helpInfo.text = txt;
+	}
 	void SetElementsVisibility()
 	{
 		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == 0) { // Free roam gamemode.
@@ -149,6 +169,40 @@ public class IngameHudManager : MonoBehaviour {
 		ScoreInfo.text = tempScore.ToString();
 	}
 
+	IEnumerator HelpCheckForChainDriftChallenge()
+	{
+		while (true) {
+			if (pm.IsDrifting ()) {
+				SetHelpText ("Keep drifting!");
+			} else {
+				SetHelpText ("Drift to slow down the timer");
+			}
+			yield return new WaitForSeconds (0.1f);
+		}
+	}
+	IEnumerator HelpCheckForHighSpeedChallenge()
+	{
+		while (true) {
+			if (pm.FastEnoughForHighSpeedChallenge()) {
+				SetHelpText ("Keep this speed!");
+			} else {
+				SetHelpText ("Drive faster to slow down the timer");
+			}
+			yield return new WaitForSeconds (0.1f);
+		}
+	}
+	IEnumerator HelpFadeIn()
+	{
+		float t = 0f;
+		float animSpeed = 4f;
+		while (t < 1) {
+			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
+			helpInfoCG.alpha = t;
+			helpInfoCG.transform.localPosition = helpInfoInitialPos + Vector3.left * 40 * (1 - t);
+			yield return null;
+		}
+
+	}
 	IEnumerator ShakeAnimation()
 	{
 		float currentX = 0;
