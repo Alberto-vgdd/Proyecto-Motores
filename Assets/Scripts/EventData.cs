@@ -380,7 +380,7 @@ public class EventData {
 			}
 		case Gamemode.TimeAttack:
 			{
-				m_initialTimeRemaining = 0f;
+				m_initialTimeRemaining = 99f;
 				m_eventDamageTakenMultiplier = 1f;
 
 				m_eventHasTimeLimit = false;
