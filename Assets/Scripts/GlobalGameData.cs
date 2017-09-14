@@ -37,6 +37,7 @@ public class GlobalGameData : MonoBehaviour {
 
 	private GhostReplayData playerGhostPB;
 	private List<GhostReplayData> devSavedReplays;
+	private bool devReplaysLoadedSuccesfully = false;
 
 	public Material[] m_carSkins;
 
@@ -54,8 +55,9 @@ public class GlobalGameData : MonoBehaviour {
 
 	public void InitializeData()
 	{
-		GetSeasonalEvents ();
 		LoadDevReplays ();
+		GetSeasonalEvents ();
+
 		if (LoadData()) {
 			hasAnySavedData = true;
 			return;
@@ -139,8 +141,11 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		if (devSavedReplays != null)
 			return;
+		if (!Directory.Exists (Application.dataPath + "/DevReplays")) {
+			devReplaysLoadedSuccesfully = false;
+			return;
+		}
 		DirectoryInfo di = new DirectoryInfo(Application.dataPath + "/DevReplays");
-		print (Application.dataPath);
 		FileInfo[] filesFound = di.GetFiles ();
 		BinaryFormatter binForm;
 		FileStream file;
@@ -157,6 +162,10 @@ public class GlobalGameData : MonoBehaviour {
 				file.Close ();
 			}
 		}
+		if (devSavedReplays.Count < 3) {
+			devReplaysLoadedSuccesfully = false;
+		}
+
 	}
 	void OutputLastGhostToFile()
 	{
@@ -186,13 +195,16 @@ public class GlobalGameData : MonoBehaviour {
 		eventsAvailable_seasonal = new List<EventData>();
 		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.None, "GRABAD AQUI", 
 			"Pues eso, grabad vuestros fantasmas aqui, es basicamente el evento donde testeabamos antes"));
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.AgainstDevs, "Better than the best", 
-			"A short Time Attack where you will race against the ghost replays of the developers of the game on the track seed we used for testing, can you beat us?"));
+
 		eventsAvailable_seasonal.Add(new EventData(765, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.InstaGib, "Clean drive",
 			"A real endurance race, how long can you get with a car that will get instantly destroyed with the first collision? we hope you're used to perform clean sections."));
 		eventsAvailable_seasonal.Add(new EventData(322322, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.SoundSpeed, "Like the wind",
 			"A simple endurance race on a easy road, and your car will get all its stats boosted to the maximum! sounds easy, right? dont worry, just make sure you're not driving too fast," +
 			" did i forgot to mention this car has no brakes?"));
+		if (devReplaysLoadedSuccesfully) {
+			eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.AgainstDevs, "Better than the best", 
+				"A short Time Attack where you will race against the ghost replays of the developers of the game on the track seed we used for testing, can you beat us?"));
+		}
 	}
 	public float GetRankChangeOnNextUpdate()
 	{
