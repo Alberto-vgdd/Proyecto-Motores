@@ -5,8 +5,6 @@ using UnityEngine.UI;
 
 public class GhostPlayer : MonoBehaviour {
 
-	public static GhostPlayer currentInstance;
-
 	public GameObject target;
 	public GameObject nameplateTarget;
 	public CarSkinManager CSManager;
@@ -20,14 +18,9 @@ public class GhostPlayer : MonoBehaviour {
 	private Vector3 screenPos;
 	private Camera cam;
 
-
-	// Use this for initialization
-	void Awake () {
-		currentInstance = this;
-		replayData = GlobalGameData.currentInstance.GetPlayerGhostPB();
-	}
-	public void StartPlaying()
+	public void StartPlaying(GhostReplayData _data)
 	{
+		replayData = _data;
 		if (replayData == null)
 			return;
 		if (replayData.GetRecordedAtSeed () != GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed () || replayData.GetRecordedAtGamemode () != GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode ())

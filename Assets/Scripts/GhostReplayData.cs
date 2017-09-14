@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
 public class GhostReplayData {
 
-	private List<Vector3> recordedPositions;
-	private List<Quaternion> recordedRotations;
+	private List<V3Serializer> recordedPositions;
+	private List<QTSerializer> recordedRotations;
 
 	private int recordedAt_seed;
 	private EventData.Gamemode recordedAt_gamemode;
@@ -26,23 +27,23 @@ public class GhostReplayData {
 		ghostName = playername;
 		GhostSkinID = S_ID;
 		GhostModelID = M_ID;
-		recordedPositions = new List<Vector3> ();
-		recordedRotations = new List<Quaternion> ();
+		recordedPositions = new List<V3Serializer> ();
+		recordedRotations = new List<QTSerializer> ();
 	}
 	public Vector3 GetPositionAt(int index)
 	{
-		return recordedPositions [index];
+		return recordedPositions [index].Get();
 	}
 	public Quaternion GetRotationAt(int index)
 	{
-		return recordedRotations [index];
+		return recordedRotations [index].Get();
 	}
 	public void AddRecording(GameObject obj)
 	{
 		if (recordedPositions.Count >= MAX_ALLOWED_RECORDINGS)
 			return;
-		recordedPositions.Add (obj.transform.localPosition);
-		recordedRotations.Add (obj.transform.localRotation);
+		recordedPositions.Add (new V3Serializer(obj.transform.localPosition));
+		recordedRotations.Add (new QTSerializer(obj.transform.localRotation));
 	}
 	public float GetRecordingInterval()
 	{
@@ -100,5 +101,4 @@ public class GhostReplayData {
 			return ((int)scoreRecorded).ToString ();
 		}
 	}
-
 }

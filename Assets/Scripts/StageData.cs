@@ -46,16 +46,16 @@ public class StageData : MonoBehaviour {
 	public float damageTaken;
 	public int cleanSections;
 	public float totalDrift;
+	[Header("GhostPlayers")]
+	public List<GhostPlayer> GhostPlayers;
+	[Header("Other parameters")]
+	public bool gameStarted;
 
 	private float timeCountMultiplier = 1f;
-	public bool gameStarted;
 	private bool eventFinished;
-
 	private float eventScore;
 	private int finalscore;
-
 	private bool countdownRunning = false;
-
 	private EventData eventActive;
 
 
@@ -168,6 +168,8 @@ public class StageData : MonoBehaviour {
 	{
 		if (eventFinished)
 			return;
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetSpecialEventType () == EventData.SpecialEvent.InstaGib)
+			dmg = 99999;
 		dmg *= eventActive.GetDamageTakenMultiplier();
 		dmg = Mathf.Abs (dmg);
 		damageTaken += dmg;
@@ -319,11 +321,9 @@ public class StageData : MonoBehaviour {
 		gameStarted = true;
 		pm.AllowPlayerControl (true);
 		SoundManager.currentInstance.StartPlaying ();
+		StartGhostBehaviour ();
 
-		if (GhostRecorder.currentInstance != null)
-			GhostRecorder.currentInstance.StartRecording ();
-		if (GhostPlayer.currentInstance != null)
-			GhostPlayer.currentInstance.StartPlaying ();
+		//TODO:
 		
 		while (t < 1) {
 			t = Mathf.MoveTowards (t, 1, Time.deltaTime * animSpeed);
@@ -345,6 +345,20 @@ public class StageData : MonoBehaviour {
 		while (fadeCG.alpha > 0) {
 			fadeCG.alpha = Mathf.MoveTowards (fadeCG.alpha, 0, Time.deltaTime);
 			yield return null;
+		}
+	}
+	void StartGhostBehaviour()
+	{
+		if (GhostRecorder.currentInstance != null)
+			GhostRecorder.currentInstance.StartRecording ();
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetSpecialEventType() != EventData.SpecialEvent.AgainstDevs) {
+			GhostPlayers [0].StartPlaying (GlobalGameData.currentInstance.GetPlayerGhostPB ());
+		} else {
+			for (int i = 0; i < 3; i++)
+			{
+				GhostPlayers [i].StartPlaying (GlobalGameData.currentInstance.GetDevReplay(i));
+			}
+			GhostPlayers [3].StartPlaying (GlobalGameData.currentInstance.GetPlayerGhostPB());
 		}
 	}
 

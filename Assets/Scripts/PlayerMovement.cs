@@ -90,6 +90,7 @@ public class PlayerMovement : MonoBehaviour {
 	private float respawnCooldown = 0;
 
 	private bool allowPlayerControl;
+	private bool specialEventNoBrakes = false;
 
 	void Start()
 	{
@@ -122,7 +123,10 @@ public class PlayerMovement : MonoBehaviour {
 			respawnCooldown -= Time.deltaTime;
 
 		if (StageData.currentData.time_remainingSec > 0) {
-			forwInput = Input.GetAxis ("Vertical");
+			if (specialEventNoBrakes)
+				forwInput = 1;
+			else
+				forwInput = Input.GetAxis ("Vertical");
 		} else {
 			forwInput = 0f;
 		}
@@ -446,17 +450,33 @@ public class PlayerMovement : MonoBehaviour {
 	void SetCarStats()
 	{
 		carReferenced = GlobalGameData.currentInstance.GetCarInUse();
-		turnRate = STAT_TURNRATE_BASE + carReferenced.GetTurnRate () * STAT_TURNRATE_SCAL;
-		acceleration = STAT_ACCELERATION_BASE  + carReferenced.GetAcceleration () * STAT_ACCELERATION_SCAL;
-		maxFwdSpeed = STAT_MAXSPEED_BASE + carReferenced.GetMaxSpeed () * STAT_MAXSPEED_SCAL;
-		maxBwdSpeed = -(maxFwdSpeed * 0.35f);
-		driftStrenght = STAT_DRIFTSTR_BASE  + carReferenced.GetDriftStrenght () * STAT_DRIFTSTR_SCAL;
-		maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
-		driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + (10-carReferenced.GetCarWeight()) * STAT_DRIFTSPDCONS_SCAL;
-		driftStabilization = driftStrenght * 0.65f;
-		speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
-		speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
-		carWeight = STAT_WEIGHT_BASE + STAT_WEIGHT_SCAL * carReferenced.GetCarWeight ();
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetSpecialEventType () == EventData.SpecialEvent.SoundSpeed) {
+			turnRate = STAT_TURNRATE_BASE + 10 * STAT_TURNRATE_SCAL;
+			acceleration = STAT_ACCELERATION_BASE  + 10 * STAT_ACCELERATION_SCAL;
+			maxFwdSpeed = STAT_MAXSPEED_BASE + 10 * STAT_MAXSPEED_SCAL;
+			maxBwdSpeed = -(maxFwdSpeed * 0.35f);
+			driftStrenght = STAT_DRIFTSTR_BASE  + 10 * STAT_DRIFTSTR_SCAL;
+			maxDrift = STAT_MAXDRIFT_BASE + 10 * STAT_MAXDRIFT_SCAL;
+			driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + (10) * STAT_DRIFTSPDCONS_SCAL;
+			driftStabilization = driftStrenght * 0.65f;
+			speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
+			speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
+			carWeight = STAT_WEIGHT_BASE;
+			specialEventNoBrakes = true;
+		} else {
+			turnRate = STAT_TURNRATE_BASE + carReferenced.GetTurnRate () * STAT_TURNRATE_SCAL;
+			acceleration = STAT_ACCELERATION_BASE  + carReferenced.GetAcceleration () * STAT_ACCELERATION_SCAL;
+			maxFwdSpeed = STAT_MAXSPEED_BASE + carReferenced.GetMaxSpeed () * STAT_MAXSPEED_SCAL;
+			maxBwdSpeed = -(maxFwdSpeed * 0.35f);
+			driftStrenght = STAT_DRIFTSTR_BASE  + carReferenced.GetDriftStrenght () * STAT_DRIFTSTR_SCAL;
+			maxDrift = STAT_MAXDRIFT_BASE + carReferenced.GetMaxDriftDegree () * STAT_MAXDRIFT_SCAL;
+			driftSpeedConservation = STAT_DRIFTSPDCONS_BASE + (10-carReferenced.GetCarWeight()) * STAT_DRIFTSPDCONS_SCAL;
+			driftStabilization = driftStrenght * 0.65f;
+			speedFalloffReductionFwd = STAT_SPDFALLOFF_BASE + carReferenced.GetAcceleration() * STAT_SPDFALLOFF_SCAL;
+			speedFalloffReductionBwd = speedFalloffReductionFwd * 2f;
+			carWeight = STAT_WEIGHT_BASE + STAT_WEIGHT_SCAL * carReferenced.GetCarWeight ();
+		}
+
 	}
 	IEnumerator LockRotation()
 	{

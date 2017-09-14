@@ -33,6 +33,7 @@ public class GlobalGameData : MonoBehaviour {
 	private int maxGarageSize = 10;
 
 	private GhostReplayData playerGhostPB;
+	private List<GhostReplayData> devSavedReplays;
 
 	public Material[] m_carSkins;
 
@@ -51,6 +52,7 @@ public class GlobalGameData : MonoBehaviour {
 	public void InitializeData()
 	{
 		GetSeasonalEvents ();
+		LoadDevReplays ();
 		if (LoadData()) {
 			hasAnySavedData = true;
 			return;
@@ -74,8 +76,6 @@ public class GlobalGameData : MonoBehaviour {
 		FileStream file = File.Create (Application.persistentDataPath + "/SavedData.dat");
 		SavedGameData data = new SavedGameData ();
 
-		print ("[SYSTEM]: Saving data...");
-
 		data.m_playerRank = m_playerData_playerRank;
 		data.m_playerRankStatus = m_playerData_rankStatus;
 		data.m_playerNormalCurrency = m_playerData_currencyNormal;
@@ -95,16 +95,13 @@ public class GlobalGameData : MonoBehaviour {
 		file.Close ();
 
 		print ("[SYSTEM]: Saving on " + Application.persistentDataPath);
-		print ("[SYSTEM]: Data saved succesfully.");
 		hasAnySavedData = true;
 	}
 	public bool LoadData()
 	{
-		print ("[SYSTEM]: Loading data...");
 		print ("[SYSTEM]: Loading from " + Application.persistentDataPath);
 
 		if (File.Exists (Application.persistentDataPath + "/SavedData.dat")) {
-			print ("[SYSTEM]: Data found.");
 			BinaryFormatter binForm = new BinaryFormatter ();
 			FileStream file = File.Open (Application.persistentDataPath + "/SavedData.dat", FileMode.Open);
 			SavedGameData data = (SavedGameData)binForm.Deserialize (file);
@@ -124,13 +121,42 @@ public class GlobalGameData : MonoBehaviour {
 			m_playerData_firstTimeOnSeasonalPanel = data.m_firstTimeSeasonalEvents;
 			m_playerData_firstTimeOnEventPanel = data.m_firstTimeOfflineEvents;
 
-			print ("[SYSTEM]: Data loaded succesfully.");
 			file.Close (); // <- NO OLVIDAR NUNCA
 			return true;
 		}
 
 		print ("[SYSTEM]: No available data found, Load failed.");
 		return false;
+	}
+	void LoadDevReplays()
+	{
+		if (devSavedReplays != null)
+			return;
+		DirectoryInfo di = new DirectoryInfo(Application.dataPath + "/DevReplays");
+		FileInfo[] filesFound = di.GetFiles ();
+		BinaryFormatter binForm;
+		FileStream file;
+		int loaded = 0;
+
+		devSavedReplays = new List<GhostReplayData> ();
+		for (int i = 0; i < filesFound.Length; i++) {
+			if (filesFound [i].FullName.EndsWith (".Ghost") && loaded < 3) {
+				binForm = new BinaryFormatter ();
+				file = File.Open (filesFound[i].FullName, FileMode.Open);
+				devSavedReplays.Add((GhostReplayData)binForm.Deserialize (file));
+				loaded++;
+
+				file.Close ();
+			}
+		}
+	}
+	void OutputLastGhostToFile()
+	{
+		BinaryFormatter binForm = new BinaryFormatter ();
+		FileStream file = File.Create (Application.persistentDataPath + "/Ghost_" + m_playerData_playerName + "_" + playerGhostPB.GetRecordedAtSeed().ToString() 
+			+ "_" + System.Environment.TickCount + ".Ghost");
+		binForm.Serialize (file, playerGhostPB);
+		file.Close ();
 	}
 	void GenerateEventsAvailable()
 	{
@@ -150,8 +176,13 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		// Demomento ponemos eventos fijados ya que no tiene de donde scarlos.
 		eventsAvailable_seasonal = new List<EventData>();
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, "Car balance test"));
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.Endurance, "Long road car test"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.AgainstDevs, "Better than the best", 
+			"A short Time Attack where you will race against the ghost replays of the developers of the game on the track seed we used for testing, can you beat us?"));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.InstaGib, "Clean drive",
+			"A real endurance race, how long can you get with a car that will get instantly destroyed with the first collision? we hope you're used to perform clean sections."));
+		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.SoundSpeed, "Like the wind",
+			"A simple endurance race on a easy road, heres the catch, your car will get all its stats boosted to the maximum, dont worry, just make sure you're not driving too fast," +
+			"wait, did i forgot to mention this car has no brakes?"));
 	}
 	public float GetRankChangeOnNextUpdate()
 	{
@@ -206,6 +237,7 @@ public class GlobalGameData : MonoBehaviour {
 	}
 	public void SetPlayerGhostPB(GhostReplayData ghost)
 	{
+		
 		if (ghost.GetRecordedAtSeed () != m_playerData_eventActive.GetSeed () || playerGhostPB == null) {
 			print ("[REPLAY] No comparable ghost found, setting as PB");
 			playerGhostPB = ghost;
@@ -224,6 +256,7 @@ public class GlobalGameData : MonoBehaviour {
 					print ("[REPLAY] Discarding ghost.");
 			}
 		}
+		OutputLastGhostToFile ();
 	}
 	public void SetPlayerName(string arg)
 	{
@@ -307,6 +340,13 @@ public class GlobalGameData : MonoBehaviour {
 	public string GetPlayerName()
 	{
 		return m_playerData_playerName;
+	}
+	public GhostReplayData GetDevReplay(int index)
+	{
+		if (index < devSavedReplays.Count) {
+			return devSavedReplays [index];
+		}
+		return null;
 	}
 	public string GetRankName()
 	{

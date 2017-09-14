@@ -114,7 +114,7 @@ public class MainMenuManager : MonoBehaviour {
 			GlobalGameData.currentInstance.SaveData ();
 		} else {
 			if (GlobalGameData.currentInstance.GetLastEventPlayedResult () == 0) {
-				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished and will be counted as a loss."));
+				MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Info", "Last event played was not finished or got no medals and will decrease your driver rank heavily."));
 			}
 		}
 
@@ -238,7 +238,7 @@ public class MainMenuManager : MonoBehaviour {
 		if (GlobalGameData.currentInstance.m_playerData_eventActive == null)
 			return;
 		eventDetailsHeader.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventArea () + " - " + GlobalGameData.currentInstance.m_playerData_eventActive.GetEventName();
-		eventDetailsDescription.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventTypeShortDesc ();
+		eventDetailsDescription.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventDescription();
 		eventDetailsRewards.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString ();
 		eventDetailsCheckpoints.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString ();
 		eventDetailsRoadDifficulty.text = "Road difficulty: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty ().ToString ("F1");

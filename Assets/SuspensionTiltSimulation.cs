@@ -9,7 +9,7 @@ public class SuspensionTiltSimulation : MonoBehaviour {
 	private float tiltTargetValue = 0;
 	private float currentTiltValue = 0;
 	private float tiltSpeed = 5;
-	private float tiltMultiplier = 0.09f;
+	private float tiltMultiplier = 0.115f;
 	
 	// Update is called once per frame
 	void Update () {

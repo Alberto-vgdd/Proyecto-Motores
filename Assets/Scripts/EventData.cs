@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections.Generic;
 
 [Serializable]
 public class EventData {
@@ -35,9 +36,11 @@ public class EventData {
 	private int m_rewardType;
 	private int m_eventLeague;
 	private Gamemode m_gameMode;
+	private SpecialEvent m_special;
 	private float m_roadDifficulty;
 	private bool displayTimeLeftAlwaysFloat = false;
 	private string m_customEventName = "";
+	private string m_customEventDesc = "";
 	private bool m_new;
 	private float m_startingHour;
 	// AuxParameters
@@ -57,15 +60,24 @@ public class EventData {
 		TimeAttack = 6,
 		FreeRoam = 7
 	}
+	public enum SpecialEvent
+	{
+		None = 1,
+		AgainstDevs,
+		InstaGib,
+		SoundSpeed
+	}
 
-	public EventData (int seed, int checkpoints, Gamemode gmode, string customName = "")
+	public EventData (int seed, int checkpoints, Gamemode gmode, SpecialEvent spEvent = SpecialEvent.None, string customName = "", string customDesc = "")
 	{
 		m_new = true;
 
+		m_special = spEvent;
 		m_gameMode = gmode;
 		m_eventSeed = seed;
 		m_checkPoints = checkpoints;
 		m_customEventName = customName;
+		m_customEventDesc = customDesc;
 		m_eventLeague = 16;
 		m_seasonalEvent = true;
 		m_canBeRestarted = true;
@@ -94,6 +106,7 @@ public class EventData {
 	{
 		m_new = true;
 
+		m_special = SpecialEvent.None;
 		m_eventSeed = UnityEngine.Random.Range (1, 99999999);
 		m_checkPoints = UnityEngine.Random.Range (4, 10) + (int)(league/2);
 		m_eventLeague = league;
@@ -410,8 +423,54 @@ public class EventData {
 	// Getters
 	// =======================================================================================================
 
+	public SpecialEvent GetSpecialEventType()
+	{
+		return m_special;
+	}
 	public float GetObjectiveForPosition(int position)
 	{
+		if (m_special == SpecialEvent.AgainstDevs) {
+			float tempValue1;
+			float tempValue2;
+			if (position == 1) {
+				
+				tempValue1 = GlobalGameData.currentInstance.GetDevReplay (0).GetScoreRecorded();
+				tempValue2 = GlobalGameData.currentInstance.GetDevReplay (1).GetScoreRecorded();
+				if (tempValue2 < tempValue1)
+					tempValue1 = tempValue2;
+				tempValue2 = GlobalGameData.currentInstance.GetDevReplay (2).GetScoreRecorded();
+				if (tempValue2 < tempValue1)
+					tempValue1 = tempValue2;
+				return tempValue1;
+				
+			} else if (position == 2) {
+				float tempValue3;
+				tempValue1 = GlobalGameData.currentInstance.GetDevReplay (0).GetScoreRecorded();
+				tempValue2 = GlobalGameData.currentInstance.GetDevReplay (1).GetScoreRecorded();
+				tempValue3 = GlobalGameData.currentInstance.GetDevReplay (2).GetScoreRecorded();
+
+				List<float> templist = new List<float>();
+				templist.Add (tempValue1);
+				templist.Add (tempValue2);
+				templist.Add (tempValue3);
+				templist.Sort ();
+				return templist [1];
+
+
+
+			} else if (position == 3) {
+
+				tempValue1 = GlobalGameData.currentInstance.GetDevReplay (0).GetScoreRecorded();
+				tempValue2 = GlobalGameData.currentInstance.GetDevReplay (1).GetScoreRecorded();
+				if (tempValue2 > tempValue1)
+					tempValue1 = tempValue2;
+				tempValue2 = GlobalGameData.currentInstance.GetDevReplay (2).GetScoreRecorded();
+				if (tempValue2 > tempValue1)
+					tempValue1 = tempValue2;
+				return tempValue1;
+
+			}
+		}
 		if (position == 1)
 			return m_objectiveGold;
 		else if (position == 2)
@@ -554,7 +613,7 @@ public class EventData {
 		}
 
 	}
-	public string GetEventTypeShortDesc()
+	private string GetEventTypeShortDesc()
 	{
 		string str = "";  // Innecesario, pero evita los warnings del compilador.
 		switch (m_gameMode) {
@@ -596,7 +655,7 @@ public class EventData {
 		}
 		return str;
 	}
-	public string GetEventTypeName()
+	private string GetEventTypeName()
 	{
 		string str = ""; // Innecesario pero evita warnings del compilador
 		switch (m_gameMode) {
@@ -722,7 +781,11 @@ public class EventData {
 		} else if (m_objectiveTypeScore) {
 			txt = GetObjectiveForPosition (pos).ToString();
 		} else {
-			txt = ((int)(GetObjectiveForPosition (pos) / 60)).ToString () + ":" + ((int)(GetObjectiveForPosition (pos) % 60)).ToString ("D2") + ":00";
+			int valueInt = (int)GetObjectiveForPosition (pos);
+			float valueFloat = GetObjectiveForPosition (pos);
+			int miliseconds = (int)((valueFloat - valueInt) * 100);
+			txt = ((int)(GetObjectiveForPosition (pos) / 60)).ToString () + ":" + ((int)(GetObjectiveForPosition (pos) % 60)).ToString ("D2") + ":" + miliseconds.ToString ("D2");
+				
 		}
 		return txt;
 	}
@@ -732,6 +795,14 @@ public class EventData {
 			return GetEventTypeName ();
 		} else {
 			return m_customEventName;
+		}
+	}
+	public string GetEventDescription()
+	{
+		if (m_customEventDesc == "") {
+			return GetEventTypeShortDesc ();
+		} else {
+			return m_customEventDesc;
 		}
 	}
 }

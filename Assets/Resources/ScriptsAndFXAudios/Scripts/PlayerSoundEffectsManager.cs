@@ -22,7 +22,7 @@ public class PlayerSoundEffectsManager : MonoBehaviour {
 
 	// Estos valores parecen funcionar...
 	// TODO: Revisar mas a fondo.
-	private const float DRIFT_SOUND_VOLUME_BASE = 0.2f;
+	private const float DRIFT_SOUND_VOLUME_BASE = 0.15f;
 	private const float DRIFT_SOUND_VOLUME_SPEEDSCALING = 0.00135f;
 	private const float DRIFT_SOUND_PITCH_BASE = 0.4f; // 0.8 , o 0.4, depende del realismo
 	private const float DRIFT_SOUND_PITCH_DEGREESCALING = 0.0135f; // 0.025

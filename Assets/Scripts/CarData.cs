@@ -112,11 +112,11 @@ public class CarData {
 				m_carWeight = 6.5f;
 
 				m_upgraded_turnRate = 3.5f;
-				m_upgraded_acceleration = 5f;
-				m_upgraded_maxSpeed = -1.9f;
+				m_upgraded_acceleration = 4.5f;
+				m_upgraded_maxSpeed = -2f;
 				m_upgraded_driftStrenght = 3f;
 				m_upgraded_maxDriftDegree = 3;
-				m_upgraded_carWeight = -2.5f;
+				m_upgraded_carWeight = -2f;
 
 				m_modelID = 1;
 				m_skinID = 3;
