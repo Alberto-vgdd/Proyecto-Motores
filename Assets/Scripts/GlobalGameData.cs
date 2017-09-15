@@ -193,8 +193,8 @@ public class GlobalGameData : MonoBehaviour {
 	{
 		// Demomento ponemos eventos fijados ya que no tiene de donde scarlos.
 		eventsAvailable_seasonal = new List<EventData>();
-		eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.None, "GRABAD AQUI", 
-			"Pues eso, grabad vuestros fantasmas aqui, es basicamente el evento donde testeabamos antes"));
+		//eventsAvailable_seasonal.Add(new EventData(111111, 4, EventData.Gamemode.TimeAttack, EventData.SpecialEvent.None, "GRABAD AQUI", 
+		//	"Pues eso, grabad vuestros fantasmas aqui, es basicamente el evento donde testeabamos antes"));
 
 		eventsAvailable_seasonal.Add(new EventData(765, 4, EventData.Gamemode.Endurance, EventData.SpecialEvent.InstaGib, "Clean drive",
 			"A real endurance race, how far can you get with a car that will get instantly destroyed with the first collision? We hope you're used to perform clean sections."));
@@ -278,7 +278,7 @@ public class GlobalGameData : MonoBehaviour {
 					print ("[REPLAY] Discarding ghost.");
 			}
 		}
-		OutputLastGhostToFile ();
+		//OutputLastGhostToFile ();
 	}
 	public void SetPlayerName(string arg)
 	{
