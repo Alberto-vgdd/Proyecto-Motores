@@ -34,6 +34,9 @@ public class RoadGenerator : MonoBehaviour {
 	private int nodeDecoGroundR = 0;						// Indice de la decoracion del [SUELO] [DERECHO]
 	private int nodesUnttilDecoChange;						// Nodos hasta el proximo cambio en los indices de la decoracion.
 
+	public GameObject roadStart;
+	private bool roadStartRemoved = false;
+
 	public List<GameObject> spawnedNodes;					// Nodos creados
 	private List<GameObject> tempValidNodes;				// (TEMP) Lista temporal para determinar cuales seran los posibles proximos nodos.
 	private RoadNode lastReadedNode;						// (AUX) Ultimo nodo leido
@@ -62,6 +65,7 @@ public class RoadGenerator : MonoBehaviour {
 		maxStraight = Random.Range (minStraight, minStraight +5);
 		Random.Range (1, 24); // LLAMADA DUMMY, NO HACE NADA, solo sincroniza la seed.
 		maxHeight = 5;
+		roadStart.transform.localScale = Vector3.one * GLOBAL_ROAD_SCALE;
 
 		if (Random.Range (1, 4) == 1) {
 			rampChance = 0;
@@ -140,6 +144,10 @@ public class RoadGenerator : MonoBehaviour {
 			GameObject nodeToRemove = spawnedNodes [0];
 			spawnedNodes.Remove (nodeToRemove);
 			nodeToRemove.SetActive(false);
+			if (!roadStartRemoved) {
+				roadStartRemoved = true;
+				Destroy (roadStart);
+			}
 		}
 
 	}
