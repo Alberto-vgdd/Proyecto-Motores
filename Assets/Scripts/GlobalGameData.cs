@@ -212,11 +212,11 @@ public class GlobalGameData : MonoBehaviour {
 			return 0;
 		float promotionMultiplier = Mathf.Pow(0.8f, m_playerData_playerRank-1);
 		if (m_playerData_lastEventPlayedResult == 1) {
-			return 0.3f * promotionMultiplier;
+			return 0.45f * promotionMultiplier;
 		} else if (m_playerData_lastEventPlayedResult == 2) {
-			return 0.1f * promotionMultiplier;
+			return 0.2f * promotionMultiplier;
 		} else if (m_playerData_lastEventPlayedResult == 3) {
-			return -0.15f;
+			return 0f;
 		} else {
 			return -0.25f;
 		} 

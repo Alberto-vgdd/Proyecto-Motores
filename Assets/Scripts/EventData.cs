@@ -219,32 +219,32 @@ public class EventData {
 		switch (m_gameMode) {
 		case Gamemode.Endurance:
 			{
-				m_objectiveGold = (int)(8500 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(7500 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.DriftEndurance:
 			{
-				m_objectiveGold = (int)(7500 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(7000 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.DriftExhibition:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 1500 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 1600 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.HighSpeedChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 400 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 475 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 350 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 600 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.TimeAttack:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 15.5f * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) - (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 15f * (1 + (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) - (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		default: // FreeRoam
@@ -304,7 +304,7 @@ public class EventData {
 
 				m_checkPoints = 0;
 				m_eventBonusTimeOnCPMultiplier = 0f;
-				m_eventBonusTimeOnDriftMultiplier = 0.001f;
+				m_eventBonusTimeOnDriftMultiplier = 0.002f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
@@ -358,7 +358,7 @@ public class EventData {
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				m_initialTimeRemaining = 8f;
+				m_initialTimeRemaining = 10f;
 				m_eventDamageTakenMultiplier = 1f;
 
 				m_eventHasTimeLimit = true;

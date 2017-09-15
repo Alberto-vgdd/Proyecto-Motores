@@ -8,6 +8,14 @@ public class MainMenuManager : MonoBehaviour {
 
 	public static MainMenuManager currentInstance;
 
+	[Header("Event difficulty colors")]
+	public Color evDifColor_Veryeasy;
+	public Color evDifColor_Easy;
+	public Color evDifColor_Normal;
+	public Color evDifColor_Hard;
+	public Color evDifColor_VeryHard;
+	public Color evDifColor_Nightmare;
+
 	[Header("Event List Panel")]
 	public CanvasGroup EventPanelCG;
 	public GameObject eventSliderParent;
@@ -22,10 +30,12 @@ public class MainMenuManager : MonoBehaviour {
 	[Header("Top&Bottom Panels")]
 	public CanvasGroup topParent;
 	public CanvasGroup bottomParent;
-	public Text normalCurrencyText;
-	public Text alternativeCurrencyText;
-	public Text playerNameText;
-	public Text playerRankText;
+	public Text topPanel_currNormal;
+	public Text topPanel_currAlt;
+	public Text topPanelPlayerName;
+	public Text topPanelCarInUse;
+	public Text topPanelRankName;
+	public Slider topPanelRankSlider;
 	public Text movingInfoText;
 	[Header("Event Details Panel")]
 	public Text eventDetailsHeader;
@@ -102,8 +112,6 @@ public class MainMenuManager : MonoBehaviour {
 	}
 
 	void Start () {
-		playerNameText.text = GlobalGameData.currentInstance.GetPlayerName();
-
 		eventSliderInitialPos = eventSliderParent.transform.localPosition;
 		eventDetailsInitialPos = eventDetailsParent.transform.localPosition;
 		garageSliderInitialPos = carSliderParent.transform.localPosition;
@@ -131,7 +139,7 @@ public class MainMenuManager : MonoBehaviour {
 			}
 		}
 
-		UpdateCurrencyAndRankValues ();
+		UpdateTopPanelInfo ();
 		StartCoroutine ("RankPromotionPanel");
 		GlobalGameData.currentInstance.SaveData ();
 	}
@@ -238,13 +246,21 @@ public class MainMenuManager : MonoBehaviour {
 	{
 		return !CoRoutineActive && !MainMenuNotificationManager.currentInstance.IsOpen ();
 	}
-	public void UpdateCurrencyAndRankValues()
+	public void UpdateTopPanelInfo()
 	{
 		if (GlobalGameData.currentInstance == null)
 			return;
-		playerRankText.text = GlobalGameData.currentInstance.GetRankName ();
-		normalCurrencyText.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
-		alternativeCurrencyText.text = GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
+		topPanelRankName.text = GlobalGameData.currentInstance.GetRankName ();
+		topPanel_currNormal.text = GlobalGameData.currentInstance.GetPlayerCurrency ().ToString();
+		topPanel_currAlt.text = GlobalGameData.currentInstance.GetPlayerAlternativeCurrency ().ToString();
+		topPanelPlayerName.text = GlobalGameData.currentInstance.GetPlayerName ();
+		topPanelRankSlider.value = GlobalGameData.currentInstance.GetPlayerRankStatus ();
+		if (GlobalGameData.currentInstance.GetCarInUse () == null) {
+			topPanelCarInUse.text = "--";
+		} else {
+			topPanelCarInUse.text = GlobalGameData.currentInstance.GetCarInUse ().GetCarName ();
+		}
+
 	}
 	void SetupEventDetailsPanel()
 	{
@@ -254,9 +270,28 @@ public class MainMenuManager : MonoBehaviour {
 		eventDetailsDescription.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetEventDescription();
 		eventDetailsRewards.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetRewardString ();
 		eventDetailsCheckpoints.text = "Checkpoints: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetCheckpointsString ();
-		eventDetailsRoadDifficulty.text = "Road difficulty: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty ().ToString ("F1");
 		eventDetailsHour.text = GlobalGameData.currentInstance.m_playerData_eventActive.GetHourString ();
 		eventDetailsRoadid.text = "ID: " + GlobalGameData.currentInstance.m_playerData_eventActive.GetSeed ().ToString ();
+		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty () < 1.5f) {
+			eventDetailsRoadDifficulty.text = "Road dif.: Very easy";
+			eventDetailsRoadDifficulty.color = evDifColor_Veryeasy;
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty () < 2f) {
+			eventDetailsRoadDifficulty.text = "Road dif.: Easy";
+			eventDetailsRoadDifficulty.color = evDifColor_Easy;
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty () < 2.75f) {
+			eventDetailsRoadDifficulty.text = "Road dif.: Normal";
+			eventDetailsRoadDifficulty.color = evDifColor_Normal;
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty () < 3.5f) {
+			eventDetailsRoadDifficulty.text = "Road dif.: Hard";
+			eventDetailsRoadDifficulty.color = evDifColor_Hard;
+		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetRoadDifficulty () < 4f) {
+			eventDetailsRoadDifficulty.text = "Road dif.: Very hard";
+			eventDetailsRoadDifficulty.color = evDifColor_VeryHard;
+		} else {
+			eventDetailsRoadDifficulty.text = "Road dif.: Nightmare";
+			eventDetailsRoadDifficulty.color = evDifColor_Nightmare;
+		}
+
 	}
 
 	// =====================================================================================
@@ -270,7 +305,7 @@ public class MainMenuManager : MonoBehaviour {
 
 	IEnumerator FadeInTopAndBottomPanels()
 	{
-		// No hay fadeout, innecesario demomento.
+		UpdateTopPanelInfo ();
 		topParent.alpha = bottomParent.alpha = 0;
 		topParent.gameObject.SetActive(true);
 		bottomParent.gameObject.SetActive (true);
@@ -297,7 +332,7 @@ public class MainMenuManager : MonoBehaviour {
 			StartCoroutine ("FadeInMainSlider");
 			StartCoroutine ("FadeInTopAndBottomPanels");
 			CoRoutineActive = false;
-			UpdateCurrencyAndRankValues ();
+			UpdateTopPanelInfo ();
 			yield break;
 		}
 
@@ -415,7 +450,7 @@ public class MainMenuManager : MonoBehaviour {
 			yield return null;
 		}
 
-		UpdateCurrencyAndRankValues ();
+		UpdateTopPanelInfo ();
 		CoRoutineActive = false;
 
 	}
@@ -889,6 +924,7 @@ public class MainMenuManager : MonoBehaviour {
 		GlobalGameData.currentInstance.SetCarInUseIndex (carInDisplayIndex);
 		SetGarageCarButtons();
 		MainMenuNotificationManager.currentInstance.AddNotification (new MainMenuNotificationData ("Car changed", "Your selected car is now: \n" + GlobalGameData.currentInstance.GetCarInUse().GetCarName()));
+		UpdateTopPanelInfo ();
 		GlobalGameData.currentInstance.SaveData ();
 
 		MainMenuSoundManager.instance.playAcceptSound ();
@@ -919,9 +955,9 @@ public class MainMenuManager : MonoBehaviour {
 	public void OnSettingsProfileNameValueChanged()
 	{
 		GlobalGameData.currentInstance.SetPlayerName (ProfileNameInputField.text);
-		playerNameText.text = ProfileNameInputField.text;
 		settingsPanelProfileName.text = ProfileNameInputField.text;
 		ProfileNameInputField.text = "";
+		UpdateTopPanelInfo ();
 	}
 
 	// Last event played result & rank update panel
