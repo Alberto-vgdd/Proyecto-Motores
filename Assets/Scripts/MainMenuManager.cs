@@ -859,6 +859,13 @@ public class MainMenuManager : MonoBehaviour {
 		StartCoroutine ("FadeInSettingsPanel");
 		StartCoroutine ("FadeOutMainSlider");
 	}
+	public void OnQuitGameClicked()
+	{
+		if (!IsButtonAcctionAvailable ()) {
+			return;
+		}
+		Application.Quit ();
+	}
 
 	// Event buttons
 	// =====================================================================================
