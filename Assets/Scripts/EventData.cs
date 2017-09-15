@@ -224,22 +224,22 @@ public class EventData {
 			}
 		case Gamemode.DriftEndurance:
 			{
-				m_objectiveGold = (int)(7000 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(6750 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.DriftExhibition:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 1600 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 1300 * (1 + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.HighSpeedChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 475 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 450 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.ChainDriftChallenge:
 			{
-				m_objectiveGold = (int)(m_checkPoints * 600 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
+				m_objectiveGold = (int)(m_checkPoints * 460 * (1 - (m_roadDifficulty * ROAD_DIFFICULTY_MULTIPLIER) + (m_eventLeague * LEAGUE_DIFFICULTY_MULTIPLIER)));
 				break;
 			}
 		case Gamemode.TimeAttack:
@@ -281,8 +281,8 @@ public class EventData {
 				m_objectiveTypeScore = true;
 
 				m_checkPoints = 0;
-				m_eventBonusTimeOnCPMultiplier = 1f;
-				m_eventBonusTimeOnDriftMultiplier = 0.001f;
+				m_eventBonusTimeOnCPMultiplier = 1.75f;
+				m_eventBonusTimeOnDriftMultiplier = 0f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
@@ -304,7 +304,7 @@ public class EventData {
 
 				m_checkPoints = 0;
 				m_eventBonusTimeOnCPMultiplier = 0f;
-				m_eventBonusTimeOnDriftMultiplier = 0.002f;
+				m_eventBonusTimeOnDriftMultiplier = 0.00285f;
 				m_eventScoreOnDriftMultiplier = 0f;
 				m_eventScoreOnDistance = 20f;
 				m_eventScoreOnCheckpoint = 100f;
@@ -622,12 +622,12 @@ public class EventData {
 		switch (m_gameMode) {
 		case Gamemode.Endurance:
 			{
-				str = "Drive as far as you can within the time limit, gain bonus time by drifting and reaching checkpoints. Points are awarded based on the distance travelled.";
+				str = "Drive as far as you can within the time limit, gain bonus time by reaching checkpoints. Time recieved will decay after every checkpoint. Points are awarded based on the distance travelled.";
 				break;
 			}
 		case Gamemode.DriftEndurance:
 			{
-				str = "Drive as far as you can within the time limit, gain bonus time ONLY by drifting. Points are awarded based on the distance travelled.";
+				str = "Drive as far as you can within the time limit, gain bonus time by drifting. Time recieved will decay after every checkpoint. Points are awarded based on the distance travelled.";
 				break;
 			}
 		case Gamemode.DriftExhibition:

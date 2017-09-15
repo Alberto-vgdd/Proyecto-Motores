@@ -64,14 +64,9 @@ public class IngameHudManager : MonoBehaviour {
 	void Start () {
 		globalParentInitialPosition = ingameHudCg.transform.localPosition;
 		helpInfoInitialPos = helpInfoCG.transform.localPosition;
+
 		SetObjectivePanel ();
-		if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == EventData.Gamemode.ChainDriftChallenge) {
-			helpInfoCG.gameObject.SetActive (true);
-			StartCoroutine ("HelpCheckForChainDriftChallenge");
-		} else if (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode () == EventData.Gamemode.HighSpeedChallenge) {
-			StartCoroutine ("HelpCheckForHighSpeedChallenge");
-			helpInfoCG.gameObject.SetActive (true);
-		}
+		SetInfoHelpers ();
 
 		if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimelimit ()) {
 			if (GlobalGameData.currentInstance.m_playerData_eventActive.HasTimeDisplayedAlwaysAsFloat ()) {
@@ -88,6 +83,45 @@ public class IngameHudManager : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		UpdateSpeedMeter ();
+	}
+	void SetInfoHelpers()
+	{
+		switch (GlobalGameData.currentInstance.m_playerData_eventActive.GetGamemode ()) {
+		case EventData.Gamemode.Endurance:
+			{
+				helpInfo.text = "Drive as far as you can";
+				helpInfoCG.gameObject.SetActive (true);
+				helpInfoCG.alpha = 1;
+				break;
+			}
+		case EventData.Gamemode.DriftExhibition:
+			{
+				helpInfo.text = "Drift to earn points";
+				helpInfoCG.gameObject.SetActive (true);
+				helpInfoCG.alpha = 1;
+				break;
+			}
+		case EventData.Gamemode.DriftEndurance:
+			{
+				helpInfo.text = "Drift to earn extra time";
+				helpInfoCG.gameObject.SetActive (true);
+				helpInfoCG.alpha = 1;
+				break;
+			}
+		case EventData.Gamemode.ChainDriftChallenge:
+			{
+				helpInfoCG.gameObject.SetActive (true);
+				StartCoroutine ("HelpCheckForChainDriftChallenge");
+				break;
+			}
+		case EventData.Gamemode.HighSpeedChallenge:
+			{
+				StartCoroutine ("HelpCheckForHighSpeedChallenge");
+				helpInfoCG.gameObject.SetActive (true);
+				break;
+			}
+		}
+
 	}
 	public void SetHudVisibility(bool arg)
 	{

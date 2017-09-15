@@ -113,7 +113,6 @@ public class RoadGenerator : MonoBehaviour {
 			lastReadedNode.SetAsActiveCheckpoint ((stackedNodeWeight * NodeWeight2Time));
 			nodesSinceLastActiveCP = 0;
 			stackedNodeWeight = 0;
-			NodeWeight2Time *= 0.98f;
 		} else {
 			lastReadedNode.SetAsPassiveCheckpoint ();
 		}

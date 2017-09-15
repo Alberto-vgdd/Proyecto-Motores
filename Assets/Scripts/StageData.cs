@@ -57,6 +57,8 @@ public class StageData : MonoBehaviour {
 	private int finalscore;
 	private bool countdownRunning = false;
 	private EventData eventActive;
+	private float timeEarnedMultiplier = 1f;
+	private float timeEarnedDecay = 0.97f;
 
 
 
@@ -122,8 +124,10 @@ public class StageData : MonoBehaviour {
 
 	public void PlayerCrossedCheckPoint(bool clean, float awardedTime)
 	{
+		timeEarnedMultiplier *= timeEarnedDecay;
+
 		checkPointsCrossed++;
-		awardedTime *= eventActive.GetBonusTimeOnCheckpointMultiplier ();
+		awardedTime *= eventActive.GetBonusTimeOnCheckpointMultiplier () * timeEarnedMultiplier;
 		if (clean) {
 			HealPlayer (10);
 			NotificationManager.currentInstance.AddNotification (new GameNotification ("Clean section, health restored!", Color.green, 30));
@@ -199,8 +203,8 @@ public class StageData : MonoBehaviour {
 		if (eventFinished)
 			return;
 		if (eventActive.GetBonusTimeOnDriftMultiplier() > 0) {
-			time_remainingSec += (lenght * multi) * eventActive.GetBonusTimeOnDriftMultiplier();
-			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift!" + " (x" + multi.ToString("F1") + ") " + (lenght * multi * eventActive.GetBonusTimeOnDriftMultiplier()).ToString("F1") + " bonus time.", Color.blue, 30));
+			time_remainingSec += (lenght * multi) * eventActive.GetBonusTimeOnDriftMultiplier() * timeEarnedMultiplier;
+			NotificationManager.currentInstance.AddNotification(new GameNotification((int)lenght + "m. drift!" + " (x" + multi.ToString("F1") + ") " + (lenght * multi * eventActive.GetBonusTimeOnDriftMultiplier() * timeEarnedMultiplier).ToString("F1") + " bonus time.", Color.blue, 30));
 		}
 		if (eventActive.GetScoreOnDriftMultiplier() > 0) {
 			AddScore (lenght * multi * eventActive.GetScoreOnDriftMultiplier());
