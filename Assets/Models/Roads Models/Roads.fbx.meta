@@ -672,6 +672,21 @@ ModelImporter:
     101328: Straight Up LOD1 Tunnel 1
     101330: Straight Up LOD1 Tunnel 1.001
     101332: Straight LOD0 Tunnel 2
+    101334: Left LOD0 Tunnel 2
+    101336: Left LOD1 Tunnel 2
+    101338: Left LOD2 Tunnel 2
+    101340: Right LOD0 Tunnel 2
+    101342: Right LOD1 Tunnel 2
+    101344: Right LOD2 Tunnel 2
+    101346: Straight Down LOD0 Tunnel 2
+    101348: Straight Down LOD1 Tunnel 2
+    101350: Straight Down LOD2 Tunnel 2
+    101352: Straight LOD1 Tunnel 2
+    101354: Straight LOD2 Tunnel 2
+    101356: Straight Up LOD0 Tunnel 2
+    101358: Straight Up LOD1 Tunnel 2
+    101360: Straight Up LOD2 Tunnel 1
+    101362: Straight Up LOD2 Tunnel 2
     400000: Left LOD0 Ad Fence Left
     400002: Left LOD0 Ad Fence Right
     400004: Left LOD0 Cliff Left
@@ -1339,6 +1354,21 @@ ModelImporter:
     401328: Straight Up LOD1 Tunnel 1
     401330: Straight Up LOD1 Tunnel 1.001
     401332: Straight LOD0 Tunnel 2
+    401334: Left LOD0 Tunnel 2
+    401336: Left LOD1 Tunnel 2
+    401338: Left LOD2 Tunnel 2
+    401340: Right LOD0 Tunnel 2
+    401342: Right LOD1 Tunnel 2
+    401344: Right LOD2 Tunnel 2
+    401346: Straight Down LOD0 Tunnel 2
+    401348: Straight Down LOD1 Tunnel 2
+    401350: Straight Down LOD2 Tunnel 2
+    401352: Straight LOD1 Tunnel 2
+    401354: Straight LOD2 Tunnel 2
+    401356: Straight Up LOD0 Tunnel 2
+    401358: Straight Up LOD1 Tunnel 2
+    401360: Straight Up LOD2 Tunnel 1
+    401362: Straight Up LOD2 Tunnel 2
     2300000: Left LOD0 Ad Fence Left
     2300002: Left LOD0 Ad Fence Right
     2300004: Left LOD0 Cliff Left
@@ -2005,6 +2035,21 @@ ModelImporter:
     2301326: Straight Up LOD1 Tunnel 1
     2301328: Straight Up LOD1 Tunnel 1.001
     2301330: Straight LOD0 Tunnel 2
+    2301332: Left LOD0 Tunnel 2
+    2301334: Left LOD1 Tunnel 2
+    2301336: Left LOD2 Tunnel 2
+    2301338: Right LOD0 Tunnel 2
+    2301340: Right LOD1 Tunnel 2
+    2301342: Right LOD2 Tunnel 2
+    2301344: Straight Down LOD0 Tunnel 2
+    2301346: Straight Down LOD1 Tunnel 2
+    2301348: Straight Down LOD2 Tunnel 2
+    2301350: Straight LOD1 Tunnel 2
+    2301352: Straight LOD2 Tunnel 2
+    2301354: Straight Up LOD0 Tunnel 2
+    2301356: Straight Up LOD1 Tunnel 2
+    2301358: Straight Up LOD2 Tunnel 1
+    2301360: Straight Up LOD2 Tunnel 2
     3300000: Left LOD0 Ad Fence Left
     3300002: Left LOD0 Ad Fence Right
     3300004: Left LOD0 Cliff Left
@@ -2671,6 +2716,21 @@ ModelImporter:
     3301326: Straight Up LOD1 Tunnel 1
     3301328: Straight Up LOD1 Tunnel 1.001
     3301330: Straight LOD0 Tunnel 2
+    3301332: Left LOD0 Tunnel 2
+    3301334: Left LOD1 Tunnel 2
+    3301336: Left LOD2 Tunnel 2
+    3301338: Right LOD0 Tunnel 2
+    3301340: Right LOD1 Tunnel 2
+    3301342: Right LOD2 Tunnel 2
+    3301344: Straight Down LOD0 Tunnel 2
+    3301346: Straight Down LOD1 Tunnel 2
+    3301348: Straight Down LOD2 Tunnel 2
+    3301350: Straight LOD1 Tunnel 2
+    3301352: Straight LOD2 Tunnel 2
+    3301354: Straight Up LOD0 Tunnel 2
+    3301356: Straight Up LOD1 Tunnel 2
+    3301358: Straight Up LOD2 Tunnel 1
+    3301360: Straight Up LOD2 Tunnel 2
     4300000: Straight Down LOD2 Road Mask
     4300002: Straight Down LOD2 Road Collider
     4300004: Straight Down LOD2 Rail Guard Right
@@ -3337,6 +3397,21 @@ ModelImporter:
     4301326: Straight LOD1 Tunnel 1
     4301328: Straight LOD2 Tunnel 1
     4301330: Straight LOD0 Tunnel 2
+    4301332: Straight Down LOD2 Tunnel 2
+    4301334: Straight Down LOD1 Tunnel 2
+    4301336: Straight Up LOD2 Tunnel 1
+    4301338: Right LOD2 Tunnel 2
+    4301340: Straight Down LOD0 Tunnel 2
+    4301342: Straight Up LOD2 Tunnel 2
+    4301344: Straight Up LOD0 Tunnel 2
+    4301346: Straight Up LOD1 Tunnel 2
+    4301348: Right LOD1 Tunnel 2
+    4301350: Right LOD0 Tunnel 2
+    4301352: Left LOD2 Tunnel 2
+    4301354: Left LOD1 Tunnel 2
+    4301356: Left LOD0 Tunnel 2
+    4301358: Straight LOD1 Tunnel 2
+    4301360: Straight LOD2 Tunnel 2
     20500000: //RootNode
   materials:
     importMaterials: 0
